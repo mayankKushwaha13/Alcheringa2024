@@ -1,4 +1,4 @@
-package com.alcheringa.alcheringa.alcheringa
+package com.alcheringa.alcheringa
 
 import io.flutter.embedding.android.FlutterActivity
 

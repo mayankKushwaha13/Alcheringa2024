@@ -1,7 +1,7 @@
-import 'package:alcheringa/home_screen.dart';
-import 'package:alcheringa/map_page.dart';
-import 'package:alcheringa/merch_page.dart';
-import 'package:alcheringa/schedule_page.dart';
+import 'package:alcheringa/screens/home_screen.dart';
+import 'package:alcheringa/screens/map_page.dart';
+import 'package:alcheringa/screens/merch_page.dart';
+import 'package:alcheringa/screens/schedule_page.dart';
 import 'package:flutter/material.dart';
 
 class MainScreen extends StatefulWidget {
