@@ -1,9 +1,11 @@
 import 'dart:async';
+import 'package:alcheringa/screens/login_screen.dart';
 import 'package:alcheringa/screens/main_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
+import '../common/globals.dart';
 import '../firebase_options.dart';
 
 Future<void> main() async {
@@ -34,25 +36,29 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   late VideoPlayerController _controller;
+  late bool isUserLoggedIn;
 
   @override
   void initState() {
     super.initState();
+    isLoggedIn = auth.currentUser != null;
 
     _controller = VideoPlayerController.asset("assets/SplashMovie/splash_screen.mp4")..initialize().then((_) {
-        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
         setState(() {
           _controller.play();
+          isUserLoggedIn = isLoggedIn;
         });
       });
 
-    Timer(const Duration(seconds: 3),
-            ()=>Navigator.pushReplacement(context,
-            MaterialPageRoute(builder:
-                (context) =>
-            const MainScreen()
-            )
-        )
+    Timer(
+      const Duration(seconds: 3),
+          () {
+        final nextScreen = isUserLoggedIn ? const MainScreen() : const LoginScreen();
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => nextScreen),
+        );
+      },
     );
   }
 
