@@ -1,8 +1,11 @@
 import 'dart:async';
+import 'package:alcheringa/Model/eventdetail.dart';
+import 'package:alcheringa/Model/view_model_main.dart';
 import 'package:alcheringa/screens/login_screen.dart';
 import 'package:alcheringa/screens/main_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 
 import '../common/globals.dart';
@@ -13,7 +16,12 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider<ViewModelMain>(
+      create: (context) => ViewModelMain(),
+      child: MyApp(),
+    )
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -21,6 +29,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Provider.of<ViewModelMain>(context, listen: false).getAllEvents();
     return const MaterialApp(
       home: SplashScreen(),
     );
@@ -43,6 +52,7 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     isLoggedIn = auth.currentUser != null;
 
+    ViewModelMain().getAllEvents();
     _controller = VideoPlayerController.asset("assets/SplashMovie/splash_screen.mp4")..initialize().then((_) {
         setState(() {
           _controller.play();

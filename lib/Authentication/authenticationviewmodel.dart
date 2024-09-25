@@ -38,7 +38,6 @@ Future<void> login(String email, String password, BuildContext context, {require
       password: password
     );
     isLoggedIn = true;
-    print(auth.currentUser?.email);
     if(context.mounted) showMessage('Login Successful', context);
   } on FirebaseAuthException catch (e) {
     String message;
