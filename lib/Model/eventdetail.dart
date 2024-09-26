@@ -1,3 +1,5 @@
+import 'own_time.dart';
+
 class EventLive {
   late EventDetail eventDetail;
   bool isLive = false;
@@ -53,30 +55,5 @@ class EventDetail {
       mode: data['mode'],
       stream: data['stream'],
     );
-  }
-}
-
-class OwnTime {
-  int date = 0;
-  int hours = 0;
-  int min = 0;
-
-  OwnTime({
-    required this.date,
-    required this.hours,
-    required this.min,
-  });
-
-  factory OwnTime.fromMap(Map<String, dynamic> data) {
-    return OwnTime(
-      date: data['date'],
-      hours: data['hours'],
-      min: data['min'],
-    );
-  }
-
-  // Convert OwnTime to total minutes (for easier comparison)
-  int toMinutes() {
-    return (date * 24 * 60) + (hours * 60) + min;
   }
 }
