@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:alcheringa/Model/eventdetail.dart';
+
 import 'package:alcheringa/Model/view_model_main.dart';
 import 'package:alcheringa/screens/login_screen.dart';
 import 'package:alcheringa/screens/main_screen.dart';
@@ -16,12 +16,10 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(
-    ChangeNotifierProvider<ViewModelMain>(
-      create: (context) => ViewModelMain(),
-      child: MyApp(),
-    )
-  );
+  runApp(ChangeNotifierProvider<ViewModelMain>(
+    create: (context) => ViewModelMain(),
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -53,17 +51,21 @@ class _SplashScreenState extends State<SplashScreen> {
     isLoggedIn = auth.currentUser != null;
 
     ViewModelMain().getAllEvents();
-    _controller = VideoPlayerController.asset("assets/SplashMovie/splash_screen.mp4")..initialize().then((_) {
-        setState(() {
-          _controller.play();
-          isUserLoggedIn = isLoggedIn;
-        });
-      });
+
+    _controller =
+        VideoPlayerController.asset("assets/SplashMovie/splash_screen.mp4")
+          ..initialize().then((_) {
+            setState(() {
+              _controller.play();
+              isUserLoggedIn = isLoggedIn;
+            });
+          });
 
     Timer(
       const Duration(seconds: 3),
-          () {
-        final nextScreen = isUserLoggedIn ? const MainScreen() : const LoginScreen();
+      () {
+        final nextScreen =
+            isUserLoggedIn ? const MainScreen() : const LoginScreen();
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => nextScreen),
@@ -72,7 +74,6 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 
-  
   @override
   Widget build(BuildContext context) {
     return Center(
