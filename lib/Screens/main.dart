@@ -51,7 +51,7 @@ class _SplashScreenState extends State<SplashScreen> {
     isLoggedIn = auth.currentUser != null;
 
     ViewModelMain().getAllEvents();
-
+    ViewModelMain().getPass();
     _controller =
         VideoPlayerController.asset("assets/SplashMovie/splash_screen.mp4")
           ..initialize().then((_) {
