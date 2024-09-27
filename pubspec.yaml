@@ -45,8 +45,17 @@ dependencies:
   encrypt: ^5.0.3
   pointycastle: ^3.9.1
   http: ^1.2.2
+  sqflite: ^2.3.3+1
+  path_provider: ^2.1.4
+  path: ^1.9.0
+  retrofit: ^4.4.1
+  json_serializable: ^6.8.0
+  json_annotation: ^4.9.0
+  dio: ^5.7.0
 
 dev_dependencies:
+  retrofit_generator: ^8.2.1
+  build_runner: ^2.4.11
   flutter_test:
     sdk: flutter
 
