@@ -22,17 +22,12 @@ class _RetrofitService implements RetrofitService {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<void> dataToExcel(
-    String key1,
-    String key2,
-  ) async {
+  Future<void> dataToExcel(Map<String, dynamic> fields) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = {
-      'key1': key1,
-      'key2': key2,
-    };
+    final _data = <String, dynamic>{};
+    _data.addAll(fields);
     final _options = _setStreamType<void>(Options(
       method: 'POST',
       headers: _headers,

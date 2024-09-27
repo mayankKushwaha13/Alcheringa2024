@@ -10,7 +10,7 @@ abstract class RetrofitService {
 
   @FormUrlEncoded()
   @POST("formResponse")
-  Future<void> dataToExcel(@Field("key1") String key1, @Field("key2") String key2);
+  Future<void> dataToExcel(@Body() Map<String, dynamic> fields);
 
   @GET("get_data")
   Future<String> getData(@Query("email") String email);

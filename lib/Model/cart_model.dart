@@ -1,4 +1,4 @@
-import 'package:alcheringa/Common/DBHandler.dart';
+import 'package:alcheringa/Database/DBHandler.dart';
 
 class CartModel {
   final String name;
