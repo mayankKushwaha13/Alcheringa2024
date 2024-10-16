@@ -53,7 +53,7 @@ dependencies:
   json_annotation: ^4.9.0
   dio: ^5.7.0
   firebase_messaging:
-  flutter_local_notifications:
+  flutter_local_notifications: ^17.2.3
 
 dev_dependencies:
   retrofit_generator: ^9.1.2
