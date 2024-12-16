@@ -12,7 +12,7 @@ import 'package:video_player/video_player.dart';
 import '../Notification/notification_services.dart';
 import '../common/globals.dart';
 import '../firebase_options.dart';
-import 'cart.dart';
+import 'cart_screen.dart';
 
 @pragma('vm:entry-poiny')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {

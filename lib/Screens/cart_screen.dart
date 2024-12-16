@@ -1,3 +1,4 @@
+import 'package:alcheringa/widgets/cart_card.dart';
 import 'package:flutter/material.dart';
 
 class CartScreen extends StatefulWidget {
@@ -84,7 +85,46 @@ class _CartScreenState extends State<CartScreen> {
                 ),
               ],
             ),
-            SizedBox(height: 20.0), // Additional spacing
+            SizedBox(height: 20.0),
+            CartCard(
+                title: 'Sweatshirt',
+                subtitle: 'crazy eyes',
+                price: 78.00,
+                size: 'L',
+                imageUrl: 'https://picsum.photos/seed/picsum/200/300',
+                quantity: 5),
+            SizedBox(height: 20.0),
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                Container(
+                  width: 190.0, // Set desired width
+                  height: 50.47, // Set desired height
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage(
+                          'assets/images/sign_in.png'), // Path to your image
+                      fit: BoxFit.cover, // Make the image cover the container
+                    ),
+                  ),
+                ),
+                Text(
+                  'Buy', // Your text
+                  style: TextStyle(
+                    color: Colors.white, // Text color
+                    fontSize: 24.0, // Text size
+                    fontWeight: FontWeight.bold, // Optional: Bold text
+                    shadows: [
+                      Shadow(
+                        offset: Offset(2.0, 2.0), // Shadow position
+                        blurRadius: 4.0, // Shadow blur
+                        color: Colors.black, // Shadow color
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ), // Additional spacing
             // Additional content
           ],
         ),
