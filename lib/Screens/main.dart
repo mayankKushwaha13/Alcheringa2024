@@ -12,11 +12,13 @@ import 'package:video_player/video_player.dart';
 import '../Notification/notification_services.dart';
 import '../common/globals.dart';
 import '../firebase_options.dart';
+import 'cart.dart';
 
 @pragma('vm:entry-poiny')
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message)async{
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
 }
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -35,8 +37,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Provider.of<ViewModelMain>(context, listen: false).getAllEvents();
-    return const MaterialApp(
-      home: SplashScreen(),
+    return MaterialApp(
+      // home: SplashScreen(),
+      home: CartScreen(),
     );
   }
 }
@@ -61,7 +64,7 @@ class _SplashScreenState extends State<SplashScreen> {
     notificationSerivces.forgroundMessage();
     notificationSerivces.firebaseInit(context);
     notificationSerivces.isTokenRefresh();
-    notificationSerivces.getDeviceToken().then((value){
+    notificationSerivces.getDeviceToken().then((value) {
       print(value);
     });
 

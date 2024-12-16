@@ -81,6 +81,7 @@ flutter:
   assets:
     - assets/SplashMovie/
     - assets/fonts/
+    - assets/images/
 
   fonts:
     - family: Vacation Heavy
