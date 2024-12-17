@@ -43,8 +43,8 @@ class _CartCardState extends State<CartCard> {
           children: [
             // Product Image
             Container(
-              width: 100, // Fixed width
-              height: 100, // Fixed height
+              width: 143, // Fixed width
+              height: 135, // Fixed height
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: NetworkImage(widget.imageUrl),
@@ -63,30 +63,37 @@ class _CartCardState extends State<CartCard> {
                   Text(
                     widget.title,
                     style: TextStyle(
+                      fontFamily: 'AlcherPixel',
                       color: Colors.white,
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.w400,
                     ),
                   ),
                   Text(
                     widget.subtitle,
                     style: TextStyle(
-                      color: Colors.pinkAccent,
+                      fontFamily: 'AlcherPixel',
+                      color: Color.fromRGBO(255, 119, 168, 1),
                       fontSize: 16.0,
+                      fontWeight: FontWeight.w400,
                     ),
                   ),
                   Text(
                     'Rs. ${widget.price}',
                     style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16.0,
+                      fontFamily: 'AlcherPixel',
+                      color: Color.fromRGBO(255, 241, 232, 1),
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.w400,
                     ),
                   ),
                   Text(
                     'Size: ${widget.size}',
                     style: TextStyle(
+                      fontFamily: 'AlcherPixel',
                       color: Colors.white,
-                      fontSize: 16.0,
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w400,
                     ),
                   ),
                   // Quantity Selector
@@ -104,27 +111,30 @@ class _CartCardState extends State<CartCard> {
                           height: 40,
                         ),
                       ),
-                      SizedBox(width: 8.0),
+
                       // Quantity Box
                       Container(
-                        width: 40.0,
-                        height: 40.0,
-                        alignment: Alignment.center,
+                        width: 53.0,
+                        height: 36.0,
+                        //alignment: Alignment.center,
                         decoration: BoxDecoration(
-                          color: Colors.grey.shade800,
-                          border: Border.all(color: Colors.black, width: 2.0),
-                          borderRadius: BorderRadius.circular(4.0),
+                          border: Border.all(color: Colors.black, width: 3.0),
                         ),
-                        child: Text(
-                          '${widget.quantity}',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.bold,
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(
+                            '${widget.quantity}',
+                            style: TextStyle(
+                              fontFamily: 'AlcherPixel',
+                              color: Color.fromRGBO(255, 119, 168, 1),
+                              fontSize: 60.0,
+                              fontWeight: FontWeight.w400,
+                            ),
+                            textAlign: TextAlign.center,
                           ),
                         ),
                       ),
-                      SizedBox(width: 8.0),
+
                       // Right Arrow (Flipped)
                       GestureDetector(
                         onTap: () {
@@ -151,136 +161,3 @@ class _CartCardState extends State<CartCard> {
     );
   }
 }
-
-// import 'package:flutter/material.dart';
-//
-// class CartCard extends StatefulWidget {
-//   final String title;
-//   final String subtitle;
-//   final double price;
-//   final String size;
-//   final String imageUrl;
-//   final int quantity;
-//
-//   CartCard(
-//       {required this.title,
-//       required this.subtitle,
-//       required this.price,
-//       required this.size,
-//       required this.imageUrl,
-//       required this.quantity});
-//
-//   @override
-//   State<CartCard> createState() => _CartCardState();
-// }
-//
-// class _CartCardState extends State<CartCard> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//         width: 327,
-//         height: 192,
-//         decoration: BoxDecoration(
-//           image: DecorationImage(
-//             image: AssetImage('assets/images/product_details.png'),
-//             fit: BoxFit.cover,
-//           ),
-//         ),
-//         child: Padding(
-//           padding: EdgeInsets.all(16.0),
-//           child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-//             Expanded(
-//               flex: 2,
-//               child: Container(
-//                 height: 120,
-//                 decoration: BoxDecoration(
-//                   image: DecorationImage(
-//                     image: NetworkImage(widget.imageUrl),
-//                     fit: BoxFit.cover,
-//                   ),
-//                 ),
-//               ),
-//             ),
-//             SizedBox(width: 16.0),
-//             Expanded(
-//               flex: 3,
-//               child: Column(
-//                   crossAxisAlignment: CrossAxisAlignment.start,
-//                   children: [
-//                     Text(
-//                       widget.title,
-//                       style: TextStyle(
-//                         color: Colors.white,
-//                         fontSize: 18.0,
-//                         fontWeight: FontWeight.bold,
-//                       ),
-//                     ),
-//                     SizedBox(
-//                       height: 10,
-//                     ),
-//                     Text(
-//                       widget.subtitle,
-//                       style: TextStyle(
-//                         color: Colors.pinkAccent,
-//                         fontSize: 18.0,
-//                         fontWeight: FontWeight.bold,
-//                       ),
-//                     ),
-//                     SizedBox(
-//                       height: 10,
-//                     ),
-//                     Text(
-//                       '${widget.price}',
-//                       style: TextStyle(
-//                         color: Colors.white,
-//                         fontSize: 18.0,
-//                         fontWeight: FontWeight.bold,
-//                       ),
-//                     ),
-//                     SizedBox(
-//                       height: 10,
-//                     ),
-//                     Text(
-//                       'Size: ${widget.size}',
-//                       style: TextStyle(
-//                         color: Colors.white,
-//                         fontSize: 18.0,
-//                         fontWeight: FontWeight.bold,
-//                       ),
-//                     ),
-//                     Row(
-//                       children: [
-//                         Image.asset(
-//                           'assets/images/product_detail_sprite.png',
-//                           width: 54.0,
-//                           height: 54.0,
-//                         ),
-//                         Container(
-//                           decoration: BoxDecoration(
-//                               border:
-//                                   Border.all(color: Colors.black, width: 3)),
-//                           child: Text(
-//                             '${widget.quantity}',
-//                             style: TextStyle(
-//                               color: Colors.white,
-//                               fontSize: 16.0,
-//                             ),
-//                           ),
-//                         ),
-//                         Transform(
-//                           transform: Matrix4.identity()
-//                             ..scale(-1.0, 1.0), // Flip horizontally
-//                           child: Image.asset(
-//                             'assets/images/product_detail_sprite.png',
-//                             width: 54.0,
-//                             height: 54.0,
-//                           ),
-//                         ),
-//                       ],
-//                     )
-//                   ]),
-//             ),
-//           ]),
-//         ));
-//   }
-// }

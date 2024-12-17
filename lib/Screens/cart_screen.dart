@@ -53,38 +53,52 @@ class _CartScreenState extends State<CartScreen> {
               ),
             ),
             SizedBox(height: 20.0), // Space between header and body content
+
             // Stack with text and background image
             Stack(
               alignment: Alignment.center,
               children: [
                 Container(
-                  width: 300.0, // Set desired width
-                  height: 50.0, // Set desired height
+                  width: 246.0, // Set desired width
+                  height: 54.0, // Set desired height
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage(
-                          'assets/images/total_price_cart.png'), // Path to your image
-                      fit: BoxFit.cover, // Make the image cover the container
+                      image: AssetImage('assets/images/total_price_cart.png'),
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),
-                Text(
-                  'Hello, Flutter!', // Your text
-                  style: TextStyle(
-                    color: Colors.white, // Text color
-                    fontSize: 24.0, // Text size
-                    fontWeight: FontWeight.bold, // Optional: Bold text
-                    shadows: [
-                      Shadow(
-                        offset: Offset(2.0, 2.0), // Shadow position
-                        blurRadius: 4.0, // Shadow blur
-                        color: Colors.black, // Shadow color
+                Column(
+                  mainAxisAlignment: MainAxisAlignment
+                      .center, // Align texts vertically in the center
+                  crossAxisAlignment: CrossAxisAlignment
+                      .center, // Center the texts horizontally
+                  mainAxisSize: MainAxisSize
+                      .min, // Makes the column take the minimum space
+                  children: [
+                    Text(
+                      'Rs. 69', // Your text
+                      style: TextStyle(
+                        fontFamily: 'AlcherPixel',
+                        color: Colors.white, // Text color
+                        fontSize: 32.0, // Text size
+                        fontWeight: FontWeight.w400, // Optional: Bold text
                       ),
-                    ],
-                  ),
+                    ),
+                    Text(
+                      'Total: 5 items', // Your text
+                      style: TextStyle(
+                        fontFamily: 'AlcherPixel',
+                        color: Colors.white, // Text color
+                        fontSize: 16.0, // Text size
+                        fontWeight: FontWeight.w400, // Optional: Bold text
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
+
             SizedBox(height: 20.0),
             CartCard(
                 title: 'Sweatshirt',
@@ -94,6 +108,11 @@ class _CartScreenState extends State<CartScreen> {
                 imageUrl: 'https://picsum.photos/seed/picsum/200/300',
                 quantity: 5),
             SizedBox(height: 20.0),
+
+            // Spacer to push the Buy button to the bottom
+            Spacer(),
+
+            // "Buy" button at the bottom
             Stack(
               alignment: Alignment.center,
               children: [
@@ -102,9 +121,8 @@ class _CartScreenState extends State<CartScreen> {
                   height: 50.47, // Set desired height
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage(
-                          'assets/images/sign_in.png'), // Path to your image
-                      fit: BoxFit.cover, // Make the image cover the container
+                      image: AssetImage('assets/images/sign_in.png'),
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),
@@ -124,8 +142,7 @@ class _CartScreenState extends State<CartScreen> {
                   ),
                 ),
               ],
-            ), // Additional spacing
-            // Additional content
+            ),
           ],
         ),
       ),

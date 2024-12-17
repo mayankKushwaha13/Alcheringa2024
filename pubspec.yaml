@@ -87,6 +87,10 @@ flutter:
     - family: Vacation Heavy
       fonts:
         - asset: assets/fonts/vacationheavy.otf
+    - family: AlcherPixel
+      fonts:
+        - asset: assets/fonts/AlcherPixel.ttf
+        - asset: assets/fonts/AlcherPixel-Bold.ttf
 
   # To add assets to your application, add an assets section, like this:
   # assets:
