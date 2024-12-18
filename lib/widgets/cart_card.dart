@@ -43,8 +43,8 @@ class _CartCardState extends State<CartCard> {
           children: [
             // Product Image
             Container(
-              width: 143, // Fixed width
-              height: 135, // Fixed height
+              width: 126, // Fixed width
+              height: 119, // Fixed height
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: NetworkImage(widget.imageUrl),
@@ -58,7 +58,7 @@ class _CartCardState extends State<CartCard> {
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     widget.title,

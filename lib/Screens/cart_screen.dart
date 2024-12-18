@@ -85,7 +85,8 @@ class _CartScreenState extends State<CartScreen> {
                         fontFamily: 'AlcherPixel',
                         color: Colors.white, // Text color
                         fontSize: 32.0, // Text size
-                        fontWeight: FontWeight.w400, // Optional: Bold text
+                        fontWeight: FontWeight.w400,
+                        height: 0.9, // Optional: Bold text
                       ),
                     ),
                     Text(
@@ -94,7 +95,8 @@ class _CartScreenState extends State<CartScreen> {
                         fontFamily: 'AlcherPixel',
                         color: Colors.white, // Text color
                         fontSize: 16.0, // Text size
-                        fontWeight: FontWeight.w400, // Optional: Bold text
+                        fontWeight: FontWeight.w400,
+                        // Optional: Bold text
                       ),
                     ),
                   ],
@@ -119,7 +121,7 @@ class _CartScreenState extends State<CartScreen> {
             GestureDetector(
               onTap: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => checkoutPage()));
+                    MaterialPageRoute(builder: (context) => CheckoutPage()));
               },
               child: Stack(
                 alignment: Alignment.center,
