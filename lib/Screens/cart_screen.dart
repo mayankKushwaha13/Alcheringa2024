@@ -1,3 +1,4 @@
+import 'package:alcheringa/Screens/checkout_pages/checkout_page.dart';
 import 'package:alcheringa/widgets/cart_card.dart';
 import 'package:flutter/material.dart';
 
@@ -7,8 +8,6 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-  double total = 4250.0;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,10 +42,14 @@ class _CartScreenState extends State<CartScreen> {
                   ),
                   GestureDetector(
                     onTap: () {},
-                    child: Image.asset(
-                      'assets/images/cart_title.png',
-                      width: 40.0,
-                      height: 25.0,
+                    child: Text(
+                      'Cart',
+                      style: TextStyle(
+                        fontFamily: 'AlcherPixel',
+                        fontSize: 24,
+                        fontWeight: FontWeight.w400,
+                        color: Color.fromRGBO(255, 119, 168, 1),
+                      ),
                     ),
                   ),
                 ],
@@ -113,35 +116,35 @@ class _CartScreenState extends State<CartScreen> {
             Spacer(),
 
             // "Buy" button at the bottom
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                Container(
-                  width: 190.0, // Set desired width
-                  height: 50.47, // Set desired height
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage('assets/images/sign_in.png'),
-                      fit: BoxFit.cover,
+            GestureDetector(
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => checkoutPage()));
+              },
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  Container(
+                    width: 190.0, // Set desired width
+                    height: 50.47, // Set desired height
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage('assets/images/sign_in.png'),
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
-                ),
-                Text(
-                  'Buy', // Your text
-                  style: TextStyle(
-                    color: Colors.white, // Text color
-                    fontSize: 24.0, // Text size
-                    fontWeight: FontWeight.bold, // Optional: Bold text
-                    shadows: [
-                      Shadow(
-                        offset: Offset(2.0, 2.0), // Shadow position
-                        blurRadius: 4.0, // Shadow blur
-                        color: Colors.black, // Shadow color
-                      ),
-                    ],
+                  Text(
+                    'Buy', // Your text
+                    style: TextStyle(
+                      fontFamily: 'AlcherPixel',
+                      color: Colors.white, // Text color
+                      fontSize: 36.0, // Text size
+                      fontWeight: FontWeight.w400, // Optional: Bold text
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),
