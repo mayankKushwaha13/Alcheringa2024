@@ -234,7 +234,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 logoSize:
                                     MediaQuery.of(context).size.width * 0.09,
                                 onPressed: () async {
-                                  await signInWithGoogle(context, onLoading: _setLoading);
+                                  await signInWithMicrosoft(context, onLoading: _setLoading);
                                   if (isLoggedIn && context.mounted) {
                                     Navigator.pushReplacement(
                                       context,

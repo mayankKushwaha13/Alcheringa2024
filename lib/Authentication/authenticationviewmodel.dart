@@ -42,9 +42,9 @@ Future<void> customLogin(String email, String password, BuildContext context,
   try {
     final UserCredential userCredential = await auth.signInWithEmailAndPassword(
         email: email.trim(), password: password);
-    await saveSignInUserData(userCredential.user!);
 
     if(userCredential.user !=null) {
+      await saveSignInUserData(userCredential.user!);
       isLoggedIn = true;
       if (context.mounted) showMessage('Login Successful', context);
     }
@@ -78,9 +78,9 @@ Future<void> signInWithGoogle(BuildContext context, {required Function(bool) onL
       idToken: googleAuth?.idToken,
     );
     final userCredentials = await auth.signInWithCredential(credential);
-    await saveSignInUserData(userCredentials.user!);
 
     if(userCredentials.user != null) {
+      await saveSignInUserData(userCredentials.user!);
       print('Sign in with google succeed');
 
       showMessage('Google Sign-In success', context);
@@ -96,9 +96,40 @@ Future<void> signInWithGoogle(BuildContext context, {required Function(bool) onL
   onLoading(false);
 }
 
+Future<void> signInWithMicrosoft(BuildContext context, {required Function(bool) onLoading}) async {
+  onLoading(true);
+
+  try{
+    final microsoftProvider = MicrosoftAuthProvider();
+    microsoftProvider.setCustomParameters({'tenant': '850aa78d-94e1-4bc6-9cf3-8c11b530701c'});
+
+    final userCredentials = await auth.signInWithProvider(microsoftProvider);
+    if(userCredentials.user != null) {
+      await saveSignInUserData(userCredentials.user!);
+      isLoggedIn = true;
+      showMessage('Microsoft Sign-In Success ', context);
+    }else{
+      showMessage('Microsoft Sign-In failed', context);
+    }
+  } on Exception catch(e) {
+    showMessage('Microsoft Sign-In failed', context);
+    print(e);
+  }
+  onLoading(false);
+}
+
 Future<void> saveSignInUserData(User user) async {
   final prefs = await SharedPreferences.getInstance();
   await prefs.setString('userName', user.displayName ?? "Unknown");
   await prefs.setString('email', user.email!);
   await prefs.setString('PhotoURL', user.photoURL ?? "");
+}
+
+Future<void> signOut() async {
+  try {
+    await FirebaseAuth.instance.signOut();
+    isLoggedIn = false;
+  } on Exception catch (e) {
+    print(e);
+  }
 }
