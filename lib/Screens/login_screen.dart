@@ -85,18 +85,18 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           SizedBox(height: screenHeight * 0.03),
                           _buildTextField(
-                            hint: 'Email',
-                            backgroundImage:
-                                'assets/images/emailbackground.png',
-                            controller: _emailController
+                              hint: 'Email',
+                              backgroundImage:
+                              'assets/images/emailbackground.png',
+                              controller: _emailController
                           ),
                           SizedBox(height: screenHeight * 0.02),
                           _buildTextField(
-                            hint: 'Password',
-                            isPassword: true,
-                            backgroundImage:
-                                'assets/images/emailbackground.png',
-                            controller: _passwordController
+                              hint: 'Password',
+                              isPassword: true,
+                              backgroundImage:
+                              'assets/images/emailbackground.png',
+                              controller: _passwordController
                           ),
                           SizedBox(height: screenHeight * 0.01),
                           Align(
@@ -131,18 +131,18 @@ class _LoginScreenState extends State<LoginScreen> {
                             onTap: _isLoading
                                 ? null
                                 : () async {
-                                    await customLogin(_emailController.text,
-                                        _passwordController.text, context,
-                                        onLoading: _setLoading);
-                                    if (isLoggedIn && context.mounted) {
-                                      Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const HomeScreen()),
-                                      );
-                                    }
-                                  },
+                              await customLogin(_emailController.text,
+                                  _passwordController.text, context,
+                                  onLoading: _setLoading);
+                              if (isLoggedIn && context.mounted) {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                      const HomeScreen()),
+                                );
+                              }
+                            },
                             child: Stack(
                               alignment: Alignment.center,
                               children: [
@@ -177,37 +177,37 @@ class _LoginScreenState extends State<LoginScreen> {
                             children: [
                               // Google Button
                               _buildSocialButton(
-                                backgroundPath: 'assets/images/google.png',
-                                logoPath: 'assets/images/googlelogo.png',
-                                buttonSize: MediaQuery.of(context).size.width *
-                                    0.18, // Background size
-                                logoSize: MediaQuery.of(context).size.width *
-                                    0.09, // Logo size
-                                onPressed: () async {
-                                  await signInWithGoogle(context, onLoading: _setLoading);
-                                  if (isLoggedIn && context.mounted) {
-                                    Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                          const HomeScreen()),
-                                    );
+                                  backgroundPath: 'assets/images/google.png',
+                                  logoPath: 'assets/images/googlelogo.png',
+                                  buttonSize: MediaQuery.of(context).size.width *
+                                      0.18, // Background size
+                                  logoSize: MediaQuery.of(context).size.width *
+                                      0.09, // Logo size
+                                  onPressed: () async {
+                                    await signInWithGoogle(context, onLoading: _setLoading);
+                                    if (isLoggedIn && context.mounted) {
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                            const HomeScreen()),
+                                      );
+                                    }
                                   }
-                                }
                               ),
                               // Spacing between buttons
                               SizedBox(
                                   width:
-                                      MediaQuery.of(context).size.width * 0.05),
+                                  MediaQuery.of(context).size.width * 0.05),
 
                               // Apple Button
                               _buildSocialButton(
                                 backgroundPath: 'assets/images/google.png',
                                 logoPath: 'assets/images/applelogo.png',
                                 buttonSize:
-                                    MediaQuery.of(context).size.width * 0.18,
+                                MediaQuery.of(context).size.width * 0.18,
                                 logoSize:
-                                    MediaQuery.of(context).size.width * 0.09,
+                                MediaQuery.of(context).size.width * 0.09,
                                 onPressed: () async {
                                   await signInWithGoogle(context, onLoading: _setLoading);
                                   if (isLoggedIn && context.mounted) {
@@ -223,27 +223,27 @@ class _LoginScreenState extends State<LoginScreen> {
                               // Spacing between buttons
                               SizedBox(
                                   width:
-                                      MediaQuery.of(context).size.width * 0.05),
+                                  MediaQuery.of(context).size.width * 0.05),
 
                               // Outlook Button
                               _buildSocialButton(
-                                backgroundPath: 'assets/images/outlook.png',
-                                logoPath: 'assets/images/outlooklogo.png',
-                                buttonSize:
-                                    MediaQuery.of(context).size.width * 0.18,
-                                logoSize:
-                                    MediaQuery.of(context).size.width * 0.09,
-                                onPressed: () async {
-                                  await signInWithMicrosoft(context, onLoading: _setLoading);
-                                  if (isLoggedIn && context.mounted) {
-                                    Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                          const HomeScreen()),
-                                    );
+                                  backgroundPath: 'assets/images/outlook.png',
+                                  logoPath: 'assets/images/outlooklogo.png',
+                                  buttonSize:
+                                  MediaQuery.of(context).size.width * 0.18,
+                                  logoSize:
+                                  MediaQuery.of(context).size.width * 0.09,
+                                  onPressed: () async {
+                                    await signInWithMicrosoft(context, onLoading: _setLoading);
+                                    if (isLoggedIn && context.mounted) {
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                            const HomeScreen()),
+                                      );
+                                    }
                                   }
-                                }
                               ),
                             ],
                           ),
@@ -328,7 +328,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           border: InputBorder.none,
           contentPadding:
-              const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+          const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         ),
       ),
     );
