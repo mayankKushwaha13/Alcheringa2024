@@ -35,6 +35,12 @@ class _HomeScreenState extends State<HomeScreen> {
           )
         ],
       ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(ViewModelMain().getValue('userName').toString())
+        ],
+      ),
     );
   }
 }

@@ -67,8 +67,7 @@ class _SplashScreenState extends State<SplashScreen> {
       print(value);
     });
 
-    ViewModelMain().getAllEvents();
-    // ViewModelMain().getStalls();
+
     _controller =
         VideoPlayerController.asset("assets/SplashMovie/splash_screen.mp4")
           ..initialize().then((_) {

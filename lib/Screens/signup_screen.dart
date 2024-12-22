@@ -24,48 +24,6 @@ class _SignupScreenState extends State<SignupScreen> {
     });
   }
 
-  void _signUp() async {
-    final email = _emailController.text.trim();
-    final password = _passwordController.text.trim();
-
-    // Validation checks
-    if (email.isEmpty) {
-      _showError("Please fill your email address");
-      return;
-    }
-
-    if (!_emailRegex.hasMatch(email)) {
-      _showError("Please enter a valid email address");
-      return;
-    }
-
-    if (password.isEmpty) {
-      _showError("Please enter a password");
-      return;
-    }
-
-    if (password.length <= 7) {
-      _showError("Password length must be greater than 7");
-      return;
-    }
-
-    _setLoading(true);
-    await signUp(email, password, context, onLoading: _setLoading);
-    _setLoading(false);
-
-    if (isLoggedIn) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const LoginScreen()),
-      );
-    }
-  }
-
-  void _showError(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +48,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         onPressed: _isLoading
                             ? null
                             : () async {
-                                await signUp(_emailController.text,
+                                await customSignUp(_emailController.text,
                                     _passwordController.text, context,
                                     onLoading: _setLoading);
                                 if (isLoggedIn) {
