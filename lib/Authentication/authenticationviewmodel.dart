@@ -1,10 +1,12 @@
 import 'package:alcheringa/common/resource.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../common/globals.dart';
 
-Future<void> signUp(String email, String password, BuildContext context,
+Future<void> customSignUp(String email, String password, BuildContext context,
     {required Function(bool) onLoading}) async {
   onLoading(true);
   try {
@@ -34,14 +36,18 @@ Future<void> signUp(String email, String password, BuildContext context,
   onLoading(false);
 }
 
-Future<void> login(String email, String password, BuildContext context,
+Future<void> customLogin(String email, String password, BuildContext context,
     {required Function(bool) onLoading}) async {
   onLoading(true);
   try {
     final UserCredential userCredential = await auth.signInWithEmailAndPassword(
         email: email.trim(), password: password);
-    isLoggedIn = true;
-    if (context.mounted) showMessage('Login Successful', context);
+    await saveSignInUserData(userCredential.user!);
+
+    if(userCredential.user !=null) {
+      isLoggedIn = true;
+      if (context.mounted) showMessage('Login Successful', context);
+    }
   } on FirebaseAuthException catch (e) {
     String message;
     if (e.code == 'user-not-found') {
@@ -57,4 +63,42 @@ Future<void> login(String email, String password, BuildContext context,
       showMessage('An error occurred. Please try again.', context);
   }
   onLoading(false);
+}
+
+
+Future<void> signInWithGoogle(BuildContext context, {required Function(bool) onLoading}) async {
+  onLoading(true);
+  try{
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+    final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+    final userCredentials = await auth.signInWithCredential(credential);
+    await saveSignInUserData(userCredentials.user!);
+
+    if(userCredentials.user != null) {
+      print('Sign in with google succeed');
+
+      showMessage('Google Sign-In success', context);
+      isLoggedIn = true;
+    } else {
+      print("Sign in with google failed: UserCredential is ${userCredentials.user}");
+      showMessage('Google Sign-In failed', context);
+    }
+  } on Exception catch(e) {
+    print("Sign in with google failed $e");
+    showMessage('Google Sign-In failed', context);
+  }
+  onLoading(false);
+}
+
+Future<void> saveSignInUserData(User user) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setString('userName', user.displayName ?? "Unknown");
+  await prefs.setString('email', user.email!);
+  await prefs.setString('PhotoURL', user.photoURL ?? "");
 }

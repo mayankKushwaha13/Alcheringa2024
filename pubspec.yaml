@@ -54,6 +54,8 @@ dependencies:
   dio: ^5.7.0
   firebase_messaging:
   flutter_local_notifications: ^17.2.3
+  google_sign_in: ^6.2.2
+  shared_preferences: ^2.3.4
 
 dev_dependencies:
   retrofit_generator: ^9.1.2
@@ -89,10 +91,10 @@ flutter:
         - asset: assets/fonts/vacationheavy.otf
     - family: Alcherpixel
       fonts:
-        - asset: assets/fonts/Alcherpixel v2.0.ttf
+        - asset: assets/fonts/AlcherPixel v2.0.ttf
     - family: AlcherpixelBold
       fonts:
-        - asset: assets/fonts/Alcherpixel-Bold v2.0.ttf
+        - asset: assets/fonts/AlcherPixel-Bold v2.0.ttf
 
   # To add assets to your application, add an assets section, like this:
   # assets:

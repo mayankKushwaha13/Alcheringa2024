@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:alcheringa/Screens/reset_password_screen.dart';
 import 'package:alcheringa/screens/home_screen.dart';
-import 'package:alcheringa/authentication/authenticationviewmodel.dart';
+import '../Authentication/authenticationviewmodel.dart';
 import '../common/globals.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -88,6 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             hint: 'Email',
                             backgroundImage:
                                 'assets/images/emailbackground.png',
+                            controller: _emailController
                           ),
                           SizedBox(height: screenHeight * 0.02),
                           _buildTextField(
@@ -95,6 +96,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             isPassword: true,
                             backgroundImage:
                                 'assets/images/emailbackground.png',
+                            controller: _passwordController
                           ),
                           SizedBox(height: screenHeight * 0.01),
                           Align(
@@ -110,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               },
                               child: Padding(
                                 padding: EdgeInsets.only(
-                                  right: screenWidth * 0.1,
+                                  right: screenWidth * 0.02,
                                 ),
                                 child: const Text(
                                   'Forgot Password?',
@@ -129,7 +131,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             onTap: _isLoading
                                 ? null
                                 : () async {
-                                    await login(_emailController.text,
+                                    await customLogin(_emailController.text,
                                         _passwordController.text, context,
                                         onLoading: _setLoading);
                                     if (isLoggedIn && context.mounted) {
@@ -181,6 +183,17 @@ class _LoginScreenState extends State<LoginScreen> {
                                     0.18, // Background size
                                 logoSize: MediaQuery.of(context).size.width *
                                     0.09, // Logo size
+                                onPressed: () async {
+                                  await signInWithGoogle(context, onLoading: _setLoading);
+                                  if (isLoggedIn && context.mounted) {
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                          const HomeScreen()),
+                                    );
+                                  }
+                                }
                               ),
                               // Spacing between buttons
                               SizedBox(
@@ -195,6 +208,17 @@ class _LoginScreenState extends State<LoginScreen> {
                                     MediaQuery.of(context).size.width * 0.18,
                                 logoSize:
                                     MediaQuery.of(context).size.width * 0.09,
+                                onPressed: () async {
+                                  await signInWithGoogle(context, onLoading: _setLoading);
+                                  if (isLoggedIn && context.mounted) {
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                          const HomeScreen()),
+                                    );
+                                  }
+                                },
                               ),
                               // Spacing between buttons
                               SizedBox(
@@ -209,6 +233,17 @@ class _LoginScreenState extends State<LoginScreen> {
                                     MediaQuery.of(context).size.width * 0.18,
                                 logoSize:
                                     MediaQuery.of(context).size.width * 0.09,
+                                onPressed: () async {
+                                  await signInWithGoogle(context, onLoading: _setLoading);
+                                  if (isLoggedIn && context.mounted) {
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                          const HomeScreen()),
+                                    );
+                                  }
+                                }
                               ),
                             ],
                           ),
@@ -262,6 +297,7 @@ class _LoginScreenState extends State<LoginScreen> {
     required String hint,
     bool isPassword = false,
     required String backgroundImage,
+    required TextEditingController controller,
   }) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
@@ -276,16 +312,18 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
       child: TextField(
+        controller: controller,
         obscureText: isPassword,
-        style: const TextStyle(
-          fontSize: 12,
-          color: Colors.white,
+        style: TextStyle(
+          fontFamily: 'Alcherpixel',
+          fontSize: 20,
+          color: Color(0xFFFF77A8),
         ),
         decoration: InputDecoration(
           hintText: hint,
           hintStyle: const TextStyle(
             fontFamily: 'Alcherpixel',
-            fontSize: 26,
+            fontSize: 20,
             color: Color(0xFFFF77A8),
           ),
           border: InputBorder.none,
@@ -301,28 +339,34 @@ class _LoginScreenState extends State<LoginScreen> {
     required String logoPath,
     required double buttonSize,
     required double logoSize,
+    required Future<void> Function() onPressed
   }) {
-    return SizedBox(
-      width: buttonSize,
-      height: buttonSize,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          // Background of the button
-          Image.asset(
-            backgroundPath,
-            width: buttonSize,
-            height: buttonSize,
-            fit: BoxFit.cover,
-          ),
-          // Centered logo inside the button
-          Image.asset(
-            logoPath,
-            width: logoSize,
-            height: logoSize,
-            fit: BoxFit.contain,
-          ),
-        ],
+    return GestureDetector(
+      onTap: () async {
+        await onPressed();
+      },
+      child: SizedBox(
+        width: buttonSize,
+        height: buttonSize,
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            // Background of the button
+            Image.asset(
+              backgroundPath,
+              width: buttonSize,
+              height: buttonSize,
+              fit: BoxFit.cover,
+            ),
+            // Centered logo inside the button
+            Image.asset(
+              logoPath,
+              width: logoSize,
+              height: logoSize,
+              fit: BoxFit.contain,
+            ),
+          ],
+        ),
       ),
     );
   }
