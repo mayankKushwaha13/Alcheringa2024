@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:alcheringa/Model/view_model_main.dart';
+import 'package:alcheringa/Screens/notification/notification_screen.dart';
 import 'package:alcheringa/screens/login_screen.dart';
 import 'package:alcheringa/screens/main_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -8,10 +9,11 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
-
+import '../Notification/notification_provider.dart';
 import '../Notification/notification_services.dart';
 import '../common/globals.dart';
 import '../firebase_options.dart';
+
 
 @pragma('vm:entry-poiny')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -36,9 +38,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Provider.of<ViewModelMain>(context, listen: false).getAllEvents();
-    return MaterialApp(
-      // home: SplashScreen(),
-      home: SplashScreen(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => NotificationProvider()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: SplashScreen(),
+      ),
     );
   }
 }
