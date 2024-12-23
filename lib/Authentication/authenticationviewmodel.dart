@@ -30,8 +30,9 @@ Future<void> customSignUp(String email, String password, BuildContext context,
     }
     if (context.mounted) showMessage(message, context);
   } catch (e) {
-    if (context.mounted)
+    if (context.mounted) {
       showMessage('An error occurred. Please try again.', context);
+    }
   }
   onLoading(false);
 }
@@ -59,8 +60,9 @@ Future<void> customLogin(String email, String password, BuildContext context,
     }
     if (context.mounted) showMessage(message, context);
   } catch (e) {
-    if (context.mounted)
+    if (context.mounted) {
       showMessage('An error occurred. Please try again.', context);
+    }
   }
   onLoading(false);
 }
