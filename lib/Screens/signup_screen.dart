@@ -27,7 +27,6 @@ class _SignupScreenState extends State<SignupScreen> {
       _isLoading = isLoading;
     });
   }
-
   Future<void> _signUp() async {
     final email = _emailController.text.trim();
     final password = _passwordController.text.trim();

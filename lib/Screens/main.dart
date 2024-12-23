@@ -1,7 +1,7 @@
 import 'dart:async';
-
 import 'package:alcheringa/Model/view_model_main.dart';
 import 'package:alcheringa/Screens/signup_screen.dart';
+import 'package:alcheringa/Screens/welcome_screen.dart';
 import 'package:alcheringa/screens/login_screen.dart';
 import 'package:alcheringa/screens/main_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -38,7 +38,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     Provider.of<ViewModelMain>(context, listen: false).getAllEvents();
     return MaterialApp(
-      // home: SplashScreen(),
       home: SplashScreen(),
       debugShowCheckedModeBanner: false,
     );
@@ -69,8 +68,7 @@ class _SplashScreenState extends State<SplashScreen> {
       print(value);
     });
 
-    ViewModelMain().getAllEvents();
-    // ViewModelMain().getStalls();
+
     _controller =
         VideoPlayerController.asset("assets/SplashMovie/splash_screen.mp4")
           ..initialize().then((_) {
@@ -85,7 +83,7 @@ class _SplashScreenState extends State<SplashScreen> {
       () {
         // checking signup screen, change it to main screen after done
         final nextScreen =
-            isUserLoggedIn ? SignupScreen() : const LoginScreen();
+            isUserLoggedIn ? const MainScreen() : welcomeScreen();
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => nextScreen),
