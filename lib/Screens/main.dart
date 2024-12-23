@@ -83,6 +83,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Timer(
       const Duration(seconds: 3),
       () {
+        // checking signup screen, change it to main screen after done
         final nextScreen =
             isUserLoggedIn ? SignupScreen() : const LoginScreen();
         Navigator.pushReplacement(
