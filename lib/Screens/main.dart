@@ -1,6 +1,6 @@
 import 'dart:async';
-
 import 'package:alcheringa/Model/view_model_main.dart';
+import 'package:alcheringa/Screens/welcome_screen.dart';
 import 'package:alcheringa/screens/login_screen.dart';
 import 'package:alcheringa/screens/main_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -37,8 +37,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     Provider.of<ViewModelMain>(context, listen: false).getAllEvents();
     return MaterialApp(
-      // home: SplashScreen(),
       home: SplashScreen(),
+
     );
   }
 }
@@ -81,7 +81,7 @@ class _SplashScreenState extends State<SplashScreen> {
       const Duration(seconds: 3),
       () {
         final nextScreen =
-            isUserLoggedIn ? const MainScreen() : const LoginScreen();
+            isUserLoggedIn ? const MainScreen() : welcomeScreen();
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => nextScreen),
