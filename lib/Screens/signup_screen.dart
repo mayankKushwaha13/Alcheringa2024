@@ -58,7 +58,7 @@ class _SignupScreenState extends State<SignupScreen> {
     }
 
     _setLoading(true);
-    await signUp(email, password, context, onLoading: _setLoading);
+    await customSignUp(email, password, context, onLoading: _setLoading);
     _setLoading(false);
 
     if (isLoggedIn) {
