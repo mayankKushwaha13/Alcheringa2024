@@ -1,5 +1,5 @@
+import 'package:alcheringa/Authentication/authenticationviewmodel.dart';
 import 'package:alcheringa/Widgets/sign_up_textfield.dart';
-import 'package:alcheringa/authentication/AuthenticationViewModel.dart';
 import 'package:alcheringa/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import '../common/globals.dart';

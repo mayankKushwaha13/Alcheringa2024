@@ -10,14 +10,18 @@ Future<void> customSignUp(String email, String password, BuildContext context,
     {required Function(bool) onLoading}) async {
   onLoading(true);
   try {
-    isLoading = true;
     final UserCredential userCredential =
         await auth.createUserWithEmailAndPassword(
             email: email.trim(), password: password);
-    isLoggedIn = true;
-    if (context.mounted) {
-      showMessage('Registration Successful', context);
-      isLoading = false;
+
+    final name = auth.currentUser!.displayName ?? "Unknown";
+    final currentUserEmail = auth.currentUser!.email;
+    if(userCredential.user != null) {
+      if (context.mounted) {
+        await registerUserInDatabaseCustom(name, currentUserEmail!);
+        await sendVerificationEmail(context);
+        isLoggedIn = true;
+      }
     }
   } on FirebaseAuthException catch (e) {
     String message;
@@ -37,16 +41,63 @@ Future<void> customSignUp(String email, String password, BuildContext context,
   onLoading(false);
 }
 
-Future<void> customLogin(String email, String password, BuildContext context,
-    {required Function(bool) onLoading}) async {
+Future<void> registerUserInDatabaseCustom(String name, String email) async {
+  try {
+    db.collection('USERS').doc(email).snapshots().listen((snapshot) async {
+      if (!snapshot.exists) {
+        Map<String, dynamic> data = {
+          "Name": name,
+          "Email": email,
+        };
+
+        try {
+          await db.collection('USERS').doc(email).set(data);
+          print("Added user to database");
+        } catch (e) {
+          print("Error occurred while adding user to database: $e");
+        }
+      }
+    });
+  } catch (e) {
+    print("Error in registering user: $e");
+  }
+}
+
+Future<void> sendVerificationEmail(BuildContext context) async {
+  try {
+    User? user = auth.currentUser;
+    if (user != null && !user.emailVerified) {
+      await user.sendEmailVerification();
+      showMessage('An Email has been sent to you for verification', context);
+    } else {
+      showMessage('Error sending verification email', context);
+    }
+  } catch (e) {
+    print("Error sending verification email: $e");
+    showMessage('Error sending verification email', context);
+  }
+}
+
+Future<void> customLogin(
+    String email,
+    String password,
+    BuildContext context,
+    {required Function(bool) onLoading, required Function(bool) isLoggedIn}
+    ) async {
   onLoading(true);
   try {
     final UserCredential userCredential = await auth.signInWithEmailAndPassword(
         email: email.trim(), password: password);
 
     if(userCredential.user !=null) {
+      if(!auth.currentUser!.emailVerified){
+        showMessage('Please verify using Email first', context);
+        onLoading(false);
+        return;
+      }
+      print("running after link");
       await saveSignInUserData(userCredential.user!);
-      isLoggedIn = true;
+      isLoggedIn(true);
       if (context.mounted) showMessage('Login Successful', context);
     }
   } on FirebaseAuthException catch (e) {
@@ -68,7 +119,7 @@ Future<void> customLogin(String email, String password, BuildContext context,
 }
 
 
-Future<void> signInWithGoogle(BuildContext context, {required Function(bool) onLoading}) async {
+Future<void> signInWithGoogle(BuildContext context, {required Function(bool) onLoading, required Function(bool) isLoggedIn}) async {
   onLoading(true);
   try{
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
@@ -86,7 +137,7 @@ Future<void> signInWithGoogle(BuildContext context, {required Function(bool) onL
       print('Sign in with google succeed');
 
       showMessage('Google Sign-In success', context);
-      isLoggedIn = true;
+      isLoggedIn(true);
     } else {
       print("Sign in with google failed: UserCredential is ${userCredentials.user}");
       showMessage('Google Sign-In failed', context);
@@ -98,7 +149,7 @@ Future<void> signInWithGoogle(BuildContext context, {required Function(bool) onL
   onLoading(false);
 }
 
-Future<void> signInWithMicrosoft(BuildContext context, {required Function(bool) onLoading}) async {
+Future<void> signInWithMicrosoft(BuildContext context, {required Function(bool) onLoading, required Function(bool) isLoggedIn}) async {
   onLoading(true);
 
   try{
@@ -108,7 +159,7 @@ Future<void> signInWithMicrosoft(BuildContext context, {required Function(bool) 
     final userCredentials = await auth.signInWithProvider(microsoftProvider);
     if(userCredentials.user != null) {
       await saveSignInUserData(userCredentials.user!);
-      isLoggedIn = true;
+      isLoggedIn(true);
       showMessage('Microsoft Sign-In Success ', context);
     }else{
       showMessage('Microsoft Sign-In failed', context);
