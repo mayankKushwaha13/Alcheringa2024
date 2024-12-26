@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'package:alcheringa/Common/globals.dart';
 import 'package:alcheringa/Model/view_model_main.dart';
+import 'package:alcheringa/Screens/notification/notification_screen.dart';
 import 'package:alcheringa/Screens/signup_screen.dart';
 import 'package:alcheringa/Screens/welcome_screen.dart';
 import 'package:alcheringa/screens/login_screen.dart';
@@ -11,7 +13,6 @@ import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 
 import '../Notification/notification_services.dart';
-import '../common/globals.dart';
 import '../firebase_options.dart';
 
 @pragma('vm:entry-poiny')
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Provider.of<ViewModelMain>(context, listen: false).getAllEvents();
+
     return MaterialApp(
       home: SplashScreen(),
       debugShowCheckedModeBanner: false,
@@ -60,6 +62,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     isLoggedIn = auth.currentUser != null;
+    isVerified = isLoggedIn && auth.currentUser!.emailVerified ?? false;
     notificationSerivces.requestNotificationPermission();
     notificationSerivces.forgroundMessage();
     notificationSerivces.firebaseInit(context);
@@ -83,7 +86,7 @@ class _SplashScreenState extends State<SplashScreen> {
       () {
         // checking signup screen, change it to main screen after done
         final nextScreen =
-            isUserLoggedIn ? const MainScreen() : welcomeScreen();
+            isUserLoggedIn && isVerified ? const MainScreen() : welcomeScreen();
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => nextScreen),
