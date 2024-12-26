@@ -1,5 +1,8 @@
 import 'package:alcheringa/Notification/notification_list.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../Model/notification_model.dart';
+import '../../Model/view_model_main.dart';
 import '../../utils/styles/colors.dart';
 
 class notification_screen extends StatefulWidget {
@@ -12,13 +15,14 @@ class notification_screen extends StatefulWidget {
 class _notification_screenState extends State<notification_screen> {
   @override
   Widget build(BuildContext context) {
+    List<NotificationModel> list = Provider.of<ViewModelMain>(context).allNotification;
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: _appBar(context),
       body: Container(
           width: double.infinity,
-        decoration: BoxDecoration(
-            image: DecorationImage(
+          decoration: BoxDecoration(
+              image: DecorationImage(
               image: AssetImage('assets/images/background.png'),
               fit: BoxFit.cover,)
         ),
@@ -26,22 +30,7 @@ class _notification_screenState extends State<notification_screen> {
             height: MediaQuery.of(context).size.height,
             child: Stack(
               children: [
-                SingleChildScrollView(
-                    child: Container(
-                      //height: MediaQuery.of(context).size.height,
-                      padding: EdgeInsets.only(top:110,left: 18,right: 18),
-                      child:Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("New",style: TextStyle(color: AppColors.Blue,fontFamily: 'AlcherPixel',fontSize:30),),
-                          notificationlist(),
-                          SizedBox(height: 20,),
-                          Text("Earlier",style: TextStyle(color: AppColors.Blue,fontFamily: 'AlcherPixel',fontSize:30),),
-                          notificationlist(),
-                        ],
-                      ),
-                    ),
-                ),
+                NotificationList(),
                 Positioned(
                   bottom: 0,
                   child: Container(
@@ -107,6 +96,7 @@ ShaderMask _shadedText(){
         fontSize: 35,
         fontFamily: "AlcherPixel",
         color: AppColors.Palewhite,
+          fontWeight: FontWeight.w800
       ),
     ),
   );

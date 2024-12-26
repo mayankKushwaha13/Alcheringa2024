@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:alcheringa/Common/globals.dart';
 import 'package:alcheringa/Model/view_model_main.dart';
+import 'package:alcheringa/Screens/notification/notification_screen.dart';
 import 'package:alcheringa/Screens/signup_screen.dart';
 import 'package:alcheringa/Screens/welcome_screen.dart';
 import 'package:alcheringa/screens/login_screen.dart';
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Provider.of<ViewModelMain>(context, listen: false).getAllEvents();
+
     return MaterialApp(
       home: SplashScreen(),
       debugShowCheckedModeBanner: false,

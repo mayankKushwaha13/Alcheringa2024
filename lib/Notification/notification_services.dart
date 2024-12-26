@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:alcheringa/Notification/notification_provider.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
