@@ -83,7 +83,7 @@ class _SplashScreenState extends State<SplashScreen> {
       () {
         // checking signup screen, change it to main screen after done
         final nextScreen =
-            isUserLoggedIn ? const MainScreen() : welcomeScreen();
+            isUserLoggedIn ? const SignupScreen() : welcomeScreen();
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => nextScreen),
