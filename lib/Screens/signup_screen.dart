@@ -28,6 +28,12 @@ class _SignupScreenState extends State<SignupScreen> {
     });
   }
 
+  void _setIsLoggedIn(bool status){
+    setState(() {
+      isLoggedIn = status;
+    });
+  }
+
   Future<void> _signUp() async {
     final email = _emailController.text.trim();
     final password = _passwordController.text.trim();
@@ -213,7 +219,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                               0.09, // Logo size
                                           onPressed: () async {
                                             await signInWithGoogle(context,
-                                                onLoading: _setLoading);
+                                                onLoading: _setLoading, isLoggedIn: _setIsLoggedIn);
                                             if (isLoggedIn && context.mounted) {
                                               Navigator.pushReplacement(
                                                 context,
@@ -243,7 +249,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                                 0.09,
                                         onPressed: () async {
                                           await signInWithGoogle(context,
-                                              onLoading: _setLoading);
+                                              onLoading: _setLoading, isLoggedIn: _setIsLoggedIn);
                                           if (isLoggedIn && context.mounted) {
                                             Navigator.pushReplacement(
                                               context,
@@ -277,7 +283,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                               0.09,
                                           onPressed: () async {
                                             await signInWithMicrosoft(context,
-                                                onLoading: _setLoading);
+                                                onLoading: _setLoading, isLoggedIn: _setIsLoggedIn);
                                             if (isLoggedIn && context.mounted) {
                                               Navigator.pushReplacement(
                                                 context,
