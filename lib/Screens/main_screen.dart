@@ -1,6 +1,6 @@
 import 'package:alcheringa/screens/home_screen.dart';
 import 'package:alcheringa/screens/map_page.dart';
-import 'package:alcheringa/screens/merch_page.dart';
+import 'package:alcheringa/screens/merch_screen.dart';
 import 'package:alcheringa/screens/schedule_page.dart';
 import 'package:flutter/material.dart';
 
@@ -18,7 +18,7 @@ class _MainScreenState extends State<MainScreen> {
     const HomeScreen(),
     const SchedulePage(),
     const MapPage(),
-    const MerchPage(),
+    const MerchScreen(),
   ];
 
   void _onTapped(int index) {
