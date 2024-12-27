@@ -1,8 +1,9 @@
+import 'package:alcheringa/Common/globals.dart';
+import 'package:alcheringa/Screens/profile_setup/setup_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:alcheringa/Screens/reset_password_screen.dart';
 import 'package:alcheringa/screens/home_screen.dart';
 import '../Authentication/authenticationviewmodel.dart';
-import '../common/globals.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -19,6 +20,12 @@ class _LoginScreenState extends State<LoginScreen> {
   void _setLoading(bool isLoading) {
     setState(() {
       _isLoading = isLoading;
+    });
+  }
+
+  void _setLoggedIn(bool isLoggedin) {
+    setState(() {
+      isLoggedIn = isLoggedin;
     });
   }
 
@@ -133,14 +140,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                 : () async {
                               await customLogin(_emailController.text,
                                   _passwordController.text, context,
-                                  onLoading: _setLoading);
-                              if (isLoggedIn && context.mounted) {
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                      const HomeScreen()),
-                                );
+                                  onLoading: _setLoading, isLoggedIn: _setLoggedIn);
+                              if (isLoggedIn && context.mounted && auth.currentUser!.emailVerified) {
+                                
+                                if(auth.currentUser != null){
+                                    if(auth.currentUser!.metadata.creationTime==auth.currentUser!.metadata.lastSignInTime){
+                                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=>ProfileSetup()));
+                                    }else Navigator.pushReplacement(context, MaterialPageRoute( builder: (context) =>const HomeScreen()),);
+                                }else Navigator.pushReplacement(context, MaterialPageRoute( builder: (context) =>const HomeScreen()),);
                               }
                             },
                             child: Stack(
@@ -184,7 +191,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   logoSize: MediaQuery.of(context).size.width *
                                       0.09, // Logo size
                                   onPressed: () async {
-                                    await signInWithGoogle(context, onLoading: _setLoading);
+                                    await signInWithGoogle(context, onLoading: _setLoading, isLoggedIn: _setLoggedIn);
                                     if (isLoggedIn && context.mounted) {
                                       Navigator.pushReplacement(
                                         context,
@@ -209,7 +216,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 logoSize:
                                 MediaQuery.of(context).size.width * 0.09,
                                 onPressed: () async {
-                                  await signInWithGoogle(context, onLoading: _setLoading);
+                                  await signInWithGoogle(context, onLoading: _setLoading, isLoggedIn: _setLoggedIn);
                                   if (isLoggedIn && context.mounted) {
                                     Navigator.pushReplacement(
                                       context,
@@ -234,7 +241,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   logoSize:
                                   MediaQuery.of(context).size.width * 0.09,
                                   onPressed: () async {
-                                    await signInWithMicrosoft(context, onLoading: _setLoading);
+                                    await signInWithMicrosoft(context, onLoading: _setLoading, isLoggedIn: _setLoggedIn);
                                     if (isLoggedIn && context.mounted) {
                                       Navigator.pushReplacement(
                                         context,

@@ -2,13 +2,14 @@ import 'package:alcheringa/Model/informal_model.dart';
 import 'package:alcheringa/Model/utility_model.dart';
 import 'package:alcheringa/Model/view_model_main.dart';
 import 'package:alcheringa/Screens/merch_screen.dart';
+import 'package:alcheringa/Screens/profile_setup/setup_profile.dart';
 import 'package:alcheringa/Widgets/HomeScreenWidgets/explore_container_widget.dart';
 import 'package:alcheringa/Widgets/HomeScreenWidgets/home_screen_container_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../Model/eventdetail.dart';
 import '../Widgets/HomeScreenWidgets/event_description_widget.dart';
+
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
