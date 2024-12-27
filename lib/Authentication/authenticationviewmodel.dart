@@ -1,7 +1,12 @@
+import 'dart:io';
+
 import 'package:alcheringa/common/resource.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../common/globals.dart';
@@ -16,7 +21,7 @@ Future<void> customSignUp(String email, String password, BuildContext context,
 
     final name = auth.currentUser!.displayName ?? "Unknown";
     final currentUserEmail = auth.currentUser!.email;
-    if(userCredential.user != null) {
+    if (userCredential.user != null) {
       if (context.mounted) {
         await registerUserInDatabaseCustom(name, currentUserEmail!);
         await sendVerificationEmail(context);
@@ -63,6 +68,60 @@ Future<void> registerUserInDatabaseCustom(String name, String email) async {
   }
 }
 
+Future<void> addIntrestToDb(List<String> intrestList, String email) async {
+  try {
+    
+    final doc = db.collection('USERS').doc(email).collection("interests").doc("interests");
+
+    await doc.set({"interests": FieldValue.arrayUnion(intrestList)});
+
+    print("interests added succesfully from fxn addIntrestToDb()");
+  } catch (e) {
+    print("Error addIntrestToDb() fxn: $e");
+  }
+}
+
+
+Future<void> updateProfilePicture(File file, String email) async {
+  final ext = file.path.split('.').last;
+
+  final ref = st.ref().child('USERS/$email.$ext');
+
+  await ref
+      .putFile(file, SettableMetadata(contentType: 'image/$ext'))
+      .then((p0) {
+    print('Data transfered: ${p0.bytesTransferred / (1024 * 1024)}Mb');
+  });
+
+  //updating image in database
+  String url = await ref.getDownloadURL();
+  await db.collection('USERS').doc(email).update({
+    'PhotoURL': url,
+  });
+}
+
+void onUpdateProfile(BuildContext context, File image, String email) {
+  updateProfilePicture(image, email).then((_) {
+    // Show success Snackbar
+    print("updated pfp");
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Profile updated successfully!'),
+        backgroundColor: Colors.green,
+      ),
+    );
+  }).catchError((error) {
+    // Show error Snackbar
+    print("eroor pfp");
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Failed to update profile: $error'),
+        backgroundColor: Colors.red,
+      ),
+    );
+  });
+}
+
 Future<void> sendVerificationEmail(BuildContext context) async {
   try {
     User? user = auth.currentUser;
@@ -78,19 +137,16 @@ Future<void> sendVerificationEmail(BuildContext context) async {
   }
 }
 
-Future<void> customLogin(
-    String email,
-    String password,
-    BuildContext context,
-    {required Function(bool) onLoading, required Function(bool) isLoggedIn}
-    ) async {
+Future<void> customLogin(String email, String password, BuildContext context,
+    {required Function(bool) onLoading,
+    required Function(bool) isLoggedIn}) async {
   onLoading(true);
   try {
     final UserCredential userCredential = await auth.signInWithEmailAndPassword(
         email: email.trim(), password: password);
 
-    if(userCredential.user !=null) {
-      if(!auth.currentUser!.emailVerified){
+    if (userCredential.user != null) {
+      if (!auth.currentUser!.emailVerified) {
         showMessage('Please verify using Email first', context);
         onLoading(false);
         return;
@@ -118,13 +174,15 @@ Future<void> customLogin(
   onLoading(false);
 }
 
-
-Future<void> signInWithGoogle(BuildContext context, {required Function(bool) onLoading, required Function(bool) isLoggedIn}) async {
+Future<void> signInWithGoogle(BuildContext context,
+    {required Function(bool) onLoading,
+    required Function(bool) isLoggedIn}) async {
   onLoading(true);
-  try{
+  try {
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
-    final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+    final GoogleSignInAuthentication? googleAuth =
+        await googleUser?.authentication;
 
     final credential = GoogleAuthProvider.credential(
       accessToken: googleAuth?.accessToken,
@@ -132,39 +190,43 @@ Future<void> signInWithGoogle(BuildContext context, {required Function(bool) onL
     );
     final userCredentials = await auth.signInWithCredential(credential);
 
-    if(userCredentials.user != null) {
+    if (userCredentials.user != null) {
       await saveSignInUserData(userCredentials.user!);
       print('Sign in with google succeed');
 
       showMessage('Google Sign-In success', context);
       isLoggedIn(true);
     } else {
-      print("Sign in with google failed: UserCredential is ${userCredentials.user}");
+      print(
+          "Sign in with google failed: UserCredential is ${userCredentials.user}");
       showMessage('Google Sign-In failed', context);
     }
-  } on Exception catch(e) {
+  } on Exception catch (e) {
     print("Sign in with google failed $e");
     showMessage('Google Sign-In failed', context);
   }
   onLoading(false);
 }
 
-Future<void> signInWithMicrosoft(BuildContext context, {required Function(bool) onLoading, required Function(bool) isLoggedIn}) async {
+Future<void> signInWithMicrosoft(BuildContext context,
+    {required Function(bool) onLoading,
+    required Function(bool) isLoggedIn}) async {
   onLoading(true);
 
-  try{
+  try {
     final microsoftProvider = MicrosoftAuthProvider();
-    microsoftProvider.setCustomParameters({'tenant': '850aa78d-94e1-4bc6-9cf3-8c11b530701c'});
+    microsoftProvider.setCustomParameters(
+        {'tenant': '850aa78d-94e1-4bc6-9cf3-8c11b530701c'});
 
     final userCredentials = await auth.signInWithProvider(microsoftProvider);
-    if(userCredentials.user != null) {
+    if (userCredentials.user != null) {
       await saveSignInUserData(userCredentials.user!);
       isLoggedIn(true);
       showMessage('Microsoft Sign-In Success ', context);
-    }else{
+    } else {
       showMessage('Microsoft Sign-In failed', context);
     }
-  } on Exception catch(e) {
+  } on Exception catch (e) {
     showMessage('Microsoft Sign-In failed', context);
     print(e);
   }
