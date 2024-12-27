@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     Provider.of<ViewModelMain>(context, listen: false).getAllEvents();
     return MaterialApp(
-      home: MerchScreen(),
+      home: SplashScreen(),
       debugShowCheckedModeBanner: false,
     );
   }
