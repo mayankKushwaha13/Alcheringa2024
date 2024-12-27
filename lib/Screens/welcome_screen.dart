@@ -20,7 +20,8 @@ class welcomeScreen extends StatelessWidget {
             // Logo on top of the background
             Positioned(
                top: MediaQuery.of(context).size.height*0.15,
-
+              left: 0,
+              right: 0,
               child: Center(
                 child: Container(
                   // color: Colors.red,

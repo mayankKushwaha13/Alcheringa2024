@@ -1,4 +1,5 @@
 import 'package:alcheringa/Screens/home_screen.dart';
+import 'package:alcheringa/Screens/main_screen.dart';
 import 'package:alcheringa/authentication/AuthenticationViewModel.dart';
 import 'package:alcheringa/screens/login_screen.dart';
 import 'package:flutter/material.dart';
@@ -143,7 +144,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                           isPassword: true,
                                           backgroundImage:
                                               'assets/images/emailbackground.png',
-                                          controller: _passwordController),
+                                          controller: _confirmPasswordController),
                                       SizedBox(height: screenHeight * 0.01),
                                     ],
                                   ),
@@ -225,7 +226,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (context) =>
-                                                        const HomeScreen()),
+                                                        const MainScreen()),
                                               );
                                             }
                                           }),
@@ -255,7 +256,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      const HomeScreen()),
+                                                      const MainScreen()),
                                             );
                                           }
                                         },
@@ -289,7 +290,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (context) =>
-                                                        const HomeScreen()),
+                                                        const MainScreen()),
                                               );
                                             }
                                           }),
@@ -380,10 +381,6 @@ class _SignupScreenState extends State<SignupScreen> {
                       ),
                     ),
                   ),
-                  if (_isLoading)
-                    const Center(
-                      child: CircularProgressIndicator(),
-                    ),
                 ],
               ),
             ),
