@@ -1,6 +1,9 @@
+import 'package:alcheringa/Model/view_model_main.dart';
 import 'package:alcheringa/Screens/merch_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+import '../Model/merchModel.dart';
 
 class MerchScreen extends StatefulWidget {
   const MerchScreen({super.key});
@@ -10,10 +13,21 @@ class MerchScreen extends StatefulWidget {
 }
 
 class _MerchScreenState extends State<MerchScreen> {
+
+  List<MerchModel> merchMerch = [];
+
   @override
   void initState() {
     super.initState();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+
+    getMerchData();
+  }
+
+  Future<void> getMerchData() async {
+    setState(() async {
+      merchMerch = await ViewModelMain().getMerchMerch();
+    });
   }
 
   @override
