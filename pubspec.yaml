@@ -58,6 +58,7 @@ dependencies:
   shared_preferences: ^2.3.4
   image_picker: ^1.1.2
   firebase_storage: 
+  image: ^4.5.2
 
 dev_dependencies:
   retrofit_generator: ^9.1.2

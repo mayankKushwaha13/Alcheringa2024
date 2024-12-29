@@ -19,7 +19,7 @@ class ProfileSetup extends StatefulWidget {
 
 class _ProfileSetupState extends State<ProfileSetup> {
   String? _image;
-
+  TextEditingController nicknameController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -113,6 +113,7 @@ class _ProfileSetupState extends State<ProfileSetup> {
                       Positioned.fill(
                         child: Center(
                           child: TextField(
+                            controller: nicknameController,
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontFamily: 'Alcherpixel',
@@ -171,7 +172,7 @@ class _ProfileSetupState extends State<ProfileSetup> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            Navigator.push(context,MaterialPageRoute(builder: (_) => SelectInterest(image: _image,)));
+                            Navigator.push(context,MaterialPageRoute(builder: (_) => SelectInterest(image: _image, name: nicknameController.text.trim(),)));
                           },
                           child: Stack(
                             children: [

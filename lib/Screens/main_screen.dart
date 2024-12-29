@@ -14,6 +14,8 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  String? photoURL = '';
+  String name = '';
   int _selectedIndex = 2;
   late PageController _pageController = PageController();
   final List<Widget> _pages = [
@@ -42,8 +44,63 @@ class _MainScreenState extends State<MainScreen> {
     }
   }
 
+  Future<String?> _loadImage() async {
+    photoURL = await ViewModelMain().getValue('PhotoURL');
+    try {
+      final response = await NetworkImage(photoURL!).resolve(ImageConfiguration());
+      if (response == null) {
+        throw Exception('Failed to load image');
+      }
+      return photoURL; // Return the URL if it loads successfully
+    } catch (e) {
+      return null; // Return null if the URL image fails to load
+    }
+  }
+
+  Future<String> _getName() async {
+    name = await ViewModelMain().getValue('userName');
+    return name;
+  }
+
   @override
   Widget build(BuildContext context) {
+    //data for side bar population
+    final List<Map<String, dynamic>> sideBarItemsList1 = [
+      {
+        'name': 'PROFILE',
+        'iconPath': 'assets/images/sidebar_profile_icon.png',
+        'onTap': () {},
+      },
+      {
+        'name': 'FAQ',
+        'iconPath': 'assets/images/sidebar_faq_icon.png',
+        'onTap': () {},
+      },
+      {
+        'name': 'ORDERS',
+        'iconPath': 'assets/images/sidebar_orders_icon.png',
+        'onTap': () {},
+      },
+      {
+        'name': 'CONTACT US',
+        'iconPath': 'assets/images/sidebar_contactus_icon.png',
+        'onTap': () {},
+      },
+    ];
+
+    final List<Map<String, dynamic>> sideBarItemsList2 = [
+      {
+        'name': 'TEAMS',
+        'iconPath': 'assets/images/sidebar_team_icon.png',
+        'onTap': () {},
+      },
+      {
+        'name': 'SPONSORS',
+        'iconPath': 'assets/images/sidebar_sponsors_icon.png',
+        'onTap': () {},
+      },
+    ];
+
     return Scaffold(
       endDrawer: SafeArea(
         child: Drawer(
@@ -52,25 +109,96 @@ class _MainScreenState extends State<MainScreen> {
             children: [
               Container(
                 decoration: BoxDecoration(
+                  borderRadius: BorderRadius.zero,
                   image: DecorationImage(
-                    image: AssetImage('assets/images/side_bar.png'),
+                    image: AssetImage('assets/images/sidebar_bg.png'),
                     fit: BoxFit.fill,
                   ),
                 ),
               ),
               ListView(
-                padding: EdgeInsets.zero,
+                padding: EdgeInsets.only(top: 50.0, left: 20.0, right: 39.0),
                 children: [
-                  Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Image.asset(
-                        'assets/images/side_bar_profile_bg.png',
-                        width: 80.0,
-                        height: 100.0,
-                      ),
-                    ],
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Image.asset(
+                          'assets/images/sidebar_profile_bg.png',
+                        ),
+                        Column(
+                          children: [
+                            FutureBuilder(
+                              future: _loadImage(),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState == ConnectionState.waiting) {
+                                  return CircularProgressIndicator();
+                                }
+                                if (snapshot.hasData) {
+                                  return Image.network(
+                                    snapshot.data!,
+                                    width: 120.0, // Adjust size
+                                    height: 120.0,
+                                  );
+                                }
+                                return Image.asset(
+                                  'assets/images/home_selected.png',
+                                  width: 70.0, // Adjust size
+                                  height: 70.0,
+                                );
+                              },
+                            ),
+                            SizedBox(
+                              height: 30.0,
+                            ),
+                            Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                Image.asset('assets/images/sidebar_profile_name_bg.png'),
+                                FutureBuilder(
+                                  future: _getName(),
+                                  builder: (context, snapshot) {
+                                    return Text(
+                                      snapshot.data ?? "Unknown",
+                                      style: TextStyle(fontSize: 16.0, fontFamily: 'Alcherpixel', color: Colors.white),
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
+                  ...sideBarItemsList1.map(
+                    (item) => SideBarItems(
+                      name: item['name'],
+                      iconPath: item['iconPath'],
+                      onTap: item['onTap'],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 25.0,
+                  ),
+                  ...sideBarItemsList2.map(
+                    (item) => SideBarItems(
+                      name: item['name'],
+                      iconPath: item['iconPath'],
+                      onTap: item['onTap'],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 25.0,
+                  ),
+                  SideBarItems(
+                    name: 'SIGN OUT',
+                    iconPath: 'assets/images/sidebar_signout_icon.png',
+                    onTap: () {
+
+                    },
+                  )
                 ],
               ),
             ],
@@ -155,6 +283,55 @@ class _MainScreenState extends State<MainScreen> {
         },
         physics: const NeverScrollableScrollPhysics(),
         children: _pages,
+      ),
+    );
+  }
+}
+
+class SideBarItems extends StatelessWidget {
+  final String name;
+  final String iconPath;
+  final VoidCallback onTap;
+
+  const SideBarItems({super.key, required this.name, required this.iconPath, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 2.5),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Image.asset(
+            iconPath,
+            height: 20.0,
+            width: 20.0,
+          ),
+          SizedBox(
+            width: 10.0,
+          ),
+          GestureDetector(
+            onTap: () {
+              onTap();
+            },
+            child: Stack(
+              alignment: Alignment.centerLeft,
+              children: [
+                Image.asset(
+                  'assets/images/sidebar_item_bg.png',
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 15.0),
+                  child: Text(
+                    name,
+                    style: TextStyle(fontSize: 20.0, fontFamily: 'Alcherpixel', color: Colors.white),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

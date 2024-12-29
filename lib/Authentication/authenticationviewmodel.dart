@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'dart:typed_data';
 import 'package:alcheringa/common/resource.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:image/image.dart' as img;
 
 import '../common/globals.dart';
 
@@ -75,33 +76,52 @@ Future<void> addIntrestToDb(List<String> intrestList, String email) async {
 
     await doc.set({"interests": FieldValue.arrayUnion(intrestList)});
 
-    print("interests added succesfully from fxn addIntrestToDb()");
+    print("interests added succesfully from fxn addInterestToDb()");
   } catch (e) {
-    print("Error addIntrestToDb() fxn: $e");
+    print("Error addInterestToDb() fxn: $e");
   }
 }
 
 
-Future<void> updateProfilePicture(File file, String email) async {
-  final ext = file.path.split('.').last;
+Future<void> updateProfilePicture(File file, String email, String name) async {
+  try {
+    List<int> imageBytes = await file.readAsBytes();
 
-  final ref = st.ref().child('USERS/$email.$ext');
+    img.Image? image = img.decodeImage(Uint8List.fromList(imageBytes));
 
-  await ref
-      .putFile(file, SettableMetadata(contentType: 'image/$ext'))
-      .then((p0) {
-    print('Data transfered: ${p0.bytesTransferred / (1024 * 1024)}Mb');
-  });
+    if (image == null) {
+      throw Exception("Unable to decode image");
+    }
 
-  //updating image in database
-  String url = await ref.getDownloadURL();
-  await db.collection('USERS').doc(email).update({
-    'PhotoURL': url,
-  });
+    List<int> compressedBytes = img.encodeJpg(image, quality: 60); // Compress to JPG format
+
+    final ref = FirebaseStorage.instance.ref().child('Users/$email');
+
+    await ref.putData(Uint8List.fromList(compressedBytes), SettableMetadata(contentType: 'image/'))
+        .then((p0) {
+      print('Data transferred: ${p0.bytesTransferred / (1024 * 1024)} MB');
+    });
+
+    String url = await ref.getDownloadURL();
+
+    await FirebaseFirestore.instance.collection('USERS').doc(email).update({
+      'Name': name,
+      'PhotoURL': url,
+    });
+
+    final prefs = await SharedPreferences.getInstance();
+
+    await prefs.setString('name', name);
+    await prefs.setString('photoURL', url);
+
+    print('Profile picture updated successfully!');
+  } catch (e) {
+    print("Error updating profile picture: $e");
+  }
 }
 
-void onUpdateProfile(BuildContext context, File image, String email) {
-  updateProfilePicture(image, email).then((_) {
+void onUpdateProfile(BuildContext context, File image, String email, String name) {
+  updateProfilePicture(image, email, name).then((_) {
     // Show success Snackbar
     print("updated pfp");
     ScaffoldMessenger.of(context).showSnackBar(
@@ -112,7 +132,7 @@ void onUpdateProfile(BuildContext context, File image, String email) {
     );
   }).catchError((error) {
     // Show error Snackbar
-    print("eroor pfp");
+    print("error pfp");
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('Failed to update profile: $error'),
@@ -141,6 +161,7 @@ Future<void> customLogin(String email, String password, BuildContext context,
     {required Function(bool) onLoading,
     required Function(bool) isLoggedIn}) async {
   onLoading(true);
+  final prefs = await SharedPreferences.getInstance();
   try {
     final UserCredential userCredential = await auth.signInWithEmailAndPassword(
         email: email.trim(), password: password);
@@ -151,8 +172,15 @@ Future<void> customLogin(String email, String password, BuildContext context,
         onLoading(false);
         return;
       }
-      print("running after link");
-      await saveSignInUserData(userCredential.user!);
+      final userData = await db.collection('USERS').doc(email).get().then((docSnapshot) async {
+        if(docSnapshot.exists){
+          await prefs.setString('userName', docSnapshot.get('Name'));
+          await prefs.setString('email', docSnapshot.get('Email'));
+          await prefs.setString('PhotoURL', docSnapshot.get('PhotoURL'));
+        }else{
+          await saveSignInUserData(userCredential.user!);
+        }
+      });
       isLoggedIn(true);
       if (context.mounted) showMessage('Login Successful', context);
     }

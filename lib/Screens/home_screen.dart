@@ -24,6 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
     List<EventDetail> list = Provider.of<ViewModelMain>(context).allEvents;
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text(
           "Alcheringa",
           style: TextStyle(fontSize: 30.0, fontFamily: 'Vacation Heavy'),

@@ -8,7 +8,8 @@ import 'package:flutter/material.dart';
 
 class SelectInterest extends StatefulWidget {
   final String? image;
-  const SelectInterest({super.key, this.image});
+  final String? name;
+  const SelectInterest({super.key, this.image, this.name});
 
   @override
   State<SelectInterest> createState() => _SelectInterestState();
@@ -33,7 +34,7 @@ class _SelectInterestState extends State<SelectInterest> {
         print(auth.currentUser!.email!);
         
         addIntrestToDb(selectedInterests, auth.currentUser!.email!);
-        if(widget.image!= null) onUpdateProfile(context, File(widget.image!), auth.currentUser!.email!);
+        if(widget.image!= null) onUpdateProfile(context, File(widget.image!), auth.currentUser!.email!, widget.name ?? 'Unknown');
       }
       print('Selected Interests: $selectedInterests');
       Navigator.pop(context);

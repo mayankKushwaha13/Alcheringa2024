@@ -147,8 +147,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                 if(auth.currentUser != null){
                                     if(auth.currentUser!.metadata.creationTime==auth.currentUser!.metadata.lastSignInTime){
                                       Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=>ProfileSetup()));
-                                    }else Navigator.pushReplacement(context, MaterialPageRoute( builder: (context) =>const MainScreen()),);
-                                }else Navigator.pushReplacement(context, MaterialPageRoute( builder: (context) =>const MainScreen()),);
+                                    }else {
+                                      Navigator.pushAndRemoveUntil(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => const MainScreen()),
+                                            (Route<dynamic> route) => false,
+                                      );
+                                    }
+                                }
                               }
                             },
                             child: Stack(
