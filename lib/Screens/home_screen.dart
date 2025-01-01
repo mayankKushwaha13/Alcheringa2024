@@ -1,6 +1,9 @@
+import 'package:alcheringa/Common/globals.dart';
 import 'package:alcheringa/Model/informal_model.dart';
 import 'package:alcheringa/Model/utility_model.dart';
 import 'package:alcheringa/Model/view_model_main.dart';
+import 'package:alcheringa/Screens/end_drawer.dart';
+import 'package:alcheringa/Screens/main_screen.dart';
 import 'package:alcheringa/Screens/merch_screen.dart';
 import 'package:alcheringa/Screens/profile_setup/setup_profile.dart';
 import 'package:alcheringa/Widgets/HomeScreenWidgets/explore_container_widget.dart';
@@ -10,7 +13,6 @@ import 'package:provider/provider.dart';
 import '../Model/eventdetail.dart';
 import '../Widgets/HomeScreenWidgets/event_description_widget.dart';
 
-
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -19,10 +21,18 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  Future<double> _getBottomNavBarHeight() async {
+    await Future.delayed(Duration(milliseconds: 50)); // Wait for layout to complete
+    return bottomNavBarHeight;
+  }
+
   @override
   Widget build(BuildContext context) {
     List<EventDetail> list = Provider.of<ViewModelMain>(context).allEvents;
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: const Text(
@@ -36,11 +46,14 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           IconButton(
             onPressed: () {
-              Scaffold.of(context).openEndDrawer();
+              _scaffoldKey.currentState!.openEndDrawer();
             },
-            icon: const Icon(Icons.menu),
+            icon: Icon(Icons.menu),
           )
         ],
+      ),
+      endDrawer: EndDrawer(
+        scaffoldState: _scaffoldKey,
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -87,7 +100,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
-            
             Padding(
               padding: const EdgeInsets.only(left: 15),
               child: Text(
@@ -174,53 +186,71 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             FutureBuilder(
-                future: ViewModelMain().getAllEvents(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    List<EventDetail> allEvents = snapshot.data!;
-                    allEvents.shuffle();
-                    allEvents = allEvents.take(10).toList();
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 20,
+              future: ViewModelMain().getAllEvents(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  List<EventDetail> allEvents = snapshot.data!;
+                  allEvents.shuffle();
+                  allEvents = allEvents.take(10).toList();
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 20,
+                    ),
+                    child: SizedBox(
+                      height: 300,
+                      child: ListView.builder(
+                        padding: EdgeInsets.only(left: 15),
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: allEvents.length,
+                        itemBuilder: (context, index) {
+                          EventDetail event = allEvents[index];
+                          return HomeScreenContainerWidget(
+                            onTap: () {
+                              showModalBottomSheet(
+                                isScrollControlled: true,
+                                context: context,
+                                builder: (context) {
+                                  return EventDescriptionWidget(
+                                    imgurl: event.imgurl,
+                                    category: event.category,
+                                    title: event.artist,
+                                    venue: event.venue,
+                                    date: event.starttime,
+                                    description: event.descriptionEvent,
+                                  );
+                                },
+                              );
+                            },
+                            title: event.artist,
+                            subtitle: "Click to navigate to location",
+                            imgurl: event.imgurl,
+                          );
+                        },
                       ),
-                      child: SizedBox(
-                          height: 300,
-                          child: ListView.builder(
-                              padding: EdgeInsets.only(left: 15),
-                              shrinkWrap: true,
-                              scrollDirection: Axis.horizontal,
-                              itemCount: allEvents.length,
-                              itemBuilder: (context, index) {
-                                EventDetail event = allEvents[index];
-                                return HomeScreenContainerWidget(
-                                  onTap: () {
-                                    showModalBottomSheet(
-                                        isScrollControlled: true,
-                                        context: context,
-                                        builder: (context) {
-                                          return EventDescriptionWidget(
-                                            imgurl: event.imgurl,
-                                            category : event.category,
-                                            title: event.artist,
-                                            venue: event.venue,
-                                            date: event.starttime,
-                                            description: event.descriptionEvent,
-                                          );
-                                        });
-                                  },
-                                  title: event.artist,
-                                  subtitle: "Click to navigate to location",
-                                  imgurl: event.imgurl,
-                                );
-                              })),
-                    );
-                  } else {
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                }),
+                    ),
+                  );
+                } else {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              },
+            ),
+            FutureBuilder(
+              future: _getBottomNavBarHeight(),
+              builder: (context, snapshot) {
+                if(!snapshot.hasData || snapshot.connectionState == ConnectionState.waiting){
+                  return SizedBox(
+                    height: 100.0,
+                  );
+                }else{
+                  return SizedBox(
+                    height: snapshot.data,
+                  );
+                }
+              },
+            )
           ],
         ),
       ),

@@ -8,3 +8,4 @@ bool isVerified = false;
 bool isLoading = false;
 FirebaseFirestore db = FirebaseFirestore.instance;
 FirebaseStorage st = FirebaseStorage.instance;
+double bottomNavBarHeight = 0;
