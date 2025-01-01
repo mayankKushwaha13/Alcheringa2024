@@ -1,6 +1,8 @@
 import 'package:alcheringa/Common/globals.dart';
 import 'package:alcheringa/Model/view_model_main.dart';
+import 'package:alcheringa/Screens/cart_screen.dart';
 import 'package:alcheringa/Screens/end_drawer.dart';
+import 'package:alcheringa/Screens/notification/notification_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:intl/intl.dart';
@@ -39,70 +41,74 @@ class _SchedulePageState extends State<SchedulePage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        extendBody: true,
-        key: _scaffoldKey,
-        appBar: AppBar(
-          backgroundColor: Color.fromARGB(255, 29, 43, 83),
-          automaticallyImplyLeading: false,
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  IconButton(
-                    onPressed: () {},
-                    icon: Image.asset('assets/images/appbar_cart_icon.png'),
-                  ),
-                  badges.Badge(
-                    badgeContent: Text(
-                      '2',
-                      style: TextStyle(
-                        color: Color(0xFFCA3562),
-                        fontFamily: 'Alcherpixel',
-                      ),
-                    ),
-                    position: badges.BadgePosition.bottomEnd(bottom: 0, end: 10),
-                    badgeStyle:
-                        badges.BadgeStyle(badgeColor: Colors.transparent, borderRadius: BorderRadius.circular(5)),
-                    child: IconButton(
-                      onPressed: () {},
-                      icon: Image.asset('assets/images/appbar_notification_icon.png'),
+    return Scaffold(
+      extendBody: true,
+      key: _scaffoldKey,
+      appBar: AppBar(
+        backgroundColor: Color.fromARGB(255, 29, 43, 83),
+        automaticallyImplyLeading: false,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => CartScreen()));
+                  },
+                  icon: Image.asset('assets/images/appbar_cart_icon.png'),
+                ),
+                badges.Badge(
+                  badgeContent: Text(
+                    '2',
+                    style: TextStyle(
+                      color: Color(0xFFCA3562),
+                      fontFamily: 'Alcherpixel',
                     ),
                   ),
-                ],
-              ),
-              Image.asset('assets/images/appbar_alcheringa.png'),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  IconButton(
+                  position: badges.BadgePosition.bottomEnd(bottom: 0, end: 10),
+                  badgeStyle:
+                      badges.BadgeStyle(badgeColor: Colors.transparent, borderRadius: BorderRadius.circular(5)),
+                  child: IconButton(
                     onPressed: () {
-                      // Action for first trailing icon
+                      Navigator.push(context, MaterialPageRoute(builder: (_) => NotificationScreen()));
                     },
-                    icon: Image.asset('assets/images/appbar_search_icon.png'),
+                    icon: Image.asset('assets/images/appbar_notification_icon.png'),
                   ),
-                ],
-              ),
-            ],
-          ),
-          actions: [
-            IconButton(
-              onPressed: () {
-                _scaffoldKey.currentState!.openEndDrawer();
-              },
-              icon: Image.asset(
-                'assets/images/appbar_menu_icon.png',
-              ),
+                ),
+              ],
+            ),
+            Image.asset('assets/images/appbar_alcheringa.png'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    // Action for first trailing icon
+                  },
+                  icon: Image.asset('assets/images/appbar_search_icon.png'),
+                ),
+              ],
             ),
           ],
         ),
-        endDrawer: EndDrawer(
-          scaffoldState: _scaffoldKey,
-        ),
-        body: Stack(
+        actions: [
+          IconButton(
+            onPressed: () {
+              _scaffoldKey.currentState!.openEndDrawer();
+            },
+            icon: Image.asset(
+              'assets/images/appbar_menu_icon.png',
+            ),
+          ),
+        ],
+      ),
+      endDrawer: EndDrawer(
+        scaffoldState: _scaffoldKey,
+      ),
+      body: SafeArea(
+        child: Stack(
           children: [
             // Background Image
             Positioned.fill(
@@ -191,7 +197,7 @@ class _SchedulePageState extends State<SchedulePage> {
                     ],
                   ),
                 ),
-
+            
                 // Filter Row
                 Container(
                   height: 80,
@@ -269,12 +275,12 @@ class _SchedulePageState extends State<SchedulePage> {
                     ],
                   ),
                 ),
-
+            
                 Container(
                   height: 2,
                   color: Colors.grey,
                 ),
-
+            
                 // Schedule Grid
                 Expanded(
                   child: SingleChildScrollView(

@@ -87,16 +87,19 @@ class _FaqSectionState extends State<FaqSection> {
                           ),
                           alignment: Alignment.centerLeft,
                           padding: EdgeInsets.symmetric(horizontal: 16),
-                          child: Text(
-                            faq.question,
-                            style: TextStyle(
-                              fontFamily: 'AlcherPixel',
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400,
-                              letterSpacing: 0.15,
-                              color: Colors.white,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                            child: Text(
+                              faq.question,
+                              style: TextStyle(
+                                fontFamily: 'AlcherPixel',
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                                letterSpacing: 0.15,
+                                color: Colors.white,
+                              ),
+                              softWrap: true,
                             ),
-                            softWrap: true,
                           ),
                         ),
                       ),
@@ -116,17 +119,20 @@ class _FaqSectionState extends State<FaqSection> {
                               ),
                             ),
                             padding: EdgeInsets.all(16),
-                            child: Text(
-                              faq.answer,
-                              style: TextStyle(
-                                fontFamily: 'AlcherPixel',
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400,
-                                height: 15.06 / 16,
-                                letterSpacing: 0.15,
-                                color: Colors.white,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                              child: Text(
+                                faq.answer,
+                                style: TextStyle(
+                                  fontFamily: 'AlcherPixel',
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                  height: 15.06 / 16,
+                                  letterSpacing: 0.15,
+                                  color: Colors.white,
+                                ),
+                                softWrap: true,
                               ),
-                              softWrap: true,
                             ),
                           ),
                         ),

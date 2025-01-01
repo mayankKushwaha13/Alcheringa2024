@@ -1,3 +1,5 @@
+import 'package:alcheringa/Common/globals.dart';
+import 'package:alcheringa/Screens/merch_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -50,7 +52,6 @@ class _EndDrawerState extends State<EndDrawer> {
         'name': 'FAQ',
         'iconPath': 'assets/images/sidebar_faq_icon.png',
         'onTap': () {
-          print('Hello');
         },
       },
       {
@@ -79,105 +80,108 @@ class _EndDrawerState extends State<EndDrawer> {
     ];
 
     return SafeArea(
-      child: Drawer(
-        backgroundColor: Colors.transparent,
-        child: Stack(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.zero,
-                image: DecorationImage(
-                  image: AssetImage('assets/images/sidebar_bg.png'),
-                  fit: BoxFit.fill,
+      child: Padding(
+        padding: EdgeInsets.only(bottom: bottomNavBarHeight),
+        child: Drawer(
+          backgroundColor: Colors.transparent,
+          child: Stack(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.zero,
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/sidebar_bg.png'),
+                    fit: BoxFit.fill,
+                  ),
                 ),
               ),
-            ),
-            ListView(
-              padding: EdgeInsets.only(top: 50.0, left: 20.0, right: 39.0),
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Image.asset(
-                        'assets/images/sidebar_profile_bg.png',
-                      ),
-                      Column(
-                        children: [
-                          FutureBuilder(
-                            future: _loadImage(),
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState == ConnectionState.waiting) {
-                                return CircularProgressIndicator();
-                              }
-                              if (snapshot.hasData) {
-                                return Image.network(
-                                  snapshot.data!,
-                                  width: 120.0, // Adjust size
-                                  height: 120.0,
-                                );
-                              }
-                              return Image.asset(
-                                'assets/images/home_selected.png',
-                                width: 70.0, // Adjust size
-                                height: 70.0,
-                              );
-                            },
-                          ),
-                          SizedBox(
-                            height: 30.0,
-                          ),
-                          Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              Image.asset('assets/images/sidebar_profile_name_bg.png'),
-                              FutureBuilder(
-                                future: _getName(),
-                                builder: (context, snapshot) {
-                                  return Text(
-                                    snapshot.data ?? "Unknown",
-                                    style: TextStyle(fontSize: 16.0, fontFamily: 'Alcherpixel', color: Colors.white),
+              ListView(
+                padding: EdgeInsets.only(top: 50.0, left: 20.0, right: 39.0),
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Image.asset(
+                          'assets/images/sidebar_profile_bg.png',
+                        ),
+                        Column(
+                          children: [
+                            FutureBuilder(
+                              future: _loadImage(),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState == ConnectionState.waiting) {
+                                  return CircularProgressIndicator();
+                                }
+                                if (snapshot.hasData) {
+                                  return Image.network(
+                                    snapshot.data!,
+                                    width: 120.0, // Adjust size
+                                    height: 120.0,
                                   );
-                                },
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
+                                }
+                                return Image.asset(
+                                  'assets/images/home_selected.png',
+                                  width: 70.0, // Adjust size
+                                  height: 70.0,
+                                );
+                              },
+                            ),
+                            SizedBox(
+                              height: 30.0,
+                            ),
+                            Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                Image.asset('assets/images/sidebar_profile_name_bg.png'),
+                                FutureBuilder(
+                                  future: _getName(),
+                                  builder: (context, snapshot) {
+                                    return Text(
+                                      snapshot.data ?? "Unknown",
+                                      style: TextStyle(fontSize: 16.0, fontFamily: 'Alcherpixel', color: Colors.white),
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                ...sideBarItemsList1.map(
-                      (item) => SideBarItems(
-                    name: item['name'],
-                    iconPath: item['iconPath'],
-                    onTap: item['onTap'],
+                  ...sideBarItemsList1.map(
+                        (item) => SideBarItems(
+                      name: item['name'],
+                      iconPath: item['iconPath'],
+                      onTap: item['onTap'],
+                    ),
                   ),
-                ),
-                SizedBox(
-                  height: 25.0,
-                ),
-                ...sideBarItemsList2.map(
-                      (item) => SideBarItems(
-                    name: item['name'],
-                    iconPath: item['iconPath'],
-                    onTap: item['onTap'],
+                  SizedBox(
+                    height: 25.0,
                   ),
-                ),
-                SizedBox(
-                  height: 25.0,
-                ),
-                SideBarItems(
-                  name: 'SIGN OUT',
-                  iconPath: 'assets/images/sidebar_signout_icon.png',
-                  onTap: () {
+                  ...sideBarItemsList2.map(
+                        (item) => SideBarItems(
+                      name: item['name'],
+                      iconPath: item['iconPath'],
+                      onTap: item['onTap'],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 25.0,
+                  ),
+                  SideBarItems(
+                    name: 'SIGN OUT',
+                    iconPath: 'assets/images/sidebar_signout_icon.png',
+                    onTap: () {
 
-                  },
-                )
-              ],
-            ),
-          ],
+                    },
+                  )
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
