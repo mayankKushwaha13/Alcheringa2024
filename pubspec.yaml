@@ -56,6 +56,11 @@ dependencies:
   flutter_local_notifications: ^17.2.3
   google_sign_in: ^6.2.2
   shared_preferences: ^2.3.4
+  image_picker: ^1.1.2
+  firebase_storage: 
+  image: ^4.5.2
+  badges: ^3.1.2
+  intl: ^0.18.0
 
 dev_dependencies:
   retrofit_generator: ^9.1.2

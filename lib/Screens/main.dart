@@ -1,6 +1,10 @@
 import 'dart:async';
 import 'package:alcheringa/Common/globals.dart';
 import 'package:alcheringa/Model/view_model_main.dart';
+import 'package:alcheringa/Screens/home_screen.dart';
+import 'package:alcheringa/Screens/merch_buy_screen.dart';
+import 'package:alcheringa/Screens/merch_detail_screen.dart';
+import 'package:alcheringa/Screens/merch_screen.dart';
 import 'package:alcheringa/Screens/notification/notification_screen.dart';
 import 'package:alcheringa/Screens/signup_screen.dart';
 import 'package:alcheringa/Screens/welcome_screen.dart';

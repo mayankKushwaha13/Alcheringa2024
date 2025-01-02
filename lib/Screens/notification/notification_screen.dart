@@ -5,14 +5,14 @@ import '../../Model/notification_model.dart';
 import '../../Model/view_model_main.dart';
 import '../../utils/styles/colors.dart';
 
-class notification_screen extends StatefulWidget {
-  const notification_screen({super.key});
+class NotificationScreen extends StatefulWidget {
+  const NotificationScreen({super.key});
 
   @override
-  State<notification_screen> createState() => _notification_screenState();
+  State<NotificationScreen> createState() => _NotificationScreenState();
 }
 
-class _notification_screenState extends State<notification_screen> {
+class _NotificationScreenState extends State<NotificationScreen> {
   @override
   Widget build(BuildContext context) {
     List<NotificationModel> list = Provider.of<ViewModelMain>(context).allNotification;
@@ -57,16 +57,22 @@ class _notification_screenState extends State<notification_screen> {
 
 AppBar _appBar(BuildContext context){
   return AppBar(
+    automaticallyImplyLeading: false,
     backgroundColor: Colors.black.withOpacity(.5),
     title: GestureDetector(
       onTap: (){
       },
       child:Padding(
         padding: const EdgeInsets.only(left: 5.0,bottom: 10),
-        child: Image.asset(
-          'assets/images/back_button.png',
-          width: 54.0,
-          height: 54.0,
+        child: GestureDetector(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Image.asset(
+            'assets/images/back_button.png',
+            width: 54.0,
+            height: 54.0,
+          ),
         ),),
     ),
     actions: [

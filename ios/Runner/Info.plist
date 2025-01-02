@@ -56,5 +56,15 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+
+
+	<!--permissons for picking images for pfp-->
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>App requires access to the photo library for picking images</string>
+
+	<key>NSCameraUsageDescription</key>
+	<string>App requires access to the camera for clicking images</string>
+
+	
 </dict>
 </plist>

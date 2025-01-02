@@ -1,4 +1,6 @@
 import 'package:alcheringa/Common/globals.dart';
+import 'package:alcheringa/Screens/main_screen.dart';
+import 'package:alcheringa/Screens/profile_setup/setup_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:alcheringa/Screens/reset_password_screen.dart';
 import 'package:alcheringa/screens/home_screen.dart';
@@ -141,12 +143,18 @@ class _LoginScreenState extends State<LoginScreen> {
                                   _passwordController.text, context,
                                   onLoading: _setLoading, isLoggedIn: _setLoggedIn);
                               if (isLoggedIn && context.mounted && auth.currentUser!.emailVerified) {
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                      const HomeScreen()),
-                                );
+                                
+                                if(auth.currentUser != null){
+                                    if(auth.currentUser!.metadata.creationTime==auth.currentUser!.metadata.lastSignInTime){
+                                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=>ProfileSetup()));
+                                    }else {
+                                      Navigator.pushAndRemoveUntil(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => const MainScreen()),
+                                            (Route<dynamic> route) => false,
+                                      );
+                                    }
+                                }
                               }
                             },
                             child: Stack(
@@ -196,7 +204,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                            const HomeScreen()),
+                                            const MainScreen()),
                                       );
                                     }
                                   }
@@ -221,7 +229,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                          const HomeScreen()),
+                                          const MainScreen()),
                                     );
                                   }
                                 },
@@ -246,7 +254,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                            const HomeScreen()),
+                                            const MainScreen()),
                                       );
                                     }
                                   }
