@@ -1,0 +1,228 @@
+import 'package:alcheringa/Screens/activity_pages/stalls_page.dart';
+import 'package:alcheringa/Screens/end_drawer.dart';
+import 'package:flutter/material.dart';
+import 'package:badges/badges.dart' as badges;
+import '../cart_screen.dart';
+import '../notification/notification_screen.dart';
+
+class ActivityPage extends StatefulWidget {
+  const ActivityPage({super.key});
+
+  @override
+  State<ActivityPage> createState() => _ActivityPageState();
+}
+
+class _ActivityPageState extends State<ActivityPage> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final PageController _pageController = PageController();
+  int _selectedTab = 0;
+
+  final List<Widget> _allTabs = [EventsWidget(), CompetitionsWidget(), StallsPage(),];
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  void _changeTab(int index) {
+    if (_selectedTab != index) {
+      setState(() {
+        _selectedTab = index;
+      });
+      _pageController.animateToPage(
+        index,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      key: _scaffoldKey,
+      endDrawer: EndDrawer(
+        scaffoldState: _scaffoldKey,
+      ),
+      appBar: AppBar(
+        backgroundColor: Color.fromARGB(255, 29, 43, 83),
+        automaticallyImplyLeading: false,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => CartScreen()));
+                  },
+                  icon: Image.asset('assets/images/appbar_cart_icon.png'),
+                ),
+                badges.Badge(
+                  badgeContent: Text(
+                    '2',
+                    style: TextStyle(
+                      color: Color(0xFFCA3562),
+                      fontFamily: 'Alcherpixel',
+                    ),
+                  ),
+                  position: badges.BadgePosition.bottomEnd(bottom: 0, end: 10),
+                  badgeStyle: badges.BadgeStyle(badgeColor: Colors.transparent, borderRadius: BorderRadius.circular(5)),
+                  child: IconButton(
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (_) => NotificationScreen()));
+                    },
+                    icon: Image.asset('assets/images/appbar_notification_icon.png'),
+                  ),
+                ),
+              ],
+            ),
+            Image.asset('assets/images/appbar_alcheringa.png'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    // Action for first trailing icon
+                  },
+                  icon: Image.asset('assets/images/appbar_search_icon.png'),
+                ),
+              ],
+            ),
+          ],
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              _scaffoldKey.currentState!.openEndDrawer();
+            },
+            icon: Image.asset(
+              'assets/images/appbar_menu_icon.png',
+            ),
+          ),
+        ],
+      ),
+      backgroundColor: const Color(0xFF1A237E),
+      body: Stack(
+        children: [
+          // Background Image
+          Positioned.fill(
+            child: Image.asset(
+              'assets/images/background_alcher_app_25.png',
+              fit: BoxFit.cover,
+            ),
+          ),
+          // Main Content
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                // Tabs
+                SizedBox(
+                  height: 70,
+                  child: ListView(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          _changeTab(0);
+                          setState(() {
+                            _selectedTab = 0;
+                          });
+                        },
+                        child: Image.asset(
+                          _selectedTab == 0
+                              ? 'assets/images/events_icon_selected.png'
+                              : 'assets/images/events_icon_unselected.png',
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          _changeTab(1);
+                          setState(() {
+                            _selectedTab = 1;
+                          });
+                        },
+                        child: Image.asset(
+                          _selectedTab == 1
+                              ? 'assets/images/competitions_icon_selected.png'
+                              : 'assets/images/competitions_icon_unselected.png',
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          _changeTab(2);
+                          setState(() {
+                            _selectedTab = 2;
+                          });
+                        },
+                        child: Image.asset(
+                          _selectedTab == 2
+                              ? 'assets/images/stalls_icon_selected.png'
+                              : 'assets/images/stalls_icon_unselected.png',
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 25),
+                // PageView
+                Expanded(
+                  child: PageView(
+                    physics: const NeverScrollableScrollPhysics(),
+                    controller: _pageController,
+                    onPageChanged: (index) {
+                      setState(() {
+                        _selectedTab = index;
+                      });
+                    },
+                    children: _allTabs,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class EventsWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(
+        "Events Content",
+        style: TextStyle(color: Colors.white, fontSize: 24),
+      ),
+    );
+  }
+}
+
+class CompetitionsWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(
+        "Competitions Content",
+        style: TextStyle(color: Colors.white, fontSize: 24),
+      ),
+    );
+  }
+}
+
+class StallsWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(
+        "Stalls Content",
+        style: TextStyle(color: Colors.white, fontSize: 24),
+      ),
+    );
+  }
+}

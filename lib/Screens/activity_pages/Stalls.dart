@@ -1,6 +1,9 @@
-import 'package:alcheringa/Screens/checkout_pages/EventButton.dart';
+import 'package:alcheringa/Screens/activity_pages/EventButton.dart';
+import 'package:alcheringa/Screens/end_drawer.dart';
 import 'package:flutter/material.dart';
-
+import 'package:badges/badges.dart' as badges;
+import '../cart_screen.dart';
+import '../notification/notification_screen.dart';
 import 'PixelStoreCardWidget.dart';
 
 class FoodSearchScreen extends StatefulWidget {
@@ -12,6 +15,7 @@ class FoodSearchScreen extends StatefulWidget {
 }
 
 class _FoodSearchScreenState extends State<FoodSearchScreen> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final TextEditingController _searchController = TextEditingController();
   final List<String> _restaurants = [
     'Magpie Junction',
@@ -48,27 +52,66 @@ class _FoodSearchScreenState extends State<FoodSearchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
+      endDrawer: EndDrawer(scaffoldState: _scaffoldKey,),
       appBar: AppBar(
-        title: const Text(
-          "Merch",
-          style: TextStyle(
-            fontSize: 30.0,
-            fontWeight: FontWeight.bold,
-          ),
+        backgroundColor: Color.fromARGB(255, 29, 43, 83),
+        automaticallyImplyLeading: false,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => CartScreen()));
+                  },
+                  icon: Image.asset('assets/images/appbar_cart_icon.png'),
+                ),
+                badges.Badge(
+                  badgeContent: Text(
+                    '2',
+                    style: TextStyle(
+                      color: Color(0xFFCA3562),
+                      fontFamily: 'Alcherpixel',
+                    ),
+                  ),
+                  position: badges.BadgePosition.bottomEnd(bottom: 0, end: 10),
+                  badgeStyle:
+                  badges.BadgeStyle(badgeColor: Colors.transparent, borderRadius: BorderRadius.circular(5)),
+                  child: IconButton(
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (_) => NotificationScreen()));
+                    },
+                    icon: Image.asset('assets/images/appbar_notification_icon.png'),
+                  ),
+                ),
+              ],
+            ),
+            Image.asset('assets/images/appbar_alcheringa.png'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    // Action for first trailing icon
+                  },
+                  icon: Image.asset('assets/images/appbar_search_icon.png'),
+                ),
+              ],
+            ),
+          ],
         ),
         actions: [
           IconButton(
-            onPressed: (){},
-            icon: const Icon(Icons.search),
+            onPressed: () {
+              _scaffoldKey.currentState!.openEndDrawer();
+            },
+            icon: Image.asset(
+              'assets/images/appbar_menu_icon.png',
+            ),
           ),
-          IconButton(
-            onPressed: (){},
-            icon: const Icon(Icons.shopping_cart),
-          ),
-          IconButton(
-            onPressed: (){},
-            icon: const Icon(Icons.account_circle_outlined),
-          )
         ],
       ),
       backgroundColor: const Color(0xFF1A237E),

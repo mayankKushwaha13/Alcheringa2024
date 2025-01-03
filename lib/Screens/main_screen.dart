@@ -1,5 +1,7 @@
 import 'package:alcheringa/Common/globals.dart';
 import 'package:alcheringa/Model/view_model_main.dart';
+import 'package:alcheringa/Screens/activity_pages/Stalls.dart';
+import 'package:alcheringa/Screens/activity_pages/activity_page.dart';
 import 'package:alcheringa/Screens/utility_screen/utilities_screen.dart';
 import 'package:alcheringa/screens/home_screen.dart';
 import 'package:alcheringa/screens/map_page.dart';
@@ -23,7 +25,7 @@ class _MainScreenState extends State<MainScreen> {
     const MapPage(),
     const SchedulePage(),
     const HomeScreen(),
-    const UtilitiesPage(),
+    const ActivityPage(),
     const UtilitiesPage()
   ];
 
