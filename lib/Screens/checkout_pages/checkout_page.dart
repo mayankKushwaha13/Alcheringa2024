@@ -17,6 +17,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFF202F5A),
       body: SafeArea(
         child: Container(
           width: double.infinity,

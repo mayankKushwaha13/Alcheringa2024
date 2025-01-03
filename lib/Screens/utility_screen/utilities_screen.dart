@@ -14,69 +14,10 @@ class UtilitiesPage extends StatefulWidget {
 }
 
 class _UtilitiesPage extends State<UtilitiesPage> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey,
-      appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 29, 43, 83),
-        automaticallyImplyLeading: false,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                IconButton(
-                  onPressed: () {},
-                  icon: Image.asset('assets/images/appbar_cart_icon.png'),
-                ),
-                badges.Badge(
-                  badgeContent: Text(
-                    '2',
-                    style: TextStyle(
-                      color: Color(0xFFCA3562),
-                      fontFamily: 'Alcherpixel',
-                    ),
-                  ),
-                  position: badges.BadgePosition.bottomEnd(bottom: 0, end: 10),
-                  badgeStyle:
-                  badges.BadgeStyle(badgeColor: Colors.transparent, borderRadius: BorderRadius.circular(5)),
-                  child: IconButton(
-                    onPressed: () {},
-                    icon: Image.asset('assets/images/appbar_notification_icon.png'),
-                  ),
-                ),
-              ],
-            ),
-            Image.asset('assets/images/appbar_alcheringa.png'),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                IconButton(
-                  onPressed: () {
-                    // Action for first trailing icon
-                  },
-                  icon: Image.asset('assets/images/appbar_search_icon.png'),
-                ),
-              ],
-            ),
-          ],
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              _scaffoldKey.currentState!.openEndDrawer();
-            },
-            icon: Image.asset(
-              'assets/images/appbar_menu_icon.png',
-            ),
-          ),
-        ],
-      ),
-      endDrawer: EndDrawer(scaffoldState: _scaffoldKey),
       body: Stack(
         children: [
           Image.asset(

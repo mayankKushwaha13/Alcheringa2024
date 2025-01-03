@@ -13,7 +13,6 @@ class ActivityPage extends StatefulWidget {
 }
 
 class _ActivityPageState extends State<ActivityPage> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final PageController _pageController = PageController();
   int _selectedTab = 0;
 
@@ -41,69 +40,6 @@ class _ActivityPageState extends State<ActivityPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey,
-      endDrawer: EndDrawer(
-        scaffoldState: _scaffoldKey,
-      ),
-      appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 29, 43, 83),
-        automaticallyImplyLeading: false,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                IconButton(
-                  onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (_) => CartScreen()));
-                  },
-                  icon: Image.asset('assets/images/appbar_cart_icon.png'),
-                ),
-                badges.Badge(
-                  badgeContent: Text(
-                    '2',
-                    style: TextStyle(
-                      color: Color(0xFFCA3562),
-                      fontFamily: 'Alcherpixel',
-                    ),
-                  ),
-                  position: badges.BadgePosition.bottomEnd(bottom: 0, end: 10),
-                  badgeStyle: badges.BadgeStyle(badgeColor: Colors.transparent, borderRadius: BorderRadius.circular(5)),
-                  child: IconButton(
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (_) => NotificationScreen()));
-                    },
-                    icon: Image.asset('assets/images/appbar_notification_icon.png'),
-                  ),
-                ),
-              ],
-            ),
-            Image.asset('assets/images/appbar_alcheringa.png'),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                IconButton(
-                  onPressed: () {
-                    // Action for first trailing icon
-                  },
-                  icon: Image.asset('assets/images/appbar_search_icon.png'),
-                ),
-              ],
-            ),
-          ],
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              _scaffoldKey.currentState!.openEndDrawer();
-            },
-            icon: Image.asset(
-              'assets/images/appbar_menu_icon.png',
-            ),
-          ),
-        ],
-      ),
       backgroundColor: const Color(0xFF1A237E),
       body: Stack(
         children: [

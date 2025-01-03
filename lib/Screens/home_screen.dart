@@ -5,6 +5,7 @@ import 'package:alcheringa/Model/view_model_main.dart';
 import 'package:alcheringa/Screens/activity_pages/Stalls.dart';
 import 'package:alcheringa/Screens/end_drawer.dart';
 import 'package:alcheringa/Screens/merch_screen.dart';
+import 'package:alcheringa/Screens/top_app_bar.dart';
 import 'package:alcheringa/Widgets/HomeScreenWidgets/explore_container_widget.dart';
 import 'package:alcheringa/Widgets/HomeScreenWidgets/home_screen_container_widget.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   Future<double> _getBottomNavBarHeight() async {
     await Future.delayed(Duration(milliseconds: 50));
@@ -31,29 +31,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     List<EventDetail> list = Provider.of<ViewModelMain>(context).allEvents;
     return Scaffold(
-      key: _scaffoldKey,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: const Text(
-          "Alcheringa",
-          style: TextStyle(fontSize: 30.0, fontFamily: 'Vacation Heavy'),
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.search),
-          ),
-          IconButton(
-            onPressed: () {
-              _scaffoldKey.currentState!.openEndDrawer();
-            },
-            icon: Icon(Icons.menu),
-          )
-        ],
-      ),
-      endDrawer: EndDrawer(
-        scaffoldState: _scaffoldKey,
-      ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

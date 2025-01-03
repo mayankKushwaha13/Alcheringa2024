@@ -3,6 +3,7 @@ import 'package:alcheringa/Model/view_model_main.dart';
 import 'package:alcheringa/Screens/cart_screen.dart';
 import 'package:alcheringa/Screens/end_drawer.dart';
 import 'package:alcheringa/Screens/notification/notification_screen.dart';
+import 'package:alcheringa/Screens/top_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:intl/intl.dart';
@@ -23,7 +24,6 @@ class _SchedulePageState extends State<SchedulePage> {
   String selectedVenue = 'ALL';
   final ScrollController verticalController = ScrollController();
   final ScrollController horizontalController = ScrollController();
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   List<String> venuesList = ['ALL', 'Auditorium'];
 
   Color dayColor(int day) {
@@ -43,78 +43,14 @@ class _SchedulePageState extends State<SchedulePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      key: _scaffoldKey,
-      appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 29, 43, 83),
-        automaticallyImplyLeading: false,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                IconButton(
-                  onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (_) => CartScreen()));
-                  },
-                  icon: Image.asset('assets/images/appbar_cart_icon.png'),
-                ),
-                badges.Badge(
-                  badgeContent: Text(
-                    '2',
-                    style: TextStyle(
-                      color: Color(0xFFCA3562),
-                      fontFamily: 'Alcherpixel',
-                    ),
-                  ),
-                  position: badges.BadgePosition.bottomEnd(bottom: 0, end: 10),
-                  badgeStyle:
-                      badges.BadgeStyle(badgeColor: Colors.transparent, borderRadius: BorderRadius.circular(5)),
-                  child: IconButton(
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (_) => NotificationScreen()));
-                    },
-                    icon: Image.asset('assets/images/appbar_notification_icon.png'),
-                  ),
-                ),
-              ],
-            ),
-            Image.asset('assets/images/appbar_alcheringa.png'),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                IconButton(
-                  onPressed: () {
-                    // Action for first trailing icon
-                  },
-                  icon: Image.asset('assets/images/appbar_search_icon.png'),
-                ),
-              ],
-            ),
-          ],
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              _scaffoldKey.currentState!.openEndDrawer();
-            },
-            icon: Image.asset(
-              'assets/images/appbar_menu_icon.png',
-            ),
-          ),
-        ],
-      ),
-      endDrawer: EndDrawer(
-        scaffoldState: _scaffoldKey,
-      ),
       body: SafeArea(
         child: Stack(
           children: [
             // Background Image
             Positioned.fill(
               child: Image.asset(
-                'assets/images/schedule_screen_bg.png', // Replace with your image path
-                fit: BoxFit.cover, // Ensures the image covers the entire screen
+                'assets/images/schedule_screen_bg.png',
+                fit: BoxFit.cover,
               ),
             ),
 
