@@ -1,4 +1,3 @@
-import 'package:alcheringa/Screens/activity_pages/EventButton.dart';
 import 'package:alcheringa/Screens/end_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;

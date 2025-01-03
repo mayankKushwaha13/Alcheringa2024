@@ -1,10 +1,8 @@
 import 'package:alcheringa/Common/globals.dart';
-import 'package:alcheringa/Screens/end_drawer.dart';
 import 'package:alcheringa/Screens/utility_screen/contact_section.dart';
 import 'package:alcheringa/Screens/utility_screen/faq_section.dart';
 import 'package:alcheringa/Screens/utility_screen/team_section.dart';
 import 'package:flutter/material.dart';
-import 'package:badges/badges.dart' as badges;
 
 class UtilitiesPage extends StatefulWidget {
   const UtilitiesPage({super.key});

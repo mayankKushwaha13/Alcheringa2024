@@ -1,4 +1,3 @@
-import 'package:alcheringa/Screens/home_screen.dart';
 import 'package:alcheringa/Screens/main_screen.dart';
 import 'package:alcheringa/authentication/AuthenticationViewModel.dart';
 import 'package:alcheringa/screens/login_screen.dart';

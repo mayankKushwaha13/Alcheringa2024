@@ -3,7 +3,6 @@ import 'package:alcheringa/Screens/main_screen.dart';
 import 'package:alcheringa/Screens/profile_setup/setup_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:alcheringa/Screens/reset_password_screen.dart';
-import 'package:alcheringa/screens/home_screen.dart';
 import '../Authentication/authenticationviewmodel.dart';
 
 class LoginScreen extends StatefulWidget {

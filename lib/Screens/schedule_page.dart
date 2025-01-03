@@ -1,14 +1,6 @@
 import 'package:alcheringa/Common/globals.dart';
-import 'package:alcheringa/Model/view_model_main.dart';
-import 'package:alcheringa/Screens/cart_screen.dart';
-import 'package:alcheringa/Screens/end_drawer.dart';
-import 'package:alcheringa/Screens/notification/notification_screen.dart';
-import 'package:alcheringa/Screens/top_app_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:badges/badges.dart' as badges;
 import 'package:intl/intl.dart';
-
-import '../Model/venue_model.dart';
 
 class SchedulePage extends StatefulWidget {
   const SchedulePage({super.key});

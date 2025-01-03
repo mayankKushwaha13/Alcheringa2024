@@ -1,14 +1,7 @@
 import 'dart:async';
 import 'package:alcheringa/Common/globals.dart';
 import 'package:alcheringa/Model/view_model_main.dart';
-import 'package:alcheringa/Screens/home_screen.dart';
-import 'package:alcheringa/Screens/merch_buy_screen.dart';
-import 'package:alcheringa/Screens/merch_detail_screen.dart';
-import 'package:alcheringa/Screens/merch_screen.dart';
-import 'package:alcheringa/Screens/notification/notification_screen.dart';
-import 'package:alcheringa/Screens/signup_screen.dart';
 import 'package:alcheringa/Screens/welcome_screen.dart';
-import 'package:alcheringa/screens/login_screen.dart';
 import 'package:alcheringa/screens/main_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
