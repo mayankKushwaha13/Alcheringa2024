@@ -3,6 +3,7 @@ import 'package:alcheringa/Model/informal_model.dart';
 import 'package:alcheringa/Model/utility_model.dart';
 import 'package:alcheringa/Model/view_model_main.dart';
 import 'package:alcheringa/Screens/activity_pages/Stalls.dart';
+import 'package:alcheringa/Screens/activity_pages/stalls_page.dart';
 import 'package:alcheringa/Screens/merch_screen.dart';
 import 'package:alcheringa/Widgets/HomeScreenWidgets/explore_container_widget.dart';
 import 'package:alcheringa/Widgets/HomeScreenWidgets/home_screen_container_widget.dart';
@@ -65,7 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           ExploreContainerWidget(
                             text: "Stalls",
-                            NavigatingPage: FoodSearchScreen(),
+                            NavigatingPage: StallsPage()
                           )
                         ],
                       ),
