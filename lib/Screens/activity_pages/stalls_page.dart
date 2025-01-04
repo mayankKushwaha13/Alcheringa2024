@@ -58,161 +58,57 @@ class _StallsPageState extends State<StallsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        key: _scaffoldKey,
-        endDrawer: EndDrawer(scaffoldState: _scaffoldKey,),
-        appBar: AppBar(
-          backgroundColor: Color.fromARGB(255, 29, 43, 83),
-          automaticallyImplyLeading: false,
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Container(
+        color: Colors.transparent, // Transparent container
+        child: Column(
+          children: [
+            Opacity(
+              opacity: 1.0,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.0), // Transparent background
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 8),
+                    Container(
+                      color: Color(0xff1d2b53),
+                      child: PixelTextField(
+                        controller: _searchController,
+                        onChanged: _filterStalls,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 25),
+            Expanded(
+              child: ListView(
                 children: [
-                  IconButton(
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (_) => CartScreen()));
-                    },
-                    icon: Image.asset('assets/images/appbar_cart_icon.png'),
-                  ),
-                  badges.Badge(
-                    badgeContent: Text(
-                      '2',
-                      style: TextStyle(
-                        color: Color(0xFFCA3562),
-                        fontFamily: 'Alcherpixel',
+                  ..._filteredStalls.map(
+                    (item) => Padding(
+                      padding: const EdgeInsets.only(bottom: 15.0),
+                      child: PixelStoreCard(
+                        name: item.name,
+                        ref: item.name,
+                        image: item.imgurl,
                       ),
                     ),
-                    position: badges.BadgePosition.bottomEnd(bottom: 0, end: 10),
-                    badgeStyle:
-                    badges.BadgeStyle(badgeColor: Colors.transparent, borderRadius: BorderRadius.circular(5)),
-                    child: IconButton(
-                      onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (_) => NotificationScreen()));
-                      },
-                      icon: Image.asset('assets/images/appbar_notification_icon.png'),
-                    ),
                   ),
+                  SizedBox(height: bottomNavBarHeight - 10),
                 ],
-              ),
-              Image.asset('assets/images/appbar_alcheringa.png'),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      // Action for first trailing icon
-                    },
-                    icon: Image.asset('assets/images/appbar_search_icon.png'),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          actions: [
-            IconButton(
-              onPressed: () {
-                _scaffoldKey.currentState!.openEndDrawer();
-              },
-              icon: Image.asset(
-                'assets/images/appbar_menu_icon.png',
               ),
             ),
           ],
         ),
-        backgroundColor: const Color(0xFF1A237E),
-      body: Stack(
-        children: [
-// Background Image
-          Positioned.fill(
-            child: Image.asset(
-              'assets/images/background_alcher_app_25.png',
-              fit: BoxFit.cover, // Ensures the image covers the entire screen
-            ),
-          ),
-// Main Content
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Container(
-              color: Colors.transparent, // Transparent container
-              child: Column(
-                children: [
-                  Opacity(
-                    opacity: 1.0,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.0), // Transparent background
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: 70,
-                            child: ListView(
-                              shrinkWrap: true,
-                              scrollDirection: Axis.horizontal,
-                              children: [
-                                IconButton(
-                                  onPressed: () {},
-                                  icon: Image.asset('assets/images/eventsIcon.png'),
-                                ),
-                                IconButton(
-                                  onPressed: () {},
-                                  icon: Image.asset('assets/images/competitionsIcon.png'),
-                                ),
-                                IconButton(
-                                  onPressed: () {},
-                                  icon: Image.asset('assets/images/stallsNavigationIcon.png'),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Container(
-
-                              color: Color(0xff1d2b53),
-                              child:
-                              PixelTextField(controller: _searchController, onChanged: _filterStalls,)
-                          )
-
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 25),
-                  Expanded(
-                    child: ListView(
-                      children: [
-                        ..._filteredStalls.map(
-                              (item) => Padding(
-                            padding: const EdgeInsets.only(bottom: 15.0),
-                            child: PixelStoreCard(
-                              name: item.name,
-                              ref: item.name,
-                              image: item.imgurl,
-                            ),
-                          ),
-
-                        ),
-                        SizedBox(height: bottomNavBarHeight - 10),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
       ),
     );
-
   }
 }
-
-
-
-
 
 class PixelTextField extends StatelessWidget {
   final TextEditingController? controller;
@@ -244,19 +140,21 @@ class PixelTextField extends StatelessWidget {
         ),
       ),
       child: Center(
-        child:
-        TextField(
-          controller: controller,
-          onChanged: onChanged,
-          keyboardType: keyboardType,
-          style: const TextStyle(color: Colors.white, fontSize: 22, fontFamily: 'AlcherpixelBold'),
-          decoration: InputDecoration(
-            hintText: hintText,
-            hintStyle: const TextStyle(color: Color(0xff83769c), fontFamily: 'AlcherpixelBold', fontSize: 22),
-            border: InputBorder.none,
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: 25,
-              vertical: 8,
+        child: GestureDetector(
+          onTap:() => FocusScope.of(context).unfocus(),
+          child: TextField(
+            controller: controller,
+            onChanged: onChanged,
+            keyboardType: keyboardType,
+            style: const TextStyle(color: Colors.white, fontSize: 22, fontFamily: 'AlcherpixelBold'),
+            decoration: InputDecoration(
+              hintText: hintText,
+              hintStyle: const TextStyle(color: Color(0xff83769c), fontFamily: 'AlcherpixelBold', fontSize: 22),
+              border: InputBorder.none,
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 25,
+                vertical: 8,
+              ),
             ),
           ),
         ),
