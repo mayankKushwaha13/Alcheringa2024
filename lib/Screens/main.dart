@@ -38,8 +38,7 @@ class MyApp extends StatelessWidget {
     Provider.of<ViewModelMain>(context, listen: false).getAllEvents();
 
     return MaterialApp(
-      home: CartScreen(),
-      // home: SplashScreen(),
+      home: SplashScreen(),
       debugShowCheckedModeBanner: false,
     );
   }
