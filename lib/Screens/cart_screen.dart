@@ -27,43 +27,7 @@ class _CartScreenState extends State<CartScreen> {
               padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
               decoration: BoxDecoration(
                 color:
-                    Colors.black.withOpacity(0.5), // Header background opacity
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  GestureDetector(
-                    onTap: () {},
-                    child: Image.asset(
-                      'assets/images/back_button.png',
-                      width: 54.0,
-                      height: 54.0,
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {},
-                    child: Text(
-                      'Cart',
-                      style: TextStyle(
-                        fontFamily: 'Game_Tape',
-                        fontSize: 24,
-                        fontWeight: FontWeight.w400,
-                        color: Color.fromRGBO(255, 119, 168, 1),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          child: Column(
-          children: [
-            // Semi-transparent header
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
-              decoration: BoxDecoration(
-                color:
-                    Colors.black.withOpacity(0.5), // Header background opacity
+                Colors.black.withOpacity(0.5), // Header background opacity
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
