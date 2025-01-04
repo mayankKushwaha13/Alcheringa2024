@@ -1,0 +1,164 @@
+import 'package:alcheringa/Common/globals.dart';
+import 'package:alcheringa/Model/stall_model.dart';
+import 'package:alcheringa/Model/view_model_main.dart';
+import 'package:badges/badges.dart' as badges;
+import 'package:flutter/material.dart';
+
+import '../cart_screen.dart';
+import '../end_drawer.dart';
+import '../notification/notification_screen.dart';
+import 'PixelStoreCardWidget.dart';
+
+class StallsPage extends StatefulWidget {
+  const StallsPage({super.key});
+
+  @override
+  State<StallsPage> createState() => _StallsPageState();
+}
+
+class _StallsPageState extends State<StallsPage> {
+  final TextEditingController _searchController = TextEditingController();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  List<StallModel> _stalls = [];
+  List<StallModel> _filteredStalls = [];
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
+
+  Future<List<StallModel>> getData() async {
+    try {
+      final stalls = await ViewModelMain().getStalls();
+      setState(() {
+        _stalls = stalls;
+        print("This is stalls list: ${stalls.first.imgurl}");
+        _filteredStalls = List.from(_stalls);
+      });
+      print('Hello ${_stalls.first.name}');
+    } catch (e) {
+      print('Error fetching data: $e');
+    }
+    return _stalls;
+  }
+
+  void _filterStalls(String query) {
+    if (query.isEmpty) {
+      setState(() {
+        _filteredStalls = List.from(_stalls);
+      });
+    } else {
+      setState(() {
+        _filteredStalls =
+            _stalls.where((restaurant) => restaurant.name.toLowerCase().contains(query.toLowerCase())).toList();
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Container(
+        color: Colors.transparent, // Transparent container
+        child: Column(
+          children: [
+            Opacity(
+              opacity: 1.0,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.0), // Transparent background
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 8),
+                    Container(
+                      color: Color(0xff1d2b53),
+                      child: PixelTextField(
+                        controller: _searchController,
+                        onChanged: _filterStalls,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 25),
+            Expanded(
+              child: ListView(
+                children: [
+                  ..._filteredStalls.map(
+                    (item) => Padding(
+                      padding: const EdgeInsets.only(bottom: 15.0),
+                      child: PixelStoreCard(
+                        name: item.name,
+                        ref: item.name,
+                        image: item.imgurl,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: bottomNavBarHeight - 10),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class PixelTextField extends StatelessWidget {
+  final TextEditingController? controller;
+  final String? hintText;
+  final Function(String)? onChanged;
+  final TextInputType? keyboardType;
+  final double horizontalPdding;
+  final double height;
+
+  const PixelTextField({
+    super.key,
+    this.controller,
+    this.hintText = 'Search Food',
+    this.onChanged,
+    this.keyboardType,
+    this.horizontalPdding = 20.0,
+    this.height = 60,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width - (horizontalPdding * 2),
+      height: height,
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('assets/images/textField.png'),
+          fit: BoxFit.fill,
+        ),
+      ),
+      child: Center(
+        child: GestureDetector(
+          onTap:() => FocusScope.of(context).unfocus(),
+          child: TextField(
+            controller: controller,
+            onChanged: onChanged,
+            keyboardType: keyboardType,
+            style: const TextStyle(color: Colors.white, fontSize: 22, fontFamily: 'AlcherpixelBold'),
+            decoration: InputDecoration(
+              hintText: hintText,
+              hintStyle: const TextStyle(color: Color(0xff83769c), fontFamily: 'AlcherpixelBold', fontSize: 22),
+              border: InputBorder.none,
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 25,
+                vertical: 8,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

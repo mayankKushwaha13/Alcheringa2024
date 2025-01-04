@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:alcheringa/Common/globals.dart';
 import 'package:alcheringa/Model/view_model_main.dart';
 import 'package:alcheringa/Screens/cart_screen.dart';
 import 'package:alcheringa/Screens/welcome_screen.dart';
@@ -11,7 +11,6 @@ import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 
 import '../Notification/notification_services.dart';
-import '../common/globals.dart';
 import '../firebase_options.dart';
 
 @pragma('vm:entry-poiny')
@@ -37,6 +36,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Provider.of<ViewModelMain>(context, listen: false).getAllEvents();
+
     return MaterialApp(
       home: CartScreen(),
       // home: SplashScreen(),
@@ -57,17 +57,24 @@ class _SplashScreenState extends State<SplashScreen> {
   late bool isUserLoggedIn;
   NotificationServices notificationSerivces = NotificationServices();
 
+  Future<void> _requestPermission() async {
+    await ViewModelMain().requestNotificationPermission();
+    await ViewModelMain().requestLocationPermission();
+  }
+
   @override
   void initState() {
     super.initState();
     isLoggedIn = auth.currentUser != null;
-    notificationSerivces.requestNotificationPermission();
+    isVerified = isLoggedIn && auth.currentUser!.emailVerified ?? false;
+    // notificationSerivces.requestNotificationPermission();
     notificationSerivces.forgroundMessage();
     notificationSerivces.firebaseInit(context);
+    _requestPermission();
     notificationSerivces.isTokenRefresh();
-    notificationSerivces.getDeviceToken().then((value) {
-      print(value);
-    });
+    // notificationSerivces.getDeviceToken().then((value) {
+    //   print(value);
+    // });
 
     _controller =
         VideoPlayerController.asset("assets/SplashMovie/splash_screen.mp4")
@@ -83,7 +90,7 @@ class _SplashScreenState extends State<SplashScreen> {
       () {
         // checking signup screen, change it to main screen after done
         final nextScreen =
-            isUserLoggedIn ? const MainScreen() : welcomeScreen();
+            isUserLoggedIn && isVerified ? const MainScreen() : welcomeScreen();
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => nextScreen),

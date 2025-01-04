@@ -7,7 +7,8 @@
         {
             "name": "Alcheringa2024",
             "request": "launch",
-            "type": "dart"
+            "type": "dart",
+            "program": "lib/screens/main.dart"
         },
         {
             "name": "Alcheringa2024 (profile mode)",

@@ -1,3 +1,5 @@
+import 'package:alcheringa/Screens/main_screen.dart';
+import 'package:alcheringa/authentication/AuthenticationViewModel.dart';
 import 'package:alcheringa/Widgets/sign_up_textfield.dart';
 import 'package:alcheringa/screens/login_screen.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +28,12 @@ class _SignupScreenState extends State<SignupScreen> {
   void _setLoading(bool isLoading) {
     setState(() {
       _isLoading = isLoading;
+    });
+  }
+
+  void _setIsLoggedIn(bool status){
+    setState(() {
+      isLoggedIn = status;
     });
   }
 
@@ -79,131 +87,250 @@ class _SignupScreenState extends State<SignupScreen> {
 
   @override
   Widget build(BuildContext context) {
-    EdgeInsets padding = MediaQuery.of(context).padding;
-    double safeAreaHeight = (padding.top) + (padding.bottom);
-    return SafeArea(
-      child: LayoutBuilder(
-          builder: (BuildContext context, BoxConstraints constraints) {
-        double height = constraints.constrainHeight();
-        height -= height / 639 * safeAreaHeight;
-        double width = constraints.constrainWidth();
-        double hRatio = height / 639;
-        double wRatio = width / 364;
-        return Scaffold(
-          resizeToAvoidBottomInset: false,
-          backgroundColor: Colors.transparent,
-          body: Container(
-            width: width,
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage(
-                      "assets/images/background.png",
-                    ),
-                    fit: BoxFit.cover)),
-            child: Stack(
-              // alignment: Alignment.center,
-              children: [
-                // Login Container
-                Padding(
-                  padding: EdgeInsets.only(
-                      left: 26 * wRatio,
-                      top: (height - 561 * hRatio) * hRatio / 2 + 23,
-                      right: 26 * wRatio),
-                  child: Image(
-                    image: AssetImage('assets/images/login_container.png'),
-                    height: 561 * hRatio,
-                  ),
-                ),
-                // Back Button
-                AnimatedPadding(
-                  padding: EdgeInsets.only(
-                      left: 295 * wRatio,
-                      top: isButtonPressed
-                          ? (height - 561 * hRatio) * hRatio / 2 + 25
-                          : (height - 561 * hRatio) * hRatio / 2 + 15),
-                  duration: Duration(milliseconds: 200),
-                  child: InkWell(
-                    onTap: () {
-                      setState(() {
-                        isButtonPressed = !isButtonPressed;
-                        Future.delayed(const Duration(milliseconds: 200), () {
-                          setState(() {
-                            isButtonPressed = !isButtonPressed;
-                          });
-                          // Pop to welcome screen
-                          // Navigator.pop(context);
-                        });
-                      });
-                    },
-                    splashColor: Color.fromARGB(255, 179, 64, 118),
-                    child: Image(
-                      image: AssetImage('assets/images/back_button.png'),
-                      height: 54 * hRatio,
-                    ),
-                  ),
-                ),
-                Container(
-                  child: _isLoading
-                      ? const Center(child: CircularProgressIndicator())
-                      : Padding(
-                          padding: EdgeInsets.only(
-                              left: 68, right: 68, top: 80 * hRatio),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Column(
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: Image.asset(
+              'assets/images/pattern.png',
+              fit: BoxFit.cover,
+            ),
+          ),
+          Center(
+            child: SingleChildScrollView(
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  Container(
+                    width: screenWidth * 0.9,
+                    height: screenHeight * 0.9,
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage(
+                              "assets/images/loginborder1.png",
+                            ),
+                            fit: BoxFit.fill)),
+                    child: Container(
+                      child: _isLoading
+                          ? const Center(child: CircularProgressIndicator())
+                          : Padding(
+                              padding: EdgeInsets.all(screenWidth * 0),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  SignUpTextfield(
-                                    hintText: "Email",
-                                    controller: _emailController,
-                                    height: 51 * hRatio,
-                                  ),
                                   SizedBox(
-                                    height: 10 * hRatio,
+                                    height: screenHeight * 0.14,
                                   ),
-                                  SignUpTextfield(
-                                    hintText: "Password",
-                                    controller: _passwordController,
-                                    height: 51 * hRatio,
-                                    obscure: true,
+                                  Column(
+                                    children: [
+                                      SizedBox(height: screenHeight * 0.03),
+                                      _buildTextField(
+                                          hint: 'Email',
+                                          backgroundImage:
+                                              'assets/images/emailbackground.png',
+                                          controller: _emailController),
+                                      SizedBox(height: screenHeight * 0.02),
+                                      _buildTextField(
+                                          hint: 'Password',
+                                          isPassword: true,
+                                          backgroundImage:
+                                              'assets/images/emailbackground.png',
+                                          controller: _passwordController),
+                                      SizedBox(height: screenHeight * 0.02),
+                                      _buildTextField(
+                                          hint: 'Confirm Password',
+                                          isPassword: true,
+                                          backgroundImage:
+                                              'assets/images/emailbackground.png',
+                                          controller: _confirmPasswordController),
+                                      SizedBox(height: screenHeight * 0.01),
+                                    ],
                                   ),
-                                  SizedBox(
-                                    height: 10 * hRatio,
+                                  const SizedBox(height: 16),
+                                  Ink(
+                                    child: InkWell(
+                                        onTap: _isLoading
+                                            ? null
+                                            : () async {
+                                                await _signUp();
+                                                if (isLoggedIn) {
+                                                  Navigator.pushReplacement(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            const LoginScreen()),
+                                                  );
+                                                }
+                                              },
+                                        child: Stack(
+                                          alignment: Alignment.center,
+                                          children: [
+                                            Image(
+                                              width: screenWidth * 0.5,
+                                              height: screenHeight * 0.06,
+                                              image: AssetImage(
+                                                  "assets/images/sign_in.png"),
+                                            ),
+                                            Text(
+                                              "Sign up",
+                                              style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 24,
+                                                  fontFamily: 'AlcherPixel',
+                                                  fontWeight: FontWeight.w400,
+                                                  shadows: [
+                                                    Shadow(
+                                                        offset: Offset(2.5, 2),
+                                                        color: Colors.black,
+                                                        blurRadius: 2),
+                                                  ]),
+                                            ),
+                                          ],
+                                        )),
                                   ),
-                                  SignUpTextfield(
-                                    hintText: "Confirm Password",
-                                    controller: _confirmPasswordController,
-                                    height: 51 * hRatio,
-                                    obscure: true,
+                                  SizedBox(height: screenHeight * 0.01),
+                                  Text(
+                                    "Or",
+                                    style: TextStyle(
+                                      color: Color.fromARGB(255, 179, 64, 118),
+                                      fontSize: 18,
+                                      fontFamily: 'AlcherPixel',
+                                      fontWeight: FontWeight.w400,
+                                    ),
                                   ),
-                                ],
-                              ),
-                              const SizedBox(height: 16),
-                              Ink(
-                                child: InkWell(
-                                    onTap: _isLoading
-                                        ? null
-                                        : () async {
-                                            await _signUp();
-                                            if (isLoggedIn) {
+                                  SizedBox(height: screenHeight * 0.01),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      // Google Button
+                                      _buildSocialButton(
+                                          backgroundPath:
+                                              'assets/images/google.png',
+                                          logoPath:
+                                              'assets/images/googlelogo.png',
+                                          buttonSize: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.18, // Background size
+                                          logoSize: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.09, // Logo size
+                                          onPressed: () async {
+                                            await signInWithGoogle(context,
+                                                onLoading: _setLoading, isLoggedIn: _setIsLoggedIn);
+                                            if (isLoggedIn && context.mounted) {
                                               Navigator.pushReplacement(
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (context) =>
-                                                        const LoginScreen()),
+                                                        const MainScreen()),
                                               );
                                             }
-                                          },
+                                          }),
+                                      // Spacing between buttons
+                                      SizedBox(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.05),
+
+                                      // Apple Button
+                                      _buildSocialButton(
+                                        backgroundPath:
+                                            'assets/images/google.png',
+                                        logoPath: 'assets/images/applelogo.png',
+                                        buttonSize:
+                                            MediaQuery.of(context).size.width *
+                                                0.18,
+                                        logoSize:
+                                            MediaQuery.of(context).size.width *
+                                                0.09,
+                                        onPressed: () async {
+                                          await signInWithGoogle(context,
+                                              onLoading: _setLoading, isLoggedIn: _setIsLoggedIn);
+                                          if (isLoggedIn && context.mounted) {
+                                            Navigator.pushReplacement(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const MainScreen()),
+                                            );
+                                          }
+                                        },
+                                      ),
+                                      // Spacing between buttons
+                                      SizedBox(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.05),
+
+                                      // Outlook Button
+                                      _buildSocialButton(
+                                          backgroundPath:
+                                              'assets/images/outlook.png',
+                                          logoPath:
+                                              'assets/images/outlooklogo.png',
+                                          buttonSize: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.18,
+                                          logoSize: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.09,
+                                          onPressed: () async {
+                                            await signInWithMicrosoft(context,
+                                                onLoading: _setLoading, isLoggedIn: _setIsLoggedIn);
+                                            if (isLoggedIn && context.mounted) {
+                                              Navigator.pushReplacement(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const MainScreen()),
+                                              );
+                                            }
+                                          }),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: screenHeight * 0.01,
+                                  ),
+                                  Text(
+                                    "Already have an account?",
+                                    style: TextStyle(
+                                      color: Color.fromARGB(255, 179, 64, 118),
+                                      fontSize: 18,
+                                      fontFamily: 'AlcherPixel',
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: screenHeight * 0.025,
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      // Go to Login Page
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  LoginScreen()));
+                                    },
                                     child: Stack(
                                       alignment: Alignment.center,
                                       children: [
                                         Image(
-                                          width: 132.48 * wRatio,
-                                          image: AssetImage(
-                                              "assets/images/sign_in.png"),
-                                        ),
+                                            width: screenWidth * 0.5,
+                                            height: screenHeight * 0.06,
+                                            image: AssetImage(
+                                                "assets/images/login.png")),
                                         Text(
-                                          "Sign up",
+                                          "Login",
                                           style: const TextStyle(
                                               color: Colors.white,
                                               fontSize: 24,
@@ -216,113 +343,129 @@ class _SignupScreenState extends State<SignupScreen> {
                                               ]),
                                         ),
                                       ],
-                                    )),
-                              ),
-                              Text(
-                                "Or",
-                                style: TextStyle(
-                                  color: Color.fromARGB(255, 179, 64, 118),
-                                  fontSize: 18,
-                                  fontFamily: 'AlcherPixel',
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  InkWell(
-                                    onTap: () {},
-                                    child: Image(
-                                        width: 60 * wRatio,
-                                        image: AssetImage(
-                                            "assets/images/google_button.png")),
+                                    ),
                                   ),
-                                  InkWell(
-                                    onTap: () {},
-                                    child: Image(
-                                        width: 60 * wRatio,
-                                        image: AssetImage(
-                                            "assets/images/apple_button.png")),
-                                  ),
-                                  InkWell(
-                                    onTap: () {},
-                                    child: Image(
-                                        width: 60 * wRatio,
-                                        image: AssetImage(
-                                            "assets/images/outlook_button.png")),
+                                  SizedBox(height: screenHeight * 0.01),
+                                  const Text(
+                                    'Privacy policy',
+                                    style: TextStyle(
+                                      fontFamily: 'Alcherpixel',
+                                      color: Color(0xFFFF77A8),
+                                      fontSize: 16,
+                                    ),
                                   ),
                                 ],
                               ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Text(
-                                "Already have an account?",
-                                style: TextStyle(
-                                  color: Color.fromARGB(255, 179, 64, 118),
-                                  fontSize: 18,
-                                  fontFamily: 'AlcherPixel',
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  // Go to Login Page
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => LoginScreen()));
-                                },
-                                child: Stack(
-                                  alignment: Alignment.center,
-                                  children: [
-                                    Image(
-                                        width: 150.59 * wRatio,
-                                        image: AssetImage(
-                                            "assets/images/login.png")),
-                                    Text(
-                                      "Login",
-                                      style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 24,
-                                          fontFamily: 'AlcherPixel',
-                                          fontWeight: FontWeight.w400,
-                                          shadows: [
-                                            Shadow(
-                                                offset: Offset(2.5, 2),
-                                                color: Colors.black),
-                                          ]),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Text(
-                                "Privacy Policy",
-                                style: TextStyle(
-                                  color: Color.fromARGB(255, 179, 64, 118),
-                                  fontSize: 18,
-                                  fontFamily: 'AlcherPixel',
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                ),
-                if (_isLoading)
-                  const Center(
-                    child: CircularProgressIndicator(),
+                            ),
+                    ),
                   ),
-              ],
+                  Positioned(
+                    top: -screenHeight * 0.025,
+                    right: -screenWidth * 0.05,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          Image.asset(
+                            'assets/images/backbackground.png',
+                            width: screenWidth * 0.2,
+                            fit: BoxFit.fill,
+                          ),
+                          Image.asset(
+                            'assets/images/backbutton.png',
+                            width: screenWidth * 0.16,
+                            fit: BoxFit.contain,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-        );
-      }),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTextField({
+    required String hint,
+    bool isPassword = false,
+    required String backgroundImage,
+    required TextEditingController controller,
+  }) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
+    return Container(
+      width: screenWidth * 0.7,
+      height: screenHeight * 0.07,
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage(backgroundImage),
+          fit: BoxFit.fill,
+        ),
+      ),
+      child: TextField(
+        controller: controller,
+        obscureText: isPassword,
+        style: TextStyle(
+          fontFamily: 'Alcherpixel',
+          fontSize: 20,
+          color: Color(0xFFFF77A8),
+        ),
+        decoration: InputDecoration(
+          hintText: hint,
+          hintStyle: const TextStyle(
+            fontFamily: 'Alcherpixel',
+            fontSize: 20,
+            color: Color(0xFFFF77A8),
+          ),
+          border: InputBorder.none,
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSocialButton(
+      {required String backgroundPath,
+      required String logoPath,
+      required double buttonSize,
+      required double logoSize,
+      required Future<void> Function() onPressed}) {
+    return GestureDetector(
+      onTap: () async {
+        await onPressed();
+      },
+      child: SizedBox(
+        width: buttonSize,
+        height: buttonSize,
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            // Background of the button
+            Image.asset(
+              backgroundPath,
+              width: buttonSize,
+              height: buttonSize,
+              fit: BoxFit.cover,
+            ),
+            // Centered logo inside the button
+            Image.asset(
+              logoPath,
+              width: logoSize,
+              height: logoSize,
+              fit: BoxFit.contain,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
