@@ -45,7 +45,7 @@ class _CartScreenState extends State<CartScreen> {
                     child: Text(
                       'Cart',
                       style: TextStyle(
-                        fontFamily: 'AlcherPixel',
+                        fontFamily: 'Game_Tape',
                         fontSize: 24,
                         fontWeight: FontWeight.w400,
                         color: Color.fromRGBO(255, 119, 168, 1),
@@ -82,7 +82,7 @@ class _CartScreenState extends State<CartScreen> {
                     Text(
                       'Rs. 69', // Your text
                       style: TextStyle(
-                        fontFamily: 'AlcherPixel',
+                        fontFamily: 'Game_Tape',
                         color: Colors.white, // Text color
                         fontSize: 32.0, // Text size
                         fontWeight: FontWeight.w400,
@@ -92,7 +92,7 @@ class _CartScreenState extends State<CartScreen> {
                     Text(
                       'Total: 5 items', // Your text
                       style: TextStyle(
-                        fontFamily: 'AlcherPixel',
+                        fontFamily: 'Game_Tape',
                         color: Colors.white, // Text color
                         fontSize: 16.0, // Text size
                         fontWeight: FontWeight.w400,
@@ -137,11 +137,11 @@ class _CartScreenState extends State<CartScreen> {
                     ),
                   ),
                   Text(
-                    'Buy', // Your text
+                    'Purchase', // Your text
                     style: TextStyle(
-                      fontFamily: 'AlcherPixel',
+                      fontFamily: 'Brick_Pixel',
                       color: Colors.white, // Text color
-                      fontSize: 36.0, // Text size
+                      fontSize: 24.0, // Text size
                       fontWeight: FontWeight.w400, // Optional: Bold text
                     ),
                   ),
