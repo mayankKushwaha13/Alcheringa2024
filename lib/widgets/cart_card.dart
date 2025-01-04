@@ -22,6 +22,26 @@ class CartCard extends StatefulWidget {
 }
 
 class _CartCardState extends State<CartCard> {
+  late int currentQuantity; // Local state for quantity
+  @override
+  void initState() {
+    super.initState();
+    currentQuantity =
+        widget.quantity ?? 1; // Initialize with the passed quantity
+  }
+
+  void _increaseQuantity() {
+    setState(() {
+      currentQuantity++;
+    });
+  }
+
+  void _decreaseQuantity() {
+    setState(() {
+      if (currentQuantity > 1) currentQuantity--; // Prevent negative quantity
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -63,7 +83,7 @@ class _CartCardState extends State<CartCard> {
                   Text(
                     widget.title,
                     style: TextStyle(
-                      fontFamily: 'AlcherPixel',
+                      fontFamily: 'Game_Tape',
                       color: Colors.white,
                       fontSize: 20.0,
                       fontWeight: FontWeight.w400,
@@ -72,7 +92,7 @@ class _CartCardState extends State<CartCard> {
                   Text(
                     widget.subtitle,
                     style: TextStyle(
-                      fontFamily: 'AlcherPixel',
+                      fontFamily: 'Game_Tape',
                       color: Color.fromRGBO(255, 119, 168, 1),
                       fontSize: 16.0,
                       fontWeight: FontWeight.w400,
@@ -81,7 +101,7 @@ class _CartCardState extends State<CartCard> {
                   Text(
                     'Rs. ${widget.price}',
                     style: TextStyle(
-                      fontFamily: 'AlcherPixel',
+                      fontFamily: 'Game_Tape',
                       color: Color.fromRGBO(255, 241, 232, 1),
                       fontSize: 20.0,
                       fontWeight: FontWeight.w400,
@@ -90,7 +110,7 @@ class _CartCardState extends State<CartCard> {
                   Text(
                     'Size: ${widget.size}',
                     style: TextStyle(
-                      fontFamily: 'AlcherPixel',
+                      fontFamily: 'Game_Tape',
                       color: Colors.white,
                       fontSize: 12.0,
                       fontWeight: FontWeight.w400,
@@ -103,7 +123,7 @@ class _CartCardState extends State<CartCard> {
                       // Left Arrow
                       GestureDetector(
                         onTap: () {
-                          // Decrease quantity logic
+                          _decreaseQuantity();
                         },
                         child: Image.asset(
                           'assets/images/product_detail_sprite.png',
@@ -123,9 +143,9 @@ class _CartCardState extends State<CartCard> {
                         child: FittedBox(
                           fit: BoxFit.scaleDown,
                           child: Text(
-                            '${widget.quantity}',
+                            '${currentQuantity}',
                             style: TextStyle(
-                              fontFamily: 'AlcherPixel',
+                              fontFamily: 'Brick_Pixel',
                               color: Color.fromRGBO(255, 119, 168, 1),
                               fontSize: 60.0,
                               fontWeight: FontWeight.w400,
@@ -138,7 +158,7 @@ class _CartCardState extends State<CartCard> {
                       // Right Arrow (Flipped)
                       GestureDetector(
                         onTap: () {
-                          // Increase quantity logic
+                          _increaseQuantity();
                         },
                         child: Transform(
                           alignment: Alignment.center,

@@ -40,7 +40,7 @@ class CustomImageTextField extends StatelessWidget {
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 16,
-                fontFamily: 'AlcherPixel',
+                fontFamily: 'Game_Tape',
                 fontWeight: FontWeight.w400,
               ),
             ),
