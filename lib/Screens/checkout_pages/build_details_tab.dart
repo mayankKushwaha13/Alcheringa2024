@@ -1,7 +1,15 @@
 import 'package:alcheringa/widgets/custom_image_text_field.dart';
 import 'package:flutter/material.dart';
 
-Widget buildDetailsTab() {
+Widget buildDetailsTab({
+  required TextEditingController nameController,
+  required TextEditingController phoneController,
+  required TextEditingController addressLine1Controller,
+  required TextEditingController addressLine2Controller,
+  required TextEditingController cityController,
+  required TextEditingController stateController,
+  required TextEditingController pincodeController,
+}) {
   return Padding(
     padding: EdgeInsets.only(left: 45),
     child: SingleChildScrollView(
@@ -15,20 +23,19 @@ Widget buildDetailsTab() {
               style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w400,
-                  fontFamily: 'AlcherPixel',
+                  fontFamily: 'Game_Tape',
                   color: Colors.white),
             ),
             SizedBox(
               height: 2,
             ),
             CustomImageTextField(
-                hintText: 'Enter your name',
-                controller: TextEditingController()),
+                hintText: 'Enter your name', controller: nameController),
             SizedBox(
               height: 10,
             ),
             CustomImageTextField(
-                hintText: 'Phone Number', controller: TextEditingController()),
+                hintText: 'Phone Number', controller: phoneController),
             SizedBox(
               height: 97,
             ),
@@ -37,21 +44,19 @@ Widget buildDetailsTab() {
               style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w400,
-                  fontFamily: 'AlcherPixel',
+                  fontFamily: 'Game_Tape',
                   color: Colors.white),
             ),
             SizedBox(
               height: 2,
             ),
             CustomImageTextField(
-                hintText: 'Address Line 1',
-                controller: TextEditingController()),
+                hintText: 'Address Line 1', controller: addressLine1Controller),
             SizedBox(
               height: 10,
             ),
             CustomImageTextField(
-                hintText: 'Address Line 2',
-                controller: TextEditingController()),
+                hintText: 'Address Line 2', controller: addressLine2Controller),
             SizedBox(
               height: 10,
             ),
@@ -73,7 +78,7 @@ Widget buildDetailsTab() {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 15),
                         child: TextField(
-                          controller: TextEditingController(),
+                          controller: cityController,
                           decoration: InputDecoration(
                             hintText: 'City',
                             hintStyle: TextStyle(color: Colors.grey),
@@ -86,7 +91,7 @@ Widget buildDetailsTab() {
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 16,
-                            fontFamily: 'AlcherPixel',
+                            fontFamily: 'Game_Tape',
                             fontWeight: FontWeight.w400,
                           ),
                         ),
@@ -113,7 +118,7 @@ Widget buildDetailsTab() {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 15),
                         child: TextField(
-                          controller: TextEditingController(),
+                          controller: stateController,
                           decoration: InputDecoration(
                             hintText: 'State',
                             hintStyle: TextStyle(color: Colors.grey),
@@ -126,7 +131,7 @@ Widget buildDetailsTab() {
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 16,
-                            fontFamily: 'AlcherPixel',
+                            fontFamily: 'Game_Tape',
                             fontWeight: FontWeight.w400,
                           ),
                         ),
@@ -140,7 +145,7 @@ Widget buildDetailsTab() {
               height: 10,
             ),
             CustomImageTextField(
-                hintText: 'Pincode', controller: TextEditingController()),
+                hintText: 'Pincode', controller: pincodeController),
             SizedBox(
               height: 19,
             ),

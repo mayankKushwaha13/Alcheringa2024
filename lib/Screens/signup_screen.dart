@@ -1,7 +1,8 @@
 import 'package:alcheringa/Widgets/sign_up_textfield.dart';
-import 'package:alcheringa/authentication/AuthenticationViewModel.dart';
 import 'package:alcheringa/screens/login_screen.dart';
 import 'package:flutter/material.dart';
+
+import '../Authentication/authenticationviewmodel.dart';
 import '../common/globals.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -27,6 +28,7 @@ class _SignupScreenState extends State<SignupScreen> {
       _isLoading = isLoading;
     });
   }
+
   Future<void> _signUp() async {
     final email = _emailController.text.trim();
     final password = _passwordController.text.trim();
@@ -58,7 +60,7 @@ class _SignupScreenState extends State<SignupScreen> {
     }
 
     _setLoading(true);
-    await signUp(email, password, context, onLoading: _setLoading);
+    await customSignUp(email, password, context, onLoading: _setLoading);
     _setLoading(false);
 
     if (isLoggedIn) {

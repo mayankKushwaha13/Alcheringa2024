@@ -2,7 +2,15 @@ import 'package:flutter/material.dart';
 
 import '../../widgets/cart_card.dart';
 
-Widget buildReviewTab() {
+Widget buildReviewTab({
+  required String name,
+  required String phone,
+  required String addressLine1,
+  required String addressLine2,
+  required String city,
+  required String state,
+  required String pincode,
+}) {
   return Padding(
     padding: EdgeInsets.only(left: 45),
     child: Column(
@@ -21,15 +29,15 @@ Widget buildReviewTab() {
                     Text('Deliver to:',
                         style: TextStyle(
                           fontWeight: FontWeight.w400,
-                          fontFamily: 'AlcherPixel',
+                          fontFamily: 'Game_Tape',
                           fontSize: 16,
                           color: Color.fromRGBO(131, 118, 156, 1),
                         )),
                     SizedBox(height: 1),
-                    Text('Shivam',
+                    Text(name,
                         style: TextStyle(
                           fontWeight: FontWeight.w400,
-                          fontFamily: 'AlcherPixel',
+                          fontFamily: 'Game_Tape',
                           fontSize: 16,
                           color: Colors.white,
                         )),
@@ -37,15 +45,15 @@ Widget buildReviewTab() {
                     Text("Recipient's Ph No.",
                         style: TextStyle(
                           fontWeight: FontWeight.w400,
-                          fontFamily: 'AlcherPixel',
+                          fontFamily: 'Game_Tape',
                           fontSize: 16,
                           color: Color.fromRGBO(131, 118, 156, 1),
                         )),
                     SizedBox(height: 1),
-                    Text('9877877877',
+                    Text(phone,
                         style: TextStyle(
                           fontWeight: FontWeight.w400,
-                          fontFamily: 'AlcherPixel',
+                          fontFamily: 'Game_Tape',
                           fontSize: 16,
                           color: Colors.white,
                         )),
@@ -59,18 +67,39 @@ Widget buildReviewTab() {
                       Text('Address:',
                           style: TextStyle(
                             fontWeight: FontWeight.w400,
-                            fontFamily: 'AlcherPixel',
+                            fontFamily: 'Game_Tape',
                             fontSize: 16,
                             color: Color.fromRGBO(131, 118, 156, 1),
                           )),
                       SizedBox(height: 1),
-                      Text('amingaon',
+                      Text(
+                        addressLine1, // Concatenating with a space between lines
+                        style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontFamily: 'Game_Tape',
+                          fontSize: 16,
+                          color: Colors.white,
+                        ),
+                        softWrap: true, // Allows text to wrap to the next line
+                        overflow: TextOverflow
+                            .ellipsis, // Ensures overflow is handled
+                      ),
+                      Container(
+                        width: 130,
+                        child: Text(
+                          addressLine2, // Concatenating with a space between lines
                           style: TextStyle(
                             fontWeight: FontWeight.w400,
-                            fontFamily: 'AlcherPixel',
+                            fontFamily: 'Game_Tape',
                             fontSize: 16,
                             color: Colors.white,
-                          )),
+                          ),
+                          softWrap:
+                              true, // Allows text to wrap to the next line
+                          overflow: TextOverflow
+                              .ellipsis, // Ensures overflow is handled
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -81,7 +110,7 @@ Widget buildReviewTab() {
           'Your Orders:',
           style: TextStyle(
             fontWeight: FontWeight.w400,
-            fontFamily: 'AlcherPixel',
+            fontFamily: 'Game_Tape',
             fontSize: 16,
             color: Color.fromRGBO(255, 119, 168, 1),
           ),
@@ -117,7 +146,7 @@ Widget buildReviewTab() {
                         'Price:',
                         style: TextStyle(
                             fontWeight: FontWeight.w400,
-                            fontFamily: 'AlcherPixel',
+                            fontFamily: 'Game_Tape',
                             fontSize: 16,
                             color: Color.fromRGBO(131, 118, 156, 1)),
                       ),
@@ -125,7 +154,7 @@ Widget buildReviewTab() {
                         '69',
                         style: TextStyle(
                             fontWeight: FontWeight.w400,
-                            fontFamily: 'AlcherPixel',
+                            fontFamily: 'Game_Tape',
                             fontSize: 16,
                             color: Color.fromRGBO(131, 118, 156, 1)),
                       ),
@@ -138,7 +167,7 @@ Widget buildReviewTab() {
                         'Shipping charges:',
                         style: TextStyle(
                             fontWeight: FontWeight.w400,
-                            fontFamily: 'AlcherPixel',
+                            fontFamily: 'Game_Tape',
                             fontSize: 16,
                             color: Color.fromRGBO(131, 118, 156, 1)),
                       ),
@@ -146,7 +175,7 @@ Widget buildReviewTab() {
                         '420',
                         style: TextStyle(
                             fontWeight: FontWeight.w400,
-                            fontFamily: 'AlcherPixel',
+                            fontFamily: 'Game_Tape',
                             fontSize: 16,
                             color: Color.fromRGBO(131, 118, 156, 1)),
                       ),
@@ -159,7 +188,7 @@ Widget buildReviewTab() {
                         'Total: 5 items',
                         style: TextStyle(
                             fontWeight: FontWeight.w400,
-                            fontFamily: 'AlcherPixel',
+                            fontFamily: 'Game_Tape',
                             fontSize: 24,
                             color: Color.fromRGBO(131, 118, 156, 1)),
                       ),
@@ -167,7 +196,7 @@ Widget buildReviewTab() {
                         'Rs. 489',
                         style: TextStyle(
                             fontWeight: FontWeight.w400,
-                            fontFamily: 'AlcherPixel',
+                            fontFamily: 'Game_Tape',
                             fontSize: 24,
                             color: Colors.white),
                       ),
