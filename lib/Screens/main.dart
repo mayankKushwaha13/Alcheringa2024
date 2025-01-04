@@ -55,18 +55,24 @@ class _SplashScreenState extends State<SplashScreen> {
   late bool isUserLoggedIn;
   NotificationServices notificationSerivces = NotificationServices();
 
+  Future<void> _requestPermission() async {
+    await ViewModelMain().requestNotificationPermission();
+    await ViewModelMain().requestLocationPermission();
+  }
+
   @override
   void initState() {
     super.initState();
     isLoggedIn = auth.currentUser != null;
     isVerified = isLoggedIn && auth.currentUser!.emailVerified ?? false;
-    notificationSerivces.requestNotificationPermission();
+    // notificationSerivces.requestNotificationPermission();
     notificationSerivces.forgroundMessage();
     notificationSerivces.firebaseInit(context);
+    _requestPermission();
     notificationSerivces.isTokenRefresh();
-    notificationSerivces.getDeviceToken().then((value) {
-      print(value);
-    });
+    // notificationSerivces.getDeviceToken().then((value) {
+    //   print(value);
+    // });
 
 
     _controller =

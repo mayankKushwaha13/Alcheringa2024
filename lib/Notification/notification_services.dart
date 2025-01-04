@@ -67,10 +67,10 @@ class NotificationServices {
       sound: true,
     );
     // permissions for android 13 or above
-    _flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-        AndroidFlutterLocalNotificationsPlugin>()!
-        .requestNotificationsPermission();
+    // _flutterLocalNotificationsPlugin
+    //     .resolvePlatformSpecificImplementation<
+    //     AndroidFlutterLocalNotificationsPlugin>()!
+    //     .requestNotificationsPermission();
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
       if (kDebugMode) {
         print('user granted permission');
