@@ -197,10 +197,10 @@ class MerchandiseItem extends StatelessWidget {
               fit: BoxFit.cover,
             ),
             Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding: const EdgeInsets.all(30.0),
               child: Image.network(
                 image,
-                width: 100,
+                width: 80,
               ),
             ),
 
@@ -241,14 +241,14 @@ class MerchandiseItem extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 160, left: 10),
+              padding: const EdgeInsets.only(top: 160, left: 5),
               child: Stack(
                 children: [
                   Image.asset(
                     color: Colors.black,
                     alignment: Alignment.center,
                     'assets/images/lightpinkbar.png',
-                    width: 340,
+                    width: 800,
                     height: 20,
                     fit: BoxFit.cover,
                   ),
@@ -280,17 +280,17 @@ class MerchandiseItem extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(85, 185, 1, 1),
+              padding: const EdgeInsets.fromLTRB(90, 180, 1, 1),
               child: Stack(
                 children: [
                   Image.asset(
                     alignment: Alignment.topCenter,
                     'assets/images/continue_shopping.png',
-                    width: 200,
+                    width: 180,
                     fit: BoxFit.cover,
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 30, right: 30),
+                    padding: const EdgeInsets.only(left: 20, right: 20),
                     child: Text(
                       "Add to cart",
                       style: const TextStyle(

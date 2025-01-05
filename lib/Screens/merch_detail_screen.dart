@@ -24,8 +24,18 @@ class MerchDetailScreen extends StatefulWidget {
 
 class _MerchDetailScreenState extends State<MerchDetailScreen> {
   final List<String> sizes = ['S', 'M', 'L', 'XL', 'XXL'];
+    final List<int> lengths = [26, 27, 29, 29, 30];
+  final List<int> chests = [40, 42, 44, 46, 48];
   int selectedIndex = 2;
   String selectedSize = "L"; 
+  bool isSizeChartVisible = false;
+
+
+      void toggleSizeChart() {
+    setState(() {
+      isSizeChartVisible = !isSizeChartVisible;
+    });
+  }
 
   void selectLeft() {
     setState(() {
@@ -157,13 +167,18 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
                         color: Color.fromRGBO(255, 241, 232, 1),
                       ),
                     ),
-                    Text(
-                      'SIZE CHART',
-                      style: const TextStyle(
-                        fontFamily: 'AlcherPixel',
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                        color: Color.fromRGBO(255, 119, 168, 1),
+                    GestureDetector(
+                      onTap: () {
+                        toggleSizeChart();
+                      },
+                      child: Text(
+                        'SIZE CHART',
+                        style: const TextStyle(
+                          fontFamily: 'AlcherPixel',
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                          color: Color.fromRGBO(255, 119, 168, 1),
+                        ),
                       ),
                     ),
                   ],
@@ -237,6 +252,68 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
                   ],
                 ),
               ),
+                SizedBox(height: 10,),
+
+              if (isSizeChartVisible)
+                       Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Length (+/- 0.5 in):",
+                    style: TextStyle(color: Color.fromRGBO(131, 118, 156, 1)),),
+                  ],
+                ),
+                // Length Row
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: sizes.asMap().entries.map((entry) {
+                    final index = entry.key;
+                    final length = lengths[index];
+                    final isSelected = index == selectedIndex;
+                    return Text(
+                      length.toString(),
+                      style: TextStyle(
+                        fontFamily: 'AlcherPixel',
+                        fontSize: isSelected ? 20 : 16,
+                        fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                        color: isSelected
+                            ? Color.fromRGBO(255, 241, 232, 1)
+                            : Color.fromRGBO(131, 118, 156, 1),
+                      ),
+                    );
+                  }).toList(),
+                ),
+                SizedBox(height: 10,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Chest (+/- 0.5 in):",
+                    style: TextStyle(color: Color.fromRGBO(131, 118, 156, 1)),),
+                  ],
+                ),
+                // Chest Row
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: sizes.asMap().entries.map((entry) {
+                    final index = entry.key;
+                    final chest = chests[index];
+                    final isSelected = index == selectedIndex;
+                    return Text(
+                      chest.toString(),
+                      style: TextStyle(
+                        fontFamily: 'AlcherPixel',
+                        fontSize: isSelected ? 20 : 16,
+                        fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                        color: isSelected
+                            ? Color.fromRGBO(255, 241, 232, 1)
+                            : Color.fromRGBO(131, 118, 156, 1),
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ],
+            ),
               SizedBox(height: 30),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
