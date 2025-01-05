@@ -1,15 +1,20 @@
+import 'package:alcheringa/Screens/merch_buy_screen.dart';
 import 'package:flutter/material.dart';
 
 class MerchDetailScreen extends StatefulWidget {
-    final String merchName;
-  final String merchDescription;
+    final String merchTitle;
+  final String merchSubtitle;
   final String price;
+  final String merchDescription;
+  final String image;
 
     const MerchDetailScreen({
     Key? key,
-    required this.merchName,
-    required this.merchDescription,
+    required this.merchTitle,
+    required this.merchSubtitle,
     required this.price,
+    required this.merchDescription,
+    required this.image,
   }) : super(key: key);
 
 
@@ -19,17 +24,32 @@ class MerchDetailScreen extends StatefulWidget {
 
 class _MerchDetailScreenState extends State<MerchDetailScreen> {
   final List<String> sizes = ['S', 'M', 'L', 'XL', 'XXL'];
+    final List<int> lengths = [26, 27, 29, 29, 30];
+  final List<int> chests = [40, 42, 44, 46, 48];
   int selectedIndex = 2;
+  String selectedSize = "L"; 
+
+  bool isSizeChartVisible = false;
+
+
+      void toggleSizeChart() {
+    setState(() {
+      isSizeChartVisible = !isSizeChartVisible;
+    });
+  }
 
   void selectLeft() {
     setState(() {
       if (selectedIndex > 0) selectedIndex--;
+      selectedSize = sizes[selectedIndex];
     });
   }
 
   void selectRight() {
     setState(() {
       if (selectedIndex < sizes.length - 1) selectedIndex++;
+      selectedSize = sizes[selectedIndex];
+
     });
   }
 
@@ -83,13 +103,25 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
                   ],
                 ),
               ),
-              SizedBox(height: 250),
+              
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                      Image.network(
+                      widget.image,
+                      width: 200,
+                      ),
+                    ],
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.only(left: 15),
                 child: Text(
-                  widget.merchName,
+                  widget.merchTitle,
                   style: TextStyle(
-                    fontFamily: 'AlcherPixel',
+                    fontFamily: 'AlcherPixelBold',
                     fontSize: 30,
                     fontWeight: FontWeight.bold,
                     color: Color.fromRGBO(255, 241, 232, 1),
@@ -99,7 +131,7 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
               Padding(
                 padding: const EdgeInsets.only(left: 15),
                 child: Text(
-                  widget.merchDescription,
+                  widget.merchSubtitle,
                   style: const TextStyle(
                     fontFamily: 'AlcherPixel',
                     fontSize: 22,
@@ -136,13 +168,18 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
                         color: Color.fromRGBO(255, 241, 232, 1),
                       ),
                     ),
-                    Text(
-                      'SIZE CHART',
-                      style: const TextStyle(
-                        fontFamily: 'AlcherPixel',
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                        color: Color.fromRGBO(255, 119, 168, 1),
+                    GestureDetector(
+                      onTap: () {
+                        toggleSizeChart();
+                      },
+                      child: Text(
+                        'SIZE CHART',
+                        style: const TextStyle(
+                          fontFamily: 'AlcherPixel',
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                          color: Color.fromRGBO(255, 119, 168, 1),
+                        ),
                       ),
                     ),
                   ],
@@ -216,13 +253,73 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
                   ],
                 ),
               ),
+                SizedBox(height: 10,),
+
+              if (isSizeChartVisible)
+                       Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Length (+/- 0.5 in):",
+                    style: TextStyle(color: Color.fromRGBO(131, 118, 156, 1)),),
+                  ],
+                ),
+                // Length Row
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: sizes.asMap().entries.map((entry) {
+                    final index = entry.key;
+                    final length = lengths[index];
+                    final isSelected = index == selectedIndex;
+                    return Text(
+                      length.toString(),
+                      style: TextStyle(
+                        fontFamily: 'AlcherPixel',
+                        fontSize: isSelected ? 20 : 16,
+                        fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                        color: isSelected
+                            ? Color.fromRGBO(255, 241, 232, 1)
+                            : Color.fromRGBO(131, 118, 156, 1),
+                      ),
+                    );
+                  }).toList(),
+                ),
+                SizedBox(height: 10,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Chest (+/- 0.5 in):",
+                    style: TextStyle(color: Color.fromRGBO(131, 118, 156, 1)),),
+                  ],
+                ),
+                // Chest Row
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: sizes.asMap().entries.map((entry) {
+                    final index = entry.key;
+                    final chest = chests[index];
+                    final isSelected = index == selectedIndex;
+                    return Text(
+                      chest.toString(),
+                      style: TextStyle(
+                        fontFamily: 'AlcherPixel',
+                        fontSize: isSelected ? 20 : 16,
+                        fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                        color: isSelected
+                            ? Color.fromRGBO(255, 241, 232, 1)
+                            : Color.fromRGBO(131, 118, 156, 1),
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ],
+            ),
               SizedBox(height: 30),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: Text(
-                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. "
-                  "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor "
-                  "in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur",
+                  widget.merchDescription,
                   style: const TextStyle(
                     fontFamily: 'AlcherPixel',
                     fontSize: 18,
@@ -239,27 +336,43 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Stack(
-                      children: [
-                        Image.asset(
-                          alignment: Alignment.topCenter,
-                          'assets/images/green_button.png',
-                          width: 150,
-                          fit: BoxFit.cover,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 30),
-                          child: Text(
-                            "Buy now",
-                            style: const TextStyle(
-                              fontFamily: 'AlcherPixel',
-                              fontSize: 30,
-                              fontWeight: FontWeight.w400,
-                              color: Color.fromRGBO(255, 241, 232, 1),
+                    GestureDetector(
+                      onTap: () {
+                         Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MerchBuyScreen(
+                merchTitle: widget.merchTitle,
+                merchSubtitle: widget.merchSubtitle,
+                merchSize: selectedSize,
+                price: widget.price,
+                image: widget.image,
+              ),
+            ),
+          );
+                      },
+                      child: Stack(
+                        children: [
+                          Image.asset(
+                            alignment: Alignment.topCenter,
+                            'assets/images/green_button.png',
+                            width: 150,
+                            fit: BoxFit.cover,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 30),
+                            child: Text(
+                              "Buy now",
+                              style: const TextStyle(
+                                fontFamily: 'AlcherPixel',
+                                fontSize: 30,
+                                fontWeight: FontWeight.w400,
+                                color: Color.fromRGBO(255, 241, 232, 1),
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                     Stack(
                       children: [
