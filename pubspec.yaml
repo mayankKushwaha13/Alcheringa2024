@@ -61,6 +61,7 @@ dependencies:
   image: ^4.5.2
   badges: ^3.1.2
   intl: ^0.18.0
+  permission_handler: ^11.3.1
 
 dev_dependencies:
   retrofit_generator: ^9.1.2
@@ -100,6 +101,13 @@ flutter:
     - family: AlcherpixelBold
       fonts:
         - asset: assets/fonts/AlcherPixel-Bold v2.0.ttf
+    - family: Game_Tape
+      fonts:
+        - asset: assets/fonts/Game_Tape.ttf
+    - family: Brick_Pixel
+      fonts:
+        - asset: assets/fonts/Brick_Pixel.ttf
+
 
   # To add assets to your application, add an assets section, like this:
   # assets:

@@ -16,7 +16,7 @@ Widget buildConfirmationTab() {
           Text(
             'Order Placed',
             style: TextStyle(
-              fontFamily: 'AlcherPixel',
+              fontFamily: 'Game_Tape',
               color: Color.fromRGBO(0, 228, 54, 1), // Text color
               fontSize: 24.0, // Text size
               fontWeight: FontWeight.w400,
@@ -28,7 +28,7 @@ Widget buildConfirmationTab() {
           Text(
             'Our team will contact you regarding further details of your order',
             style: TextStyle(
-              fontFamily: 'AlcherPixel',
+              fontFamily: 'Game_Tape',
               color: Color.fromRGBO(131, 118, 156, 1), // Text color
               fontSize: 20.0, // Text size
               fontWeight: FontWeight.w400,

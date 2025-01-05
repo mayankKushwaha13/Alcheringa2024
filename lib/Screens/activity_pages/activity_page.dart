@@ -47,12 +47,12 @@ class _ActivityPageState extends State<ActivityPage> {
             ),
           ),
           // Main Content
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                // Tabs
-                SizedBox(
+          Column(
+            children: [
+              // Tabs
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SizedBox(
                   height: 70,
                   child: ListView(
                     shrinkWrap: true,
@@ -100,22 +100,21 @@ class _ActivityPageState extends State<ActivityPage> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 25),
-                // PageView
-                Expanded(
-                  child: PageView(
-                    physics: const NeverScrollableScrollPhysics(),
-                    controller: _pageController,
-                    onPageChanged: (index) {
-                      setState(() {
-                        _selectedTab = index;
-                      });
-                    },
-                    children: _allTabs,
-                  ),
+              ),
+              // PageView
+              Expanded(
+                child: PageView(
+                  physics: const NeverScrollableScrollPhysics(),
+                  controller: _pageController,
+                  onPageChanged: (index) {
+                    setState(() {
+                      _selectedTab = index;
+                    });
+                  },
+                  children: _allTabs,
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ],
       ),

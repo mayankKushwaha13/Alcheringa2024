@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:alcheringa/Common/globals.dart';
 import 'package:alcheringa/Model/view_model_main.dart';
 import 'package:alcheringa/Screens/merch_screen.dart';
+import 'package:alcheringa/Screens/cart_screen.dart';
 import 'package:alcheringa/Screens/welcome_screen.dart';
 import 'package:alcheringa/screens/main_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -56,20 +57,25 @@ class _SplashScreenState extends State<SplashScreen> {
   late bool isUserLoggedIn;
   NotificationServices notificationSerivces = NotificationServices();
 
+  Future<void> _requestPermission() async {
+    await ViewModelMain().requestNotificationPermission();
+    await ViewModelMain().requestLocationPermission();
+  }
+
   @override
   void initState() {
     super.initState();
-    // isLoggedIn = auth.currentUser != null;
-    // isVerified = isLoggedIn && auth.currentUser!.emailVerified ?? false;
+    isLoggedIn = auth.currentUser != null;
+    isVerified = isLoggedIn && auth.currentUser!.emailVerified ?? false;
     // notificationSerivces.requestNotificationPermission();
-    // notificationSerivces.forgroundMessage();
-    // notificationSerivces.firebaseInit(context);
-    // notificationSerivces.isTokenRefresh();
+    notificationSerivces.forgroundMessage();
+    notificationSerivces.firebaseInit(context);
+    _requestPermission();
+    notificationSerivces.isTokenRefresh();
     // notificationSerivces.getDeviceToken().then((value) {
     //   print(value);
     // });
-
-
+    
     _controller =
         VideoPlayerController.asset("assets/SplashMovie/splash_screen.mp4")
           ..initialize().then((_) {

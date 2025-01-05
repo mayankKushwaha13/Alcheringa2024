@@ -20,14 +20,14 @@ class StallMenuItem {
 class StallModel {
   String name;
   String description;
-  String imgUrl;
+  String imgurl;
   List<StallMenuItem> menu;
   LatLng latLng;
 
   StallModel({
     required this.name,
     required this.description,
-    required this.imgUrl,
+    required this.imgurl,
     required this.menu,
     required this.latLng,
   });
@@ -41,7 +41,7 @@ class StallModel {
     return StallModel(
       name: data['name'] ?? '',
       description: data['description'] ?? '',
-      imgUrl: data['imgUrl'] ?? '',
+      imgurl: data['imgurl'] ?? '',
       menu: menuList,
       latLng: LatLng(
         (data['LatLng']?['latitude'] ?? 26.190750).toDouble(),

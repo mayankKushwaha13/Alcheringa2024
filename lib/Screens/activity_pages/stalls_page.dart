@@ -1,8 +1,12 @@
 import 'package:alcheringa/Common/globals.dart';
 import 'package:alcheringa/Model/stall_model.dart';
 import 'package:alcheringa/Model/view_model_main.dart';
+import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 
+import '../cart_screen.dart';
+import '../end_drawer.dart';
+import '../notification/notification_screen.dart';
 import 'PixelStoreCardWidget.dart';
 
 class StallsPage extends StatefulWidget {
@@ -14,6 +18,7 @@ class StallsPage extends StatefulWidget {
 
 class _StallsPageState extends State<StallsPage> {
   final TextEditingController _searchController = TextEditingController();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   List<StallModel> _stalls = [];
   List<StallModel> _filteredStalls = [];
 
@@ -28,6 +33,7 @@ class _StallsPageState extends State<StallsPage> {
       final stalls = await ViewModelMain().getStalls();
       setState(() {
         _stalls = stalls;
+        print("This is stalls list: ${stalls.first.imgurl}");
         _filteredStalls = List.from(_stalls);
       });
       print('Hello ${_stalls.first.name}');
@@ -52,33 +58,54 @@ class _StallsPageState extends State<StallsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          color: const Color(0xff1d2b53),
-          child: PixelTextField(
-            controller: _searchController,
-            onChanged: _filterStalls,
-          ),
-        ),
-        const SizedBox(height: 25),
-        Expanded(
-          child: ListView(
-            children: [
-              ..._filteredStalls.map(
-                (item) => Padding(
-                  padding: const EdgeInsets.only(bottom: 15.0),
-                  child: PixelStoreCard(
-                    name: item.name,
-                    ref: item.name,
-                  ),
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Container(
+        color: Colors.transparent, // Transparent container
+        child: Column(
+          children: [
+            Opacity(
+              opacity: 1.0,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.0), // Transparent background
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 8),
+                    Container(
+                      color: Color(0xff1d2b53),
+                      child: PixelTextField(
+                        controller: _searchController,
+                        onChanged: _filterStalls,
+                      ),
+                    )
+                  ],
                 ),
               ),
-              SizedBox(height: bottomNavBarHeight - 10),
-            ],
-          ),
+            ),
+            const SizedBox(height: 25),
+            Expanded(
+              child: ListView(
+                children: [
+                  ..._filteredStalls.map(
+                    (item) => Padding(
+                      padding: const EdgeInsets.only(bottom: 15.0),
+                      child: PixelStoreCard(
+                        name: item.name,
+                        ref: item.name,
+                        image: item.imgurl,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: bottomNavBarHeight - 10),
+                ],
+              ),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }
@@ -113,18 +140,21 @@ class PixelTextField extends StatelessWidget {
         ),
       ),
       child: Center(
-        child: TextField(
-          controller: controller,
-          onChanged: onChanged,
-          keyboardType: keyboardType,
-          style: const TextStyle(color: Colors.white, fontSize: 22, fontFamily: 'AlcherpixelBold'),
-          decoration: InputDecoration(
-            hintText: hintText,
-            hintStyle: const TextStyle(color: Color(0xff83769c), fontFamily: 'AlcherpixelBold', fontSize: 22),
-            border: InputBorder.none,
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: 25,
-              vertical: 8,
+        child: GestureDetector(
+          onTap:() => FocusScope.of(context).unfocus(),
+          child: TextField(
+            controller: controller,
+            onChanged: onChanged,
+            keyboardType: keyboardType,
+            style: const TextStyle(color: Colors.white, fontSize: 22, fontFamily: 'AlcherpixelBold'),
+            decoration: InputDecoration(
+              hintText: hintText,
+              hintStyle: const TextStyle(color: Color(0xff83769c), fontFamily: 'AlcherpixelBold', fontSize: 22),
+              border: InputBorder.none,
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 25,
+                vertical: 8,
+              ),
             ),
           ),
         ),

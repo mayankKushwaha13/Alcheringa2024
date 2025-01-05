@@ -179,7 +179,7 @@ class _FoodSearchScreenState extends State<FoodSearchScreen> {
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: const EdgeInsets.only(bottom: 8),
-                          child: PixelStoreCard(name: _filteredRestaurants[index] , ref: _filteredRestaurants[index]),
+                          child: PixelStoreCard(name: _filteredRestaurants[index] , ref: _filteredRestaurants[index] , image: '',),
                         );
                       },
                     ),
