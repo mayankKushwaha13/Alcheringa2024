@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
     Provider.of<ViewModelMain>(context, listen: false).getAllEvents();
 
     return MaterialApp(
-      home: MerchScreen(),
+      home: SplashScreen(),
       debugShowCheckedModeBanner: false,
     );
   }

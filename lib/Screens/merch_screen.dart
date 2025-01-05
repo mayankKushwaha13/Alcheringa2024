@@ -20,8 +20,6 @@ class _MerchScreenState extends State<MerchScreen> {
   @override
   void initState() {
     super.initState();
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
-
     getMerchData();
   }
 
@@ -41,109 +39,112 @@ class _MerchScreenState extends State<MerchScreen> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        height: MediaQuery.of(context).size.height,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/images/background.png'),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: Column(
-          children: [
-            // Header Section
-            Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
-              decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.5),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Image.asset(
-                      'assets/images/back_button.png',
-                      width: 54.0,
-                      height: 54.0,
-                    ),
-                  ),
-                  const Text(
-                    'MERCHANDIZE',
-                    style: TextStyle(
-                      fontFamily: 'AlcherPixel',
-                      fontSize: 20,
-                      fontWeight: FontWeight.w400,
-                      color: Color.fromRGBO(255, 119, 168, 1),
-                    ),
-                  ),
-                ],
-              ),
+      backgroundColor: Color(0xFF1D2B53),
+      body: SafeArea(
+        child: Container(
+          width: double.infinity,
+          height: MediaQuery.of(context).size.height,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/images/background.png'),
+              fit: BoxFit.cover,
             ),
-            const SizedBox(height: 20.0),
-            Stack(children: [
-              Image.asset(
-                alignment: Alignment.topCenter,
-                'assets/images/1.png', // Replace with your image path
-                width: double.infinity,
-                fit: BoxFit.cover,
-              ),
-              Center(
-                  child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(height: 15),
-                  Text(
-                    'Merchandise',
-                    style: TextStyle(
-                      fontFamily: 'AlcherPixel',
-                      fontSize: 27,
-                      fontWeight: FontWeight.w400,
-                      color: Color.fromRGBO(255, 241, 232, 1),
+          ),
+          child: Column(
+            children: [
+              // Header Section
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+                decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.5),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Image.asset(
+                        'assets/images/back_button.png',
+                        width: 54.0,
+                        height: 54.0,
+                      ),
                     ),
-                  ),
-                ],
-              ))
-            ]),
+                    const Text(
+                      'MERCHANDIZE',
+                      style: TextStyle(
+                        fontFamily: 'AlcherPixel',
+                        fontSize: 20,
+                        fontWeight: FontWeight.w400,
+                        color: Color.fromRGBO(255, 119, 168, 1),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 20.0),
+              Stack(children: [
+                Image.asset(
+                  alignment: Alignment.topCenter,
+                  'assets/images/1.png', // Replace with your image path
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
+                Center(
+                    child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(height: 15),
+                    Text(
+                      'Merchandise',
+                      style: TextStyle(
+                        fontFamily: 'AlcherPixel',
+                        fontSize: 27,
+                        fontWeight: FontWeight.w400,
+                        color: Color.fromRGBO(255, 241, 232, 1),
+                      ),
+                    ),
+                  ],
+                ))
+              ]),
 
-Expanded(
-              child: isLoading
-                  ? const Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  : merchMerch.isEmpty
-                      ? const Center(
-                          child: Text(
-                            'No Merchandise Available',
-                            style: TextStyle(
-                              fontFamily: 'AlcherPixel',
-                              fontSize: 20,
-                              color: Colors.white,
+        Expanded(
+                child: isLoading
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : merchMerch.isEmpty
+                        ? const Center(
+                            child: Text(
+                              'No Merchandise Available',
+                              style: TextStyle(
+                                fontFamily: 'AlcherPixel',
+                                fontSize: 20,
+                                color: Colors.white,
+                              ),
+                            ),
+                          )
+                        : SingleChildScrollView(
+                            child: Column(
+                              children: merchMerch.map((merch) {
+                                return MerchandiseItem(
+                                  image: merch.image ?? 'assets/images/default_image.png',
+                                  title: merch.type ?? 'Unnamed',
+                                  subtitle: merch.name ?? 'Unnamed',
+                                  description: merch.description ?? 'No description',
+                                  price: merch.price ?? '0.00',
+                                  limitedStockMessage: merch.available == true
+                                      ? 'LIMITED STOCK AVAILABLE'
+                                      : 'OUT OF STOCK',
+                                );
+                              }).toList(),
                             ),
                           ),
-                        )
-                      : SingleChildScrollView(
-                          child: Column(
-                            children: merchMerch.map((merch) {
-                              return MerchandiseItem(
-                                image: merch.image ?? 'assets/images/default_image.png',
-                                title: merch.type ?? 'Unnamed',
-                                subtitle: merch.name ?? 'Unnamed',
-                                description: merch.description ?? 'No description',
-                                price: merch.price ?? '0.00',
-                                limitedStockMessage: merch.available == true
-                                    ? 'LIMITED STOCK AVAILABLE'
-                                    : 'OUT OF STOCK',
-                              );
-                            }).toList(),
-                          ),
-                        ),
-            ),
-          ],
+              ),
+            ],
+          ),
         ),
       ),
       
