@@ -28,6 +28,7 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
   final List<int> chests = [40, 42, 44, 46, 48];
   int selectedIndex = 2;
   String selectedSize = "L"; 
+
   bool isSizeChartVisible = false;
 
 

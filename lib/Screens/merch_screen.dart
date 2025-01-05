@@ -197,10 +197,10 @@ class MerchandiseItem extends StatelessWidget {
               fit: BoxFit.cover,
             ),
             Padding(
-              padding: const EdgeInsets.all(30.0),
+              padding: const EdgeInsets.all(20.0),
               child: Image.network(
                 image,
-                width: 80,
+                width: 100,
               ),
             ),
 
@@ -280,7 +280,7 @@ class MerchandiseItem extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(90, 180, 1, 1),
+              padding: const EdgeInsets.fromLTRB(85, 185, 1, 1),
               child: Stack(
                 children: [
                   Image.asset(
@@ -291,6 +291,7 @@ class MerchandiseItem extends StatelessWidget {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 20, right: 20),
+                
                     child: Text(
                       "Add to cart",
                       style: const TextStyle(
