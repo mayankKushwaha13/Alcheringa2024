@@ -33,4 +33,11 @@ class OwnTime {
     int mins = minutes % 60;
     return OwnTime(date: days, hours: hours, min: mins);
   }
+
+  bool isAfter(OwnTime other) {
+    if (date > other.date) return true;
+    if (date == other.date && hours > other.hours) return true;
+    if (date == other.date && hours == other.hours && min > other.min) return true;
+    return false;
+  }
 }

@@ -65,6 +65,7 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
+      resizeToAvoidBottomInset: false,
       endDrawer: EndDrawer(scaffoldState: _scaffoldKey,),
       appBar: TopAppBar(scaffoldState: _scaffoldKey),
       body: Stack(
