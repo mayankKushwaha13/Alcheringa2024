@@ -22,6 +22,8 @@ class EventDetail {
   String joinlink = "https://www.alcheringa.in";
   String reglink = "https://www.alcheringa.in";
   bool stream = false;
+  String descriptionShort;
+  String iconURL;
 
   EventDetail({
     required this.artist,
@@ -31,6 +33,8 @@ class EventDetail {
     required this.durationInMin,
     required this.genre,
     required this.descriptionEvent,
+    required this.descriptionShort,
+    required this.iconURL,
     required this.venue,
     required this.type,
     required this.joinlink,
@@ -41,6 +45,8 @@ class EventDetail {
 
   factory EventDetail.fromMap(Map<String, dynamic> data) {
     return EventDetail(
+      descriptionShort: ".",
+      iconURL: ".",
       artist: data['artist'],
       category: data['category'],
       starttime: OwnTime.fromMap(data['starttime']),
@@ -59,6 +65,8 @@ class EventDetail {
 
   factory EventDetail.fromTable(Map<String, dynamic> data) {
     return EventDetail(
+      descriptionShort: data['descriptionShort'],
+      iconURL: data['iconurl'],
       artist: data['artist'],
       category: data['category'],
       starttime: OwnTime(
@@ -96,7 +104,9 @@ class EventDetail {
           starttime.hours.toString() +
           "," +
           starttime.min.toString(),
-      "stream": stream == false ? 0 : 1
+      "stream": stream == false ? 0 : 1,
+      "descriptionShort" : descriptionShort,
+      "iconurl" : iconURL
     };
   }
 }

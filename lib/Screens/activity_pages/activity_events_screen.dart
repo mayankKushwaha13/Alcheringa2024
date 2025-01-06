@@ -227,8 +227,8 @@ class _ActivityEventsScreenState extends State<ActivityEventsScreen> {
                   height: widgetHeight,
                   width: 186 * widgetHeight / 480,
                   image: isLiked
-                      ? AssetImage('assets/images/notif_button_active.png')
-                      : AssetImage('assets/images/notif_button_inactive.png'),
+                      ? AssetImage('assets/images/notif_button_inactive.png')
+                      : AssetImage('assets/images/notif_button_active.png'),
                   fit: BoxFit.cover,
                 ),
               )),

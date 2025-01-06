@@ -4,12 +4,14 @@ import 'package:sqflite/sqflite.dart';
 
 class LikedEventsDatabase{
   static Database? _likedEventsDB;
-  Future<void> deletedatabase () async {
-    String path = join(await getDatabasesPath(), 'likedEventsDatabase.db');
-    await deleteDatabase(path);
-    print("Database deleted successfully.");
 
-  }
+  // Future<void> deletedatabase () async {
+  //   String path = join(await getDatabasesPath(), 'likedEventsDatabase.db');
+  //   await deleteDatabase(path);
+  //   print("Database deleted successfully.");
+
+  // }
+
   Future<Database?> get likedEventsDatabase async {
     if (_likedEventsDB != null){
       return _likedEventsDB;
@@ -34,7 +36,9 @@ class LikedEventsDatabase{
           duration INTEGER,
           genre TEXT,
           time TEXT,
-          stream INTEGER
+          stream INTEGER,
+          descriptionShort TEXT,
+          iconurl TEXT
           )
           '''
         );
