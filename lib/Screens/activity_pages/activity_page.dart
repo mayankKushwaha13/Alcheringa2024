@@ -1,3 +1,4 @@
+import 'package:alcheringa/Screens/activity_pages/competitionpage.dart';
 import 'package:alcheringa/Screens/activity_pages/stalls_page.dart';
 import 'package:flutter/material.dart';
 
@@ -136,17 +137,6 @@ class EventsWidget extends StatelessWidget {
   }
 }
 
-class CompetitionsWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        "Competitions Content",
-        style: TextStyle(color: Colors.white, fontSize: 24),
-      ),
-    );
-  }
-}
 
 class StallsWidget extends StatelessWidget {
   @override
