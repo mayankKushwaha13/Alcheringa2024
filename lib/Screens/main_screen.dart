@@ -86,7 +86,7 @@ class _MainScreenState extends State<MainScreen> {
             right: 0,
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.1), // Semi-transparent white
+                color: Colors.white.withOpacity(0.1), // Semi-transparent white
               ),
               child: BottomNavigationBar(
                 key: _bottomNavBarKey,

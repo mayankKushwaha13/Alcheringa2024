@@ -56,4 +56,47 @@ class EventDetail {
       stream: data['stream'],
     );
   }
+
+  factory EventDetail.fromTable(Map<String, dynamic> data) {
+    return EventDetail(
+      artist: data['artist'],
+      category: data['category'],
+      starttime: OwnTime(
+          date: int.parse((data['time'].split(",")[0])),
+          hours: int.parse((data['time'].split(",")[1])),
+          min: int.parse((data['time'].split(",")[2]))),
+      imgurl: data['imgurl'],
+      durationInMin: data['duration'],
+      genre: data['genre'].split(", "),
+      descriptionEvent: data['description'],
+      venue: data['venue'],
+      type: data['type'],
+      joinlink: data['joinlink'],
+      reglink: data['reglink'],
+      mode: data['mode'],
+      stream: data['stream'] == 0 ? false : true,
+    );
+  }
+
+  toTable() {
+    return {
+      "artist": artist,
+      "category": category,
+      "mode": mode,
+      "imgurl": imgurl,
+      "description": descriptionEvent,
+      "venue": venue,
+      "type": type,
+      "joinlink": joinlink,
+      "reglink": reglink,
+      "duration": durationInMin,
+      "genre": genre.toString().replaceAll("[", "").replaceAll("]", ""),
+      "time": starttime.date.toString() +
+          "," +
+          starttime.hours.toString() +
+          "," +
+          starttime.min.toString(),
+      "stream": stream == false ? 0 : 1
+    };
+  }
 }
