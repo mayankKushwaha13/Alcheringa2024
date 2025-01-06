@@ -36,10 +36,10 @@ class _CompetitionCardState extends State<CompetitionCard> {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Image.asset(
-                  "assets/images/basketball.png",
-                  scale: 1.2,
-                ),
+                // widget.event.iconURL==null || widget.event.iconURL==""
+                // ?Image.asset( "assets/images/basketball.png",scale: 1.2,)
+                // :Image.network(widget.event.iconURL),
+                Image.asset( "assets/images/basketball.png",scale: 1.2,),
                 SizedBox(
                   width: 5,
                 ),

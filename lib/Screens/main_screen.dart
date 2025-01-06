@@ -81,14 +81,17 @@ class _MainScreenState extends State<MainScreen> {
             children: _pages,
           ),
           Positioned(
+            
             bottom: 0,
             left: 0,
             right: 0,
             child: Container(
+              
               decoration: BoxDecoration(
                 color: Colors.white.withOpacity(0.1), // Semi-transparent white
               ),
               child: BottomNavigationBar(
+                elevation: 0,
                 key: _bottomNavBarKey,
                 items: [
                   BottomNavigationBarItem(
