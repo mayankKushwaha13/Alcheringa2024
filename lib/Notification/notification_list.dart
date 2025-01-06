@@ -32,13 +32,13 @@ class NotificationList extends StatelessWidget {
                     "New",
                     style: TextStyle(
                       color: AppColors.Blue,
-                      fontFamily: 'AlcherPixel',
-                      fontSize: 28,
+                      fontFamily: "Game_Tape",
+                      fontSize: 25,
                     ),
                   ),
                 ),
               ListView.builder(
-                padding: EdgeInsets.only(top: 8),
+                padding: EdgeInsets.only(top: 5),
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
                 itemCount: newNotifications.length,
@@ -51,18 +51,18 @@ class NotificationList extends StatelessWidget {
               // Section for earlier notifications
               if (earlierNotifications.isNotEmpty)
                 Padding(
-                  padding: EdgeInsets.only(top: 20),
+                  padding: EdgeInsets.only(top: 15),
                   child: Text(
                     "Earlier",
                     style: TextStyle(
                       color: AppColors.Blue,
-                      fontFamily: 'AlcherPixel',
-                      fontSize: 30,
+                      fontFamily: "Game_Tape",
+                      fontSize: 25,
                     ),
                   ),
                 ),
               ListView.builder(
-                padding: EdgeInsets.only(top: 8),
+                padding: EdgeInsets.only(top: 5),
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
                 itemCount: earlierNotifications.length,
@@ -99,16 +99,16 @@ class NotificationTile extends StatelessWidget {
             "${notification.title}",
             style: TextStyle(
               color: AppColors.Pink,
-              fontFamily: 'AlcherPixel',
-              fontSize: 25,
+              fontFamily: "Game_Tape",
+              fontSize: 20,
             ),
           ),
           Text(
             "${notification.body}",
             style: TextStyle(
               color: AppColors.Palewhite,
-              fontFamily: 'AlcherPixel',
-              fontSize: 20,
+              fontFamily: "Game_Tape",
+              fontSize: 18,
             ),
           ),
           const Divider(

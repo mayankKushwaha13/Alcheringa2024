@@ -1,4 +1,7 @@
 import 'package:alcheringa/Common/globals.dart';
+import 'package:alcheringa/Screens/orderScreen/order_screen.dart';
+import 'package:alcheringa/Screens/sponsersScreen/sponser_screen.dart';
+import 'package:alcheringa/Screens/sponsersScreen/sponsors_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -56,7 +59,12 @@ class _EndDrawerState extends State<EndDrawer> {
       {
         'name': 'ORDERS',
         'iconPath': 'assets/images/sidebar_orders_icon.png',
-        'onTap': () {},
+        'onTap': () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => orderScreen()),
+          );
+        },
       },
       {
         'name': 'CONTACT US',
@@ -74,7 +82,12 @@ class _EndDrawerState extends State<EndDrawer> {
       {
         'name': 'SPONSORS',
         'iconPath': 'assets/images/sidebar_sponsors_icon.png',
-        'onTap': () {},
+        'onTap': () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => sponsorScreen()),
+          );
+        },
       },
     ];
 
