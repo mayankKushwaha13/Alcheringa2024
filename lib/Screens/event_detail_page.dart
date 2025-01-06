@@ -33,7 +33,7 @@ class EventDetailPage extends StatelessWidget {
           // Background Image
           Positioned.fill(
             child: Image.asset(
-              'assets/images/background_image.png',
+              'assets/images/background.png',
               fit: BoxFit.cover,
             ),
           ),

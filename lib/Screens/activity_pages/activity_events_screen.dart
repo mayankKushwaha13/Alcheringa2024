@@ -2,6 +2,7 @@ import 'package:alcheringa/Common/globals.dart';
 import 'package:alcheringa/Database/liked_events.dart';
 import 'package:alcheringa/Model/eventdetail.dart';
 import 'package:alcheringa/Model/view_model_main.dart';
+import 'package:alcheringa/Screens/event_detail_page.dart';
 import 'package:flutter/material.dart';
 
 class ActivityEventsScreen extends StatefulWidget {
@@ -196,99 +197,109 @@ class _ActivityEventsScreenState extends State<ActivityEventsScreen> {
     final widgetHeight = screenHeight * 0.6;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
-      child: Column(
-        children: [
-          Stack(
-            children: [
-              Positioned.fill(
-                  child: Image.network(
-                event.imgurl,
-                fit: BoxFit.cover,
-              )),
-              Container(
-                height: widgetHeight,
-                width: 186 * widgetHeight / 480,
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage('assets/images/card.png'),
-                        fit: BoxFit.cover)),
-              ),
-              Positioned.fill(
-                  child: GestureDetector(
-                onTap: () async {
-                  if (isLiked) {
-                    await LikedEventsDatabase().deleteData(event.artist);
-                  } else {
-                    await LikedEventsDatabase().insertData(event);
-                  }
-                  setState(() {});
-                },
-                child: Image(
+      child: GestureDetector(
+        onTap: () {
+          Navigator.of(context).push(MaterialPageRoute(builder: (context)=> EventDetailPage(event: event)));
+        },
+        child: Column(
+          children: [
+            Stack(
+              children: [
+                Positioned.fill(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: Image.network(
+                                      event.imgurl,
+                                      fit: BoxFit.cover,
+                                    ),
+                    )),
+                Container(
                   height: widgetHeight,
                   width: 186 * widgetHeight / 480,
-                  image: isLiked
-                      ? AssetImage('assets/images/notif_button_inactive.png')
-                      : AssetImage('assets/images/notif_button_active.png'),
-                  fit: BoxFit.cover,
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage('assets/images/card.png'),
+                          fit: BoxFit.cover)),
                 ),
-              )),
-              // Heading
-              Positioned.fill(
-                left: 25 * widgetHeight / 480,
-                top: 336 * widgetHeight / 480,
-                child: Text(
-                  event.artist,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                      fontFamily: "Brick_Pixel",
-                      fontSize: 20,
-                      color: Colors.white),
+                Positioned(
+                  top: 250 * widgetHeight / 480,
+                  left: 105 * widgetHeight / 480,
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                  onTap: () async {
+                    if (isLiked) {
+                      await LikedEventsDatabase().deleteData(event.artist);
+                    } else {
+                      await LikedEventsDatabase().insertData(event);
+                    }
+                    setState(() {});
+                  },
+                  child: Image(
+                    height: 65 * widgetHeight / 480,
+                    image: isLiked
+                        ? AssetImage('assets/images/bell1.png')
+                        : AssetImage('assets/images/bell.png'),
+                    // fit: BoxFit.cover,
+                  ),
+                )),
+                // Heading
+                Positioned.fill(
+                  left: 25 * widgetHeight / 480,
+                  top: 336 * widgetHeight / 480,
+                  child: Text(
+                    event.artist,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                        fontFamily: "Brick_Pixel",
+                        fontSize: 20,
+                        color: Colors.white),
+                  ),
                 ),
-              ),
-              // Description
-              Positioned.fill(
-                left: 25,
-                top: 380 * widgetHeight / 480,
-                right: 25,
-                child: Text(
-                  event.descriptionEvent,
-                  maxLines: 3,
-                  overflow: TextOverflow.clip,
-                  style: TextStyle(
-                      fontFamily: "Game_Tape",
-                      fontSize: 12,
-                      color: Colors.orange),
+                // Description
+                Positioned.fill(
+                  left: 25,
+                  top: 380 * widgetHeight / 480,
+                  right: 25,
+                  child: Text(
+                    event.descriptionEvent,
+                    maxLines: 3,
+                    overflow: TextOverflow.clip,
+                    style: TextStyle(
+                        fontFamily: "Game_Tape",
+                        fontSize: 12,
+                        color: Colors.orange),
+                  ),
                 ),
-              ),
-              // Venue
-              Positioned.fill(
-                left: 25,
-                top: 441 * widgetHeight / 480,
-                right: 25,
-                child: Text(
-                  event.starttime.date > 5
-                      ? event.starttime.date.toString() +
-                          " Jan " +
-                          event.starttime.hours.toString() +
-                          " PM | " +
-                          event.venue
-                      : event.starttime.date.toString() +
-                          " Feb " +
-                          event.starttime.hours.toString() +
-                          " PM | " +
-                          event.venue,
-                  maxLines: 1,
-                  overflow: TextOverflow.clip,
-                  style: TextStyle(
-                      fontFamily: "Game_Tape",
-                      fontSize: 12,
-                      color: Colors.white),
+                // Venue
+                Positioned.fill(
+                  left: 25,
+                  top: 441 * widgetHeight / 480,
+                  right: 25,
+                  child: Text(
+                    event.starttime.date > 5
+                        ? event.starttime.date.toString() +
+                            " Jan " +
+                            event.starttime.hours.toString() +
+                            " PM | " +
+                            event.venue
+                        : event.starttime.date.toString() +
+                            " Feb " +
+                            event.starttime.hours.toString() +
+                            " PM | " +
+                            event.venue,
+                    maxLines: 1,
+                    overflow: TextOverflow.clip,
+                    style: TextStyle(
+                        fontFamily: "Game_Tape",
+                        fontSize: 12,
+                        color: Colors.white),
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ],
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
