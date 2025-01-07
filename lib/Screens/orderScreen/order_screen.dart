@@ -1,4 +1,4 @@
-import 'package:alcheringa/Screens/orderScreen/order_list.dart';
+ import 'package:alcheringa/Screens/orderScreen/order_list.dart';
 import 'package:flutter/material.dart';
 
 import '../../utils/styles/colors.dart';
@@ -23,7 +23,7 @@ class _orderScreenState extends State<orderScreen> {
         decoration: BoxDecoration(
           image: DecorationImage(image: AssetImage("assets/images/background.png"),fit: BoxFit.cover)
         ),
-        child:orderlist()
+        child:OrderList()
       ),
 
     );

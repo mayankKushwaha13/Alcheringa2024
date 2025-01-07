@@ -19,7 +19,7 @@ class _SchedulePageState extends State<SchedulePage> {
   List<String> venuesList = ['ALL', 'Auditorium'];
 
   Color dayColor(int day) {
-    if(day == selectedDay) {
+    if (day == selectedDay) {
       return Color(0xFFFFF1E8);
     } else {
       return Color(0xFF83769C);
@@ -125,7 +125,7 @@ class _SchedulePageState extends State<SchedulePage> {
                     ],
                   ),
                 ),
-            
+
                 // Filter Row
                 Container(
                   height: 80,
@@ -156,6 +156,9 @@ class _SchedulePageState extends State<SchedulePage> {
                           ],
                         ),
                       ),
+                      SizedBox(
+                        width: 14.0,
+                      ),
                       // Vertical Divider
                       Container(
                         width: 2,
@@ -163,52 +166,54 @@ class _SchedulePageState extends State<SchedulePage> {
                       ),
                       // Venue Dropdown
                       Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                          child: DropdownButtonFormField<String>(
-                            value: selectedVenue,
-                            style: TextStyle(
+                          child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                        child: DropdownButtonFormField<String>(
+                          value: selectedVenue,
+                          style: TextStyle(
                               fontFamily: 'Alcherpixel',
                               fontSize: 20.0,
-                              color: Color(0xFFFFF1E8)
+                              color: Color(0xFFFFF1E8)),
+                          items: venuesList
+                              .map((String value) => DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  ))
+                              .toList(),
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              selectedVenue = newValue!;
+                            });
+                          },
+                          dropdownColor: Color(0xFF1D2B53),
+                          decoration: InputDecoration(
+                            contentPadding:
+                                EdgeInsets.symmetric(horizontal: 30.0),
+                            fillColor: Color(0xFF1D2B53),
+                            filled: true,
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Colors.pink, width: 2), // Pink border
+                              borderRadius:
+                                  BorderRadius.zero, // Zero border radius
                             ),
-                            items: venuesList
-                                .map((String value) => DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            ))
-                                .toList(),
-                            onChanged: (String? newValue) {
-                              setState(() {
-                                selectedVenue = newValue!;
-                              });
-                            },
-                            dropdownColor: Color(0xFF1D2B53),
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(horizontal: 30.0),
-                              fillColor: Color(0xFF1D2B53),
-                              filled: true,
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.pink, width: 2), // Pink border
-                                borderRadius: BorderRadius.zero, // Zero border radius
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.pink, width: 2),
-                                borderRadius: BorderRadius.zero,
-                              ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.pink, width: 2),
+                              borderRadius: BorderRadius.zero,
                             ),
                           ),
-                        )
-                      ),
+                        ),
+                      )),
                     ],
                   ),
                 ),
-            
+
                 Container(
                   height: 2,
                   color: Colors.grey,
                 ),
-            
+
                 // Schedule Grid
                 Expanded(
                   child: SingleChildScrollView(
@@ -220,18 +225,29 @@ class _SchedulePageState extends State<SchedulePage> {
                           children: [
                             // Time Column
                             SizedBox(
-                              width: 80,
+                              width: 87,
                               child: Column(
                                 children: List.generate(
                                   17,
-                                      (index) => SizedBox(
-                                    height: 44,
-                                    child: Center(
-                                      child: Text(
-                                        formatTimeToAmPm(index + 8),
-                                        style: TextStyle(
-                                          fontFamily: 'Alcherpixel',
-                                          fontSize: 14,
+                                  (index) => Container(
+                                    decoration: BoxDecoration(
+                                      border: Border(
+                                        right: BorderSide(
+                                          // Specify the side
+                                          color: Colors.grey, // Border color
+                                          width: 2.0, // Border width
+                                        ),
+                                      ),
+                                    ),
+                                    child: SizedBox(
+                                      height: 41,
+                                      child: Center(
+                                        child: Text(
+                                          formatTimeToAmPm(index + 8),
+                                          style: TextStyle(
+                                              fontFamily: 'Game_Tape',
+                                              fontSize: 19,
+                                              color: Colors.white),
                                         ),
                                       ),
                                     ),
@@ -249,7 +265,7 @@ class _SchedulePageState extends State<SchedulePage> {
                                   child: Column(
                                     children: List.generate(
                                       17,
-                                          (index) => Container(
+                                      (index) => Container(
                                         height: 44,
                                         color: index.isEven
                                             ? Colors.grey.withOpacity(0.1)
@@ -263,9 +279,9 @@ class _SchedulePageState extends State<SchedulePage> {
                                                 child: Text(
                                                   'Event ${index + 1}',
                                                   style: TextStyle(
-                                                    fontFamily: 'Alcherpixel',
-                                                    fontSize: 12,
-                                                  ),
+                                                      fontFamily: 'Alcherpixel',
+                                                      fontSize: 15,
+                                                      color: Colors.white),
                                                 ),
                                               ),
                                             ),
@@ -276,9 +292,9 @@ class _SchedulePageState extends State<SchedulePage> {
                                                 child: Text(
                                                   'Event ${index + 2}',
                                                   style: TextStyle(
-                                                    fontFamily: 'Alcherpixel',
-                                                    fontSize: 12,
-                                                  ),
+                                                      fontFamily: 'Alcherpixel',
+                                                      fontSize: 15,
+                                                      color: Colors.white),
                                                 ),
                                               ),
                                             ),
@@ -289,9 +305,9 @@ class _SchedulePageState extends State<SchedulePage> {
                                                 child: Text(
                                                   'Event ${index + 3}',
                                                   style: TextStyle(
-                                                    fontFamily: 'Alcherpixel',
-                                                    fontSize: 12,
-                                                  ),
+                                                      fontFamily: 'Alcherpixel',
+                                                      fontSize: 15,
+                                                      color: Colors.white),
                                                 ),
                                               ),
                                             ),

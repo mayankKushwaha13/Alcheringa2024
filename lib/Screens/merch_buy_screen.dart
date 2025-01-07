@@ -1,7 +1,20 @@
 import 'package:flutter/material.dart';
 
 class MerchBuyScreen extends StatefulWidget {
-  const MerchBuyScreen({super.key});
+  final String merchTitle;
+  final String merchSubtitle;
+  final String price;
+  final String merchSize;
+  final String image;
+
+  const MerchBuyScreen({
+    Key? key,
+    required this.merchTitle,
+    required this.merchSubtitle,
+    required this.price,
+    required this.merchSize,
+    required this.image,
+  }) : super(key: key);
 
   @override
   State<MerchBuyScreen> createState() => _MerchBuyScreenState();
@@ -67,37 +80,55 @@ class _MerchBuyScreenState extends State<MerchBuyScreen> {
                           scale: 5.0,
                           alignment: Alignment.topCenter,
                           'assets/images/total_price_cart.png',
-                          width: 300,
+                          width: 330,
                           fit: BoxFit.cover,
                         ),
                         // Positioned Text
                         Positioned.fill(
                           child: Center(
-                            child: Text.rich(
-                              TextSpan(
-                                children: [
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment
+                                  .start, // Ensures the column doesn't take extra space
+                              crossAxisAlignment: CrossAxisAlignment
+                                  .center, // Ensures text is centered
+                              children: [
+                                Text.rich(
                                   TextSpan(
-                                    text: "Rs. 4250\n",
-                                    style: const TextStyle(
-                                      fontFamily: 'AlcherPixel',
-                                      fontSize: 30,
-                                      fontWeight: FontWeight.w400,
-                                      color: Color.fromRGBO(255, 241, 232, 1),
-                                    ),
+                                    children: [
+                                      TextSpan(
+                                        text: 'Rs. ${widget.price}',
+                                        style: const TextStyle(
+                                          fontFamily: 'AlcherPixel',
+                                          fontSize: 30,
+                                          fontWeight: FontWeight.w400,
+                                          color:
+                                              Color.fromRGBO(255, 241, 232, 1),
+                                        ),
+                                      ),
+                                    ],
                                   ),
+                                  textAlign: TextAlign
+                                      .center, // Ensures center alignment
+                                ),
+                                Text.rich(
                                   TextSpan(
-                                    text: "Total: 5 items",
-                                    style: const TextStyle(
-                                      fontFamily: 'AlcherPixel',
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w400,
-                                      color: Color.fromRGBO(255, 241, 232, 1),
-                                    ),
+                                    children: [
+                                      TextSpan(
+                                        text: "Total: 5 items",
+                                        style: const TextStyle(
+                                          fontFamily: 'AlcherPixel',
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w400,
+                                          color:
+                                              Color.fromRGBO(255, 241, 232, 1),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
-                              textAlign:
-                                  TextAlign.center, // Ensures center alignment
+                                  textAlign: TextAlign
+                                      .center, // Ensures center alignment
+                                ),
+                              ],
                             ),
                           ),
                         ),
@@ -107,120 +138,134 @@ class _MerchBuyScreenState extends State<MerchBuyScreen> {
                       height: 20,
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(left: 25),
+                      padding: const EdgeInsets.only(left: 12, right: 12),
                       child: Stack(
                         children: [
                           Image.asset(
                             alignment: Alignment.topCenter,
-                            'assets/images/3.png',
-                            width: 350,
+                            'assets/images/product_details.png',
+                            width: 400,
                             fit: BoxFit.cover,
                           ),
-                          Row(
-                            children: [
-                              Column(
-                                children: [
-                                  SizedBox(
-                                    width: 200,
-                                  ),
-                                ],
-                              ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                  Text(
-                                    'SWEATSHIRT',
-                                    style: TextStyle(
-                                      fontFamily: 'AlcherPixel',
-                                      fontSize: 25,
-                                      fontWeight: FontWeight.w400,
-                                      color: Color.fromRGBO(255, 241, 232, 1),
-                                    ),
-                                  ),
-                                  Text(
-                                    'CRAZY EYES',
-                                    style: TextStyle(
-                                      fontFamily: 'AlcherPixel',
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w400,
-                                      color: Color.fromRGBO(255, 119, 168, 1),
-                                    ),
-                                  ),
-                                  Text(
-                                    'Rs. 850 /-',
-                                    style: TextStyle(
-                                      fontFamily: 'AlcherPixel',
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.w400,
-                                      color: Color.fromRGBO(255, 241, 232, 1),
-                                    ),
-                                  ),
-                                  Text(
-                                    'Size: L',
-                                    style: TextStyle(
-                                      fontFamily: 'AlcherPixel',
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w400,
-                                      color: Color.fromRGBO(255, 241, 232, 1),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 5,
-                                  ),
-                                  Row(
-                                    children: [
-                                      Image.asset(
-                                        alignment: Alignment.topCenter,
-                                        'assets/images/product_detail_sprite.png',
-                                        width: 40,
-                                        fit: BoxFit.cover,
+                          Expanded(
+                            child: Row(
+                              children: [
+                                SizedBox(
+                                  width: 20,
+                                ),
+                                Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Image.network(
+                                        widget.image,
+                                        width: 120,
                                       ),
-                                      Container(
-                                        height: 40,
-                                        width: 50,
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                            color:
-                                                Color.fromRGBO(29, 43, 83, 1),
-                                            width: 2.0,
-                                          ),
-                                          color: Colors.transparent,
-                                        ),
-                                        child: Center(
-                                          child: Text(
-                                            'S',
-                                            style: TextStyle(
-                                              fontFamily: 'AlcherPixel',
-                                              fontSize: 30,
-                                              fontWeight: FontWeight.w400,
-                                              color: Color.fromRGBO(
-                                                  255, 119, 168, 1),
-                                            ),
-                                          ),
-                                        ),
+                                    )
+                                  ],
+                                ),
+                                SizedBox(
+                                  width: 30,
+                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SizedBox(
+                                      height: 30,
+                                    ),
+                                    Text(
+                                      widget.merchTitle,
+                                      style: TextStyle(
+                                        fontFamily: 'AlcherPixel',
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.w400,
+                                        color: Color.fromRGBO(255, 241, 232, 1),
                                       ),
-                                      Transform.rotate(
-                                        angle: 3.14159265359,
-                                        child: Image.asset(
+                                    ),
+                                    Text(
+                                      widget.merchSubtitle,
+                                      style: TextStyle(
+                                        fontFamily: 'AlcherPixel',
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w400,
+                                        color: Color.fromRGBO(255, 119, 168, 1),
+                                      ),
+                                    ),
+                                    Text(
+                                      'Rs. ${widget.price}/-',
+                                      style: TextStyle(
+                                        fontFamily: 'AlcherPixel',
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.w400,
+                                        color: Color.fromRGBO(255, 241, 232, 1),
+                                      ),
+                                    ),
+                                    Text(
+                                      'Size: ${widget.merchSize}',
+                                      style: TextStyle(
+                                        fontFamily: 'AlcherPixel',
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w400,
+                                        color: Color.fromRGBO(255, 241, 232, 1),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Image.asset(
                                           alignment: Alignment.topCenter,
                                           'assets/images/product_detail_sprite.png',
                                           width: 40,
                                           fit: BoxFit.cover,
                                         ),
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ],
+                                        Container(
+                                          height: 40,
+                                          width: 50,
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color:
+                                                  Color.fromRGBO(29, 43, 83, 1),
+                                              width: 2.0,
+                                            ),
+                                            color: Colors.transparent,
+                                          ),
+                                          child: Center(
+                                            child: Text(
+                                              widget.merchSize,
+                                              style: TextStyle(
+                                                fontFamily: 'AlcherPixel',
+                                                fontSize: 30,
+                                                fontWeight: FontWeight.w400,
+                                                color: Color.fromRGBO(
+                                                    255, 119, 168, 1),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Transform.rotate(
+                                          angle: 3.14159265359,
+                                          child: Image.asset(
+                                            alignment: Alignment.topCenter,
+                                            'assets/images/product_detail_sprite.png',
+                                            width: 40,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ],
+                            ),
                           )
                         ],
                       ),
                     ),
-                    SizedBox(height: 400,),
+                    SizedBox(
+                      height: 400,
+                    ),
                     Stack(
                       children: [
                         Center(

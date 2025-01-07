@@ -14,6 +14,7 @@ class NotificationServices {
   Future<String> getDeviceToken() async {
     String? token = await messaging.getToken();
     String? apnstoken = await messaging.getAPNSToken();
+    
     return token!;
   }
 
