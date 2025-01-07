@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class CartCard extends StatefulWidget {
+import '../provider/cart_provider.dart';
+
+class CartCard extends StatelessWidget {
   final String title;
   final String subtitle;
   final double price;
@@ -18,32 +21,9 @@ class CartCard extends StatefulWidget {
   });
 
   @override
-  State<CartCard> createState() => _CartCardState();
-}
-
-class _CartCardState extends State<CartCard> {
-  late int currentQuantity; // Local state for quantity
-  @override
-  void initState() {
-    super.initState();
-    currentQuantity =
-        widget.quantity ?? 1; // Initialize with the passed quantity
-  }
-
-  void _increaseQuantity() {
-    setState(() {
-      currentQuantity++;
-    });
-  }
-
-  void _decreaseQuantity() {
-    setState(() {
-      if (currentQuantity > 1) currentQuantity--; // Prevent negative quantity
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final cartProvider = Provider.of<CartProvider>(context, listen: false);
+
     return Container(
       width: 327,
       height: 192, // Fixed height to avoid render flow error
@@ -67,13 +47,14 @@ class _CartCardState extends State<CartCard> {
               height: 119, // Fixed height
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: NetworkImage(widget.imageUrl),
+                  image: NetworkImage(imageUrl),
                   fit: BoxFit.cover,
                 ),
                 borderRadius: BorderRadius.circular(8.0),
               ),
             ),
             SizedBox(width: 16.0), // Space between image and details
+
             // Product Details
             Expanded(
               child: Column(
@@ -81,7 +62,7 @@ class _CartCardState extends State<CartCard> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    widget.title,
+                    title,
                     style: TextStyle(
                       fontFamily: 'Game_Tape',
                       color: Colors.white,
@@ -90,7 +71,7 @@ class _CartCardState extends State<CartCard> {
                     ),
                   ),
                   Text(
-                    widget.subtitle,
+                    subtitle,
                     style: TextStyle(
                       fontFamily: 'Game_Tape',
                       color: Color.fromRGBO(255, 119, 168, 1),
@@ -99,7 +80,7 @@ class _CartCardState extends State<CartCard> {
                     ),
                   ),
                   Text(
-                    'Rs. ${widget.price}',
+                    'Rs. ${price.toStringAsFixed(2)}',
                     style: TextStyle(
                       fontFamily: 'Game_Tape',
                       color: Color.fromRGBO(255, 241, 232, 1),
@@ -108,7 +89,7 @@ class _CartCardState extends State<CartCard> {
                     ),
                   ),
                   Text(
-                    'Size: ${widget.size}',
+                    'Size: $size',
                     style: TextStyle(
                       fontFamily: 'Game_Tape',
                       color: Colors.white,
@@ -120,10 +101,18 @@ class _CartCardState extends State<CartCard> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      // Left Arrow
+                      // Decrease Quantity Button
                       GestureDetector(
                         onTap: () {
-                          _decreaseQuantity();
+                          if (quantity > 1) {
+                            cartProvider.updateItemCount(
+                              title,
+                              size,
+                              quantity - 1,
+                            );
+                          } else {
+                            //cartProvider.removeItem(title, size);
+                          }
                         },
                         child: Image.asset(
                           'assets/images/product_detail_sprite.png',
@@ -136,14 +125,13 @@ class _CartCardState extends State<CartCard> {
                       Container(
                         width: 53.0,
                         height: 36.0,
-                        //alignment: Alignment.center,
                         decoration: BoxDecoration(
                           border: Border.all(color: Colors.black, width: 3.0),
                         ),
                         child: FittedBox(
                           fit: BoxFit.scaleDown,
                           child: Text(
-                            '${currentQuantity}',
+                            '$quantity',
                             style: TextStyle(
                               fontFamily: 'Brick_Pixel',
                               color: Color.fromRGBO(255, 119, 168, 1),
@@ -155,10 +143,14 @@ class _CartCardState extends State<CartCard> {
                         ),
                       ),
 
-                      // Right Arrow (Flipped)
+                      // Increase Quantity Button
                       GestureDetector(
                         onTap: () {
-                          _increaseQuantity();
+                          cartProvider.updateItemCount(
+                            title,
+                            size,
+                            quantity + 1,
+                          );
                         },
                         child: Transform(
                           alignment: Alignment.center,

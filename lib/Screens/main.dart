@@ -1,8 +1,7 @@
 import 'dart:async';
+
 import 'package:alcheringa/Common/globals.dart';
 import 'package:alcheringa/Model/view_model_main.dart';
-import 'package:alcheringa/Screens/merch_screen.dart';
-import 'package:alcheringa/Screens/cart_screen.dart';
 import 'package:alcheringa/Screens/welcome_screen.dart';
 import 'package:alcheringa/screens/main_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -11,8 +10,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 
+import '../Database/DBHandler.dart';
 import '../Notification/notification_services.dart';
 import '../firebase_options.dart';
+import '../provider/cart_provider.dart';
 
 @pragma('vm:entry-poiny')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -21,14 +22,26 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  DBHandler dbHandler = DBHandler();
+  await dbHandler.database;
+  final cartProvider = CartProvider();
+  await cartProvider.loadCartFromDatabase();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  runApp(ChangeNotifierProvider<ViewModelMain>(
-    create: (context) => ViewModelMain(),
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => ViewModelMain()),
+      ChangeNotifierProvider(create: (_) => cartProvider),
+    ],
     child: MyApp(),
   ));
+  // runApp(ChangeNotifierProvider<ViewModelMain>(
+  //   create: (context) => ViewModelMain(),
+  //   child: MyApp(),
+  // ));
 }
 
 class MyApp extends StatelessWidget {
@@ -75,7 +88,7 @@ class _SplashScreenState extends State<SplashScreen> {
     // notificationSerivces.getDeviceToken().then((value) {
     //   print(value);
     // });
-    
+
     _controller =
         VideoPlayerController.asset("assets/SplashMovie/splash_screen.mp4")
           ..initialize().then((_) {
