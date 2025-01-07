@@ -65,6 +65,7 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
+      resizeToAvoidBottomInset: false,
       endDrawer: EndDrawer(scaffoldState: _scaffoldKey,),
       appBar: TopAppBar(scaffoldState: _scaffoldKey),
       body: Stack(
@@ -80,14 +81,17 @@ class _MainScreenState extends State<MainScreen> {
             children: _pages,
           ),
           Positioned(
+            
             bottom: 0,
             left: 0,
             right: 0,
             child: Container(
+              
               decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.1), // Semi-transparent white
+                color: Colors.white.withOpacity(0.1), // Semi-transparent white
               ),
               child: BottomNavigationBar(
+                elevation: 0,
                 key: _bottomNavBarKey,
                 items: [
                   BottomNavigationBarItem(

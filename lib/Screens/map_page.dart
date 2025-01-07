@@ -1,9 +1,14 @@
 import 'dart:async';
-
+// import 'dart:ui' as ui;
 import 'package:alcheringa/Common/globals.dart';
+import 'package:alcheringa/Model/eventdetail.dart';
+import 'package:alcheringa/Model/own_time.dart';
+import 'package:alcheringa/Model/venue_model.dart';
 import 'package:alcheringa/Model/view_model_main.dart';
+import 'package:alcheringa/Screens/activity_pages/Stalls.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
@@ -14,53 +19,304 @@ class MapPage extends StatefulWidget {
 
 class _MapPageState extends State<MapPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
-  var opened = false;
-  final _center = LatLng(26.198559, -268.281730);
+  final _center = LatLng(26.190585, 91.696628);
   Completer<GoogleMapController> _controller = Completer();
-  double _currentZoom = 11.0;
+  double _currentZoom = 18.0;
   bool _isPermissionGranted = false;
+  Set<Marker> _markers = {};
+  final String mapstyle = '''
+  [ { "featureType": "all", "elementType": "labels.text", "stylers": [ { "visibility": "on" } ] }, { "featureType": "all", "elementType": "labels.icon", "stylers": [ { "visibility": "off" } ] }, { "featureType": "administrative.land_parcel", "elementType": "geometry.fill", "stylers": [ { "color": "#ff0000" }, { "visibility": "off" } ] }, { "featureType": "landscape.man_made", "elementType": "geometry.fill", "stylers": [ { "color": "#a1a4ab" } ] }, { "featureType": "landscape.man_made", "elementType": "geometry.stroke", "stylers": [ { "color": "#b2b2b2" }, { "visibility": "on" } ] }, { "featureType": "landscape.natural.landcover", "elementType": "geometry.fill", "stylers": [ { "color": "#a6a6a6" }, { "visibility": "off" } ] }, { "featureType": "landscape.natural.terrain", "elementType": "geometry.fill", "stylers": [ { "color": "#84aec6" }, { "visibility": "on" }, { "saturation": "-16" }, { "lightness": "-3" } ] }, { "featureType": "poi.business", "elementType": "geometry.fill", "stylers": [ { "color": "#508472" } ] }, { "featureType": "poi.government", "elementType": "geometry.fill", "stylers": [ { "color": "#b692b6" } ] }, { "featureType": "poi.park", "elementType": "geometry.fill", "stylers": [ { "color": "#508472" } ] }, { "featureType": "poi.park", "elementType": "geometry.stroke", "stylers": [ { "color": "#f8d93c" }, { "visibility": "off" } ] }, { "featureType": "poi.school", "elementType": "geometry.fill", "stylers": [ { "color": "#5d5e65" } ] }, { "featureType": "poi.sports_complex", "elementType": "geometry.fill", "stylers": [ { "color": "#508472" } ] }, { "featureType": "poi.sports_complex", "elementType": "geometry.stroke", "stylers": [ { "color": "#e4e748" } ] }, { "featureType": "road", "elementType": "geometry.fill", "stylers": [ { "color": "#8f93a0" } ] }, { "featureType": "road", "elementType": "geometry.stroke", "stylers": [ { "color": "#757575" }, { "visibility": "on" } ] }, { "featureType": "water", "elementType": "geometry.fill", "stylers": [ { "color": "#75aef3" } ] } ]
+  ''';
+  final TextEditingController _textFieldController = TextEditingController();
+  String selectedVenue = '';
+  List<VenueModel> _filteredVenue = [];
+  List<VenueModel> _venueList = [];
 
   void _onMapCreated(GoogleMapController controller) {
     _controller.complete(controller);
   }
 
   void _checkAndRequestPermission() async {
-    // _isPermissionGranted = await ViewModelMain().requestLocationPermission();
+    _isPermissionGranted = await ViewModelMain().requestLocationPermission();
+  }
+
+  Set<Marker> convertToMarkers(List<VenueModel> venueList) {
+    return venueList.map((venue) {
+      return Marker(
+          markerId: MarkerId(venue.name),
+          position: venue.latLng,
+          icon: BitmapDescriptor.defaultMarker,
+          infoWindow: InfoWindow(
+            title: venue.name,
+            snippet: venue.description,
+            onTap: () async {
+              final googleMapsUrl =Uri.parse('https://www.google.com/maps/dir/?api=1&destination=${venue.latLng.latitude},${venue.latLng.longitude}');
+
+              if (await canLaunchUrl(googleMapsUrl)) {
+                await launchUrl(googleMapsUrl);
+              } else {
+                throw 'Could not open Google Maps';
+              }
+            }
+          ));
+    }).toSet();
+  }
+
+  Future<void> getData() async {
+    final venueList = await ViewModelMain().getVenues();
+    setState(() {
+      _markers = convertToMarkers(venueList);
+      _venueList = venueList;
+      _filteredVenue = venueList;
+    });
+  }
+
+  void _filterVenue(String query) {
+    if (query.isEmpty) {
+      setState(() {
+        _filteredVenue = List.from(_venueList);
+      });
+    } else {
+      setState(() {
+        _filteredVenue = _venueList.where((venue) => venue.name.toLowerCase().contains(query.toLowerCase())).toList();
+      });
+    }
   }
 
   @override
   void initState() {
     super.initState();
-    // _checkAndRequestPermission();
+    _checkAndRequestPermission();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _scaffoldKey.currentState?.showBottomSheet((BuildContext context) {
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Text('This is bottom sheet scaffold'),
-            SizedBox(
-              height: bottomNavBarHeight,
-            )
-          ],
-        );
+        return BottomSheet(controller: _controller,);
       });
     });
+    getData();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
+      resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
           GoogleMap(
+            style: mapstyle,
             initialCameraPosition: CameraPosition(target: _center, zoom: _currentZoom),
             onMapCreated: _onMapCreated,
             zoomControlsEnabled: false,
-            myLocationEnabled: true,
-            myLocationButtonEnabled: true,
+            myLocationEnabled: _isPermissionGranted,
+            myLocationButtonEnabled: false,
+            markers: _markers,
+          ),
+          Positioned(
+            top: 30.0,
+            left: 0.0,
+            right: 0.0,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30.0),
+              child: Column(
+                children: [
+                  PixelTextField(
+                    hintText: 'Search',
+                    controller: _textFieldController,
+                    onChanged: _filterVenue,
+                  ),
+                  if (_textFieldController.text.isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            ..._filteredVenue.map((venue) {
+                              return GestureDetector(
+                                onTap: () async {
+                                  FocusScope.of(context).unfocus();
+                                  final venueLocation = venue.latLng;
+                                  final GoogleMapController controller = await _controller.future;
+
+                                  controller.animateCamera(CameraUpdate.newLatLng(venueLocation));
+                                  controller.showMarkerInfoWindow(MarkerId(venue.name));
+                                  setState(() {
+                                    _textFieldController.text = '';
+                                  });
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.all(15.0),
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    color: Color.fromRGBO(131, 118, 156, 1),
+                                    border: Border.all(color: Colors.black, width: 2.0, style: BorderStyle.solid),
+                                  ),
+                                  child: Text(
+                                    venue.name,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: "Game_Tape",
+                                      fontSize: 20.0,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            })
+                          ],
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class BottomSheet extends StatefulWidget {
+  BottomSheet({super.key, required this.controller});
+
+  Completer<GoogleMapController> controller;
+
+  @override
+  State<BottomSheet> createState() => _BottomSheetState();
+}
+
+class _BottomSheetState extends State<BottomSheet> {
+  List<EventDetail> eventList = [];
+  List<VenueModel> _markers = [];
+
+  Future<void> getData() async {
+    final _venueList = await ViewModelMain().getVenues();
+    final _eventList = await ViewModelMain().getAllEvents();
+    setState(() {
+      _markers = _venueList;
+      eventList = _eventList;
+    });
+  }
+
+  EventDetail? getNextEvent(String venue) {
+    DateTime current = DateTime.now();
+    int currentDay = current.day;
+    int currentHour = current.hour;
+    int currentMin = current.minute;
+
+    OwnTime now = OwnTime(date: currentDay, hours: currentHour, min: currentMin);
+
+    var filteredEvents = eventList.where((event) => event.venue == venue && event.starttime.isAfter(now)).toList();
+    if (filteredEvents.isEmpty) {
+      return null;
+    }
+
+    EventDetail nextEvent = filteredEvents.reduce((a, b) => a.starttime.isAfter(b.starttime) ? b : a);
+
+    return nextEvent;
+  }
+
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      color: Color(0xFF1D2B53),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 20.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: List.generate(_markers.length, (index) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    child: Container(
+                      height: 120.0,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage('assets/images/map_marker_holder_bg.png'), fit: BoxFit.fill),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            AspectRatio(
+                              aspectRatio: 1,
+                              child: Container(
+                                  padding: EdgeInsets.all(10.0),
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        image: AssetImage('assets/images/map_sprite_holder.png'), fit: BoxFit.fill),
+                                  ),
+                                  child: Image.network(_markers[index].imgUrl)),
+                            ),
+                            SizedBox(
+                              width: 10.0,
+                            ),
+                            Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  _markers[index].name,
+                                  style: TextStyle(
+                                    fontSize: 24.0,
+                                    fontFamily: "Game_Tape",
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                Text(
+                                  'Upcoming events:',
+                                  style: TextStyle(
+                                    fontSize: 16.0,
+                                    fontFamily: "Game_Tape",
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                Text(
+                                  getNextEvent(_markers[index].name)?.artist ?? "No upcoming event",
+                                  style: TextStyle(
+                                    fontSize: 12.0,
+                                    fontFamily: "Game_Tape",
+                                    color: Color(0xFFFF77A8),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              width: 10.0,
+                            ),
+                            GestureDetector(
+                              onTap: () async {
+                                final venueLocation = _markers[index].latLng;
+                                final GoogleMapController mapController = await widget.controller.future;
+
+                                mapController.animateCamera(CameraUpdate.newLatLng(venueLocation));
+                                mapController.showMarkerInfoWindow(MarkerId(_markers[index].name));
+                              },
+                              child: Image.asset('assets/images/map_location_icon.png'),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                }),
+              ),
+            ),
+            SizedBox(
+              height: bottomNavBarHeight,
+            ),
+          ],
+        ),
       ),
     );
   }

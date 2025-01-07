@@ -1,5 +1,8 @@
+import 'package:alcheringa/Screens/activity_pages/competitionpage.dart';
 import 'package:alcheringa/Screens/activity_pages/stalls_page.dart';
 import 'package:flutter/material.dart';
+
+import 'activity_events_screen.dart';
 
 class ActivityPage extends StatefulWidget {
   const ActivityPage({super.key});
@@ -12,7 +15,7 @@ class _ActivityPageState extends State<ActivityPage> {
   final PageController _pageController = PageController();
   int _selectedTab = 0;
 
-  final List<Widget> _allTabs = [EventsWidget(), CompetitionsWidget(), StallsPage(),];
+  final List<Widget> _allTabs = [ActivityEventsScreen(), CompetitionsWidget(), StallsPage(),];
 
   @override
   void dispose() {
@@ -134,17 +137,6 @@ class EventsWidget extends StatelessWidget {
   }
 }
 
-class CompetitionsWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        "Competitions Content",
-        style: TextStyle(color: Colors.white, fontSize: 24),
-      ),
-    );
-  }
-}
 
 class StallsWidget extends StatelessWidget {
   @override
