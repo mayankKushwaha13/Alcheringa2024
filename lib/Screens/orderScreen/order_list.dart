@@ -3,8 +3,8 @@ import 'package:alcheringa/Model/view_model_main.dart';
 import 'package:alcheringa/utils/styles/colors.dart';
 import 'package:flutter/material.dart';
 
-class orderlist extends StatelessWidget {
-  const orderlist({super.key});
+class OrderList extends StatelessWidget {
+  const OrderList({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,14 @@ class orderlist extends StatelessWidget {
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return Center(child: Text('No orders found.'));
+          return Center(child: Text(
+            'No orders found.',
+            style: TextStyle(
+              fontSize: 20.0,
+              fontFamily: 'Game_Tape',
+              color: Color(0xFFFFF1E8),
+            ),
+          ));
         }
         final orders = snapshot.data!;
         return ListView.builder(
