@@ -44,7 +44,7 @@ class CartCard extends StatelessWidget {
             // Product Image
             Container(
               width: 126, // Fixed width
-              height: 119, // Fixed height
+              height: 170, // Fixed height
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: NetworkImage(imageUrl),

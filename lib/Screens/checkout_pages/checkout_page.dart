@@ -46,111 +46,113 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        width: double.infinity,
-        height: MediaQuery.of(context).size.height,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/images/background.png'),
-            fit: BoxFit.cover,
+    return SafeArea(
+      child: Scaffold(
+        body: Container(
+          width: double.infinity,
+          height: MediaQuery.of(context).size.height,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/images/background.png'),
+              fit: BoxFit.cover,
+            ),
           ),
-        ),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              // Header Section
-              Container(
-                width: double.infinity,
-                height: 84,
-                decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.5),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                // Header Section
+                Container(
+                  width: double.infinity,
+                  height: 84,
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.5),
+                  ),
                 ),
-              ),
-              SizedBox(height: 20.0),
+                SizedBox(height: 20.0),
 
-              // Progress Bar Section (Conditional)
-              if (_currentIndex !=
-                  3) // Only show this in Details and Review tabs
-                Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Container(
-                      width: 345.0,
-                      height: 54,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image:
-                              AssetImage('assets/images/progress_details.png'),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                    // Tab Text
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        _buildTab("Details", 1),
-                        SizedBox(width: 99),
-                        _buildTab("Review", 2),
-                      ],
-                    ),
-                  ],
-                ),
-              SizedBox(height: 16.0),
-
-              // Content Section
-              _buildContentForTab(_currentIndex),
-              SizedBox(height: 16.0),
-
-              // Next Button
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 55),
-                child: GestureDetector(
-                  onTap: () {
-                    if ((areFieldsValid() && _currentIndex == 1)) {
-                      setState(() {
-                        _currentIndex++;
-                      });
-                    } else if ((!areFieldsValid() && _currentIndex == 1)) {
-                      showValidationError();
-                    } else if (_currentIndex < 3) {
-                      setState(() {
-                        _currentIndex++;
-                      });
-                    }
-                  },
-                  child: Stack(
+                // Progress Bar Section (Conditional)
+                if (_currentIndex !=
+                    3) // Only show this in Details and Review tabs
+                  Stack(
                     alignment: Alignment.center,
                     children: [
                       Container(
-                        width: 206,
-                        height: 59,
+                        width: 345.0,
+                        height: 54,
                         decoration: BoxDecoration(
                           image: DecorationImage(
-                            image: _currentIndex != 3
-                                ? AssetImage('assets/images/next_button.png')
-                                : AssetImage(
-                                    'assets/images/continue_shopping.png'),
+                            image: AssetImage(
+                                'assets/images/progress_details.png'),
                             fit: BoxFit.cover,
                           ),
                         ),
                       ),
-                      Text(
-                        _currentIndex < 3 ? 'Next' : 'Continue\nShopping',
-                        style: TextStyle(
-                          fontFamily: 'Brick_Pixel',
-                          color: Colors.white,
-                          fontSize: _currentIndex != 3 ? 20.0 : 24,
-                          fontWeight: FontWeight.w400,
-                          height: 0.9,
-                        ),
+                      // Tab Text
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          _buildTab("Details", 1),
+                          SizedBox(width: 99),
+                          _buildTab("Review", 2),
+                        ],
                       ),
                     ],
                   ),
+                SizedBox(height: 16.0),
+
+                // Content Section
+                _buildContentForTab(_currentIndex),
+                SizedBox(height: 16.0),
+
+                // Next Button
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 55),
+                  child: GestureDetector(
+                    onTap: () {
+                      if ((areFieldsValid() && _currentIndex == 1)) {
+                        setState(() {
+                          _currentIndex++;
+                        });
+                      } else if ((!areFieldsValid() && _currentIndex == 1)) {
+                        showValidationError();
+                      } else if (_currentIndex < 3) {
+                        setState(() {
+                          _currentIndex++;
+                        });
+                      }
+                    },
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Container(
+                          width: 206,
+                          height: 59,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: _currentIndex != 3
+                                  ? AssetImage('assets/images/next_button.png')
+                                  : AssetImage(
+                                      'assets/images/continue_shopping.png'),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                        Text(
+                          _currentIndex < 3 ? 'Next' : 'Continue\nShopping',
+                          style: TextStyle(
+                            fontFamily: 'Brick_Pixel',
+                            color: Colors.white,
+                            fontSize: _currentIndex != 3 ? 20.0 : 24,
+                            fontWeight: FontWeight.w400,
+                            height: 0.9,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
