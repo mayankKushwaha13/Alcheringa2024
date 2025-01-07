@@ -44,7 +44,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     ),),
                 Positioned(
                     left: MediaQuery.of(context).size.width*.40 ,
-                    bottom: MediaQuery.of(context).size.height*.055,
+                    bottom: MediaQuery.of(context).size.height*.06,
                     child: _shadedText()
                 ),
               ],
@@ -77,11 +77,11 @@ AppBar _appBar(BuildContext context){
     ),
     actions: [
       Padding(
-          padding: EdgeInsets.only(bottom: 5,right: 5),
+          padding: EdgeInsets.only(bottom: 5,right: 20),
           child: Text("Notification",
             style: TextStyle(
                 color: AppColors.Pink,
-                fontFamily: 'AlcherPixel',
+                fontFamily: "Game_Tape",
                 fontSize: 35),))
     ],);
 }
@@ -99,8 +99,13 @@ ShaderMask _shadedText(){
     },
     child: Text('MORE',
         style: TextStyle(
-        fontSize: 35,
-        fontFamily: "AlcherPixel",
+            shadows: [
+            Shadow(
+            offset: Offset(2.0, 2.0), // Horizontal and vertical offset
+      //blurRadius: 10.0, // Blur effect
+      color: Colors.black,)], // Shadow color
+        fontSize: 32,
+        fontFamily: "Game_Tape",
         color: AppColors.Palewhite,
           fontWeight: FontWeight.w800
       ),
