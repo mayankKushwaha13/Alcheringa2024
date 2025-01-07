@@ -17,14 +17,14 @@ class _CompetitionCardState extends State<CompetitionCard> {
     final mq = MediaQuery.of(context).size;
 
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 2),
+      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
       child: Stack(
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(16),
             child: Image.asset(
               "assets/images/event_card_bg.png",
-              fit: BoxFit.cover,
+              fit: BoxFit.fill,
               width: mq.width,
               height: mq.width * 0.4,
             ),

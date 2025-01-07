@@ -26,18 +26,17 @@ class CartCard extends StatelessWidget {
 
     return Container(
       width: 327,
-      height: 192, // Fixed height to avoid render flow error
+      height: 250, // Fixed height to avoid render flow error
       margin: EdgeInsets.all(16.0),
       decoration: BoxDecoration(
         image: DecorationImage(
           image: AssetImage('assets/images/product_details.png'),
-          fit: BoxFit.cover,
+          fit: BoxFit.fill,
         ),
-        border: Border.all(color: Colors.black, width: 2.0),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Padding(
-        padding: EdgeInsets.all(12.0),
+        padding: EdgeInsets.all(20.0),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
