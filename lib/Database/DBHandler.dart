@@ -1,31 +1,34 @@
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../Model/cart_model.dart';
 
-class DBHandler{
+class DBHandler {
   Database? _database;
-    static const String tableName = "CART";
-    static const String idCol = "id";
-    static const String nameCol = "name";
-    static const String countCol = "count";
-    static const String priceCol = "price";
-    static const String sizeCol = "size";
-    static const String imageCol = "image";
-    static const String typeCol = "type";
+  static const String tableName = "CART";
+  static const String idCol = "id";
+  static const String nameCol = "name";
+  static const String countCol = "count";
+  static const String priceCol = "price";
+  static const String sizeCol = "size";
+  static const String imageCol = "image";
+  static const String typeCol = "type";
 
   Future<Database?> get database async {
-    if (_database != null){
-      return _database;
+    if (_database != null) {
+      return _database; // Return if already initialized
     }
 
     String path = join(await getDatabasesPath(), 'alcherDatabase.db');
-    await openDatabase(path, version : 1, 
-    onCreate: (db, version) async {
-      await db.execute(
-        '''
+    _database = await openDatabase(
+      // Assign the database instance
+      path,
+      version: 1,
+      onCreate: (db, version) async {
+        await db.execute('''
         CREATE TABLE $tableName (
           $idCol INTEGER PRIMARY KEY AUTOINCREMENT,
           $nameCol TEXT,
@@ -35,38 +38,27 @@ class DBHandler{
           $imageCol TEXT,
           $typeCol TEXT
         )
-        '''
-      );
-      log("Logging SQL Table");
-      log("on create finally ran");
-    },
-    onUpgrade: (db, oldVersion, newVersion) async {
-        await db.execute("DROP TABLE IF EXISTS $tableName");
-        String path = join(await getDatabasesPath(), 'alcherDatabase.db');
-        await openDatabase(path, version: newVersion,
-          onCreate: (db, version) async {
-            await db.execute(
-              '''
-              CREATE TABLE $tableName (
-                $idCol INTEGER PRIMARY KEY AUTOINCREMENT,
-                $nameCol TEXT,
-                $countCol TEXT,
-                $priceCol TEXT,
-                $sizeCol TEXT,
-                $imageCol TEXT,
-                $typeCol TEXT
-              )
-              '''
-            );
-            log("Logging SQL Table");
-            log("on upgrade and on create finally ran");
-          },
-        );
+      ''');
+        log("Database created and table initialized");
       },
-
+      onUpgrade: (db, oldVersion, newVersion) async {
+        await db.execute("DROP TABLE IF EXISTS $tableName");
+        await db.execute('''
+        CREATE TABLE $tableName (
+          $idCol INTEGER PRIMARY KEY AUTOINCREMENT,
+          $nameCol TEXT,
+          $countCol TEXT,
+          $priceCol TEXT,
+          $sizeCol TEXT,
+          $imageCol TEXT,
+          $typeCol TEXT
+        )
+      ''');
+        log("Database upgraded and table re-initialized");
+      },
     );
-    
-    return _database;
+
+    return _database; // Ensure the instance is returned
   }
 
   Future<List<CartModel>> readCourses() async {
@@ -82,43 +74,56 @@ class DBHandler{
     return cartArray;
   }
 
-  void addNewItemToCart(String name,String price,String size,String count,String imageURL,String type,Context context) async {
-    Database? db = await database;
-    Map<String, Object?> map = {
-      nameCol : name, 
-      countCol : count,
-      priceCol : price,
-      sizeCol : size,
-      imageCol : imageURL,
-      typeCol : type,
-    };
-    final List<Map<String, dynamic>> existingItems = await db!.query(
-      tableName,
-      where: '$nameCol = ? AND $size = ?',
-      whereArgs: [name, size],
-    );
-    if (existingItems.isNotEmpty) {
-      int updatedCount = int.parse(existingItems.first[countCol]) + 1;
+  Future<void> addNewItemToCart(String name, String price, String size,
+      String count, String imageURL, String type, BuildContext context) async {
+    try {
+      Database? db = await database;
 
-      map[countCol] = updatedCount.toString();
-      await db.update(
+      Map<String, Object?> map = {
+        nameCol: name,
+        countCol: count,
+        priceCol: price,
+        sizeCol: size,
+        imageCol: imageURL,
+        typeCol: type,
+      };
+
+      final List<Map<String, dynamic>> existingItems = await db!.query(
         tableName,
-        map,
-        where: 'name = ? AND size = ?',
+        where: '$nameCol = ? AND $sizeCol = ?',
         whereArgs: [name, size],
       );
-    } else {
-      await db.insert(tableName, map);
+
+      if (existingItems.isNotEmpty) {
+        int updatedCount = int.parse(existingItems.first[countCol]) + 1;
+        map[countCol] = updatedCount.toString();
+        await db.update(
+          tableName,
+          map,
+          where: '$nameCol = ? AND $sizeCol = ?',
+          whereArgs: [name, size],
+        );
+      } else {
+        await db.insert(tableName, map);
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Error adding item to cart: $e"),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
   }
 
-  Future<void> removeFromCart(String name, String price, String size, String count) async {
+  Future<void> removeFromCart(
+      String name, String price, String size, String count) async {
     Database? db = await database;
     final map = {
-      nameCol : name,
-      priceCol : price,
-      sizeCol : size,
-      countCol : count,
+      nameCol: name,
+      priceCol: price,
+      sizeCol: size,
+      countCol: count,
     };
     final List<Map<String, dynamic>> existingItems = await db!.query(
       tableName,
@@ -139,10 +144,10 @@ class DBHandler{
           where: '$nameCol = ? AND $sizeCol = ?',
           whereArgs: [name, size],
         );
-      }else {
-      map[countCol] = count;
-      await db.insert(tableName, map);
-    }
+      } else {
+        map[countCol] = count;
+        await db.insert(tableName, map);
+      }
     }
   }
 
@@ -165,4 +170,13 @@ class DBHandler{
     await db!.execute("DELETE FROM $tableName");
   }
 
+  Future<void> updateItemCount(String name, String size, String count) async {
+    final db = await database;
+    await db!.update(
+      tableName,
+      {countCol: count}, // Update count
+      where: '$nameCol = ? AND $sizeCol = ?',
+      whereArgs: [name, size],
+    );
+  }
 }

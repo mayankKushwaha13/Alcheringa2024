@@ -2,13 +2,13 @@ import 'package:alcheringa/Common/globals.dart';
 import 'package:alcheringa/Model/informal_model.dart';
 import 'package:alcheringa/Model/utility_model.dart';
 import 'package:alcheringa/Model/view_model_main.dart';
-import 'package:alcheringa/Screens/activity_pages/Stalls.dart';
 import 'package:alcheringa/Screens/activity_pages/stalls_page.dart';
 import 'package:alcheringa/Screens/merch_screen.dart';
 import 'package:alcheringa/Widgets/HomeScreenWidgets/explore_container_widget.dart';
 import 'package:alcheringa/Widgets/HomeScreenWidgets/home_screen_container_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../Model/eventdetail.dart';
 import '../Widgets/HomeScreenWidgets/event_description_widget.dart';
 
@@ -20,7 +20,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   Future<double> _getBottomNavBarHeight() async {
     await Future.delayed(Duration(milliseconds: 50));
     return bottomNavBarHeight;
@@ -53,7 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: [
                           ExploreContainerWidget(
                             text: "Merch",
-                            isMerchPage: true,
+                            // isMerchPage: true,
                             NavigatingPage: MerchScreen(),
                           ),
                           ExploreContainerWidget(
@@ -65,9 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             NavigatingPage: MerchScreen(),
                           ),
                           ExploreContainerWidget(
-                            text: "Stalls",
-                            NavigatingPage: StallsPage()
-                          )
+                              text: "Stalls", NavigatingPage: StallsPage())
                         ],
                       ),
                     ),
@@ -215,11 +212,12 @@ class _HomeScreenState extends State<HomeScreen> {
             FutureBuilder(
               future: _getBottomNavBarHeight(),
               builder: (context, snapshot) {
-                if(!snapshot.hasData || snapshot.connectionState == ConnectionState.waiting){
+                if (!snapshot.hasData ||
+                    snapshot.connectionState == ConnectionState.waiting) {
                   return SizedBox(
                     height: 100.0,
                   );
-                }else{
+                } else {
                   return SizedBox(
                     height: snapshot.data,
                   );

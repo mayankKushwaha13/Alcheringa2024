@@ -1,17 +1,26 @@
+import 'package:alcheringa/Screens/merch_buy_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../Database/DBHandler.dart';
+import '../Model/cart_model.dart';
+import '../provider/cart_provider.dart';
 
 class MerchDetailScreen extends StatefulWidget {
-    final String merchName;
-  final String merchDescription;
+  final String merchTitle;
+  final String merchSubtitle;
   final String price;
+  final String merchDescription;
+  final String image;
 
-    const MerchDetailScreen({
+  const MerchDetailScreen({
     Key? key,
-    required this.merchName,
-    required this.merchDescription,
+    required this.merchTitle,
+    required this.merchSubtitle,
     required this.price,
+    required this.merchDescription,
+    required this.image,
   }) : super(key: key);
-
 
   @override
   State<MerchDetailScreen> createState() => _MerchDetailScreenState();
@@ -19,192 +28,176 @@ class MerchDetailScreen extends StatefulWidget {
 
 class _MerchDetailScreenState extends State<MerchDetailScreen> {
   final List<String> sizes = ['S', 'M', 'L', 'XL', 'XXL'];
+  final List<int> lengths = [26, 27, 29, 29, 30];
+  final List<int> chests = [40, 42, 44, 46, 48];
+  final DBHandler dbHandler = DBHandler();
   int selectedIndex = 2;
+  String selectedSize = "L";
+
+  bool isSizeChartVisible = false;
+
+  void toggleSizeChart() {
+    setState(() {
+      isSizeChartVisible = !isSizeChartVisible;
+    });
+  }
 
   void selectLeft() {
     setState(() {
       if (selectedIndex > 0) selectedIndex--;
+      selectedSize = sizes[selectedIndex];
     });
   }
 
   void selectRight() {
     setState(() {
       if (selectedIndex < sizes.length - 1) selectedIndex++;
+      selectedSize = sizes[selectedIndex];
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        height: MediaQuery.of(context).size.height,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/images/background.png'),
-            fit: BoxFit.cover,
+      backgroundColor: Color(0xFF1D2B53),
+      body: SafeArea(
+        child: Container(
+          width: double.infinity,
+          height: MediaQuery.of(context).size.height,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/images/background.png'),
+              fit: BoxFit.cover,
+            ),
           ),
-        ),
-        child: SingleChildScrollView(
-          // Added SingleChildScrollView
-          child: Column(
-            crossAxisAlignment:
-                CrossAxisAlignment.start, // Ensures text alignment
-            children: [
-              // Header Section
-              Container(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 16.0, vertical: 16.0),
-                decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.5),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Image.asset(
-                        'assets/images/back_button.png',
-                        width: 54.0,
-                        height: 54.0,
-                      ),
-                    ),
-                    const Text(
-                      'Merchandise',
-                      style: TextStyle(
-                        fontFamily: 'AlcherPixel',
-                        fontSize: 24,
-                        fontWeight: FontWeight.w400,
-                        color: Color.fromRGBO(255, 119, 168, 1),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 250),
-              Padding(
-                padding: const EdgeInsets.only(left: 15),
-                child: Text(
-                  widget.merchName,
-                  style: TextStyle(
-                    fontFamily: 'AlcherPixel',
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                    color: Color.fromRGBO(255, 241, 232, 1),
+          child: SingleChildScrollView(
+            // Added SingleChildScrollView
+            child: Column(
+              crossAxisAlignment:
+                  CrossAxisAlignment.start, // Ensures text alignment
+              children: [
+                // Header Section
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0, vertical: 16.0),
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.5),
                   ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 15),
-                child: Text(
-                  widget.merchDescription,
-                  style: const TextStyle(
-                    fontFamily: 'AlcherPixel',
-                    fontSize: 22,
-                    fontWeight: FontWeight.w400,
-                    color: Color.fromRGBO(255, 119, 168, 1),
-                  ),
-                ),
-              ),
-              SizedBox(height: 10),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: Text(
-                  widget.price,
-                  style: const TextStyle(
-                    fontFamily: 'AlcherPixel',
-                    fontSize: 40,
-                    fontWeight: FontWeight.w400,
-                    color: Color.fromRGBO(255, 241, 232, 1),
-                  ),
-                ),
-              ),
-              SizedBox(height: 20),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'PICK YOUR SIZE',
-                      style: const TextStyle(
-                        fontFamily: 'AlcherPixel',
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                        color: Color.fromRGBO(255, 241, 232, 1),
-                      ),
-                    ),
-                    Text(
-                      'SIZE CHART',
-                      style: const TextStyle(
-                        fontFamily: 'AlcherPixel',
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                        color: Color.fromRGBO(255, 119, 168, 1),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 20),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    GestureDetector(
-                      onTap: selectLeft,
-                      child: Image.asset(
-                        alignment: Alignment.topCenter,
-                        'assets/images/product_detail_sprite.png',
-                        width: 50,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: sizes.asMap().entries.map((entry) {
-                            final index = entry.key;
-                            final size = entry.value;
-                            final isSelected = index == selectedIndex;
-                            return Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
-                              child: Text(
-                                size,
-                                style: TextStyle(
-                                  fontFamily: 'AlcherPixel',
-                                  fontSize: isSelected ? 35 : 25,
-                                  fontWeight: isSelected
-                                      ? FontWeight.bold
-                                      : FontWeight.normal,
-                                  color: isSelected
-                                      ? Color.fromRGBO(255, 241, 232, 1)
-                                      : Color.fromRGBO(131, 118, 156, 1),
-                                ),
-                              ),
-                            );
-                          }).toList(),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Image.asset(
+                          'assets/images/back_button.png',
+                          width: 54.0,
+                          height: 54.0,
                         ),
-                        Image.asset(
+                      ),
+                      const Text(
+                        'Merchandise',
+                        style: TextStyle(
+                          fontFamily: 'AlcherPixel',
+                          fontSize: 24,
+                          fontWeight: FontWeight.w400,
                           color: Color.fromRGBO(255, 119, 168, 1),
-                          alignment: Alignment.topCenter,
-                          'assets/images/scroll.png',
-                          width: 250,
-                          height: 3,
-                          fit: BoxFit.cover,
                         ),
-                      ],
+                      ),
+                    ],
+                  ),
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.network(
+                        widget.image,
+                        width: 200,
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 15),
+                  child: Text(
+                    widget.merchTitle,
+                    style: TextStyle(
+                      fontFamily: 'AlcherPixelBold',
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                      color: Color.fromRGBO(255, 241, 232, 1),
                     ),
-                    GestureDetector(
-                      onTap: selectRight,
-                      child: Transform.rotate(
-                        angle: 3.14159265359,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 15),
+                  child: Text(
+                    widget.merchSubtitle,
+                    style: const TextStyle(
+                      fontFamily: 'AlcherPixel',
+                      fontSize: 22,
+                      fontWeight: FontWeight.w400,
+                      color: Color.fromRGBO(255, 119, 168, 1),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 10),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: Text(
+                    widget.price,
+                    style: const TextStyle(
+                      fontFamily: 'AlcherPixel',
+                      fontSize: 40,
+                      fontWeight: FontWeight.w400,
+                      color: Color.fromRGBO(255, 241, 232, 1),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'PICK YOUR SIZE',
+                        style: const TextStyle(
+                          fontFamily: 'AlcherPixel',
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                          color: Color.fromRGBO(255, 241, 232, 1),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          toggleSizeChart();
+                        },
+                        child: Text(
+                          'SIZE CHART',
+                          style: const TextStyle(
+                            fontFamily: 'AlcherPixel',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                            color: Color.fromRGBO(255, 119, 168, 1),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 20),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GestureDetector(
+                        onTap: selectLeft,
                         child: Image.asset(
                           alignment: Alignment.topCenter,
                           'assets/images/product_detail_sprite.png',
@@ -212,84 +205,254 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
                           fit: BoxFit.cover,
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 30),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: Text(
-                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. "
-                  "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor "
-                  "in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur",
-                  style: const TextStyle(
-                    fontFamily: 'AlcherPixel',
-                    fontSize: 18,
-                    fontWeight: FontWeight.w400,
-                    color: Color.fromRGBO(255, 241, 232, 1),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: sizes.asMap().entries.map((entry) {
+                              final index = entry.key;
+                              final size = entry.value;
+                              final isSelected = index == selectedIndex;
+                              return Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                                child: Text(
+                                  size,
+                                  style: TextStyle(
+                                    fontFamily: 'AlcherPixel',
+                                    fontSize: isSelected ? 35 : 25,
+                                    fontWeight: isSelected
+                                        ? FontWeight.bold
+                                        : FontWeight.normal,
+                                    color: isSelected
+                                        ? Color.fromRGBO(255, 241, 232, 1)
+                                        : Color.fromRGBO(131, 118, 156, 1),
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                          Image.asset(
+                            color: Color.fromRGBO(255, 119, 168, 1),
+                            alignment: Alignment.topCenter,
+                            'assets/images/scroll.png',
+                            width: 250,
+                            height: 3,
+                            fit: BoxFit.cover,
+                          ),
+                        ],
+                      ),
+                      GestureDetector(
+                        onTap: selectRight,
+                        child: Transform.rotate(
+                          angle: 3.14159265359,
+                          child: Image.asset(
+                            alignment: Alignment.topCenter,
+                            'assets/images/product_detail_sprite.png',
+                            width: 50,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Stack(
-                      children: [
-                        Image.asset(
-                          alignment: Alignment.topCenter,
-                          'assets/images/green_button.png',
-                          width: 150,
-                          fit: BoxFit.cover,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 30),
-                          child: Text(
-                            "Buy now",
-                            style: const TextStyle(
-                              fontFamily: 'AlcherPixel',
-                              fontSize: 30,
-                              fontWeight: FontWeight.w400,
-                              color: Color.fromRGBO(255, 241, 232, 1),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Stack(
-                      children: [
-                        Image.asset(
-                          alignment: Alignment.topCenter,
-                          'assets/images/sign_in.png',
-                          width: 150,
-                          fit: BoxFit.cover,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15),
-                          child: Text(
-                            "Add to cart",
-                            style: const TextStyle(
-                              fontFamily: 'AlcherPixel',
-                              fontSize: 30,
-                              fontWeight: FontWeight.w400,
-                              color: Color.fromRGBO(255, 241, 232, 1),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+                SizedBox(
+                  height: 10,
                 ),
-              ),
-              SizedBox(
-                height: 30,
-              ),
-            ],
+
+                if (isSizeChartVisible)
+                  Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Length (+/- 0.5 in):",
+                            style: TextStyle(
+                                color: Color.fromRGBO(131, 118, 156, 1)),
+                          ),
+                        ],
+                      ),
+                      // Length Row
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: sizes.asMap().entries.map((entry) {
+                          final index = entry.key;
+                          final length = lengths[index];
+                          final isSelected = index == selectedIndex;
+                          return Text(
+                            length.toString(),
+                            style: TextStyle(
+                              fontFamily: 'AlcherPixel',
+                              fontSize: isSelected ? 20 : 16,
+                              fontWeight: isSelected
+                                  ? FontWeight.bold
+                                  : FontWeight.normal,
+                              color: isSelected
+                                  ? Color.fromRGBO(255, 241, 232, 1)
+                                  : Color.fromRGBO(131, 118, 156, 1),
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Chest (+/- 0.5 in):",
+                            style: TextStyle(
+                                color: Color.fromRGBO(131, 118, 156, 1)),
+                          ),
+                        ],
+                      ),
+                      // Chest Row
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: sizes.asMap().entries.map((entry) {
+                          final index = entry.key;
+                          final chest = chests[index];
+                          final isSelected = index == selectedIndex;
+                          return Text(
+                            chest.toString(),
+                            style: TextStyle(
+                              fontFamily: 'AlcherPixel',
+                              fontSize: isSelected ? 20 : 16,
+                              fontWeight: isSelected
+                                  ? FontWeight.bold
+                                  : FontWeight.normal,
+                              color: isSelected
+                                  ? Color.fromRGBO(255, 241, 232, 1)
+                                  : Color.fromRGBO(131, 118, 156, 1),
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    ],
+                  ),
+                SizedBox(height: 30),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: Text(
+                    widget.merchDescription,
+                    style: const TextStyle(
+                      fontFamily: 'AlcherPixel',
+                      fontSize: 18,
+                      fontWeight: FontWeight.w400,
+                      color: Color.fromRGBO(255, 241, 232, 1),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => MerchBuyScreen(
+                                merchTitle: widget.merchTitle,
+                                merchSubtitle: widget.merchSubtitle,
+                                merchSize: selectedSize,
+                                price: widget.price,
+                                image: widget.image,
+                              ),
+                            ),
+                          );
+                        },
+                        child: Stack(
+                          children: [
+                            Image.asset(
+                              alignment: Alignment.topCenter,
+                              'assets/images/green_button.png',
+                              width: 150,
+                              fit: BoxFit.cover,
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 30),
+                              child: Text(
+                                "Buy now",
+                                style: const TextStyle(
+                                  fontFamily: 'AlcherPixel',
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.w400,
+                                  color: Color.fromRGBO(255, 241, 232, 1),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      GestureDetector(
+                        // Add this to the "Add to Cart" GestureDetector
+                        onTap: () async {
+                          // Add the selected merch to the cart
+                          final cartItem = CartModel(
+                            name: widget.merchTitle,
+                            price: widget.price,
+                            size: selectedSize,
+                            count: "1", // Default count
+                            imageUrl: widget.image,
+                            type: "Merchandise", // Type (optional)
+                          );
+
+                          await Provider.of<CartProvider>(context,
+                                  listen: false)
+                              .addItem(cartItem, context);
+
+                          // Show confirmation
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                  "Added ${widget.merchTitle} to the cart!"),
+                              backgroundColor: Colors.green,
+                            ),
+                          );
+                        },
+
+                        child: Stack(
+                          children: [
+                            Image.asset(
+                              alignment: Alignment.topCenter,
+                              'assets/images/sign_in.png',
+                              width: 150,
+                              fit: BoxFit.cover,
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 15),
+                              child: Text(
+                                "Add to cart",
+                                style: const TextStyle(
+                                  fontFamily: 'AlcherPixel',
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.w400,
+                                  color: Color.fromRGBO(255, 241, 232, 1),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+              ],
+            ),
           ),
         ),
       ),
