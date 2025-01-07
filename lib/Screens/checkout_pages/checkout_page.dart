@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 import 'build_confirmation_tab.dart';
@@ -186,14 +185,14 @@ class _CheckoutPageState extends State<CheckoutPage> {
         );
       case 2:
         return buildReviewTab(
-          name: nameController.text,
-          phone: phoneController.text,
-          addressLine1: addressLine1Controller.text,
-          addressLine2: addressLine2Controller.text,
-          city: cityController.text,
-          state: stateController.text,
-          pincode: pincodeController.text,
-        );
+            name: nameController.text,
+            phone: phoneController.text,
+            addressLine1: addressLine1Controller.text,
+            addressLine2: addressLine2Controller.text,
+            city: cityController.text,
+            state: stateController.text,
+            pincode: pincodeController.text,
+            context: context);
       case 3:
         return buildConfirmationTab();
       default:

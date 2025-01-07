@@ -1,14 +1,19 @@
 import 'package:alcheringa/Screens/merch_buy_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../Database/DBHandler.dart';
+import '../Model/cart_model.dart';
+import '../provider/cart_provider.dart';
 
 class MerchDetailScreen extends StatefulWidget {
-    final String merchTitle;
+  final String merchTitle;
   final String merchSubtitle;
   final String price;
   final String merchDescription;
   final String image;
 
-    const MerchDetailScreen({
+  const MerchDetailScreen({
     Key? key,
     required this.merchTitle,
     required this.merchSubtitle,
@@ -17,22 +22,21 @@ class MerchDetailScreen extends StatefulWidget {
     required this.image,
   }) : super(key: key);
 
-
   @override
   State<MerchDetailScreen> createState() => _MerchDetailScreenState();
 }
 
 class _MerchDetailScreenState extends State<MerchDetailScreen> {
   final List<String> sizes = ['S', 'M', 'L', 'XL', 'XXL'];
-    final List<int> lengths = [26, 27, 29, 29, 30];
+  final List<int> lengths = [26, 27, 29, 29, 30];
   final List<int> chests = [40, 42, 44, 46, 48];
+  final DBHandler dbHandler = DBHandler();
   int selectedIndex = 2;
-  String selectedSize = "L"; 
+  String selectedSize = "L";
 
   bool isSizeChartVisible = false;
 
-
-      void toggleSizeChart() {
+  void toggleSizeChart() {
     setState(() {
       isSizeChartVisible = !isSizeChartVisible;
     });
@@ -49,7 +53,6 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
     setState(() {
       if (selectedIndex < sizes.length - 1) selectedIndex++;
       selectedSize = sizes[selectedIndex];
-
     });
   }
 
@@ -105,17 +108,17 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
                     ],
                   ),
                 ),
-                
+
                 Padding(
                   padding: const EdgeInsets.all(10),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                        Image.network(
+                      Image.network(
                         widget.image,
                         width: 200,
-                        ),
-                      ],
+                      ),
+                    ],
                   ),
                 ),
                 Padding(
@@ -255,68 +258,82 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
                     ],
                   ),
                 ),
-                  SizedBox(height: 10,),
-        
+                SizedBox(
+                  height: 10,
+                ),
+
                 if (isSizeChartVisible)
-                         Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  Column(
                     children: [
-                      Text("Length (+/- 0.5 in):",
-                      style: TextStyle(color: Color.fromRGBO(131, 118, 156, 1)),),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Length (+/- 0.5 in):",
+                            style: TextStyle(
+                                color: Color.fromRGBO(131, 118, 156, 1)),
+                          ),
+                        ],
+                      ),
+                      // Length Row
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: sizes.asMap().entries.map((entry) {
+                          final index = entry.key;
+                          final length = lengths[index];
+                          final isSelected = index == selectedIndex;
+                          return Text(
+                            length.toString(),
+                            style: TextStyle(
+                              fontFamily: 'AlcherPixel',
+                              fontSize: isSelected ? 20 : 16,
+                              fontWeight: isSelected
+                                  ? FontWeight.bold
+                                  : FontWeight.normal,
+                              color: isSelected
+                                  ? Color.fromRGBO(255, 241, 232, 1)
+                                  : Color.fromRGBO(131, 118, 156, 1),
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Chest (+/- 0.5 in):",
+                            style: TextStyle(
+                                color: Color.fromRGBO(131, 118, 156, 1)),
+                          ),
+                        ],
+                      ),
+                      // Chest Row
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: sizes.asMap().entries.map((entry) {
+                          final index = entry.key;
+                          final chest = chests[index];
+                          final isSelected = index == selectedIndex;
+                          return Text(
+                            chest.toString(),
+                            style: TextStyle(
+                              fontFamily: 'AlcherPixel',
+                              fontSize: isSelected ? 20 : 16,
+                              fontWeight: isSelected
+                                  ? FontWeight.bold
+                                  : FontWeight.normal,
+                              color: isSelected
+                                  ? Color.fromRGBO(255, 241, 232, 1)
+                                  : Color.fromRGBO(131, 118, 156, 1),
+                            ),
+                          );
+                        }).toList(),
+                      ),
                     ],
                   ),
-                  // Length Row
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: sizes.asMap().entries.map((entry) {
-                      final index = entry.key;
-                      final length = lengths[index];
-                      final isSelected = index == selectedIndex;
-                      return Text(
-                        length.toString(),
-                        style: TextStyle(
-                          fontFamily: 'AlcherPixel',
-                          fontSize: isSelected ? 20 : 16,
-                          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                          color: isSelected
-                              ? Color.fromRGBO(255, 241, 232, 1)
-                              : Color.fromRGBO(131, 118, 156, 1),
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                  SizedBox(height: 10,),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text("Chest (+/- 0.5 in):",
-                      style: TextStyle(color: Color.fromRGBO(131, 118, 156, 1)),),
-                    ],
-                  ),
-                  // Chest Row
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: sizes.asMap().entries.map((entry) {
-                      final index = entry.key;
-                      final chest = chests[index];
-                      final isSelected = index == selectedIndex;
-                      return Text(
-                        chest.toString(),
-                        style: TextStyle(
-                          fontFamily: 'AlcherPixel',
-                          fontSize: isSelected ? 20 : 16,
-                          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                          color: isSelected
-                              ? Color.fromRGBO(255, 241, 232, 1)
-                              : Color.fromRGBO(131, 118, 156, 1),
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                ],
-              ),
                 SizedBox(height: 30),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -340,18 +357,18 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                           Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => MerchBuyScreen(
-                  merchTitle: widget.merchTitle,
-                  merchSubtitle: widget.merchSubtitle,
-                  merchSize: selectedSize,
-                  price: widget.price,
-                  image: widget.image,
-                ),
-              ),
-            );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => MerchBuyScreen(
+                                merchTitle: widget.merchTitle,
+                                merchSubtitle: widget.merchSubtitle,
+                                merchSize: selectedSize,
+                                price: widget.price,
+                                image: widget.image,
+                              ),
+                            ),
+                          );
                         },
                         child: Stack(
                           children: [
@@ -362,7 +379,8 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
                               fit: BoxFit.cover,
                             ),
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 30),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 30),
                               child: Text(
                                 "Buy now",
                                 style: const TextStyle(
@@ -376,27 +394,56 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
                           ],
                         ),
                       ),
-                      Stack(
-                        children: [
-                          Image.asset(
-                            alignment: Alignment.topCenter,
-                            'assets/images/sign_in.png',
-                            width: 150,
-                            fit: BoxFit.cover,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 15),
-                            child: Text(
-                              "Add to cart",
-                              style: const TextStyle(
-                                fontFamily: 'AlcherPixel',
-                                fontSize: 30,
-                                fontWeight: FontWeight.w400,
-                                color: Color.fromRGBO(255, 241, 232, 1),
+                      GestureDetector(
+                        // Add this to the "Add to Cart" GestureDetector
+                        onTap: () async {
+                          // Add the selected merch to the cart
+                          final cartItem = CartModel(
+                            name: widget.merchTitle,
+                            price: widget.price,
+                            size: selectedSize,
+                            count: "1", // Default count
+                            imageUrl: widget.image,
+                            type: "Merchandise", // Type (optional)
+                          );
+
+                          await Provider.of<CartProvider>(context,
+                                  listen: false)
+                              .addItem(cartItem, context);
+
+                          // Show confirmation
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                  "Added ${widget.merchTitle} to the cart!"),
+                              backgroundColor: Colors.green,
+                            ),
+                          );
+                        },
+
+                        child: Stack(
+                          children: [
+                            Image.asset(
+                              alignment: Alignment.topCenter,
+                              'assets/images/sign_in.png',
+                              width: 150,
+                              fit: BoxFit.cover,
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 15),
+                              child: Text(
+                                "Add to cart",
+                                style: const TextStyle(
+                                  fontFamily: 'AlcherPixel',
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.w400,
+                                  color: Color.fromRGBO(255, 241, 232, 1),
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ],
                   ),

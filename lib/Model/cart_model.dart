@@ -1,12 +1,12 @@
 import 'package:alcheringa/Database/DBHandler.dart';
 
 class CartModel {
-  final String name;
-  final String size;
-  final String price;
-  final String type;
-  final String imageUrl;
-  final String count;
+  String name;
+  String size;
+  String price;
+  String type;
+  String imageUrl;
+  String count;
 
   CartModel({
     required this.name,
@@ -26,5 +26,16 @@ class CartModel {
       imageUrl: map[DBHandler.imageCol],
       count: map[DBHandler.countCol],
     );
+  }
+  // Method to convert CartModel to a map
+  Map<String, dynamic> toMap() {
+    return {
+      'name': name,
+      'price': price,
+      'size': size,
+      'count': count,
+      'image': imageUrl,
+      'type': type,
+    };
   }
 }
