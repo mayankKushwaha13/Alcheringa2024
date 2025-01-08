@@ -92,11 +92,7 @@ class _StallsPageState extends State<StallsPage> {
                   ..._filteredStalls.map(
                     (item) => Padding(
                       padding: const EdgeInsets.only(bottom: 15.0),
-                      child: PixelStoreCard(
-                        name: item.name,
-                        ref: item.name,
-                        image: item.imgurl,
-                      ),
+                      child: PixelStoreCard(stall: item),
                     ),
                   ),
                   SizedBox(height: bottomNavBarHeight - 10),
