@@ -176,7 +176,7 @@ class MerchandiseItem extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20),
       child: GestureDetector(
         onTap: () {
-                    Navigator.push(
+          Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => MerchDetailScreen(
@@ -198,47 +198,51 @@ class MerchandiseItem extends StatelessWidget {
               fit: BoxFit.cover,
             ),
             Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Image.network(
-                image,
-                width: 70,
-              ),
-            ),
+              padding: const EdgeInsets.all(10.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Image.network(
+                      image,
+                      width: MediaQuery.of(context).size.width * 0.2,
+                    ),
+                  ),
 
-            Padding(
-              padding: const EdgeInsets.only(top: 50, left: 140),
-              child: Text(
-                title,
-                style: const TextStyle(
-                  fontFamily: 'AlcherPixelBold',
-                  fontSize: 23,
-                  fontWeight: FontWeight.w400,
-                  color: Color.fromRGBO(255, 241, 232, 1),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 72, left: 140),
-              child: Text(
-                subtitle,
-                style: const TextStyle(
-                  fontFamily: 'AlcherPixel',
-                  fontSize: 17,
-                  fontWeight: FontWeight.w400,
-                  color: Color.fromRGBO(255, 119, 168, 1),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 100, left: 140),
-              child: Text(
-                'Rs $price.00/-',
-                style: const TextStyle(
-                  fontFamily: 'AlcherPixel',
-                  fontSize: 18,
-                  fontWeight: FontWeight.w400,
-                  color: Color.fromRGBO(255, 241, 232, 1),
-                ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        title,
+                        style: const TextStyle(
+                          fontFamily: 'AlcherPixelBold',
+                          fontSize: 23,
+                          fontWeight: FontWeight.w400,
+                          color: Color.fromRGBO(255, 241, 232, 1),
+                        ),
+                      ),
+                      Text(
+                        subtitle,
+                        style: const TextStyle(
+                          fontFamily: 'AlcherPixel',
+                          fontSize: 17,
+                          fontWeight: FontWeight.w400,
+                          color: Color.fromRGBO(255, 119, 168, 1),
+                        ),
+                      ),
+                      Text(
+                        'Rs $price.00/-',
+                        style: const TextStyle(
+                          fontFamily: 'AlcherPixel',
+                          fontSize: 18,
+                          fontWeight: FontWeight.w400,
+                          color: Color.fromRGBO(255, 241, 232, 1),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
             Padding(
