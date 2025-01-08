@@ -201,24 +201,24 @@ class MerchandiseItem extends StatelessWidget {
               padding: const EdgeInsets.all(20.0),
               child: Image.network(
                 image,
-                width: 100,
+                width: 70,
               ),
             ),
 
             Padding(
-              padding: const EdgeInsets.only(top: 50, left: 180),
+              padding: const EdgeInsets.only(top: 50, left: 140),
               child: Text(
                 title,
                 style: const TextStyle(
                   fontFamily: 'AlcherPixelBold',
-                  fontSize: 25,
+                  fontSize: 23,
                   fontWeight: FontWeight.w400,
                   color: Color.fromRGBO(255, 241, 232, 1),
                 ),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 72, left: 180),
+              padding: const EdgeInsets.only(top: 72, left: 140),
               child: Text(
                 subtitle,
                 style: const TextStyle(
@@ -230,7 +230,7 @@ class MerchandiseItem extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 100, left: 180),
+              padding: const EdgeInsets.only(top: 100, left: 140),
               child: Text(
                 'Rs $price.00/-',
                 style: const TextStyle(
@@ -242,7 +242,7 @@ class MerchandiseItem extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 160, left: 5),
+              padding: const EdgeInsets.only(top: 160, left: 15),
               child: Stack(
                 children: [
                   Image.asset(
