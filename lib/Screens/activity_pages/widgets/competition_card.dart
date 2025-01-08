@@ -1,7 +1,6 @@
 import 'package:alcheringa/Model/eventdetail.dart';
 import 'package:alcheringa/Screens/event_detail_page.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class CompetitionCard extends StatefulWidget {
   final EventDetail event;
@@ -41,7 +40,10 @@ class _CompetitionCardState extends State<CompetitionCard> {
                   // widget.event.iconURL==null || widget.event.iconURL==""
                   // ?Image.asset( "assets/images/basketball.png",scale: 1.2,)
                   // :Image.network(widget.event.iconURL),
-                  Image.asset( "assets/images/basketball.png",scale: 1.2,),
+                  Image.asset(
+                    "assets/images/basketball.png",
+                    scale: 1.2,
+                  ),
                   SizedBox(
                     width: 5,
                   ),
@@ -65,10 +67,7 @@ class _CompetitionCardState extends State<CompetitionCard> {
                             child: Text(
                               widget.event.descriptionEvent,
                               style: TextStyle(
-                                  color: Color(0xFFFF77A8),
-                                  fontSize: 14,
-                                  fontFamily: 'Game_Tape',
-                                  letterSpacing: .15),
+                                  color: Color(0xFFFF77A8), fontSize: 14, fontFamily: 'Game_Tape', letterSpacing: .15),
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                             ),

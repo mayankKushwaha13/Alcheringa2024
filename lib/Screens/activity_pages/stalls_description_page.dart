@@ -1,9 +1,6 @@
 import 'package:alcheringa/Model/stall_model.dart';
-import 'package:alcheringa/Model/venue_model.dart';
-import 'package:alcheringa/Model/view_model_main.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class StallsDescriptionPage extends StatefulWidget {
@@ -16,7 +13,6 @@ class StallsDescriptionPage extends StatefulWidget {
 }
 
 class _StallsDescriptionPageState extends State<StallsDescriptionPage> {
-
   @override
   Widget build(BuildContext context) {
     final stall = widget.stall;
@@ -95,8 +91,7 @@ class _StallsDescriptionPageState extends State<StallsDescriptionPage> {
                       child: AspectRatio(
                         aspectRatio: 1.0,
                         child: CachedNetworkImage(
-                          imageUrl:
-                          stall.imgurl,
+                          imageUrl: stall.imgurl,
                           fit: BoxFit.fill,
                         ),
                       ),
@@ -148,32 +143,28 @@ class _StallsDescriptionPageState extends State<StallsDescriptionPage> {
                             Positioned(
                               child: GestureDetector(
                                 onTap: () async {
-                                  final googleMapsUrl =Uri.parse('https://www.google.com/maps/dir/?api=1&destination=26.190917,91.696659');
+                                  final googleMapsUrl = Uri.parse(
+                                      'https://www.google.com/maps/dir/?api=1&destination=26.190917,91.696659');
 
                                   if (await canLaunchUrl(googleMapsUrl)) {
-                                  await launchUrl(googleMapsUrl);
+                                    await launchUrl(googleMapsUrl);
                                   } else {
-                                  throw 'Could not open Google Maps';
+                                    throw 'Could not open Google Maps';
                                   }
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
-                                      image: AssetImage(
-                                        'assets/images/direction_box.png',
-                                      ),
-                                      fit: BoxFit.fill
-                                    ),
+                                        image: AssetImage(
+                                          'assets/images/direction_box.png',
+                                        ),
+                                        fit: BoxFit.fill),
                                   ),
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
                                     child: Text(
                                       'Find on Map',
-                                      style: TextStyle(
-                                        fontSize: 20.0,
-                                        fontFamily: 'Brick_pixel',
-                                        color: Colors.white
-                                      ),
+                                      style: TextStyle(fontSize: 20.0, fontFamily: 'Brick_pixel', color: Colors.white),
                                     ),
                                   ),
                                 ),

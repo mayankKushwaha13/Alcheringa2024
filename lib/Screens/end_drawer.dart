@@ -1,8 +1,6 @@
 import 'package:alcheringa/Common/globals.dart';
 import 'package:alcheringa/Screens/orderScreen/order_screen.dart';
 import 'package:alcheringa/Screens/sponsersScreen/sponser_screen.dart';
-import 'package:alcheringa/Screens/sponsersScreen/sponsors_list.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../Model/view_model_main.dart';
@@ -39,7 +37,6 @@ class _EndDrawerState extends State<EndDrawer> {
     return name;
   }
 
-
   @override
   Widget build(BuildContext context) {
     //data for side bar population
@@ -47,8 +44,7 @@ class _EndDrawerState extends State<EndDrawer> {
       {
         'name': 'PROFILE',
         'iconPath': 'assets/images/sidebar_profile_icon.png',
-        'onTap': () {
-        },
+        'onTap': () {},
       },
       {
         'name': 'FAQ',
@@ -172,7 +168,7 @@ class _EndDrawerState extends State<EndDrawer> {
                     ),
                   ),
                   ...sideBarItemsList1.map(
-                        (item) => SideBarItems(
+                    (item) => SideBarItems(
                       name: item['name'],
                       iconPath: item['iconPath'],
                       onTap: item['onTap'],
@@ -182,7 +178,7 @@ class _EndDrawerState extends State<EndDrawer> {
                     height: 25.0,
                   ),
                   ...sideBarItemsList2.map(
-                        (item) => SideBarItems(
+                    (item) => SideBarItems(
                       name: item['name'],
                       iconPath: item['iconPath'],
                       onTap: item['onTap'],
@@ -207,7 +203,6 @@ class _EndDrawerState extends State<EndDrawer> {
     );
   }
 }
-
 
 class SideBarItems extends StatelessWidget {
   final String name;
