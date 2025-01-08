@@ -24,7 +24,7 @@ class _CompetitionCardState extends State<CompetitionCard> {
             borderRadius: BorderRadius.circular(16),
             child: Image.asset(
               "assets/images/event_card_bg.png",
-              fit: BoxFit.cover,
+              fit: BoxFit.fill,
               width: mq.width,
               height: mq.width * 0.4,
             ),
