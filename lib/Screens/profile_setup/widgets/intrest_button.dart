@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class IntrestButton extends StatefulWidget {
   final String intrest;
-  final Function(String, bool) onSelected; // Callback to notify parent
+  final Function(String, bool)? onSelected; // Callback to notify parent
 
   const IntrestButton({
     super.key,
@@ -20,7 +20,7 @@ class _IntrestButtonState extends State<IntrestButton> {
   void toggleSelection() {
     setState(() {
       selected = !selected;
-      widget.onSelected(widget.intrest, selected);
+      if(widget.onSelected!=null)widget.onSelected!(widget.intrest, selected);
     });
   }
 

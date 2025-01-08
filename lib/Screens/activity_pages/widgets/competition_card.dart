@@ -17,15 +17,15 @@ class _CompetitionCardState extends State<CompetitionCard> {
     final mq = MediaQuery.of(context).size;
 
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 2),
+      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       child: Stack(
         children: [
           ClipRRect(
-            borderRadius: BorderRadius.circular(16),
+            // borderRadius: BorderRadius.circular(16),
             child: Image.asset(
               "assets/images/event_card_bg.png",
-              fit: BoxFit.fill,
-              width: mq.width,
+              fit: BoxFit.cover,
+              // width: mq.width,
               height: mq.width * 0.4,
             ),
           ),
@@ -58,6 +58,7 @@ class _CompetitionCardState extends State<CompetitionCard> {
                               fontWeight: FontWeight.w400,
                               letterSpacing: 0.15,
                               fontFamily: 'Brick_Pixel'),
+                            overflow: TextOverflow.ellipsis,
                         ),
                         Flexible(
                           child: Text(
@@ -84,6 +85,7 @@ class _CompetitionCardState extends State<CompetitionCard> {
                                 fontWeight: FontWeight.w400,
                                 height: 1.71,
                               ),
+                            overflow: TextOverflow.ellipsis,
                             ),
                             Text(
                               "|",
@@ -108,6 +110,7 @@ class _CompetitionCardState extends State<CompetitionCard> {
                                 height: 1.71,
                                 letterSpacing: 0.15,
                               ),
+                            overflow: TextOverflow.ellipsis,
                             )
                           ],
                         )

@@ -1,7 +1,7 @@
 import 'package:alcheringa/Common/globals.dart';
 import 'package:alcheringa/Screens/orderScreen/order_screen.dart';
+import 'package:alcheringa/Screens/profile_setup/profile_page.dart';
 import 'package:alcheringa/Screens/sponsersScreen/sponser_screen.dart';
-import 'package:alcheringa/Screens/sponsersScreen/sponsors_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -48,6 +48,8 @@ class _EndDrawerState extends State<EndDrawer> {
         'name': 'PROFILE',
         'iconPath': 'assets/images/sidebar_profile_icon.png',
         'onTap': () {
+          widget.scaffoldState.currentState!.closeEndDrawer();
+          Navigator.push(context, MaterialPageRoute(builder: (_)=>ProfilePage()));
         },
       },
       {
