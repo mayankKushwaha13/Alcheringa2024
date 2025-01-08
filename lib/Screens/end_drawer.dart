@@ -195,7 +195,7 @@ class _EndDrawerState extends State<EndDrawer> {
                     name: 'SIGN OUT',
                     iconPath: 'assets/images/sidebar_signout_icon.png',
                     onTap: () {
-
+                      auth.signOut();
                     },
                   )
                 ],
