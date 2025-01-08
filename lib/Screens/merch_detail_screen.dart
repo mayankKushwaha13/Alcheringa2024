@@ -149,7 +149,7 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   child: Text(
-                    widget.price,
+                    'Rs. ${widget.price}',
                     style: const TextStyle(
                       fontFamily: 'AlcherPixel',
                       fontSize: 40,
