@@ -8,9 +8,10 @@ import 'package:flutter/material.dart';
 import '../Model/view_model_main.dart';
 
 class EndDrawer extends StatefulWidget {
-  const EndDrawer({super.key, required this.scaffoldState});
+  const EndDrawer({super.key, required this.scaffoldState, required this.onTapped});
 
   final GlobalKey<ScaffoldState> scaffoldState;
+  final Function onTapped;
 
   @override
   State<EndDrawer> createState() => _EndDrawerState();
@@ -47,13 +48,14 @@ class _EndDrawerState extends State<EndDrawer> {
         'name': 'PROFILE',
         'iconPath': 'assets/images/sidebar_profile_icon.png',
         'onTap': () {
-          widget.scaffoldState.currentState!.closeEndDrawer();
         },
       },
       {
         'name': 'FAQ',
         'iconPath': 'assets/images/sidebar_faq_icon.png',
         'onTap': () {
+          widget.scaffoldState.currentState!.closeEndDrawer();
+          widget.onTapped(4);
         },
       },
       {
@@ -69,7 +71,10 @@ class _EndDrawerState extends State<EndDrawer> {
       {
         'name': 'CONTACT US',
         'iconPath': 'assets/images/sidebar_contactus_icon.png',
-        'onTap': () {},
+        'onTap': () {
+          widget.scaffoldState.currentState!.closeEndDrawer();
+          widget.onTapped(4);
+        },
       },
     ];
 
@@ -77,7 +82,10 @@ class _EndDrawerState extends State<EndDrawer> {
       {
         'name': 'TEAMS',
         'iconPath': 'assets/images/sidebar_team_icon.png',
-        'onTap': () {},
+        'onTap': () {
+          widget.scaffoldState.currentState!.closeEndDrawer();
+          widget.onTapped(4);
+        },
       },
       {
         'name': 'SPONSORS',
