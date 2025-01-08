@@ -5,7 +5,7 @@ import 'package:alcheringa/Model/eventdetail.dart';
 import 'package:alcheringa/Model/own_time.dart';
 import 'package:alcheringa/Model/venue_model.dart';
 import 'package:alcheringa/Model/view_model_main.dart';
-import 'package:alcheringa/Screens/activity_pages/Stalls.dart';
+import 'package:alcheringa/Screens/activity_pages/pixel_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
