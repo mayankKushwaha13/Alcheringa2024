@@ -1,12 +1,14 @@
+import 'package:alcheringa/Common/globals.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import 'package:alcheringa/Model/eventdetail.dart';
 import 'package:alcheringa/Model/view_model_main.dart';
 import 'package:alcheringa/Screens/activity_pages/widgets/competition_card.dart';
 import 'package:alcheringa/Screens/activity_pages/widgets/header.dart';
 
 class CompetitionsWidget extends StatefulWidget {
+  const CompetitionsWidget({super.key});
+
   @override
   State<CompetitionsWidget> createState() => _CompetitionsWidgetState();
 }
@@ -88,7 +90,7 @@ class _CompetitionsWidgetState extends State<CompetitionsWidget> {
               ),
             ),
           ),
-          const SizedBox(height: 5),
+          const SizedBox(height: 15),
           
           Expanded(
             child: ListView.builder(
@@ -123,6 +125,11 @@ class _CompetitionsWidgetState extends State<CompetitionsWidget> {
                         },
                       ),
                     ),
+
+                    if(key.toLowerCase() == "music")
+                      SizedBox(
+                        height: bottomNavBarHeight,
+                      )
                   ],
                 );
               },

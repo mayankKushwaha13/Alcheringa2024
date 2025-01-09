@@ -26,25 +26,24 @@ class CartCard extends StatelessWidget {
 
     return Container(
       width: 327,
-      height: 192, // Fixed height to avoid render flow error
+      height: 250, // Fixed height to avoid render flow error
       margin: EdgeInsets.all(16.0),
       decoration: BoxDecoration(
         image: DecorationImage(
           image: AssetImage('assets/images/product_details.png'),
-          fit: BoxFit.cover,
+          fit: BoxFit.fill,
         ),
-        border: Border.all(color: Colors.black, width: 2.0),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Padding(
-        padding: EdgeInsets.all(12.0),
+        padding: EdgeInsets.all(20.0),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             // Product Image
             Container(
               width: 126, // Fixed width
-              height: 119, // Fixed height
+              height: 170, // Fixed height
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: NetworkImage(imageUrl),
@@ -58,7 +57,7 @@ class CartCard extends StatelessWidget {
             // Product Details
             Expanded(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
@@ -99,20 +98,16 @@ class CartCard extends StatelessWidget {
                   ),
                   // Quantity Selector
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       // Decrease Quantity Button
                       GestureDetector(
                         onTap: () {
-                          if (quantity > 1) {
                             cartProvider.updateItemCount(
                               title,
                               size,
                               quantity - 1,
                             );
-                          } else {
-                            //cartProvider.removeItem(title, size);
-                          }
                         },
                         child: Image.asset(
                           'assets/images/product_detail_sprite.png',

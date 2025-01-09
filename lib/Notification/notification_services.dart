@@ -12,10 +12,9 @@ class NotificationServices {
 
   //to get device token
   Future<String> getDeviceToken() async {
-    String? token = await messaging.getToken();
     String? apnstoken = await messaging.getAPNSToken();
     
-    return token!;
+    return apnstoken!;
   }
 
   void isTokenRefresh() async {

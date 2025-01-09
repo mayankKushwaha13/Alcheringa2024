@@ -1,4 +1,4 @@
-import 'package:alcheringa/Screens/merch_buy_screen.dart';
+import 'package:alcheringa/Screens/cart_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -149,7 +149,7 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   child: Text(
-                    widget.price,
+                    'Rs. ${widget.price}',
                     style: const TextStyle(
                       fontFamily: 'Game_Tape',
                       fontSize: 40,
@@ -356,19 +356,23 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => MerchBuyScreen(
-                                merchTitle: widget.merchTitle,
-                                merchSubtitle: widget.merchSubtitle,
-                                merchSize: selectedSize,
-                                price: widget.price,
-                                image: widget.image,
-                              ),
-                            ),
+                        onTap: () async {
+                          final cartItem = CartModel(
+                            name: widget.merchTitle,
+                            price: widget.price,
+                            size: selectedSize,
+                            count: "1", // Default count
+                            imageUrl: widget.image,
+                            type: "Merchandise", // Type (optional)
                           );
+
+                          await Provider.of<CartProvider>(context,
+                                  listen: false)
+                              .addItem(cartItem, context);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => CartScreen()));
                         },
                         child: Stack(
                           children: [

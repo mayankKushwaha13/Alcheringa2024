@@ -1,11 +1,11 @@
 import 'package:alcheringa/Common/globals.dart';
 import 'package:alcheringa/Screens/activity_pages/activity_page.dart';
 import 'package:alcheringa/Screens/end_drawer.dart';
+import 'package:alcheringa/Screens/schedule_page.dart';
 import 'package:alcheringa/Screens/top_app_bar.dart';
 import 'package:alcheringa/Screens/utility_screen/utilities_screen.dart';
 import 'package:alcheringa/screens/home_screen.dart';
 import 'package:alcheringa/screens/map_page.dart';
-import 'package:alcheringa/screens/schedule_page.dart';
 import 'package:flutter/material.dart';
 
 class MainScreen extends StatefulWidget {
@@ -23,7 +23,7 @@ class _MainScreenState extends State<MainScreen> {
   late PageController _pageController = PageController();
   final List<Widget> _pages = [
     const MapPage(),
-    const SchedulePage(),
+    SchedulePage(),
     const HomeScreen(),
     const ActivityPage(),
     const UtilitiesPage()
@@ -66,10 +66,8 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      endDrawer: EndDrawer(
-        scaffoldState: _scaffoldKey,
-        onTapped: () {},
-      ),
+      resizeToAvoidBottomInset: false,
+      endDrawer: EndDrawer(scaffoldState: _scaffoldKey, onTapped: _onTapped,),
       appBar: TopAppBar(scaffoldState: _scaffoldKey),
       body: Stack(
         children: [

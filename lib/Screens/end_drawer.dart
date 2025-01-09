@@ -2,7 +2,6 @@ import 'package:alcheringa/Common/globals.dart';
 import 'package:alcheringa/Screens/orderScreen/order_screen.dart';
 import 'package:alcheringa/Screens/profile_setup/profile_page.dart';
 import 'package:alcheringa/Screens/sponsersScreen/sponser_screen.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../Model/view_model_main.dart';
@@ -38,7 +37,6 @@ class _EndDrawerState extends State<EndDrawer> {
     name = await ViewModelMain().getValue('userName');
     return name;
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -174,7 +172,7 @@ class _EndDrawerState extends State<EndDrawer> {
                     ),
                   ),
                   ...sideBarItemsList1.map(
-                        (item) => SideBarItems(
+                    (item) => SideBarItems(
                       name: item['name'],
                       iconPath: item['iconPath'],
                       onTap: item['onTap'],
@@ -184,7 +182,7 @@ class _EndDrawerState extends State<EndDrawer> {
                     height: 25.0,
                   ),
                   ...sideBarItemsList2.map(
-                        (item) => SideBarItems(
+                    (item) => SideBarItems(
                       name: item['name'],
                       iconPath: item['iconPath'],
                       onTap: item['onTap'],
@@ -197,7 +195,7 @@ class _EndDrawerState extends State<EndDrawer> {
                     name: 'SIGN OUT',
                     iconPath: 'assets/images/sidebar_signout_icon.png',
                     onTap: () {
-
+                      auth.signOut();
                     },
                   )
                 ],
@@ -209,7 +207,6 @@ class _EndDrawerState extends State<EndDrawer> {
     );
   }
 }
-
 
 class SideBarItems extends StatelessWidget {
   final String name;

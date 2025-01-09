@@ -4,184 +4,177 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/cart_provider.dart';
-import '../utils/styles/colors.dart';
 
 class CartScreen extends StatelessWidget {
+  const CartScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     final cartProvider = Provider.of<CartProvider>(context);
 
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: _appBar(context),
-      body: Container(
-        width: double.infinity,
-        height: MediaQuery.of(context).size.height,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/images/background.png'),
-            fit: BoxFit.cover,
+    return SafeArea(
+      child: Scaffold(
+        body: Container(
+          width: double.infinity,
+          height: MediaQuery.of(context).size.height,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/images/background.png'),
+              fit: BoxFit.cover,
+            ),
           ),
-        ),
-        child: Column(
-          children: [
-            SizedBox(height: 110.0),
-            // Stack with total price and total items
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                Container(
-                  width: 246.0,
-                  height: 54.0,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage('assets/images/total_price_cart.png'),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
+          child: Column(
+            children: [
+              // Semi-transparent header
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+                decoration: BoxDecoration(
+                  color: Colors.black
+                      .withOpacity(0.5), // Header background opacity
                 ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      'Rs. ${cartProvider.totalPrice.toStringAsFixed(2)}', // Use CartProvider for total price
-                      style: TextStyle(
-                        fontFamily: 'Game_Tape',
-                        color: Colors.white,
-                        fontSize: 32.0,
-                        fontWeight: FontWeight.w400,
-                        height: 0.9,
-                          shadows: [
-                            Shadow(
-                                offset: Offset(2.5, 2),
-                                color: Colors.black,
-                                blurRadius: 2),
-                          ]
-
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Image.asset(
+                        'assets/images/back_button.png',
+                        width: 54.0,
+                        height: 54.0,
                       ),
                     ),
-                    Text(
-                      'Total: ${cartProvider.totalItems} items', // Use CartProvider for total items
-                      style: TextStyle(
-                        fontFamily: 'Game_Tape',
-                        color: Colors.white,
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w400,
-                          shadows: [
-                            Shadow(
-                                offset: Offset(2.5, 2),
-                                color: Colors.black,
-                                blurRadius: 2),
-                          ]
+                    GestureDetector(
+                      onTap: () {},
+                      child: Text(
+                        'Cart',
+                        style: TextStyle(
+                          fontFamily: 'Game_Tape',
+                          fontSize: 24,
+                          fontWeight: FontWeight.w400,
+                          color: Color.fromRGBO(255, 119, 168, 1),
+                        ),
                       ),
                     ),
                   ],
                 ),
-              ],
-            ),
+              ),
+              SizedBox(height: 20.0),
 
-            SizedBox(height: 20.0),
-
-            // Cart Items List
-            Expanded(
-              child: cartProvider.cartItems.isEmpty
-                  ? Center(
-                      child: Text(
-                        "Your cart is empty!",
-                        style: TextStyle(
-                          fontFamily: 'Game_Tape',
-                          fontSize: 24,
-                          color: Colors.white,
-                        ),
-                      ),
-                    )
-                  : ListView.builder(
-                      itemCount: cartProvider.cartItems.length,
-                      itemBuilder: (context, index) {
-                        final item = cartProvider.cartItems[index];
-                        return CartCard(
-                          title: item.name,
-                          subtitle: item.type,
-                          price: double.parse(item.price),
-                          size: item.size,
-                          imageUrl: item.imageUrl,
-                          quantity: int.parse(item.count),
-                        );
-                      },
-                    ),
-            ),
-
-            // "Buy" button at the bottom
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => CheckoutPage()),
-                );
-              },
-              child: Stack(
+              // Stack with total price and total items
+              Stack(
                 alignment: Alignment.center,
                 children: [
                   Container(
-                    width: 190.0,
-                    height: 50.47,
+                    width: 246.0,
+                    height: 54.0,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: AssetImage('assets/images/sign_in.png'),
+                        image: AssetImage('assets/images/total_price_cart.png'),
                         fit: BoxFit.cover,
                       ),
                     ),
                   ),
-                  Text(
-                    'Purchase',
-                    style: TextStyle(
-                      fontFamily: 'Brick_Pixel',
-                      color: Colors.white,
-                      fontSize: 24.0,
-                      fontWeight: FontWeight.w400,
-                    ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'Rs. ${cartProvider.totalPrice.toStringAsFixed(2)}', // Use CartProvider for total price
+                        style: TextStyle(
+                          fontFamily: 'Game_Tape',
+                          color: Colors.white,
+                          fontSize: 32.0,
+                          fontWeight: FontWeight.w400,
+                          height: 0.9,
+                        ),
+                      ),
+                      Text(
+                        'Total: ${cartProvider.totalItems} items', // Use CartProvider for total items
+                        style: TextStyle(
+                          fontFamily: 'Game_Tape',
+                          color: Colors.white,
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ),
-            SizedBox(height: 20,)
-          ],
+
+              SizedBox(height: 20.0),
+
+              // Cart Items List
+              Expanded(
+                child: cartProvider.cartItems.isEmpty
+                    ? Center(
+                        child: Text(
+                          "Your cart is empty!",
+                          style: TextStyle(
+                            fontFamily: 'AlcherPixel',
+                            fontSize: 24,
+                            color: Colors.white,
+                          ),
+                        ),
+                      )
+                    : ListView.builder(
+                        itemCount: cartProvider.cartItems.length,
+                        itemBuilder: (context, index) {
+                          final item = cartProvider.cartItems[index];
+                          return CartCard(
+                            title: item.name,
+                            subtitle: item.type,
+                            price: double.parse(item.price),
+                            size: item.size,
+                            imageUrl: item.imageUrl,
+                            quantity: int.parse(item.count),
+                          );
+                        },
+                      ),
+              ),
+
+              // "Buy" button at the bottom
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => CheckoutPage()),
+                  );
+                },
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Container(
+                      width: 190.0,
+                      height: 50.47,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage('assets/images/sign_in.png'),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    Text(
+                      'Purchase',
+                      style: TextStyle(
+                        fontFamily: 'Brick_Pixel',
+                        color: Colors.white,
+                        fontSize: 24.0,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
-}
-AppBar _appBar(BuildContext context){
-  return AppBar(
-    automaticallyImplyLeading: false,
-    backgroundColor: Colors.black.withOpacity(.5),
-    title: GestureDetector(
-      onTap: (){
-      },
-      child:Padding(
-        padding: const EdgeInsets.only(left: 5.0,bottom: 10),
-        child: GestureDetector(
-          onTap: () {
-            Navigator.pop(context);
-          },
-          child: Image.asset(
-            'assets/images/back_button.png',
-            width: 54.0,
-            height: 54.0,
-          ),
-        ),),
-    ),
-    actions: [
-      Padding(
-          padding: EdgeInsets.only(bottom: 5,right: 20),
-          child: Text("Cart",
-            style: TextStyle(
-                color: AppColors.Pink,
-                fontFamily: "Game_Tape",
-                fontSize: 30),))
-    ],);
 }
 
 //
