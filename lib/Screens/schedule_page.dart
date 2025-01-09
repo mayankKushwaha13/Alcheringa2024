@@ -303,7 +303,7 @@ final List<String> keys = ["All","Lecture Halls","Grounds","Library Area", "Admi
                           days[index],
                           style: TextStyle(
                             color: dayColor(index),
-                            fontFamily: 'Alcherpixel',
+                            fontFamily: 'Game_Tape',
                             fontSize: 20.0,
                           ),
                         ),
@@ -326,7 +326,7 @@ final List<String> keys = ["All","Lecture Halls","Grounds","Library Area", "Admi
                             Text(
                               date,
                               style: TextStyle(
-                                fontFamily: 'Alcherpixel',
+                                fontFamily: 'Brick_Pixel',
                                 fontSize: 24,
                                 color: Color(0xFFCA3562),
                               ),
@@ -334,7 +334,7 @@ final List<String> keys = ["All","Lecture Halls","Grounds","Library Area", "Admi
                             Text(
                               month,
                               style: TextStyle(
-                                fontFamily: 'Alcherpixel',
+                                fontFamily: 'Brick_Pixel',
                                 fontSize: 24,
                                 color: Color(0xFFCA3562),
                               ),
@@ -364,7 +364,7 @@ final List<String> keys = ["All","Lecture Halls","Grounds","Library Area", "Admi
                               DropdownButtonFormField<String>(
                                 value: selectedVenueCategory,
                                 style: TextStyle(
-                                  fontFamily: 'Alcherpixel',
+                                  fontFamily: 'Game_Tape',
                                   fontSize: 20.0,
                                   color: Color(0xFFFFF1E8),
                                 ),
