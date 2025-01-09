@@ -1,33 +1,27 @@
 import 'package:alcheringa/Model/eventdetail.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
-class CompetitionCard extends StatefulWidget {
+class suggestioncard extends StatefulWidget {
   final EventDetail event;
-
-  const CompetitionCard({required this.event, Key? key}) : super(key: key);
+  const suggestioncard({super.key, required this.event});
 
   @override
-  State<CompetitionCard> createState() => _CompetitionCardState();
+  State<suggestioncard> createState() => _suggestioncardState();
 }
 
-class _CompetitionCardState extends State<CompetitionCard> {
+class _suggestioncardState extends State<suggestioncard> {
   @override
   Widget build(BuildContext context) {
     final mq = MediaQuery.of(context).size;
-
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 22),
       child: Stack(
         children: [
-          ClipRRect(
-            // borderRadius: BorderRadius.circular(16),
-            child: Image.asset(
-              "assets/images/event_card_bg.png",
-              fit: BoxFit.cover,
-              // width: mq.width,
-              height: mq.width * 0.4,
-            ),
+          Image.asset(
+            "assets/images/event_card_bg.png",
+            fit: BoxFit.fill,
+            // width: mq.width,
+            height: mq.width * 0.4,
           ),
           Container(
             width: mq.width,
@@ -58,7 +52,7 @@ class _CompetitionCardState extends State<CompetitionCard> {
                               fontWeight: FontWeight.w400,
                               letterSpacing: 0.15,
                               fontFamily: 'Brick_Pixel'),
-                            overflow: TextOverflow.ellipsis,
+                          overflow: TextOverflow.ellipsis,
                         ),
                         Flexible(
                           child: Text(
@@ -85,7 +79,7 @@ class _CompetitionCardState extends State<CompetitionCard> {
                                 fontWeight: FontWeight.w400,
                                 height: 1.71,
                               ),
-                            overflow: TextOverflow.ellipsis,
+                              overflow: TextOverflow.ellipsis,
                             ),
                             Text(
                               "|",
@@ -110,7 +104,7 @@ class _CompetitionCardState extends State<CompetitionCard> {
                                 height: 1.71,
                                 letterSpacing: 0.15,
                               ),
-                            overflow: TextOverflow.ellipsis,
+                              overflow: TextOverflow.ellipsis,
                             )
                           ],
                         )

@@ -54,7 +54,7 @@ class _sponsors_listState extends State<sponsors_list> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                      '${sponsor.title}',
+                                      '${sponsor.title}' ?? "",
                                       style: TextStyle(
                                           color: AppColors.Palewhite,
                                           fontSize: 20,
@@ -87,11 +87,16 @@ class _sponsors_listState extends State<sponsors_list> {
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisSpacing: MediaQuery.of(context).size.width * 0.01,
                 crossAxisCount: 2,
-                childAspectRatio: 0.9, // Adjust this to control item dimensions
+                childAspectRatio: 0.9,
               ),
               itemCount: gridSponsors.length,
               itemBuilder: (context, index) {
                 final sponsor = gridSponsors[index];
+                String title ="";
+                if (sponsor.title.isEmpty){
+                  title = "no title";
+                } // todo
+                else title = sponsor.title;
                 return Container(
                   padding: EdgeInsets.all(0),
                   margin: EdgeInsets.all(0),
@@ -101,9 +106,9 @@ class _sponsors_listState extends State<sponsors_list> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 5),
                         child: SizedBox(
-                          height: 40, // Fixed height for the marquee
+                          height: 40,
                           child: Marquee(
-                            text: '${sponsor.title}',
+                            text: title,
                             style: TextStyle(
                               color: AppColors.Palewhite,
                               fontSize: 16,
