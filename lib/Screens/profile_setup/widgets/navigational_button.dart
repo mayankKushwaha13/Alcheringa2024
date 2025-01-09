@@ -34,7 +34,7 @@ class _BackBtnState extends State<BackBtn> {
                     "BACK",
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontFamily: 'Alcherpixel',
+                      fontFamily: 'Game_Tape',
                       color: selected?Color(0xFF1D2B53): Color(0xFF1D2B53),
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -85,7 +85,7 @@ class _NextBtnState extends State<NextBtn> {
                     "Next",
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontFamily: 'Alcherpixel',
+                      fontFamily: 'Game_Tape',
                       color: selected?Color(0xFFC2C3C7): Color(0xFF1D2B53),
                       fontSize: 24,
                       fontWeight: FontWeight.bold,

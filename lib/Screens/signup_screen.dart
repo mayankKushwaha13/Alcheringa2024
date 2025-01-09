@@ -177,8 +177,8 @@ class _SignupScreenState extends State<SignupScreen> {
                                               "Sign up",
                                               style: const TextStyle(
                                                   color: Colors.white,
-                                                  fontSize: 24,
-                                                  fontFamily: 'AlcherPixel',
+                                                  fontSize: 26,
+                                                  fontFamily: "Brick_Pixel",
                                                   fontWeight: FontWeight.w400,
                                                   shadows: [
                                                     Shadow(
@@ -196,7 +196,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                     style: TextStyle(
                                       color: Color.fromARGB(255, 179, 64, 118),
                                       fontSize: 18,
-                                      fontFamily: 'AlcherPixel',
+                                      fontFamily: 'Game_Tape',
                                       fontWeight: FontWeight.w400,
                                     ),
                                   ),
@@ -304,7 +304,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                     style: TextStyle(
                                       color: Color.fromARGB(255, 179, 64, 118),
                                       fontSize: 18,
-                                      fontFamily: 'AlcherPixel',
+                                      fontFamily: 'Game_Tape',
                                       fontWeight: FontWeight.w400,
                                     ),
                                   ),
@@ -331,8 +331,8 @@ class _SignupScreenState extends State<SignupScreen> {
                                           "Login",
                                           style: const TextStyle(
                                               color: Colors.white,
-                                              fontSize: 24,
-                                              fontFamily: 'AlcherPixel',
+                                              fontSize: 26,
+                                              fontFamily: 'Brick_Pixel',
                                               fontWeight: FontWeight.w400,
                                               shadows: [
                                                 Shadow(
@@ -347,7 +347,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                   const Text(
                                     'Privacy policy',
                                     style: TextStyle(
-                                      fontFamily: 'Alcherpixel',
+                                      fontFamily: 'Game_Tape',
                                       color: Color(0xFFFF77A8),
                                       fontSize: 16,
                                     ),
@@ -412,14 +412,14 @@ class _SignupScreenState extends State<SignupScreen> {
         controller: controller,
         obscureText: isPassword,
         style: TextStyle(
-          fontFamily: 'Alcherpixel',
+          fontFamily: 'Game_Tape',
           fontSize: 20,
           color: Color(0xFFFF77A8),
         ),
         decoration: InputDecoration(
           hintText: hint,
           hintStyle: const TextStyle(
-            fontFamily: 'Alcherpixel',
+            fontFamily: 'Game_Tape',
             fontSize: 20,
             color: Color(0xFFFF77A8),
           ),

@@ -142,10 +142,10 @@ class PixelTextField extends StatelessWidget {
             controller: controller,
             onChanged: onChanged,
             keyboardType: keyboardType,
-            style: const TextStyle(color: Colors.white, fontSize: 22, fontFamily: 'AlcherpixelBold'),
+            style: const TextStyle(color: Colors.white, fontSize: 22, fontFamily: 'Game_Tape',fontWeight: FontWeight.w500),
             decoration: InputDecoration(
               hintText: hintText,
-              hintStyle: const TextStyle(color: Color(0xff83769c), fontFamily: 'AlcherpixelBold', fontSize: 22),
+              hintStyle: const TextStyle(color: Color(0xff83769c), fontFamily: 'Game_Tape', fontSize: 22,fontWeight: FontWeight.w500),
               border: InputBorder.none,
               contentPadding: const EdgeInsets.symmetric(
                 horizontal: 25,

@@ -66,7 +66,7 @@ class _SchedulePageState extends State<SchedulePage> {
                           'DAY 0',
                           style: TextStyle(
                             color: dayColor(0),
-                            fontFamily: 'Alcherpixel',
+                            fontFamily: 'Game_Tape',
                             fontSize: 20.0,
                           ),
                         ),
@@ -83,7 +83,7 @@ class _SchedulePageState extends State<SchedulePage> {
                           'DAY 1',
                           style: TextStyle(
                             color: dayColor(1),
-                            fontFamily: 'Alcherpixel',
+                            fontFamily: 'Game_Tape',
                             fontSize: 20.0,
                           ),
                         ),
@@ -100,7 +100,7 @@ class _SchedulePageState extends State<SchedulePage> {
                           'DAY 2',
                           style: TextStyle(
                             color: dayColor(2),
-                            fontFamily: 'Alcherpixel',
+                            fontFamily: 'Game_Tape',
                             fontSize: 20.0,
                           ),
                         ),
@@ -117,7 +117,7 @@ class _SchedulePageState extends State<SchedulePage> {
                           'DAY 3',
                           style: TextStyle(
                             color: dayColor(3),
-                            fontFamily: 'Alcherpixel',
+                            fontFamily: 'Game_Tape',
                             fontSize: 20.0,
                           ),
                         ),
@@ -140,7 +140,7 @@ class _SchedulePageState extends State<SchedulePage> {
                             Text(
                               date,
                               style: TextStyle(
-                                fontFamily: 'Alcherpixel',
+                                fontFamily: 'Brick_Pixel',
                                 fontSize: 24,
                                 color: Color(0xFFCA3562),
                               ),
@@ -148,7 +148,7 @@ class _SchedulePageState extends State<SchedulePage> {
                             Text(
                               month,
                               style: TextStyle(
-                                fontFamily: 'Alcherpixel',
+                                fontFamily: 'Game_Tape',
                                 fontSize: 24,
                                 color: Color(0xFFCA3562),
                               ),
@@ -171,7 +171,7 @@ class _SchedulePageState extends State<SchedulePage> {
                         child: DropdownButtonFormField<String>(
                           value: selectedVenue,
                           style: TextStyle(
-                              fontFamily: 'Alcherpixel',
+                              fontFamily: 'Game_Tape',
                               fontSize: 20.0,
                               color: Color(0xFFFFF1E8)),
                           items: venuesList
@@ -279,7 +279,7 @@ class _SchedulePageState extends State<SchedulePage> {
                                                 child: Text(
                                                   'Event ${index + 1}',
                                                   style: TextStyle(
-                                                      fontFamily: 'Alcherpixel',
+                                                      fontFamily: 'Game_Tape',
                                                       fontSize: 15,
                                                       color: Colors.white),
                                                 ),
@@ -292,7 +292,7 @@ class _SchedulePageState extends State<SchedulePage> {
                                                 child: Text(
                                                   'Event ${index + 2}',
                                                   style: TextStyle(
-                                                      fontFamily: 'Alcherpixel',
+                                                      fontFamily: 'Game_Tape',
                                                       fontSize: 15,
                                                       color: Colors.white),
                                                 ),
@@ -305,7 +305,7 @@ class _SchedulePageState extends State<SchedulePage> {
                                                 child: Text(
                                                   'Event ${index + 3}',
                                                   style: TextStyle(
-                                                      fontFamily: 'Alcherpixel',
+                                                      fontFamily: 'Game_Tape',
                                                       fontSize: 15,
                                                       color: Colors.white),
                                                 ),

@@ -18,7 +18,7 @@ Widget buildReviewTab({
       Provider.of<CartProvider>(context); // Access CartProvider
 
   return Padding(
-    padding: EdgeInsets.only(left: 45),
+    padding: EdgeInsets.only(left: 12),
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,7 +67,7 @@ Widget buildReviewTab({
                 ],
               ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 44),
+                padding: EdgeInsets.symmetric(horizontal: 40),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -132,7 +132,7 @@ Widget buildReviewTab({
             child: Text(
               "Your cart is empty!",
               style: TextStyle(
-                fontFamily: 'AlcherPixel',
+                fontFamily: 'Game_Tape',
                 fontSize: 24,
                 color: Colors.white,
               ),

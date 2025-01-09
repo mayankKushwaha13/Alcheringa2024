@@ -60,7 +60,7 @@ class _MerchBuyScreenState extends State<MerchBuyScreen> {
                     const Text(
                       'Merchandise',
                       style: TextStyle(
-                        fontFamily: 'AlcherPixel',
+                        fontFamily: 'Game_Tape',
                         fontSize: 24,
                         fontWeight: FontWeight.w400,
                         color: Color.fromRGBO(255, 119, 168, 1),
@@ -98,7 +98,7 @@ class _MerchBuyScreenState extends State<MerchBuyScreen> {
                                       TextSpan(
                                         text: 'Rs. ${widget.price}',
                                         style: const TextStyle(
-                                          fontFamily: 'AlcherPixel',
+                                          fontFamily: 'Game_Tape',
                                           fontSize: 30,
                                           fontWeight: FontWeight.w400,
                                           color:
@@ -116,7 +116,7 @@ class _MerchBuyScreenState extends State<MerchBuyScreen> {
                                       TextSpan(
                                         text: "Total: 5 items",
                                         style: const TextStyle(
-                                          fontFamily: 'AlcherPixel',
+                                          fontFamily: 'Game_Tape',
                                           fontSize: 20,
                                           fontWeight: FontWeight.w400,
                                           color:
@@ -176,7 +176,7 @@ class _MerchBuyScreenState extends State<MerchBuyScreen> {
                                     Text(
                                       widget.merchTitle,
                                       style: TextStyle(
-                                        fontFamily: 'AlcherPixel',
+                                        fontFamily: 'Game_Tape',
                                         fontSize: 25,
                                         fontWeight: FontWeight.w400,
                                         color: Color.fromRGBO(255, 241, 232, 1),
@@ -185,7 +185,7 @@ class _MerchBuyScreenState extends State<MerchBuyScreen> {
                                     Text(
                                       widget.merchSubtitle,
                                       style: TextStyle(
-                                        fontFamily: 'AlcherPixel',
+                                        fontFamily: 'Game_Tape',
                                         fontSize: 20,
                                         fontWeight: FontWeight.w400,
                                         color: Color.fromRGBO(255, 119, 168, 1),
@@ -194,7 +194,7 @@ class _MerchBuyScreenState extends State<MerchBuyScreen> {
                                     Text(
                                       'Rs. ${widget.price}/-',
                                       style: TextStyle(
-                                        fontFamily: 'AlcherPixel',
+                                        fontFamily: 'Game_Tape',
                                         fontSize: 24,
                                         fontWeight: FontWeight.w400,
                                         color: Color.fromRGBO(255, 241, 232, 1),
@@ -203,7 +203,7 @@ class _MerchBuyScreenState extends State<MerchBuyScreen> {
                                     Text(
                                       'Size: ${widget.merchSize}',
                                       style: TextStyle(
-                                        fontFamily: 'AlcherPixel',
+                                        fontFamily: 'Game_Tape',
                                         fontSize: 20,
                                         fontWeight: FontWeight.w400,
                                         color: Color.fromRGBO(255, 241, 232, 1),
@@ -235,7 +235,7 @@ class _MerchBuyScreenState extends State<MerchBuyScreen> {
                                             child: Text(
                                               widget.merchSize,
                                               style: TextStyle(
-                                                fontFamily: 'AlcherPixel',
+                                                fontFamily: 'Game_Tape',
                                                 fontSize: 30,
                                                 fontWeight: FontWeight.w400,
                                                 color: Color.fromRGBO(
@@ -282,7 +282,7 @@ class _MerchBuyScreenState extends State<MerchBuyScreen> {
                             Text(
                               "Buy",
                               style: const TextStyle(
-                                fontFamily: 'AlcherPixel',
+                                fontFamily: 'Game_Tape',
                                 fontSize: 40,
                                 fontWeight: FontWeight.w400,
                                 color: Color.fromRGBO(255, 241, 232, 1),

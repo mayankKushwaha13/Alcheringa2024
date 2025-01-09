@@ -55,7 +55,7 @@ class _CompetitionsWidgetState extends State<CompetitionsWidget> {
             child: DropdownButtonFormField<String>(
               value: selectedType,
               style: const TextStyle(
-                fontFamily: 'Alcherpixel',
+                fontFamily: 'Game_Tape',
                 fontSize: 20.0,
                 color: Color(0xFFFFF1E8),
               ),

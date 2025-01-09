@@ -40,7 +40,7 @@ class _TopAppBarState extends State<TopAppBar> {
                   '2',
                   style: TextStyle(
                     color: Color(0xFFCA3562),
-                    fontFamily: 'Alcherpixel',
+                    fontFamily: 'Game_Tape',
                   ),
                 ),
                 position: badges.BadgePosition.bottomEnd(bottom: 0, end: 10),

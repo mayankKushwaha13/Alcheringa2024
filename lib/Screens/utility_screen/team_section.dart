@@ -22,12 +22,12 @@ class TeamSection extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 40),
+                SizedBox(height: 45),
                 Text(
                   'Developer ◝ ( ᵔ ᗜᵔ ) ◜',
                   style: TextStyle(
-                    fontFamily: 'AlcherPixel',
-                    fontSize: 24,
+                    fontFamily: 'Game_Tape',
+                    fontSize: 22,
                     fontWeight: FontWeight.w400,
                     color: Color.fromRGBO(255, 163, 0, 1),
                   ),
@@ -64,8 +64,8 @@ class TeamSection extends StatelessWidget {
                 Text(
                   'Designers   (｡́•︿•̀｡)',
                   style: TextStyle(
-                    fontFamily: 'AlcherPixel',
-                    fontSize: 24,
+                    fontFamily: 'Game_Tape',
+                    fontSize: 22,
                     fontWeight: FontWeight.w400,
                     color: Color.fromRGBO(255, 163, 0, 1),
                   ),

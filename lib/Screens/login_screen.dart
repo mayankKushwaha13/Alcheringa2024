@@ -77,7 +77,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             'Welcome back\nyour event journey\nstarts here',
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                              fontFamily: 'Alcherpixel',
+                              fontFamily: 'Game_Tape',
                               fontSize: 27,
                               height: 1.05,
                               color: Color(0xFF2DABFF),
@@ -122,12 +122,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                   right: screenWidth * 0.02,
                                 ),
                                 child: const Text(
-                                  'Forgot Password?',
+                                  'Forgot Password',
                                   style: TextStyle(
-                                    fontFamily: 'Alcherpixel',
+                                    fontFamily: 'Game_Tape',
                                     color: Color(0xFFFF77A8),
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w400,
                                   ),
                                 ),
                               ),
@@ -168,13 +168,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                 const Text(
                                   'Login',
                                   style: TextStyle(
-                                    fontFamily: 'Alcherpixel',
-                                    fontSize: 24,
+                                    fontFamily: 'Brick_Pixel',
+                                    fontSize: 26,
                                     color: Colors.white,
-                                    fontWeight: FontWeight.bold,
+                                    fontWeight: FontWeight.w400,
                                     shadows: [
                                       Shadow(
-                                        color: Colors.black45,
+                                        color: Colors.black,
                                         offset: Offset(2, 2),
                                         blurRadius: 2,
                                       ),
@@ -264,7 +264,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           const Text(
                             'Privacy policy',
                             style: TextStyle(
-                              fontFamily: 'Alcherpixel',
+                              fontFamily: 'Game_Tape',
                               color: Color(0xFFFF77A8),
                               fontSize: 16,
                             ),
@@ -328,14 +328,14 @@ class _LoginScreenState extends State<LoginScreen> {
         controller: controller,
         obscureText: isPassword,
         style: TextStyle(
-          fontFamily: 'Alcherpixel',
+          fontFamily: 'Game_Tape',
           fontSize: 20,
           color: Color(0xFFFF77A8),
         ),
         decoration: InputDecoration(
           hintText: hint,
           hintStyle: const TextStyle(
-            fontFamily: 'Alcherpixel',
+            fontFamily: 'Game_Tape',
             fontSize: 20,
             color: Color(0xFFFF77A8),
           ),

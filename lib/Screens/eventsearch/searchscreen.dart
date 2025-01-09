@@ -4,11 +4,13 @@ import 'package:alcheringa/Model/stall_model.dart';
 import 'package:alcheringa/Screens/activity_pages/widgets/competition_card.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:marquee/marquee.dart';
 
 import 'package:provider/provider.dart';
 
 import '../../Model/eventdetail.dart';
 import '../../Model/view_model_main.dart';
+import '../../utils/styles/colors.dart';
 
 class Searchscreen extends StatefulWidget {
   const Searchscreen({super.key});
@@ -118,7 +120,7 @@ class _SearchscreenState extends State<Searchscreen> {
                       const Text(
                         'Search',
                         style: TextStyle(
-                          fontFamily: 'AlcherPixel',
+                          fontFamily: 'Game_Tape',
                           fontSize: 24,
                           fontWeight: FontWeight.w400,
                           color: Color.fromRGBO(255, 119, 168, 1),
@@ -142,14 +144,14 @@ class _SearchscreenState extends State<Searchscreen> {
                     controller: _textFieldController,
                     onChanged: _filter,//todo
                     style: TextStyle(
-                      fontFamily: 'Alcherpixel',
+                      fontFamily: 'Game_Tape',
                       fontSize: 20,
                       color: Colors.white,
                     ),
                     decoration: InputDecoration(
                         hintText: 'Search events and more',
                         hintStyle: const TextStyle(
-                          fontFamily: 'Aclherpixel',
+                          fontFamily: 'Game_Tape',
                           fontSize: 20,
                           color: Colors.grey,
                         ),
@@ -172,7 +174,7 @@ class _SearchscreenState extends State<Searchscreen> {
                           child: Text(
                             'Suggestions',
                             style: TextStyle(
-                              fontFamily: 'AlcherPixel v2.0',
+                              fontFamily: 'Game_Tape',
                               fontSize: 20,
                               color: Colors.white,
                             ),
@@ -237,7 +239,7 @@ Widget _buildCard({
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
-                    fontFamily: "AlcherPixel-Bold v2.0",
+                    fontFamily: "Game_Tape",
                     fontSize: 20,
                     color: Colors.white),
               ),
@@ -252,7 +254,7 @@ Widget _buildCard({
                 maxLines: 3,
                 overflow: TextOverflow.clip,
                 style: TextStyle(
-                    fontFamily: "AlcherPiel",
+                    fontFamily: "Game_Tape",
                     fontSize: 12,
                     color: Colors.orange),
               ),
@@ -263,15 +265,37 @@ Widget _buildCard({
               top: 441 * screenHeight * 0.63 / 480,
               right: 25,
               child: Text(
-                "${event.starttime.date} ${event.starttime.date >= 5 ? "Jan" : "Feb"}, ${event.starttime.hours}: ${event.starttime.min} | ${event.venue}",
+                "${event.starttime.date} ${event.starttime.date >= 5 ? "Jan" : "Feb"}, ${event.starttime.hours}: ${event.starttime.min} |",
                 maxLines: 3,
                 overflow: TextOverflow.clip,
                 style: TextStyle(
-                    fontFamily: "AlcherPixel",
+                    fontFamily: "Game_Tape",
                     fontSize: 12,
                     color: Colors.white),
               ),
             ),
+            Positioned.fill(
+              left: 110,
+              top: 418 * screenHeight * 0.63 / 480,
+              right: 25,
+              child: Marquee(
+                text: "${event.venue}",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 12,
+                  fontFamily: "Game_Tape",
+                ),
+                scrollAxis: Axis.horizontal, // Scroll horizontally
+                crossAxisAlignment: CrossAxisAlignment.center,
+                blankSpace: 40.0, // Space between repetitions
+                velocity: 20.0, // Speed of the scrolling text
+                pauseAfterRound: Duration(seconds: 1), // Pause between loops
+                startPadding: 10.0, // Padding before the text starts
+                accelerationDuration: Duration(seconds: 1), // Acceleration effect
+                decelerationDuration: Duration(seconds: 1), // Deceleration effect
+              ),
+            ),
+
           ],
         ),
       ],

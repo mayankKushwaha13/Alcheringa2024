@@ -37,8 +37,14 @@ class PixelStoreCard extends StatelessWidget {
               stall.name,
               style: const TextStyle(
                 color: Color(0xFFFFCCAA),
-                fontFamily: 'AlcherpixelBold',
+                fontFamily: 'Game_Tape',
                 fontSize: 25,
+                  shadows: [
+                    Shadow(
+                        offset: Offset(2.5, 2),
+                        color: Colors.black,
+                        blurRadius: 2),
+                  ]
               ),
             ),
           ),

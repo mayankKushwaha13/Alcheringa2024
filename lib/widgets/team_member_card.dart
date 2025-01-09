@@ -53,8 +53,8 @@ class TeamMemberCard extends StatelessWidget {
                 Text(
                   name,
                   style: TextStyle(
-                    fontFamily: 'AlcherPixel',
-                    fontSize: 16,
+                    fontFamily: 'Game_Tape',
+                    fontSize: 20,
                     fontWeight: FontWeight.w400,
                     color: Color.fromRGBO(126, 37, 83, 1),
                   ),
@@ -64,8 +64,8 @@ class TeamMemberCard extends StatelessWidget {
                 Text(
                   role,
                   style: TextStyle(
-                    fontFamily: 'AlcherPixel',
-                    fontSize: 16,
+                    fontFamily: 'Game_Tape',
+                    fontSize: 18,
                     fontWeight: FontWeight.w400,
                     color: Color.fromRGBO(41, 173, 255, 1),
                   ),

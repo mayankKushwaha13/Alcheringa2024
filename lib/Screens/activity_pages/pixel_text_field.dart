@@ -38,13 +38,13 @@ class PixelTextField extends StatelessWidget {
           style: const TextStyle(
               color: Colors.white,
               fontSize: 22,
-              fontFamily: 'AlcherpixelBold'
+              fontFamily: 'Game_Tape'
           ),
           decoration: InputDecoration(
             hintText: hintText,
             hintStyle: const TextStyle(
                 color: Color(0xff83769c),
-                fontFamily: 'AlcherpixelBold',
+                fontFamily: 'Game_Tape',
                 fontSize: 22
             ),
             border: InputBorder.none,

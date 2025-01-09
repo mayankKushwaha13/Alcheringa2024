@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/cart_provider.dart';
+import '../utils/styles/colors.dart';
 
 class CartScreen extends StatelessWidget {
   @override
@@ -11,6 +12,8 @@ class CartScreen extends StatelessWidget {
     final cartProvider = Provider.of<CartProvider>(context);
 
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: _appBar(context),
       body: Container(
         width: double.infinity,
         height: MediaQuery.of(context).size.height,
@@ -22,43 +25,7 @@ class CartScreen extends StatelessWidget {
         ),
         child: Column(
           children: [
-            // Semi-transparent header
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
-              decoration: BoxDecoration(
-                color:
-                    Colors.black.withOpacity(0.5), // Header background opacity
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Image.asset(
-                      'assets/images/back_button.png',
-                      width: 54.0,
-                      height: 54.0,
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {},
-                    child: Text(
-                      'Cart',
-                      style: TextStyle(
-                        fontFamily: 'Game_Tape',
-                        fontSize: 24,
-                        fontWeight: FontWeight.w400,
-                        color: Color.fromRGBO(255, 119, 168, 1),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 20.0),
-
+            SizedBox(height: 110.0),
             // Stack with total price and total items
             Stack(
               alignment: Alignment.center,
@@ -86,6 +53,13 @@ class CartScreen extends StatelessWidget {
                         fontSize: 32.0,
                         fontWeight: FontWeight.w400,
                         height: 0.9,
+                          shadows: [
+                            Shadow(
+                                offset: Offset(2.5, 2),
+                                color: Colors.black,
+                                blurRadius: 2),
+                          ]
+
                       ),
                     ),
                     Text(
@@ -95,6 +69,12 @@ class CartScreen extends StatelessWidget {
                         color: Colors.white,
                         fontSize: 16.0,
                         fontWeight: FontWeight.w400,
+                          shadows: [
+                            Shadow(
+                                offset: Offset(2.5, 2),
+                                color: Colors.black,
+                                blurRadius: 2),
+                          ]
                       ),
                     ),
                   ],
@@ -111,7 +91,7 @@ class CartScreen extends StatelessWidget {
                       child: Text(
                         "Your cart is empty!",
                         style: TextStyle(
-                          fontFamily: 'AlcherPixel',
+                          fontFamily: 'Game_Tape',
                           fontSize: 24,
                           color: Colors.white,
                         ),
@@ -166,11 +146,42 @@ class CartScreen extends StatelessWidget {
                 ],
               ),
             ),
+            SizedBox(height: 20,)
           ],
         ),
       ),
     );
   }
+}
+AppBar _appBar(BuildContext context){
+  return AppBar(
+    automaticallyImplyLeading: false,
+    backgroundColor: Colors.black.withOpacity(.5),
+    title: GestureDetector(
+      onTap: (){
+      },
+      child:Padding(
+        padding: const EdgeInsets.only(left: 5.0,bottom: 10),
+        child: GestureDetector(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Image.asset(
+            'assets/images/back_button.png',
+            width: 54.0,
+            height: 54.0,
+          ),
+        ),),
+    ),
+    actions: [
+      Padding(
+          padding: EdgeInsets.only(bottom: 5,right: 20),
+          child: Text("Cart",
+            style: TextStyle(
+                color: AppColors.Pink,
+                fontFamily: "Game_Tape",
+                fontSize: 30),))
+    ],);
 }
 
 //

@@ -69,7 +69,7 @@ class _SelectInterestState extends State<SelectInterest> {
                           child: Text("Select Interests",
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                fontFamily: 'Alcherpixel',
+                                fontFamily:'Game_Tape',
                                 color: Colors.white60,
                                 fontSize: 24,
                                 fontWeight: FontWeight.bold,
@@ -128,7 +128,7 @@ class _SelectInterestState extends State<SelectInterest> {
                                       "BACK",
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
-                                        fontFamily: 'Alcherpixel',
+                                        fontFamily: 'Game_Tape',
                                         color: Color(0xFF1D2B53),
                                         fontSize: 24,
                                         fontWeight: FontWeight.bold,
@@ -154,7 +154,7 @@ class _SelectInterestState extends State<SelectInterest> {
                                       "NEXT",
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
-                                        fontFamily: 'Alcherpixel',
+                                        fontFamily:'Game_Tape',
                                         color: Color(0xFF1D2B53),
                                         fontSize: 24,
                                         fontWeight: FontWeight.bold,

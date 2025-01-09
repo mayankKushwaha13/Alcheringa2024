@@ -81,7 +81,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       "Pick your\n image",
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
-                                        fontFamily: 'Alcherpixel',
+                                        fontFamily: 'Game_Tape',
                                         color: Colors.white60,
                                         fontSize: 24,
                                         fontWeight: FontWeight.bold,
@@ -107,7 +107,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       "Pick your\n image",
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
-                                        fontFamily: 'Alcherpixel',
+                                        fontFamily: 'Game_Tape',
                                         color: Colors.white60,
                                         fontSize: 24,
                                         fontWeight: FontWeight.bold,
@@ -143,7 +143,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       "Pick your\n image",
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
-                                        fontFamily: 'Alcherpixel',
+                                        fontFamily: 'Game_Tape',
                                         color: Colors.white60,
                                         fontSize: 24,
                                         fontWeight: FontWeight.bold,
@@ -178,7 +178,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           child: Text(
                             auth.currentUser?.displayName ?? "Nickname",
                             style: const TextStyle(
-                              fontFamily: 'Alcherpixel',
+                              fontFamily: 'Game_Tape',
                               color: Colors.white60,
                               fontSize: 24,
                               fontWeight: FontWeight.bold,

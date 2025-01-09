@@ -43,7 +43,7 @@ class _IntrestButtonState extends State<IntrestButton> {
                 widget.intrest,
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontFamily: 'Alcherpixel',
+                  fontFamily: 'Game_Tape',
                   color: selected ? Color(0xFF83769C) : Color(0xFF1D2B53),
                   fontSize: 24,
                   fontWeight: FontWeight.bold,

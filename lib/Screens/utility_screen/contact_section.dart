@@ -89,12 +89,12 @@ class _ContactSectionState extends State<ContactSection> {
                     Text(
                       selectedCategory,
                       style: const TextStyle(
-                        fontFamily: 'AlcherPixel',
+                        fontFamily: 'Game_Tape',
                         fontSize: 24,
                         fontWeight: FontWeight.w400,
                         height: 1.0,
                         letterSpacing: 0.15,
-                        decoration: TextDecoration.underline,
+                        //decoration: TextDecoration.underline,
                         decorationStyle: TextDecorationStyle.solid,
                         decorationThickness: 1,
                         color: Colors.white,
@@ -204,7 +204,7 @@ class NumberBox extends StatelessWidget {
           child: Text(
             number,
             style: const TextStyle(
-              fontFamily: 'AlcherPixel',
+              fontFamily: 'Game_Tape',
               fontSize: 24,
               fontWeight: FontWeight.w400,
               height: 1.0,

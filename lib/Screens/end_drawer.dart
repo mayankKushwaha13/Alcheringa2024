@@ -162,7 +162,7 @@ class _EndDrawerState extends State<EndDrawer> {
                                   builder: (context, snapshot) {
                                     return Text(
                                       snapshot.data ?? "Unknown",
-                                      style: TextStyle(fontSize: 16.0, fontFamily: 'Alcherpixel', color: Colors.white),
+                                      style: TextStyle(fontSize: 16.0, fontFamily: 'Game_Tape', color: Colors.white),
                                     );
                                   },
                                 ),
@@ -248,7 +248,7 @@ class SideBarItems extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 15.0),
                   child: Text(
                     name,
-                    style: TextStyle(fontSize: 20.0, fontFamily: 'Alcherpixel', color: Colors.white),
+                    style: TextStyle(fontSize: 18.0, fontFamily: 'Game_Tape', color: Colors.white,fontWeight: FontWeight.w400),
                   ),
                 )
               ],
