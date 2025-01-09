@@ -1,5 +1,6 @@
 import 'package:alcheringa/Common/globals.dart';
 import 'package:alcheringa/Screens/orderScreen/order_screen.dart';
+import 'package:alcheringa/Screens/profile_setup/profile_page.dart';
 import 'package:alcheringa/Screens/sponsersScreen/sponser_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -44,7 +45,10 @@ class _EndDrawerState extends State<EndDrawer> {
       {
         'name': 'PROFILE',
         'iconPath': 'assets/images/sidebar_profile_icon.png',
-        'onTap': () {},
+        'onTap': () {
+          widget.scaffoldState.currentState!.closeEndDrawer();
+          Navigator.push(context, MaterialPageRoute(builder: (_)=>ProfilePage()));
+        },
       },
       {
         'name': 'FAQ',
@@ -156,7 +160,7 @@ class _EndDrawerState extends State<EndDrawer> {
                                   builder: (context, snapshot) {
                                     return Text(
                                       snapshot.data ?? "Unknown",
-                                      style: TextStyle(fontSize: 16.0, fontFamily: 'Alcherpixel', color: Colors.white),
+                                      style: TextStyle(fontSize: 16.0, fontFamily: 'Game_Tape', color: Colors.white),
                                     );
                                   },
                                 ),
@@ -241,7 +245,7 @@ class SideBarItems extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 15.0),
                   child: Text(
                     name,
-                    style: TextStyle(fontSize: 20.0, fontFamily: 'Alcherpixel', color: Colors.white),
+                    style: TextStyle(fontSize: 18.0, fontFamily: 'Game_Tape', color: Colors.white,fontWeight: FontWeight.w400),
                   ),
                 )
               ],

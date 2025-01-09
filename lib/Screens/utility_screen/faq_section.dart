@@ -13,7 +13,7 @@ class _FaqSectionState extends State<FaqSection> {
       'You can buy the executive pass from the Alcheringa website or at the venue.',
     ),
     FaqItem(
-      question: '   Can I update my event schedule    after registering?',
+      question: 'Can I update my event schedule after registering?',
       answer:
       'Yes, you can update your event schedule by logging into your Alcheringa account.',
     ),
@@ -78,7 +78,7 @@ class _FaqSectionState extends State<FaqSection> {
                         },
                         child: Container(
                           width: 258,
-                          height: 54,
+                          height: 80,
                           decoration: BoxDecoration(
                             image: DecorationImage(
                               image: AssetImage('assets/images/faq_box.png'),
@@ -92,7 +92,7 @@ class _FaqSectionState extends State<FaqSection> {
                             child: Text(
                               faq.question,
                               style: TextStyle(
-                                fontFamily: 'AlcherPixel',
+                                fontFamily: 'Game_Tape',
                                 fontSize: 16,
                                 fontWeight: FontWeight.w400,
                                 letterSpacing: 0.15,
@@ -124,10 +124,10 @@ class _FaqSectionState extends State<FaqSection> {
                               child: Text(
                                 faq.answer,
                                 style: TextStyle(
-                                  fontFamily: 'AlcherPixel',
+                                  fontFamily: 'Game_Tape',
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400,
-                                  height: 15.06 / 16,
+                                  height: 16.06 / 16,
                                   letterSpacing: 0.15,
                                   color: Colors.white,
                                 ),

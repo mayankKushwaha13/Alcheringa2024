@@ -99,11 +99,12 @@ ShaderMask _shadedText(){
     },
     child: Text('MORE',
         style: TextStyle(
-            shadows: [
+          shadows: [
             Shadow(
-            offset: Offset(2.0, 2.0), // Horizontal and vertical offset
-      //blurRadius: 10.0, // Blur effect
-      color: Colors.black,)], // Shadow color
+                offset: Offset(2.5, 2),
+                color: Colors.black,
+                blurRadius: 2),
+          ],
         fontSize: 32,
         fontFamily: "Game_Tape",
         color: AppColors.Palewhite,

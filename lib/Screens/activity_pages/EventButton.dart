@@ -44,7 +44,7 @@ class EventsButton extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 16, // Adjust font size
                     color: Colors.black, // Text color
-                    fontFamily: 'Alcherpixel', // Use a pixelated font
+                    fontFamily:'Game_Tape', // Use a pixelated font
                   ),
                 ),
               ),

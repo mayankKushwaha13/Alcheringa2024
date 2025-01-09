@@ -66,10 +66,16 @@ class welcomeScreen extends StatelessWidget {
                           Text(
                             'Login',
                             style: TextStyle(
-                              fontFamily: 'Alcherpixel',
+                              fontFamily: 'Brick_Pixel',
                               color: Colors.white,
                               fontSize: 30,
-                              fontWeight: FontWeight.bold,
+                              fontWeight: FontWeight.w400,
+                                shadows: [
+                                  Shadow(
+                                      offset: Offset(2.5, 2),
+                                      color: Colors.black,
+                                      blurRadius: 2),
+                                ]
                             ),
                           ),
                         ],
@@ -95,10 +101,16 @@ class welcomeScreen extends StatelessWidget {
                           Text(
                             'Sign up',
                             style: TextStyle(
-                              fontFamily: 'Alcherpixel',
+                              fontFamily: 'Brick_Pixel',
                               color: Colors.white,
                               fontSize: 30,
-                              fontWeight: FontWeight.bold,
+                              fontWeight: FontWeight.w400,
+                                shadows: [
+                                  Shadow(
+                                      offset: Offset(2.5, 2),
+                                      color: Colors.black,
+                                      blurRadius: 2),
+                                ]
                             ),
                           ),
                         ],
@@ -110,9 +122,10 @@ class welcomeScreen extends StatelessWidget {
                   Text(
                     'or Continue as a guest',
                     style: TextStyle(
-                      fontFamily: 'Alcherpixel',
+                      fontFamily: 'Game_Tape',
                       color: Color(0xff2DABFF),
                       fontSize: 16,
+
                     ),
                     textAlign: TextAlign.center,
                   ),

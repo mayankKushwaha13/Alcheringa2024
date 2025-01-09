@@ -82,6 +82,7 @@ Future<void> addIntrestToDb(List<String> intrestList, String email) async {
 }
 
 
+
 Future<void> updateProfilePicture(File file, String email, String name) async {
   try {
     List<int> imageBytes = await file.readAsBytes();

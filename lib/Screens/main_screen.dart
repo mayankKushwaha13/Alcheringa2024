@@ -67,9 +67,7 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
       key: _scaffoldKey,
       resizeToAvoidBottomInset: false,
-
       endDrawer: EndDrawer(scaffoldState: _scaffoldKey, onTapped: _onTapped,),
-
       appBar: TopAppBar(scaffoldState: _scaffoldKey),
       body: Stack(
         children: [
@@ -89,7 +87,7 @@ class _MainScreenState extends State<MainScreen> {
             right: 0,
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.1), // Semi-transparent white
+                color: Colors.white.withAlpha(10), // Semi-transparent white
               ),
               child: BottomNavigationBar(
                 elevation: 0,

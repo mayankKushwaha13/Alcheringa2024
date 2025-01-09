@@ -99,7 +99,7 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
                       const Text(
                         'Merchandise',
                         style: TextStyle(
-                          fontFamily: 'AlcherPixel',
+                          fontFamily: 'Game_Tape',
                           fontSize: 24,
                           fontWeight: FontWeight.w400,
                           color: Color.fromRGBO(255, 119, 168, 1),
@@ -126,7 +126,7 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
                   child: Text(
                     widget.merchTitle,
                     style: TextStyle(
-                      fontFamily: 'AlcherPixelBold',
+                      fontFamily: 'Brick_Pixel',
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
                       color: Color.fromRGBO(255, 241, 232, 1),
@@ -138,7 +138,7 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
                   child: Text(
                     widget.merchSubtitle,
                     style: const TextStyle(
-                      fontFamily: 'AlcherPixel',
+                      fontFamily: 'Game_Tape',
                       fontSize: 22,
                       fontWeight: FontWeight.w400,
                       color: Color.fromRGBO(255, 119, 168, 1),
@@ -151,7 +151,7 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
                   child: Text(
                     'Rs. ${widget.price}',
                     style: const TextStyle(
-                      fontFamily: 'AlcherPixel',
+                      fontFamily: 'Game_Tape',
                       fontSize: 40,
                       fontWeight: FontWeight.w400,
                       color: Color.fromRGBO(255, 241, 232, 1),
@@ -167,7 +167,7 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
                       Text(
                         'PICK YOUR SIZE',
                         style: const TextStyle(
-                          fontFamily: 'AlcherPixel',
+                          fontFamily: 'Game_Tape',
                           fontSize: 16,
                           fontWeight: FontWeight.w400,
                           color: Color.fromRGBO(255, 241, 232, 1),
@@ -180,7 +180,7 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
                         child: Text(
                           'SIZE CHART',
                           style: const TextStyle(
-                            fontFamily: 'AlcherPixel',
+                            fontFamily: 'Game_Tape',
                             fontSize: 16,
                             fontWeight: FontWeight.w400,
                             color: Color.fromRGBO(255, 119, 168, 1),
@@ -220,7 +220,7 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
                                 child: Text(
                                   size,
                                   style: TextStyle(
-                                    fontFamily: 'AlcherPixel',
+                                    fontFamily:'Game_Tape',
                                     fontSize: isSelected ? 35 : 25,
                                     fontWeight: isSelected
                                         ? FontWeight.bold
@@ -285,7 +285,7 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
                           return Text(
                             length.toString(),
                             style: TextStyle(
-                              fontFamily: 'AlcherPixel',
+                              fontFamily: 'Game_Tape',
                               fontSize: isSelected ? 20 : 16,
                               fontWeight: isSelected
                                   ? FontWeight.bold
@@ -320,7 +320,7 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
                           return Text(
                             chest.toString(),
                             style: TextStyle(
-                              fontFamily: 'AlcherPixel',
+                              fontFamily: 'Game_Tape',
                               fontSize: isSelected ? 20 : 16,
                               fontWeight: isSelected
                                   ? FontWeight.bold
@@ -340,7 +340,7 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
                   child: Text(
                     widget.merchDescription,
                     style: const TextStyle(
-                      fontFamily: 'AlcherPixel',
+                      fontFamily: 'Game_Tape',
                       fontSize: 18,
                       fontWeight: FontWeight.w400,
                       color: Color.fromRGBO(255, 241, 232, 1),
@@ -388,7 +388,7 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
                               child: Text(
                                 "Buy now",
                                 style: const TextStyle(
-                                  fontFamily: 'AlcherPixel',
+                                  fontFamily: 'Brick_Pixel',
                                   fontSize: 30,
                                   fontWeight: FontWeight.w400,
                                   color: Color.fromRGBO(255, 241, 232, 1),
@@ -439,7 +439,7 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
                               child: Text(
                                 "Add to cart",
                                 style: const TextStyle(
-                                  fontFamily: 'AlcherPixel',
+                                  fontFamily: 'Brick_Pixel',
                                   fontSize: 30,
                                   fontWeight: FontWeight.w400,
                                   color: Color.fromRGBO(255, 241, 232, 1),

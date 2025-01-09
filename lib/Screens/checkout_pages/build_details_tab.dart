@@ -10,8 +10,8 @@ Widget buildDetailsTab({
   required TextEditingController stateController,
   required TextEditingController pincodeController,
 }) {
-  return Padding(
-    padding: EdgeInsets.only(left: 45),
+  return Container(
+    padding: EdgeInsets.only(left: 12),
     child: SingleChildScrollView(
       child: SizedBox(
         child: Column(

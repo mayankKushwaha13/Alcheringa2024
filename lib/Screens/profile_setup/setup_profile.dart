@@ -38,7 +38,7 @@ class _ProfileSetupState extends State<ProfileSetup> {
                         child: Text("Setup Profile",
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                              fontFamily: 'Alcherpixel',
+                              fontFamily: 'Game_Tape',
                               color: Colors.white60,
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
@@ -75,7 +75,7 @@ class _ProfileSetupState extends State<ProfileSetup> {
                                       "Pick your\n image",
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
-                                        fontFamily: 'Alcherpixel',
+                                        fontFamily: 'Game_Tape',
                                         color: Colors.white60,
                                         fontSize: 24,
                                         fontWeight: FontWeight.bold,
@@ -109,7 +109,7 @@ class _ProfileSetupState extends State<ProfileSetup> {
                             controller: nicknameController,
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                              fontFamily: 'Alcherpixel',
+                              fontFamily: 'Game_Tape',
                               color: Colors.white60,
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
@@ -117,7 +117,7 @@ class _ProfileSetupState extends State<ProfileSetup> {
                             decoration: InputDecoration(
                               hintText: "NICKNAME  -  OPTIONAL",
                               hintStyle: TextStyle(
-                                fontFamily: 'Alcherpixel',
+                                fontFamily: 'Game_Tape',
                                 color: Colors.white60,
                                 fontSize: 24,
                                 fontWeight: FontWeight.bold,
@@ -152,7 +152,7 @@ class _ProfileSetupState extends State<ProfileSetup> {
                                     "BACK",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                      fontFamily: 'Alcherpixel',
+                                      fontFamily: 'Game_Tape',
                                       color: Color(0xFFC2C3C7),
                                       fontSize: 24,
                                       fontWeight: FontWeight.bold,
@@ -179,7 +179,7 @@ class _ProfileSetupState extends State<ProfileSetup> {
                                     "NEXT",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                      fontFamily: 'Alcherpixel',
+                                      fontFamily: 'Game_Tape',
                                       color: Color(0xFF1D2B53),
                                       fontSize: 24,
                                       fontWeight: FontWeight.bold,
