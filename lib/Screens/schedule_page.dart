@@ -23,52 +23,92 @@ class _SchedulePageState extends State<SchedulePage> {
   final ScrollController verticalController = ScrollController();
   final ScrollController horizontalController = ScrollController();
   final ViewModelMain viewModel = ViewModelMain();
-  List<String> venueCategories = [
-    "All",
-    "Lecture Halls",
-    "Grounds",
-    "Library Area",
-    "Admin Area",
-    "Auditorium",
-    "Conference Hall",
-    "SAC Area",
-  ];
+
+  String key = "ALL";
+
 
   final Map<String, List<String>> itemListMap = {
-    "All": [
-      "Lecture Hall 1",
-      "Lecture Hall 2",
-      "Lecture Hall 3",
-      "Lecture Hall 4",
-      "Core 5",
-      "Core 1",
-      "Front of Graffiti Wall",
-      "Behind Graffiti Wall",
-      "Old Sac Wall",
-      "New SAC",
-      "Old Sac Stage",
-      "Conference Hall 1",
-      "Conference Hall 2",
-      "Conference Hall 3",
-      "Conference Hall 4",
-      "Mini Auditorium",
-      "Auditorium",
-      "Audi Park",
-      "Senate Hall",
-      "Rocko Stage",
-      "Expo Stage",
-      "Library",
-      "Library Shed",
-      "Library Basement",
-      "Football Field",
-      "Basketball Courts",
-      "Volley Ball Court",
-      "Pronite Stage",
-      "Athletics Field",
-      "Entire Campus",
-    ],
-    // ... (rest of the itemListMap remains the same)
-  };
+  "All": [
+    "Lecture Hall 1",
+    "Lecture Hall 2",
+    "Lecture Hall 3",
+    "Lecture Hall 4",
+    "Core 5",
+    "Core 1",
+    "Front of Graffiti Wall",
+    "Behind Graffiti Wall",
+    "Old Sac Wall",
+    "New SAC",
+    "Old Sac Stage",
+    "Conference Hall 1",
+    "Conference Hall 2",
+    "Conference Hall 3",
+    "Conference Hall 4",
+    "Mini Auditorium",
+    "Auditorium",
+    "Audi Park",
+    "Senate Hall",
+    "Rocko Stage",
+    "Expo Stage",
+    "Library",
+    "Library Shed",
+    "Library Basement",
+    "Football Field",
+    "Basketball Courts",
+    "Volley Ball Court",
+    "Pronite Stage",
+    "Athletics Field",
+    "Entire Campus",
+  ],
+  "Lecture Halls": [
+    "Lecture Hall 1",
+    "Lecture Hall 2",
+    "Lecture Hall 3",
+    "Lecture Hall 4",
+    "Core 5",
+    "Core 1",
+  ],
+  "Grounds": [
+    "Football Field",
+    "Basketball Courts",
+    "Volley Ball Court",
+    "Pronite Stage",
+    "Athletics Field",
+  ],
+  "Library Area": [
+    "Library",
+    "Library Shed",
+    "Library Basement",
+  ],
+  "Admin Area": [
+    "Senate Hall",
+    "Rocko Stage",
+    "Expo Stage",
+  ],
+  "Auditorium": [
+    "Mini Auditorium",
+    "Auditorium",
+    "Audi Park",
+  ],
+  "Conference Hall": [
+    "Conference Hall 1",
+    "Conference Hall 2",
+    "Conference Hall 3",
+    "Conference Hall 4",
+  ],
+  "SAC Area": [
+    "Front of Graffiti Wall",
+    "Behind Graffiti Wall",
+    "Old Sac Wall",
+    "Old Sac Stage",
+    "New SAC",
+  ],
+};
+
+final List<String> keys = ["All","Lecture Halls","Grounds","Library Area", "Admin Area","Auditorium","Conference Hall","SAC Area"];
+
+
+
   List<EventDetail> allEvents = [];
   List<EventDetail> filteredEvents = [];
 
@@ -134,7 +174,7 @@ class _SchedulePageState extends State<SchedulePage> {
     });
 
     try {
-      // Create an instance of ViewModelMain
+      // Create an instance of ViewModelMain 
       ViewModelMain viewModel = ViewModelMain();
 
       // Fetch events
@@ -305,15 +345,19 @@ class _SchedulePageState extends State<SchedulePage> {
                       SizedBox(
                         width: 22.0,
                       ),
+                      
                       // Vertical Divider
-                      Container(
-                        width: 2,
-                        color: Colors.grey,
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: VerticalDivider(
+                          width: 4,
+                          color: Colors.grey,
+                        ),
                       ),
                       // Venue Dropdown
                       Expanded(
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
                           child: Column(
                             children: [
                               // Venue Category Dropdown
@@ -324,7 +368,7 @@ class _SchedulePageState extends State<SchedulePage> {
                                   fontSize: 20.0,
                                   color: Color(0xFFFFF1E8),
                                 ),
-                                items: venueCategories.map((String value) {
+                                items: keys.map((String value) {
                                   return DropdownMenuItem<String>(
                                     value: value,
                                     child: Text(value),
@@ -350,43 +394,7 @@ class _SchedulePageState extends State<SchedulePage> {
                                 ),
                               ),
                               SizedBox(height: 10),
-                              // Specific Venue Dropdown
-                              if (selectedVenueCategory != 'All')
-                                DropdownButtonFormField<String>(
-                                  value: selectedVenue,
-                                  style: TextStyle(
-                                    fontFamily: 'Alcherpixel',
-                                    fontSize: 20.0,
-                                    color: Color(0xFFFFF1E8),
-                                  ),
-                                  items: itemListMap[selectedVenueCategory]
-                                          ?.map((String value) {
-                                        return DropdownMenuItem<String>(
-                                          value: value,
-                                          child: Text(value),
-                                        );
-                                      }).toList() ??
-                                      [],
-                                  onChanged: onVenueChanged,
-                                  dropdownColor: Color(0xFF1D2B53),
-                                  decoration: InputDecoration(
-                                    contentPadding:
-                                        EdgeInsets.symmetric(horizontal: 30.0),
-                                    fillColor: Color(0xFF1D2B53),
-                                    filled: true,
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.pink, width: 2),
-                                      borderRadius: BorderRadius.zero,
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.pink, width: 2),
-                                      borderRadius: BorderRadius.zero,
-                                    ),
-                                  ),
-                                ),
-                            ],
+                              ],
                           ),
                         ),
                       ),
@@ -415,9 +423,8 @@ class _SchedulePageState extends State<SchedulePage> {
                                     height: 60,
                                     decoration: BoxDecoration(
                                         border: Border(
-                                      bottom: BorderSide(
-                                        color: Colors.grey.withOpacity(1),
-                                      ),
+                                      bottom: BorderSide(color: Colors.grey.withOpacity(1), ),
+                                      right: BorderSide(color: Colors.grey.withOpacity(1), ),
                                     )),
                                   ), // Empty space for top alignment
                                   ...List.generate(
@@ -466,48 +473,27 @@ class _SchedulePageState extends State<SchedulePage> {
                                         children: (selectedVenueCategory ==
                                                     'All'
                                                 ? itemListMap["All"]!
-                                                : itemListMap[
-                                                        selectedVenueCategory] ??
-                                                    [])
-                                            .map((venue) {
-                                          final venueEvents = filteredEvents
-                                              .where((event) =>
-                                                  event.venue.toLowerCase() ==
-                                                  venue.toLowerCase())
-                                              .toList();
-
-                                          // Check if there are no events for the selected venue
-                                          // if (venueEvents.isEmpty &&
-                                          //     selectedVenue != 'ALL') {
-                                          //   return SizedBox(
-                                          //     width: 200,
-                                          //     child: Center(
-                                          //       child: Text(
-                                          //         'There are no events at the current location',
-                                          //         style: TextStyle(
-                                          //           color: Colors.white,
-                                          //           fontStyle: FontStyle.italic,
-                                          //         ),
-                                          //       ),
-                                          //     ),
-                                          //   );
-                                          // }
-
+                                                : itemListMap[selectedVenueCategory] ??[]).map((venue) {
+                                          final venueEvents = filteredEvents.where((event) => event.venue.toLowerCase() == venue.toLowerCase()).toList();
                                           return SizedBox(
-                                            width: 200, // Fixed width per venue
+                                            width: 200, //column width for every block ie the place
                                             child: Column(
                                               children: [
-                                                // Venue Name
                                                 Container(
-                                                  height: 50,
+                                                  decoration:BoxDecoration(
+                                                            border: Border(
+                                                              bottom: BorderSide( color: Colors.grey.withOpacity(1),),
+                                                              right: BorderSide(color: Colors.grey.withOpacity(1),),
+                                                            ),
+                                                          ),
+                                                  height: 60,
                                                   alignment: Alignment.center,
-                                                  child: Text(
-                                                    venue,
+                                                  child: Text(venue,
                                                     style: const TextStyle(
-                                                      fontSize: 16,
+                                                      fontSize: 18,
                                                       color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.bold,
+                                                      fontWeight:FontWeight.bold,
+                                                      fontFamily: 'Game_Tape',
                                                     ),
                                                   ),
                                                 ),
@@ -515,77 +501,43 @@ class _SchedulePageState extends State<SchedulePage> {
                                                   children: [
                                                     // Time Slots
                                                     Column(
-                                                      children: List.generate(
-                                                        15,
-                                                        (index) => Container(
+                                                      children: List.generate(15,(index) => Container(
                                                           height: hourHeight,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            border: Border(
-                                                              bottom:
-                                                                  BorderSide(
-                                                                color: Colors
-                                                                    .grey
-                                                                    .withOpacity(
-                                                                        1),
-                                                              ),
-                                                            ),
+                                                          decoration: BoxDecoration(
+                                                          border: Border(
+                                                            bottom: BorderSide( color: Colors.grey.withOpacity(1),),
+                                                            right: BorderSide(color: Colors.grey.withOpacity(1),),
                                                           ),
+                                                        ),
                                                         ),
                                                       ),
                                                     ),
                                                     // Events for the Venue
                                                     ...venueEvents.map((event) {
-                                                      final start =
-                                                          event.starttime;
-                                                      final end =
-                                                          event.getEndTime();
-                                                      final startOffset =
-                                                          (start.hours - 8) +
-                                                              (start.min / 60);
-                                                      final duration = (end
-                                                                  .hours -
-                                                              start.hours) +
-                                                          (end.min -
-                                                                  start.min) /
-                                                              60;
-
+                                                      final start =event.starttime;
+                                                      final end =event.getEndTime();
+                                                      final startOffset =(start.hours - 8) +(start.min / 60);
+                                                      final duration = (end.hours -start.hours) + (end.min - start.min) /60;
                                                       return Positioned(
-                                                        top: startOffset *
-                                                            (hourHeight),
+                                                        top: startOffset *(hourHeight),
                                                         left: 8,
                                                         right: 8,
                                                         child: Container(
-                                                          height: duration *
-                                                              hourHeight,
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8),
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            color: Colors
-                                                                .blueAccent
-                                                                .withOpacity(
-                                                                    0.8),
+                                                          height: duration *hourHeight,
+                                                          padding:const EdgeInsets.all(8),
+                                                          decoration:BoxDecoration(
+                                                            color: Colors.blueAccent.withOpacity(0.8),
                                                             borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        8),
+                                                                BorderRadius.circular(8),
                                                           ),
                                                           child: Column(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
+                                                            crossAxisAlignment:CrossAxisAlignment.start,
                                                             children: [
                                                               Text(
                                                                 event.type,
-                                                                style:
-                                                                    const TextStyle(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
+                                                                style:const TextStyle(
+                                                                  color: Colors.white,
+                                                                  fontWeight:FontWeight.bold,
                                                                 ),
                                                               ),
                                                             ],
@@ -604,9 +556,7 @@ class _SchedulePageState extends State<SchedulePage> {
                             ),
                           ],
                         ),
-                        SizedBox(
-                            height:
-                                bottomNavBarHeight), // Adjusted for the bottom of the schedule
+                        SizedBox(height:bottomNavBarHeight), // Adjusted for the bottom of the schedule
                       ],
                     ),
                   ),
