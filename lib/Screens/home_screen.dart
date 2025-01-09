@@ -2,9 +2,12 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:alcheringa/Common/globals.dart';
+import 'package:alcheringa/Model/merchModel.dart';
 import 'package:alcheringa/Model/pass_model.dart';
 import 'package:alcheringa/Model/view_model_main.dart';
+import 'package:alcheringa/Screens/merch_screen.dart';
 import 'package:alcheringa/Services/retrofit.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -18,17 +21,23 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
+bool isLoading = true;
+
+class _HomeScreenState extends State<HomeScreen>
+    with SingleTickerProviderStateMixin {
   late final ScrollController _scrollController;
+  final CarouselSliderController _carouselController =
+      CarouselSliderController();
+  int _currentIndex = 0;
 
   @override
   void initState() {
     super.initState();
     _scrollController = ScrollController();
-
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _startScrolling();
     });
+    getMerchData();
   }
 
   void _startScrolling() {
@@ -41,7 +50,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           curve: Curves.linear,
         )
             .then((_) {
-          if (_scrollController.offset >= _scrollController.position.maxScrollExtent) {
+          if (_scrollController.offset >=
+              _scrollController.position.maxScrollExtent) {
             // Reset scroll when reaching the end
             _scrollController.jumpTo(0);
           }
@@ -57,8 +67,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   }
 
   void getPass() async {
-    final client =
-        RetrofitService(Dio(BaseOptions(contentType: "application/json")), baseUrl: "https://card.alcheringa.in/api/");
+    final client = RetrofitService(
+        Dio(BaseOptions(contentType: "application/json")),
+        baseUrl: "https://card.alcheringa.in/api/");
     try {
       final response = await client.getData(""); // pass email
       final json = jsonDecode(response);
@@ -70,6 +81,19 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     }
   }
 
+  List<MerchModel> merchList = [];
+
+  Future<void> getMerchData() async {
+    try {
+      merchList = await ViewModelMain().getMerchMerch();
+    } catch (e) {
+      print("Error fetching merchandise: $e");
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
   // @override
   // Widget build(BuildContext context) {
   //   List<EventDetail> list = Provider.of<ViewModelMain>(context).allEvents;
@@ -278,6 +302,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   @override
   Widget build(BuildContext context) {
     List<EventDetail> list = Provider.of<ViewModelMain>(context).allEvents;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       body: Stack(
         children: [
@@ -297,7 +323,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 SizedBox(
                   height: 400.0,
                   child: PageView.builder(
-                    controller: PageController(viewportFraction: 0.5, initialPage: 1000),
+                    controller: PageController(
+                        viewportFraction: 0.5, initialPage: 1000),
                     itemBuilder: (context, index) {
                       index = index % 2;
 
@@ -313,7 +340,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                 height: 35.0,
                                 decoration: BoxDecoration(
                                   image: DecorationImage(
-                                    image: AssetImage('assets/images/hero_section_hearts_pink.png'),
+                                    image: AssetImage(
+                                        'assets/images/hero_section_hearts_pink.png'),
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -330,7 +358,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                   alignment: Alignment.center,
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
-                                      image: AssetImage('assets/images/hero_section_unrevealed_text_holder.png'),
+                                      image: AssetImage(
+                                          'assets/images/hero_section_unrevealed_text_holder.png'),
                                       fit: BoxFit.fill,
                                     ),
                                   ),
@@ -351,7 +380,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                 width: 220,
                                 decoration: BoxDecoration(
                                   image: DecorationImage(
-                                    image: AssetImage('assets/images/card_$index.png'),
+                                    image: AssetImage(
+                                        'assets/images/card_$index.png'),
                                     fit: BoxFit.fill,
                                   ),
                                 ),
@@ -365,7 +395,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                   width: 220,
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
-                                      image: AssetImage('assets/images/hero_section_unrevealed_text_holder.png'),
+                                      image: AssetImage(
+                                          'assets/images/hero_section_unrevealed_text_holder.png'),
                                       fit: BoxFit.fill,
                                     ),
                                   ),
@@ -386,7 +417,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                 height: 35.0,
                                 decoration: BoxDecoration(
                                   image: DecorationImage(
-                                    image: AssetImage('assets/images/hero_section_hearts_blue.png'),
+                                    image: AssetImage(
+                                        'assets/images/hero_section_hearts_blue.png'),
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -413,17 +445,17 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       return Row(
                         children: [
                           ImageIcon(
-                            AssetImage('assets/images/hero_section_hearts_blue.png'),
+                            AssetImage(
+                                'assets/images/hero_section_hearts_blue.png'),
                             size: 90.0,
                           ),
                           SizedBox(width: 10),
                           Text(
                             "Crazy merch alert !!!",
                             style: TextStyle(
-                              color: Color(0xFF182446),
-                              fontSize: 18,
-                              fontFamily: 'Game_Tape'
-                            ),
+                                color: Color(0xFF182446),
+                                fontSize: 18,
+                                fontFamily: 'Game_Tape'),
                           ),
                           SizedBox(width: 50),
                         ],
@@ -431,6 +463,143 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     },
                   ),
                 ),
+
+                SizedBox(
+                  height: screenHeight * 0.4,
+                  width: screenWidth,
+                  child: Stack(
+                    alignment: Alignment.topCenter,
+                    children: [
+                      Container(
+                        height: screenHeight * 0.4,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage('assets/images/merch_ribbon.png'),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        child: Column(
+                          children: [
+                            isLoading
+                                ? Center(child: CircularProgressIndicator())
+                                : CarouselSlider(
+                                    carouselController: _carouselController,
+                                    options: CarouselOptions(
+                                      viewportFraction: 1.2,
+                                      autoPlay: true,
+                                      onPageChanged: (index, reason) {
+                                        setState(() {
+                                          _currentIndex = index;
+                                        });
+                                      },
+                                    ),
+                                    items: merchList
+                                        .map((item) =>
+                                            Builder(builder: (context) {
+                                              return Stack(
+                                                alignment:
+                                                    Alignment.bottomCenter,
+                                                children: [
+                                                  item.image == null
+                                                      ? Image.asset(
+                                                          'assets/images/default_image.png',
+                                                        )
+                                                      : Transform(
+                                                          transform:
+                                                              Matrix4.rotationZ(
+                                                                  0.1745),
+                                                          alignment:
+                                                              Alignment.center,
+                                                          child: Image.network(
+                                                            item.image ?? " ",
+                                                          ),
+                                                        ),
+                                                ],
+                                              );
+                                            }))
+                                        .toList(),
+                                  ),
+                            Builder(builder: (context) {
+                              MerchModel item = merchList[_currentIndex];
+                              return Text(
+                                item.name ?? " ",
+                                style: TextStyle(
+                                    fontFamily: "Brick_Pixel",
+                                    fontSize: 36,
+                                    color: Colors.white),
+                              );
+                            })
+                          ],
+                        ),
+                      ),
+                      Positioned(
+                          top: screenHeight * 0.16,
+                          left: 55 * screenWidth / screenHeight,
+                          child: GestureDetector(
+                            onTap: () {
+                              _currentIndex--;
+                              _carouselController.animateToPage(
+                                  _currentIndex % 3,
+                                  curve: Curves.fastEaseInToSlowEaseOut,
+                                  duration: Duration(milliseconds: 800));
+                            },
+                            child: Image.asset(
+                              'assets/images/prev_button.png',
+                              scale: 0.8,
+                            ),
+                          )),
+                      Positioned(
+                          top: screenHeight * 0.16,
+                          right: (382 - 335) * screenWidth / screenHeight,
+                          child: GestureDetector(
+                            onTap: () {
+                              _currentIndex++;
+                              _carouselController.animateToPage(
+                                  _currentIndex % 3,
+                                  curve: Curves.fastEaseInToSlowEaseOut,
+                                  duration: Duration(milliseconds: 800));
+                            },
+                            child: Image.asset(
+                              'assets/images/next_merch_button.png',
+                              scale: 0.8,
+                            ),
+                          )),
+                    ],
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      "assets/images/merch_ribbon_hearts.png",
+                      height: screenWidth * 0.04,
+                    ),
+                    TextButton(
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => MerchScreen()));
+                        },
+                        child: Text(
+                          "click to learn more!",
+                          style: TextStyle(
+                              fontFamily: "Game_Tape",
+                              fontSize: 24,
+                              color: Colors.white,
+                              shadows: [
+                                BoxShadow(
+                                  offset: Offset(1.5, 1.5),
+                                  color: Colors.blue,
+                                )
+                              ]),
+                        ))
+                  ],
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                SizedBox(
+                  height: bottomNavBarHeight,
+                )
               ],
             ),
           ),
