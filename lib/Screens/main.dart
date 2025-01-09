@@ -2,8 +2,6 @@ import 'dart:async';
 
 import 'package:alcheringa/Common/globals.dart';
 import 'package:alcheringa/Model/view_model_main.dart';
-import 'package:alcheringa/Screens/cart_screen.dart';
-import 'package:alcheringa/Screens/orderScreen/order_screen.dart';
 import 'package:alcheringa/Screens/welcome_screen.dart';
 import 'package:alcheringa/screens/main_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -37,6 +35,10 @@ Future<void> main() async {
     providers: [
       ChangeNotifierProvider(create: (_) => ViewModelMain()),
       ChangeNotifierProvider(create: (_) => cartProvider),
+      // ChangeNotifierProvider(
+      //   create: (_) => ScheduleViewModel(),
+      //   child: Schedule(),
+      // )
     ],
     child: MyApp(),
   ));

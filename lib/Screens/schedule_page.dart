@@ -71,32 +71,6 @@ class _SchedulePageState extends State<SchedulePage> {
   };
   List<EventDetail> allEvents = [];
   List<EventDetail> filteredEvents = [];
-  // List<Map<String, dynamic>> events = [
-  //   {
-  //     'name': 'Event 1',
-  //     'startTime': TimeOfDay(hour: 9, minute: 0),
-  //     'endTime': TimeOfDay(hour: 10, minute: 30),
-  //     'venue': 'Auditorium'
-  //   },
-  //   {
-  //     'name': 'Event 2',
-  //     'startTime': TimeOfDay(hour: 11, minute: 0),
-  //     'endTime': TimeOfDay(hour: 12, minute: 0),
-  //     'venue': 'Auditorium'
-  //   },
-  //   {
-  //     'name': 'Event 3',
-  //     'startTime': TimeOfDay(hour: 13, minute: 0),
-  //     'endTime': TimeOfDay(hour: 15, minute: 0),
-  //     'venue': 'Auditorium'
-  //   },
-  //   {
-  //     'name': 'Event 4',
-  //     'startTime': TimeOfDay(hour: 9, minute: 0),
-  //     'endTime': TimeOfDay(hour: 10, minute: 30),
-  //     'venue': 'library'
-  //   },
-  // ];
 
   final double hourHeight = 60.0; // Height for 1 hour
 
@@ -194,7 +168,7 @@ class _SchedulePageState extends State<SchedulePage> {
         print('Event venue: ${event.venue}, Selected venue: $selectedVenue');
         print('Event day: ${event.starttime.date}, Selected day: $selectedDay');
 
-        final isSameDay = event.starttime.date == selectedDay;
+        final isSameDay = event.starttime.date.toString() == date;
 
         // If 'All' is selected, show all venues, otherwise filter by selected venue
         final isSameVenue = selectedVenue == 'ALL' ||
@@ -284,23 +258,6 @@ class _SchedulePageState extends State<SchedulePage> {
                       return GestureDetector(
                         onTap: () {
                           onDaySelected(index);
-                          // setState(() {
-                          //   selectedDay = index;
-                          //   if (index == 0) {
-                          //     date = '8';
-                          //     month = 'FEB';
-                          //   } else if (index == 1) {
-                          //     date = '9';
-                          //     month = 'FEB';
-                          //   } else if (index == 2) {
-                          //     date = '10';
-                          //     month = 'FEB';
-                          //   } else if (index == 3) {
-                          //     date = '11';
-                          //     month = 'FEB';
-                          //   }
-                          //   filterEvents();
-                          // });
                         },
                         child: Text(
                           days[index],
@@ -538,7 +495,7 @@ class _SchedulePageState extends State<SchedulePage> {
 
                                           return SizedBox(
                                             width: 200, // Fixed width per venue
-                                            child: Stack(
+                                            child: Column(
                                               children: [
                                                 // Venue Name
                                                 Container(
@@ -554,75 +511,90 @@ class _SchedulePageState extends State<SchedulePage> {
                                                     ),
                                                   ),
                                                 ),
-                                                // Time Slots
-                                                Column(
-                                                  children: List.generate(
-                                                    15,
-                                                    (index) => Container(
-                                                      height: hourHeight,
-                                                      decoration: BoxDecoration(
-                                                        border: Border(
-                                                          bottom: BorderSide(
-                                                            color: Colors.grey
-                                                                .withOpacity(1),
+                                                Stack(
+                                                  children: [
+                                                    // Time Slots
+                                                    Column(
+                                                      children: List.generate(
+                                                        15,
+                                                        (index) => Container(
+                                                          height: hourHeight,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            border: Border(
+                                                              bottom:
+                                                                  BorderSide(
+                                                                color: Colors
+                                                                    .grey
+                                                                    .withOpacity(
+                                                                        1),
+                                                              ),
+                                                            ),
                                                           ),
                                                         ),
                                                       ),
                                                     ),
-                                                  ),
-                                                ),
-                                                // Events for the Venue
-                                                ...venueEvents.map((event) {
-                                                  final start = event.starttime;
-                                                  final end =
-                                                      event.getEndTime();
-                                                  final startOffset =
-                                                      (start.hours - 8) +
-                                                          (start.min / 60);
-                                                  final duration = (end.hours -
-                                                          start.hours) +
-                                                      (end.min - start.min) /
-                                                          60;
+                                                    // Events for the Venue
+                                                    ...venueEvents.map((event) {
+                                                      final start =
+                                                          event.starttime;
+                                                      final end =
+                                                          event.getEndTime();
+                                                      final startOffset =
+                                                          (start.hours - 8) +
+                                                              (start.min / 60);
+                                                      final duration = (end
+                                                                  .hours -
+                                                              start.hours) +
+                                                          (end.min -
+                                                                  start.min) /
+                                                              60;
 
-                                                  return Positioned(
-                                                    top: startOffset *
-                                                        hourHeight,
-                                                    left: 8,
-                                                    right: 8,
-                                                    child: Container(
-                                                      height:
-                                                          duration * hourHeight,
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              8),
-                                                      decoration: BoxDecoration(
-                                                        color: Colors.blueAccent
-                                                            .withOpacity(0.8),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(8),
-                                                      ),
-                                                      child: Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Text(
-                                                            event.type,
-                                                            style:
-                                                                const TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                            ),
+                                                      return Positioned(
+                                                        top: startOffset *
+                                                            (hourHeight),
+                                                        left: 8,
+                                                        right: 8,
+                                                        child: Container(
+                                                          height: duration *
+                                                              hourHeight,
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(8),
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: Colors
+                                                                .blueAccent
+                                                                .withOpacity(
+                                                                    0.8),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        8),
                                                           ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  );
-                                                }).toList(),
+                                                          child: Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Text(
+                                                                event.type,
+                                                                style:
+                                                                    const TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      );
+                                                    }).toList(),
+                                                  ],
+                                                ),
                                               ],
                                             ),
                                           );

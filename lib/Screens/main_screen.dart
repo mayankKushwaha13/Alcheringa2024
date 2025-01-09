@@ -1,11 +1,11 @@
 import 'package:alcheringa/Common/globals.dart';
 import 'package:alcheringa/Screens/activity_pages/activity_page.dart';
 import 'package:alcheringa/Screens/end_drawer.dart';
+import 'package:alcheringa/Screens/schedule_page.dart';
 import 'package:alcheringa/Screens/top_app_bar.dart';
 import 'package:alcheringa/Screens/utility_screen/utilities_screen.dart';
 import 'package:alcheringa/screens/home_screen.dart';
 import 'package:alcheringa/screens/map_page.dart';
-import 'package:alcheringa/screens/schedule_page.dart';
 import 'package:flutter/material.dart';
 
 class MainScreen extends StatefulWidget {
@@ -23,7 +23,7 @@ class _MainScreenState extends State<MainScreen> {
   late PageController _pageController = PageController();
   final List<Widget> _pages = [
     const MapPage(),
-    const SchedulePage(),
+    SchedulePage(),
     const HomeScreen(),
     const ActivityPage(),
     const UtilitiesPage()
@@ -37,9 +37,10 @@ class _MainScreenState extends State<MainScreen> {
       _calculateBottomNavBarHeight();
     });
   }
+
   void _calculateBottomNavBarHeight() {
     final RenderBox? renderBox =
-    _bottomNavBarKey.currentContext?.findRenderObject() as RenderBox?;
+        _bottomNavBarKey.currentContext?.findRenderObject() as RenderBox?;
     if (renderBox != null) {
       setState(() {
         bottomNavBarHeight = renderBox.size.height;
@@ -66,7 +67,9 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
       key: _scaffoldKey,
       resizeToAvoidBottomInset: false,
-      endDrawer: EndDrawer(scaffoldState: _scaffoldKey,),
+      endDrawer: EndDrawer(
+        scaffoldState: _scaffoldKey,
+      ),
       appBar: TopAppBar(scaffoldState: _scaffoldKey),
       body: Stack(
         children: [
@@ -81,12 +84,10 @@ class _MainScreenState extends State<MainScreen> {
             children: _pages,
           ),
           Positioned(
-            
             bottom: 0,
             left: 0,
             right: 0,
             child: Container(
-              
               decoration: BoxDecoration(
                 color: Colors.white.withOpacity(0.1), // Semi-transparent white
               ),
@@ -96,7 +97,8 @@ class _MainScreenState extends State<MainScreen> {
                 items: [
                   BottomNavigationBarItem(
                     icon: Padding(
-                      padding: EdgeInsets.only(top: _selectedIndex == 0 ? 0 : 20),
+                      padding:
+                          EdgeInsets.only(top: _selectedIndex == 0 ? 0 : 20),
                       child: Image.asset(
                         _selectedIndex == 0
                             ? 'assets/images/map_selected.png'
@@ -108,7 +110,8 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                   BottomNavigationBarItem(
                     icon: Padding(
-                      padding: EdgeInsets.only(top: _selectedIndex == 1 ? 0 : 20),
+                      padding:
+                          EdgeInsets.only(top: _selectedIndex == 1 ? 0 : 20),
                       child: Image.asset(
                         _selectedIndex == 1
                             ? 'assets/images/schedule_selected.png'
@@ -120,7 +123,8 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                   BottomNavigationBarItem(
                     icon: Padding(
-                      padding: EdgeInsets.only(top: _selectedIndex == 2 ? 0 : 20),
+                      padding:
+                          EdgeInsets.only(top: _selectedIndex == 2 ? 0 : 20),
                       child: Image.asset(
                         _selectedIndex == 2
                             ? 'assets/images/home_selected.png'
@@ -132,7 +136,8 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                   BottomNavigationBarItem(
                     icon: Padding(
-                      padding: EdgeInsets.only(top: _selectedIndex == 3 ? 0 : 20),
+                      padding:
+                          EdgeInsets.only(top: _selectedIndex == 3 ? 0 : 20),
                       child: Image.asset(
                         _selectedIndex == 3
                             ? 'assets/images/activity_selected.png'
@@ -144,7 +149,8 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                   BottomNavigationBarItem(
                     icon: Padding(
-                      padding: EdgeInsets.only(top: _selectedIndex == 4 ? 0 : 20),
+                      padding:
+                          EdgeInsets.only(top: _selectedIndex == 4 ? 0 : 20),
                       child: Image.asset(
                         _selectedIndex == 4
                             ? 'assets/images/utility_selected.png'
