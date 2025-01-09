@@ -101,6 +101,7 @@ class OrderList extends StatelessWidget {
                               padding: const EdgeInsets.only(left: 50),
                               child: Text(
                                   "Order Placed",
+                  textAlign: TextAlign.right,
                                   style: TextStyle(
                                     color: AppColors.Palewhite,
                                     fontFamily: "Game_Tape",

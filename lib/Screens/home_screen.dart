@@ -1,18 +1,24 @@
 import 'dart:convert';
-import 'dart:developer';
+import 'dart:developer' as dev;
+import 'dart:math';
 
 import 'package:alcheringa/Common/globals.dart';
 import 'package:alcheringa/Model/pass_model.dart';
 import 'package:alcheringa/Model/view_model_main.dart';
+import 'package:alcheringa/Screens/activity_pages/widgets/suggestion_events.dart';
 import 'package:alcheringa/Services/retrofit.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../Model/eventdetail.dart';
+import 'activity_pages/widgets/competition_card.dart';
 
 class HomeScreen extends StatefulWidget {
+
+
   const HomeScreen({super.key});
+
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -25,6 +31,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   void initState() {
     super.initState();
     _scrollController = ScrollController();
+    final EventDetail event ;
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _startScrolling();
@@ -63,10 +70,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       final response = await client.getData(""); // pass email
       final json = jsonDecode(response);
       pass.add(PassModel.fromJson(json));
-      log(pass.length.toString());
-      log(response);
+      dev.log(pass.length.toString());
+      dev.log(response);
     } catch (e) {
-      log(e.toString());
+      dev.log(e.toString());
     }
   }
 
@@ -278,6 +285,12 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   @override
   Widget build(BuildContext context) {
     List<EventDetail> list = Provider.of<ViewModelMain>(context).allEvents;
+    final List<EventDetail> suggestions = list.toList();
+
+    // Shuffle and pick a limited number of suggestions
+    suggestions.shuffle(Random());
+    final List<EventDetail> displayedSuggestions =
+    suggestions.take(20).toList();
     return Scaffold(
       body: Stack(
         children: [
@@ -427,6 +440,33 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                           ),
                           SizedBox(width: 50),
                         ],
+                      );
+                    },
+                  ),
+                ),
+                SizedBox(height: 50,),
+                // Below is event suggestion
+                SizedBox(
+                  height: 350,
+                  child: PageView.builder(
+                    controller: PageController(viewportFraction: 1),
+                    itemCount: (displayedSuggestions.length / 2).ceil(),
+                    itemBuilder: (BuildContext context, int pageIndex) {
+                      final int startIndex = pageIndex * 2;
+                      final List<EventDetail> currentPageSuggestions =
+                      displayedSuggestions
+                          .skip(startIndex)
+                          .take(2)
+                          .toList();
+
+                      return Column(
+                        children: currentPageSuggestions
+                            .map(
+                              (suggestion) => Expanded(
+                            child: suggestioncard(event: suggestion),
+                          ),
+                        )
+                            .toList(),
                       );
                     },
                   ),
