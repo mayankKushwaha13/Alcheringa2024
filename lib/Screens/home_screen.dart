@@ -18,10 +18,7 @@ import 'activity_pages/widgets/competition_card.dart';
 import 'merch_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-
-
   const HomeScreen({super.key});
-
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -40,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen>
   void initState() {
     super.initState();
     _scrollController = ScrollController();
-    final EventDetail event ;
+    final EventDetail event;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _startScrolling();
     });
@@ -316,7 +313,7 @@ class _HomeScreenState extends State<HomeScreen>
     // Shuffle and pick a limited number of suggestions
     suggestions.shuffle(Random());
     final List<EventDetail> displayedSuggestions =
-    suggestions.take(20).toList();
+        suggestions.take(20).toList();
     return Scaffold(
       body: Stack(
         children: [
@@ -607,10 +604,39 @@ class _HomeScreenState extends State<HomeScreen>
                         ))
                   ],
                 ),
-                SizedBox(
-                  height: 10,
+                SizedBox(height: 20,),
+                Container(
+                  color: Color.fromRGBO(255, 236, 38, 1),
+                  height: 40,
+                  child: ListView.builder(
+                    controller: _scrollController,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 70,
+                    itemBuilder: (context, index) {
+                      return Row(
+                        children: [
+                          ImageIcon(
+                            AssetImage(
+                                'assets/images/hero_section_hearts_blue.png'),
+                            size: 90.0,
+                          ),
+                          SizedBox(width: 10),
+                          Text(
+                            "Crazy merch alert !!!",
+                            style: TextStyle(
+                                color: Color(0xFF182446),
+                                fontSize: 18,
+                                fontFamily: 'Game_Tape'),
+                          ),
+                          SizedBox(width: 50),
+                        ],
+                      );
+                    },
+                  ),
                 ),
-                SizedBox(height: 50,),
+                SizedBox(
+                  height: 50,
+                ),
                 // Below is event suggestion
                 SizedBox(
                   height: 350,
@@ -620,18 +646,18 @@ class _HomeScreenState extends State<HomeScreen>
                     itemBuilder: (BuildContext context, int pageIndex) {
                       final int startIndex = pageIndex * 2;
                       final List<EventDetail> currentPageSuggestions =
-                      displayedSuggestions
-                          .skip(startIndex)
-                          .take(2)
-                          .toList();
+                          displayedSuggestions
+                              .skip(startIndex)
+                              .take(2)
+                              .toList();
 
                       return Column(
                         children: currentPageSuggestions
                             .map(
                               (suggestion) => Expanded(
-                            child: suggestioncard(event: suggestion),
-                          ),
-                        )
+                                child: suggestioncard(event: suggestion),
+                              ),
+                            )
                             .toList(),
                       );
                     },
