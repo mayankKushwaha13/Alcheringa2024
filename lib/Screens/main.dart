@@ -35,6 +35,10 @@ Future<void> main() async {
     providers: [
       ChangeNotifierProvider(create: (_) => ViewModelMain()),
       ChangeNotifierProvider(create: (_) => cartProvider),
+      // ChangeNotifierProvider(
+      //   create: (_) => ScheduleViewModel(),
+      //   child: Schedule(),
+      // )
     ],
     child: MyApp(),
   ));
