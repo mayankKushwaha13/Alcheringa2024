@@ -85,6 +85,13 @@ class EventDetail {
       stream: data['stream'] == 0 ? false : true,
     );
   }
+  // Method to get the end time by adding duration to start time
+  OwnTime getEndTime() {
+    int endMinutes = starttime.hours * 60 + starttime.min + durationInMin;
+    int endHours = endMinutes ~/ 60;
+    int endMins = endMinutes % 60;
+    return OwnTime(date: starttime.date, hours: endHours, min: endMins);
+  }
 
   toTable() {
     return {
@@ -105,8 +112,8 @@ class EventDetail {
           "," +
           starttime.min.toString(),
       "stream": stream == false ? 0 : 1,
-      "descriptionShort" : descriptionShort,
-      "iconurl" : iconURL
+      "descriptionShort": descriptionShort,
+      "iconurl": iconURL
     };
   }
 }
