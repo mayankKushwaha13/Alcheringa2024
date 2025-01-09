@@ -13,16 +13,27 @@ class SchedulePage extends StatefulWidget {
 }
 
 class _SchedulePageState extends State<SchedulePage> {
-  String date = '31';
-  String month = 'Jan';
+  String date = '8';
+  String month = 'FEB';
   int selectedDay = 0;
+  String selectedVenueCategory = 'All';
   String selectedVenue = 'ALL';
   bool isLoading = true; // Add this if not already present
   int initialDay = 0;
   final ScrollController verticalController = ScrollController();
   final ScrollController horizontalController = ScrollController();
   final ViewModelMain viewModel = ViewModelMain();
-  List<String> venuesList = ['ALL', 'Auditorium', 'library'];
+  List<String> venueCategories = [
+    "All",
+    "Lecture Halls",
+    "Grounds",
+    "Library Area",
+    "Admin Area",
+    "Auditorium",
+    "Conference Hall",
+    "SAC Area",
+  ];
+
   final Map<String, List<String>> itemListMap = {
     "All": [
       "Lecture Hall 1",
@@ -56,79 +67,36 @@ class _SchedulePageState extends State<SchedulePage> {
       "Athletics Field",
       "Entire Campus",
     ],
-    "Lecture Halls": [
-      "Lecture Hall 1",
-      "Lecture Hall 2",
-      "Lecture Hall 3",
-      "Lecture Hall 4",
-      "Core 5",
-      "Core 1",
-    ],
-    "Grounds": [
-      "Football Field",
-      "Basketball Courts",
-      "Volley Ball Court",
-      "Pronite Stage",
-      "Athletics Field",
-    ],
-    "Library Area": [
-      "Library",
-      "Library Shed",
-      "Library Basement",
-    ],
-    "Admin Area": [
-      "Senate Hall",
-      "Rocko Stage",
-      "Expo Stage",
-    ],
-    "Auditorium": [
-      "Mini Auditorium",
-      "Auditorium",
-      "Audi Park",
-    ],
-    "Conference Hall": [
-      "Conference Hall 1",
-      "Conference Hall 2",
-      "Conference Hall 3",
-      "Conference Hall 4",
-    ],
-    "SAC Area": [
-      "Front of Graffiti Wall",
-      "Behind Graffiti Wall",
-      "Old Sac Wall",
-      "Old Sac Stage",
-      "New SAC",
-    ],
+    // ... (rest of the itemListMap remains the same)
   };
-
   List<EventDetail> allEvents = [];
   List<EventDetail> filteredEvents = [];
-  List<Map<String, dynamic>> events = [
-    {
-      'name': 'Event 1',
-      'startTime': TimeOfDay(hour: 9, minute: 0),
-      'endTime': TimeOfDay(hour: 10, minute: 30),
-      'venue': 'Auditorium'
-    },
-    {
-      'name': 'Event 2',
-      'startTime': TimeOfDay(hour: 11, minute: 0),
-      'endTime': TimeOfDay(hour: 12, minute: 0),
-      'venue': 'Auditorium'
-    },
-    {
-      'name': 'Event 3',
-      'startTime': TimeOfDay(hour: 13, minute: 0),
-      'endTime': TimeOfDay(hour: 15, minute: 0),
-      'venue': 'Auditorium'
-    },
-    {
-      'name': 'Event 4',
-      'startTime': TimeOfDay(hour: 9, minute: 0),
-      'endTime': TimeOfDay(hour: 10, minute: 30),
-      'venue': 'library'
-    },
-  ];
+  // List<Map<String, dynamic>> events = [
+  //   {
+  //     'name': 'Event 1',
+  //     'startTime': TimeOfDay(hour: 9, minute: 0),
+  //     'endTime': TimeOfDay(hour: 10, minute: 30),
+  //     'venue': 'Auditorium'
+  //   },
+  //   {
+  //     'name': 'Event 2',
+  //     'startTime': TimeOfDay(hour: 11, minute: 0),
+  //     'endTime': TimeOfDay(hour: 12, minute: 0),
+  //     'venue': 'Auditorium'
+  //   },
+  //   {
+  //     'name': 'Event 3',
+  //     'startTime': TimeOfDay(hour: 13, minute: 0),
+  //     'endTime': TimeOfDay(hour: 15, minute: 0),
+  //     'venue': 'Auditorium'
+  //   },
+  //   {
+  //     'name': 'Event 4',
+  //     'startTime': TimeOfDay(hour: 9, minute: 0),
+  //     'endTime': TimeOfDay(hour: 10, minute: 30),
+  //     'venue': 'library'
+  //   },
+  // ];
 
   final double hourHeight = 60.0; // Height for 1 hour
 
@@ -192,11 +160,20 @@ class _SchedulePageState extends State<SchedulePage> {
     });
 
     try {
-      allEvents = await ViewModelMain().getAllEvents();
+      // Create an instance of ViewModelMain
+      ViewModelMain viewModel = ViewModelMain();
+
+      // Fetch events
+      allEvents = await viewModel.getAllEvents();
+
+      // Debug print
+      print('Fetched ${allEvents.length} events');
+
       // Apply initial filtering after getting data
       filterEvents();
     } catch (e) {
       print("Error fetching events: $e");
+      // You might want to show an error message to the user here
     } finally {
       setState(() {
         isLoading = false;
@@ -205,38 +182,50 @@ class _SchedulePageState extends State<SchedulePage> {
   }
 
   void filterEvents() {
-    if (allEvents.isEmpty) return; // Guard clause
+    if (allEvents.isEmpty) {
+      print('No events to filter');
+      return;
+    }
 
     setState(() {
       filteredEvents = allEvents.where((event) {
-        // Print debugging information
+        // Debug prints
         print('Filtering event: ${event.type}');
         print('Event venue: ${event.venue}, Selected venue: $selectedVenue');
         print('Event day: ${event.starttime.date}, Selected day: $selectedDay');
 
         final isSameDay = event.starttime.date == selectedDay;
+
+        // If 'All' is selected, show all venues, otherwise filter by selected venue
         final isSameVenue = selectedVenue == 'ALL' ||
             event.venue.trim().toLowerCase() ==
                 selectedVenue.trim().toLowerCase();
 
-        final isIncluded = isSameDay && isSameVenue;
-        print('Is included: $isIncluded');
-
-        return isIncluded;
+        return isSameDay && isSameVenue;
       }).toList();
 
-      // Print total filtered events
-      print('Total filtered events: ${filteredEvents.length}');
+      print('Filtered events count: ${filteredEvents.length}');
     });
   }
 
-  // Modify your venue selection handler
+  // Modified venue selection handler
   void onVenueChanged(String? newValue) {
     if (newValue == null) return;
 
     setState(() {
       selectedVenue = newValue;
-      filterEvents(); // Apply filtering immediately
+      filterEvents();
+    });
+  }
+
+  // Modified venue category selection handler
+  void onVenueCategoryChanged(String? newValue) {
+    if (newValue == null) return;
+
+    setState(() {
+      selectedVenueCategory = newValue;
+      selectedVenue = 'ALL'; // Reset selected venue when category changes
+      filterEvents();
     });
   }
 
@@ -366,47 +355,84 @@ class _SchedulePageState extends State<SchedulePage> {
                       ),
                       // Venue Dropdown
                       Expanded(
-                          child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                        child: DropdownButtonFormField<String>(
-                          value: selectedVenue,
-                          style: TextStyle(
-                              fontFamily: 'Alcherpixel',
-                              fontSize: 20.0,
-                              color: Color(0xFFFFF1E8)),
-                          items: venuesList
-                              .map((String value) => DropdownMenuItem<String>(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                          child: Column(
+                            children: [
+                              // Venue Category Dropdown
+                              DropdownButtonFormField<String>(
+                                value: selectedVenueCategory,
+                                style: TextStyle(
+                                  fontFamily: 'Alcherpixel',
+                                  fontSize: 20.0,
+                                  color: Color(0xFFFFF1E8),
+                                ),
+                                items: venueCategories.map((String value) {
+                                  return DropdownMenuItem<String>(
                                     value: value,
                                     child: Text(value),
-                                  ))
-                              .toList(),
-                          onChanged: onVenueChanged,
-                          // onChanged: (String? newValue) {
-                          //   setState(() {
-                          //     selectedVenue = newValue!;
-                          //     filterEvents();
-                          //   });
-                          // },
-                          dropdownColor: Color(0xFF1D2B53),
-                          decoration: InputDecoration(
-                            contentPadding:
-                                EdgeInsets.symmetric(horizontal: 30.0),
-                            fillColor: Color(0xFF1D2B53),
-                            filled: true,
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Colors.pink, width: 2), // Pink border
-                              borderRadius:
-                                  BorderRadius.zero, // Zero border radius
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.pink, width: 2),
-                              borderRadius: BorderRadius.zero,
-                            ),
+                                  );
+                                }).toList(),
+                                onChanged: onVenueCategoryChanged,
+                                dropdownColor: Color(0xFF1D2B53),
+                                decoration: InputDecoration(
+                                  contentPadding:
+                                      EdgeInsets.symmetric(horizontal: 30.0),
+                                  fillColor: Color(0xFF1D2B53),
+                                  filled: true,
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.pink, width: 2),
+                                    borderRadius: BorderRadius.zero,
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.pink, width: 2),
+                                    borderRadius: BorderRadius.zero,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 10),
+                              // Specific Venue Dropdown
+                              if (selectedVenueCategory != 'All')
+                                DropdownButtonFormField<String>(
+                                  value: selectedVenue,
+                                  style: TextStyle(
+                                    fontFamily: 'Alcherpixel',
+                                    fontSize: 20.0,
+                                    color: Color(0xFFFFF1E8),
+                                  ),
+                                  items: itemListMap[selectedVenueCategory]
+                                          ?.map((String value) {
+                                        return DropdownMenuItem<String>(
+                                          value: value,
+                                          child: Text(value),
+                                        );
+                                      }).toList() ??
+                                      [],
+                                  onChanged: onVenueChanged,
+                                  dropdownColor: Color(0xFF1D2B53),
+                                  decoration: InputDecoration(
+                                    contentPadding:
+                                        EdgeInsets.symmetric(horizontal: 30.0),
+                                    fillColor: Color(0xFF1D2B53),
+                                    filled: true,
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.pink, width: 2),
+                                      borderRadius: BorderRadius.zero,
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.pink, width: 2),
+                                      borderRadius: BorderRadius.zero,
+                                    ),
+                                  ),
+                                ),
+                            ],
                           ),
                         ),
-                      )),
+                      ),
                     ],
                   ),
                 ),
@@ -480,11 +506,12 @@ class _SchedulePageState extends State<SchedulePage> {
                                       scrollDirection: Axis.horizontal,
                                       controller: horizontalController,
                                       child: Row(
-                                        children: venuesList
-                                            .where((venue) =>
-                                                selectedVenue == 'ALL' ||
-                                                selectedVenue.toLowerCase() ==
-                                                    venue.toLowerCase())
+                                        children: (selectedVenueCategory ==
+                                                    'All'
+                                                ? itemListMap["All"]!
+                                                : itemListMap[
+                                                        selectedVenueCategory] ??
+                                                    [])
                                             .map((venue) {
                                           final venueEvents = filteredEvents
                                               .where((event) =>
