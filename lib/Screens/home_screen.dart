@@ -14,14 +14,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../Model/eventdetail.dart';
-import 'activity_pages/widgets/competition_card.dart';
 import 'merch_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-
-
   const HomeScreen({super.key});
-
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -29,40 +25,60 @@ class HomeScreen extends StatefulWidget {
 
 bool isLoading = true;
 
-class _HomeScreenState extends State<HomeScreen>
-    with SingleTickerProviderStateMixin {
-  late final ScrollController _scrollController;
-  final CarouselSliderController _carouselController =
-      CarouselSliderController();
+class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
+  late final ScrollController _scrollController1;
+  late final ScrollController _scrollController2;
+  final CarouselSliderController _carouselController = CarouselSliderController();
   int _currentIndex = 0;
 
   @override
   void initState() {
     super.initState();
-    _scrollController = ScrollController();
-    final EventDetail event ;
+    _scrollController1 = ScrollController();
+    _scrollController2 = ScrollController();
+    final EventDetail event;
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _startScrolling();
+      _startScrolling1();
+      _startScrolling2();
     });
     getMerchData();
   }
 
-  void _startScrolling() {
+  void _startScrolling1() {
     Future.delayed(Duration(milliseconds: 100), () {
-      if (_scrollController.hasClients) {
-        _scrollController
+      if (_scrollController1.hasClients) {
+        _scrollController1
             .animateTo(
-          _scrollController.offset + 100, // Scroll offset
+          _scrollController1.offset + 100, // Scroll offset
           duration: Duration(milliseconds: 1000),
           curve: Curves.linear,
         )
             .then((_) {
-          if (_scrollController.offset >=
-              _scrollController.position.maxScrollExtent) {
+          if (_scrollController1.offset >= _scrollController1.position.maxScrollExtent) {
             // Reset scroll when reaching the end
-            _scrollController.jumpTo(0);
+            _scrollController1.jumpTo(0);
           }
-          _startScrolling();
+          _startScrolling1();
+        });
+      }
+    });
+  }
+
+  void _startScrolling2() {
+    Future.delayed(Duration(milliseconds: 100), () {
+      if (_scrollController2.hasClients) {
+        _scrollController2
+            .animateTo(
+          _scrollController2.offset + 100, // Scroll offset
+          duration: Duration(milliseconds: 1000),
+          curve: Curves.linear,
+        )
+            .then((_) {
+          if (_scrollController2.offset >= _scrollController2.position.maxScrollExtent) {
+            // Reset scroll when reaching the end
+            _scrollController2.jumpTo(0);
+          }
+          _startScrolling2();
         });
       }
     });
@@ -74,9 +90,8 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   void getPass() async {
-    final client = RetrofitService(
-        Dio(BaseOptions(contentType: "application/json")),
-        baseUrl: "https://card.alcheringa.in/api/");
+    final client =
+        RetrofitService(Dio(BaseOptions(contentType: "application/json")), baseUrl: "https://card.alcheringa.in/api/");
     try {
       final response = await client.getData(""); // pass email
       final json = jsonDecode(response);
@@ -101,6 +116,7 @@ class _HomeScreenState extends State<HomeScreen>
       });
     }
   }
+
   // @override
   // Widget build(BuildContext context) {
   //   List<EventDetail> list = Provider.of<ViewModelMain>(context).allEvents;
@@ -315,8 +331,7 @@ class _HomeScreenState extends State<HomeScreen>
 
     // Shuffle and pick a limited number of suggestions
     suggestions.shuffle(Random());
-    final List<EventDetail> displayedSuggestions =
-    suggestions.take(20).toList();
+    final List<EventDetail> displayedSuggestions = suggestions.take(20).toList();
     return Scaffold(
       body: Stack(
         children: [
@@ -336,8 +351,7 @@ class _HomeScreenState extends State<HomeScreen>
                 SizedBox(
                   height: 400.0,
                   child: PageView.builder(
-                    controller: PageController(
-                        viewportFraction: 0.5, initialPage: 1000),
+                    controller: PageController(viewportFraction: 0.5, initialPage: 1000),
                     itemBuilder: (context, index) {
                       index = index % 2;
 
@@ -353,8 +367,7 @@ class _HomeScreenState extends State<HomeScreen>
                                 height: 35.0,
                                 decoration: BoxDecoration(
                                   image: DecorationImage(
-                                    image: AssetImage(
-                                        'assets/images/hero_section_hearts_pink.png'),
+                                    image: AssetImage('assets/images/hero_section_hearts_pink.png'),
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -371,8 +384,7 @@ class _HomeScreenState extends State<HomeScreen>
                                   alignment: Alignment.center,
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
-                                      image: AssetImage(
-                                          'assets/images/hero_section_unrevealed_text_holder.png'),
+                                      image: AssetImage('assets/images/hero_section_unrevealed_text_holder.png'),
                                       fit: BoxFit.fill,
                                     ),
                                   ),
@@ -393,8 +405,7 @@ class _HomeScreenState extends State<HomeScreen>
                                 width: 220,
                                 decoration: BoxDecoration(
                                   image: DecorationImage(
-                                    image: AssetImage(
-                                        'assets/images/card_$index.png'),
+                                    image: AssetImage('assets/images/card_$index.png'),
                                     fit: BoxFit.fill,
                                   ),
                                 ),
@@ -408,8 +419,7 @@ class _HomeScreenState extends State<HomeScreen>
                                   width: 220,
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
-                                      image: AssetImage(
-                                          'assets/images/hero_section_unrevealed_text_holder.png'),
+                                      image: AssetImage('assets/images/hero_section_unrevealed_text_holder.png'),
                                       fit: BoxFit.fill,
                                     ),
                                   ),
@@ -430,8 +440,7 @@ class _HomeScreenState extends State<HomeScreen>
                                 height: 35.0,
                                 decoration: BoxDecoration(
                                   image: DecorationImage(
-                                    image: AssetImage(
-                                        'assets/images/hero_section_hearts_blue.png'),
+                                    image: AssetImage('assets/images/hero_section_hearts_blue.png'),
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -447,28 +456,28 @@ class _HomeScreenState extends State<HomeScreen>
                   ),
                 ),
 
+                SizedBox(
+                  height: 30.0,
+                ),
+                // marquee text crazy merch alert
                 Container(
                   color: Color.fromRGBO(255, 236, 38, 1),
                   height: 40,
                   child: ListView.builder(
-                    controller: _scrollController,
+                    controller: _scrollController1,
                     scrollDirection: Axis.horizontal,
                     itemCount: 70,
                     itemBuilder: (context, index) {
                       return Row(
                         children: [
                           ImageIcon(
-                            AssetImage(
-                                'assets/images/hero_section_hearts_blue.png'),
+                            AssetImage('assets/images/hero_section_hearts_blue.png'),
                             size: 90.0,
                           ),
                           SizedBox(width: 10),
                           Text(
                             "Crazy merch alert !!!",
-                            style: TextStyle(
-                                color: Color(0xFF182446),
-                                fontSize: 18,
-                                fontFamily: 'Game_Tape'),
+                            style: TextStyle(color: Color(0xFF182446), fontSize: 18, fontFamily: 'Game_Tape'),
                           ),
                           SizedBox(width: 50),
                         ],
@@ -476,7 +485,10 @@ class _HomeScreenState extends State<HomeScreen>
                     },
                   ),
                 ),
-
+                SizedBox(
+                  height: 20.0,
+                ),
+                // merch section
                 SizedBox(
                   height: screenHeight * 0.4,
                   width: screenWidth,
@@ -507,76 +519,70 @@ class _HomeScreenState extends State<HomeScreen>
                                       },
                                     ),
                                     items: merchList
-                                        .map((item) =>
-                                            Builder(builder: (context) {
+                                        .map(
+                                          (item) => Builder(
+                                            builder: (context) {
                                               return Stack(
-                                                alignment:
-                                                    Alignment.bottomCenter,
+                                                alignment: Alignment.bottomCenter,
                                                 children: [
                                                   item.image == null
                                                       ? Image.asset(
                                                           'assets/images/default_image.png',
                                                         )
                                                       : Transform(
-                                                          transform:
-                                                              Matrix4.rotationZ(
-                                                                  0.1745),
-                                                          alignment:
-                                                              Alignment.center,
+                                                          transform: Matrix4.rotationZ(0.1745),
+                                                          alignment: Alignment.center,
                                                           child: Image.network(
                                                             item.image ?? " ",
                                                           ),
                                                         ),
                                                 ],
                                               );
-                                            }))
+                                            },
+                                          ),
+                                        )
                                         .toList(),
                                   ),
                             Builder(builder: (context) {
                               MerchModel item = merchList[_currentIndex];
                               return Text(
                                 item.name ?? " ",
-                                style: TextStyle(
-                                    fontFamily: "Brick_Pixel",
-                                    fontSize: 36,
-                                    color: Colors.white),
+                                style: TextStyle(fontFamily: "Brick_Pixel", fontSize: 36, color: Colors.white),
                               );
                             })
                           ],
                         ),
                       ),
                       Positioned(
-                          top: screenHeight * 0.16,
-                          left: 55 * screenWidth / screenHeight,
-                          child: GestureDetector(
-                            onTap: () {
-                              _currentIndex--;
-                              _carouselController.animateToPage(
-                                  _currentIndex % 3,
-                                  curve: Curves.fastEaseInToSlowEaseOut,
-                                  duration: Duration(milliseconds: 800));
-                            },
-                            child: Image.asset(
-                              'assets/images/prev_button.png',
-                              scale: 0.8,
-                            ),
-                          )),
+                        top: screenHeight * 0.16,
+                        left: 55 * screenWidth / screenHeight,
+                        child: GestureDetector(
+                          onTap: () {
+                            _currentIndex--;
+                            _carouselController.animateToPage(_currentIndex % 3,
+                                curve: Curves.fastEaseInToSlowEaseOut, duration: Duration(milliseconds: 800));
+                          },
+                          child: Image.asset(
+                            'assets/images/prev_button.png',
+                            scale: 0.8,
+                          ),
+                        ),
+                      ),
                       Positioned(
-                          top: screenHeight * 0.16,
-                          right: (382 - 335) * screenWidth / screenHeight,
-                          child: GestureDetector(
-                            onTap: () {
-                              _currentIndex++;
-                              _carouselController.animateToPage(
-                                  _currentIndex % 3,
-                                  curve: Curves.fastEaseInToSlowEaseOut,
-                                  duration: Duration(milliseconds: 800));
-                            },
-                            child: Image.asset(
-                              'assets/images/next_merch_button.png',
-                              scale: 0.8,
-                            ),
-                          )),
+                        top: screenHeight * 0.16,
+                        right: (382 - 335) * screenWidth / screenHeight,
+                        child: GestureDetector(
+                          onTap: () {
+                            _currentIndex++;
+                            _carouselController.animateToPage(_currentIndex % 3,
+                                curve: Curves.fastEaseInToSlowEaseOut, duration: Duration(milliseconds: 800));
+                          },
+                          child: Image.asset(
+                            'assets/images/next_merch_button.png',
+                            scale: 0.8,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -589,49 +595,70 @@ class _HomeScreenState extends State<HomeScreen>
                     ),
                     TextButton(
                         onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => MerchScreen()));
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => MerchScreen()));
                         },
                         child: Text(
                           "click to learn more!",
-                          style: TextStyle(
-                              fontFamily: "Game_Tape",
-                              fontSize: 24,
-                              color: Colors.white,
-                              shadows: [
-                                BoxShadow(
-                                  offset: Offset(1.5, 1.5),
-                                  color: Colors.blue,
-                                )
-                              ]),
+                          style: TextStyle(fontFamily: "Game_Tape", fontSize: 24, color: Colors.white, shadows: [
+                            BoxShadow(
+                              offset: Offset(1.5, 1.5),
+                              color: Colors.blue,
+                            )
+                          ]),
                         ))
                   ],
                 ),
+
                 SizedBox(
-                  height: 10,
+                  height: 20.0,
                 ),
-                SizedBox(height: 50,),
+                //marquee text get your alcher card
+                Container(
+                  color: Color.fromRGBO(255, 236, 38, 1),
+                  height: 40,
+                  child: ListView.builder(
+                    controller: _scrollController2,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 70,
+                    itemBuilder: (context, index) {
+                      return Row(
+                        children: [
+                          ImageIcon(
+                            AssetImage('assets/images/hero_section_hearts_blue.png'),
+                            size: 90.0,
+                          ),
+                          SizedBox(width: 10),
+                          Text(
+                            "get your alcher card",
+                            style: TextStyle(color: Color(0xFF182446), fontSize: 18, fontFamily: 'Game_Tape'),
+                          ),
+                          SizedBox(width: 50),
+                        ],
+                      );
+                    },
+                  ),
+                ),
+                SizedBox(
+                  height: 50,
+                ),
                 // Below is event suggestion
                 SizedBox(
                   height: 350,
                   child: PageView.builder(
-                    controller: PageController(viewportFraction: 1),
+                    controller: PageController(viewportFraction: 0.8),
                     itemCount: (displayedSuggestions.length / 2).ceil(),
                     itemBuilder: (BuildContext context, int pageIndex) {
                       final int startIndex = pageIndex * 2;
                       final List<EventDetail> currentPageSuggestions =
-                      displayedSuggestions
-                          .skip(startIndex)
-                          .take(2)
-                          .toList();
+                          displayedSuggestions.skip(startIndex).take(2).toList();
 
                       return Column(
                         children: currentPageSuggestions
                             .map(
                               (suggestion) => Expanded(
-                            child: suggestioncard(event: suggestion),
-                          ),
-                        )
+                                child: SuggestionCard(event: suggestion),
+                              ),
+                            )
                             .toList(),
                       );
                     },

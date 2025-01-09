@@ -1,31 +1,31 @@
 import 'package:alcheringa/Model/eventdetail.dart';
 import 'package:flutter/material.dart';
 
-class suggestioncard extends StatefulWidget {
+class SuggestionCard extends StatefulWidget {
   final EventDetail event;
-  const suggestioncard({super.key, required this.event});
+  const SuggestionCard({super.key, required this.event});
 
   @override
-  State<suggestioncard> createState() => _suggestioncardState();
+  State<SuggestionCard> createState() => _SuggestionCardState();
 }
 
-class _suggestioncardState extends State<suggestioncard> {
+class _SuggestionCardState extends State<SuggestionCard> {
   @override
   Widget build(BuildContext context) {
     final mq = MediaQuery.of(context).size;
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 22),
+      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
       child: Stack(
         children: [
-          Image.asset(
-            "assets/images/event_card_bg.png",
-            fit: BoxFit.fill,
-            // width: mq.width,
-            height: mq.width * 0.4,
-          ),
           Container(
             width: mq.width,
             height: mq.width * 0.4,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/event_card_bg.png'),
+                fit: BoxFit.fill
+              )
+            ),
             padding: const EdgeInsets.all(16),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
