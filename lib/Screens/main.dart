@@ -93,21 +93,19 @@ class _SplashScreenState extends State<SplashScreen> {
     //   print(value);
     // });
 
-    _controller =
-        VideoPlayerController.asset("assets/SplashMovie/splash_screen.mp4")
-          ..initialize().then((_) {
-            setState(() {
-              _controller.play();
-              isUserLoggedIn = isLoggedIn;
-            });
-          });
+    _controller = VideoPlayerController.asset("assets/SplashMovie/splash_screen.mp4")
+      ..initialize().then((_) {
+        setState(() {
+          _controller.play();
+          isUserLoggedIn = isLoggedIn;
+        });
+      });
 
     Timer(
       const Duration(seconds: 3),
       () {
         // checking signup screen, change it to main screen after done
-        final nextScreen =
-            isUserLoggedIn && isVerified ? const MainScreen() : welcomeScreen();
+        final nextScreen = isUserLoggedIn && isVerified ? const MainScreen() : welcomeScreen();
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => nextScreen),

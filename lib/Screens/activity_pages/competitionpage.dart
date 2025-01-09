@@ -90,7 +90,7 @@ class _CompetitionsWidgetState extends State<CompetitionsWidget> {
               ),
             ),
           ),
-          const SizedBox(height: 5),
+          const SizedBox(height: 15),
           
           Expanded(
             child: ListView.builder(

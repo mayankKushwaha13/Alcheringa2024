@@ -13,7 +13,6 @@ class MerchScreen extends StatefulWidget {
 }
 
 class _MerchScreenState extends State<MerchScreen> {
-
   List<MerchModel> merchMerch = [];
   bool isLoading = true;
 
@@ -37,7 +36,6 @@ class _MerchScreenState extends State<MerchScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: Color(0xFF1D2B53),
       body: SafeArea(
@@ -54,8 +52,7 @@ class _MerchScreenState extends State<MerchScreen> {
             children: [
               // Header Section
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
                 decoration: BoxDecoration(
                   color: Colors.black.withOpacity(0.5),
                 ),
@@ -110,7 +107,7 @@ class _MerchScreenState extends State<MerchScreen> {
                 ))
               ]),
 
-        Expanded(
+              Expanded(
                 child: isLoading
                     ? const Center(
                         child: CircularProgressIndicator(),
@@ -135,9 +132,8 @@ class _MerchScreenState extends State<MerchScreen> {
                                   subtitle: merch.name ?? 'Unnamed',
                                   description: merch.description ?? 'No description',
                                   price: merch.price ?? '0.00',
-                                  limitedStockMessage: merch.available == true
-                                      ? 'LIMITED STOCK AVAILABLE'
-                                      : 'OUT OF STOCK',
+                                  limitedStockMessage:
+                                      merch.available == true ? 'LIMITED STOCK AVAILABLE' : 'OUT OF STOCK',
                                 );
                               }).toList(),
                             ),
@@ -147,7 +143,6 @@ class _MerchScreenState extends State<MerchScreen> {
           ),
         ),
       ),
-      
     );
   }
 }
@@ -176,7 +171,7 @@ class MerchandiseItem extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20),
       child: GestureDetector(
         onTap: () {
-                    Navigator.push(
+          Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => MerchDetailScreen(
@@ -198,51 +193,55 @@ class MerchandiseItem extends StatelessWidget {
               fit: BoxFit.cover,
             ),
             Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Image.network(
-                image,
-                width: 100,
-              ),
-            ),
+              padding: const EdgeInsets.all(10.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Image.network(
+                      image,
+                      width: MediaQuery.of(context).size.width * 0.2,
+                    ),
+                  ),
 
-            Padding(
-              padding: const EdgeInsets.only(top: 50, left: 180),
-              child: Text(
-                title,
-                style: const TextStyle(
-                  fontFamily: 'AlcherPixelBold',
-                  fontSize: 25,
-                  fontWeight: FontWeight.w400,
-                  color: Color.fromRGBO(255, 241, 232, 1),
-                ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        title,
+                        style: const TextStyle(
+                          fontFamily: 'AlcherPixelBold',
+                          fontSize: 23,
+                          fontWeight: FontWeight.w400,
+                          color: Color.fromRGBO(255, 241, 232, 1),
+                        ),
+                      ),
+                      Text(
+                        subtitle,
+                        style: const TextStyle(
+                          fontFamily: 'AlcherPixel',
+                          fontSize: 17,
+                          fontWeight: FontWeight.w400,
+                          color: Color.fromRGBO(255, 119, 168, 1),
+                        ),
+                      ),
+                      Text(
+                        'Rs $price.00/-',
+                        style: const TextStyle(
+                          fontFamily: 'AlcherPixel',
+                          fontSize: 18,
+                          fontWeight: FontWeight.w400,
+                          color: Color.fromRGBO(255, 241, 232, 1),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 72, left: 180),
-              child: Text(
-                subtitle,
-                style: const TextStyle(
-                  fontFamily: 'AlcherPixel',
-                  fontSize: 17,
-                  fontWeight: FontWeight.w400,
-                  color: Color.fromRGBO(255, 119, 168, 1),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 100, left: 180),
-              child: Text(
-                'Rs $price.00/-',
-                style: const TextStyle(
-                  fontFamily: 'AlcherPixel',
-                  fontSize: 18,
-                  fontWeight: FontWeight.w400,
-                  color: Color.fromRGBO(255, 241, 232, 1),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 160, left: 5),
+              padding: const EdgeInsets.only(top: 160, left: 15),
               child: Stack(
                 children: [
                   Image.asset(
@@ -253,7 +252,6 @@ class MerchandiseItem extends StatelessWidget {
                     height: 20,
                     fit: BoxFit.cover,
                   ),
-                  
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -280,38 +278,67 @@ class MerchandiseItem extends StatelessWidget {
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(85, 185, 1, 1),
-              child: Stack(
-                children: [
-                  Image.asset(
-                    alignment: Alignment.topCenter,
+            // Positioned(
+            //   right: 0,
+            //   left: 0,
+            //   bottom: 0,
+            //   child: Stack(
+            //     children: [
+            //       Image.asset(
+            //         alignment: Alignment.topCenter,
+            //         'assets/images/continue_shopping.png',
+            //         width: 180,
+            //         fit: BoxFit.cover,
+            //       ),
+            //       Container(
+            //         color: Colors.blue,
+            //       ),
+            //       Padding(
+            //         padding: const EdgeInsets.only(left: 20, right: 20),
+            //
+            //         child: Text(
+            //           "Add to cart",
+            //           style: const TextStyle(
+            //             fontFamily: 'AlcherPixel',
+            //             fontSize: 35,
+            //             fontWeight: FontWeight.w400,
+            //             color: Color.fromRGBO(255, 241, 232, 1),
+            //           ),
+            //         ),
+            //       ),
+            //
+            //     ],
+            //   ),
+            // ),
+
+            Positioned(
+              right: 0,
+              left: 0,
+              bottom: 0,
+              child: Container(
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                  image: AssetImage(
                     'assets/images/continue_shopping.png',
-                    width: 180,
-                    fit: BoxFit.cover,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20, right: 20),
-                
-                    child: Text(
-                      "Add to cart",
-                      style: const TextStyle(
-                        fontFamily: 'AlcherPixel',
-                        fontSize: 35,
-                        fontWeight: FontWeight.w400,
-                        color: Color.fromRGBO(255, 241, 232, 1),
-                      ),
+                  fit: BoxFit.contain,
+                )),
+                child: Center(
+                  child: Text(
+                    "Add to cart",
+                    style: const TextStyle(
+                      fontFamily: 'AlcherPixel',
+                      fontSize: 35,
+                      fontWeight: FontWeight.w400,
+                      color: Color.fromRGBO(255, 241, 232, 1),
                     ),
                   ),
-                  
-                ],
+                ),
               ),
-            ),
+            )
           ],
         ),
       ),
     );
   }
 }
-
-

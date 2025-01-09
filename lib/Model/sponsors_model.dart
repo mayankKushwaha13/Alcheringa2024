@@ -1,4 +1,3 @@
-import 'dart:ffi';
 
 class sponsorModel{
   final String title;

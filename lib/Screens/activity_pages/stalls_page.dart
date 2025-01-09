@@ -1,12 +1,8 @@
 import 'package:alcheringa/Common/globals.dart';
 import 'package:alcheringa/Model/stall_model.dart';
 import 'package:alcheringa/Model/view_model_main.dart';
-import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 
-import '../cart_screen.dart';
-import '../end_drawer.dart';
-import '../notification/notification_screen.dart';
 import 'PixelStoreCardWidget.dart';
 
 class StallsPage extends StatefulWidget {
@@ -18,7 +14,6 @@ class StallsPage extends StatefulWidget {
 
 class _StallsPageState extends State<StallsPage> {
   final TextEditingController _searchController = TextEditingController();
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   List<StallModel> _stalls = [];
   List<StallModel> _filteredStalls = [];
 
@@ -137,7 +132,7 @@ class PixelTextField extends StatelessWidget {
       ),
       child: Center(
         child: GestureDetector(
-          onTap:() => FocusScope.of(context).unfocus(),
+          onTap: () => FocusScope.of(context).unfocus(),
           child: TextField(
             controller: controller,
             onChanged: onChanged,

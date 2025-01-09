@@ -67,9 +67,9 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
       key: _scaffoldKey,
       resizeToAvoidBottomInset: false,
-      endDrawer: EndDrawer(
-        scaffoldState: _scaffoldKey,
-      ),
+
+      endDrawer: EndDrawer(scaffoldState: _scaffoldKey, onTapped: _onTapped,),
+
       appBar: TopAppBar(scaffoldState: _scaffoldKey),
       body: Stack(
         children: [

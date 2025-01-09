@@ -21,7 +21,7 @@ class _MapPageState extends State<MapPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
   final _center = LatLng(26.190585, 91.696628);
   Completer<GoogleMapController> _controller = Completer();
-  double _currentZoom = 18.0;
+  double _currentZoom = 17.0;
   bool _isPermissionGranted = false;
   Set<Marker> _markers = {};
   final String mapstyle = '''
@@ -110,6 +110,7 @@ class _MapPageState extends State<MapPage> {
             myLocationEnabled: _isPermissionGranted,
             myLocationButtonEnabled: false,
             markers: _markers,
+            minMaxZoomPreference: MinMaxZoomPreference(16,20),
           ),
           Positioned(
             top: 30.0,
@@ -237,74 +238,74 @@ class _BottomSheetState extends State<BottomSheet> {
                 children: List.generate(_markers.length, (index) {
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                    child: Container(
-                      height: 120.0,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage('assets/images/map_marker_holder_bg.png'), fit: BoxFit.fill),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            AspectRatio(
-                              aspectRatio: 1,
-                              child: Container(
-                                  padding: EdgeInsets.all(10.0),
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                        image: AssetImage('assets/images/map_sprite_holder.png'), fit: BoxFit.fill),
-                                  ),
-                                  child: Image.network(_markers[index].imgUrl)),
-                            ),
-                            SizedBox(
-                              width: 10.0,
-                            ),
-                            Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  _markers[index].name,
-                                  style: TextStyle(
-                                    fontSize: 24.0,
-                                    fontFamily: "Game_Tape",
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                Text(
-                                  'Upcoming events:',
-                                  style: TextStyle(
-                                    fontSize: 16.0,
-                                    fontFamily: "Game_Tape",
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                Text(
-                                  getNextEvent(_markers[index].name)?.artist ?? "No upcoming event",
-                                  style: TextStyle(
-                                    fontSize: 12.0,
-                                    fontFamily: "Game_Tape",
-                                    color: Color(0xFFFF77A8),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              width: 10.0,
-                            ),
-                            GestureDetector(
-                              onTap: () async {
-                                final venueLocation = _markers[index].latLng;
-                                final GoogleMapController mapController = await widget.controller.future;
+                    child: GestureDetector(
+                      onTap: () async {
+                        final venueLocation = _markers[index].latLng;
+                        final GoogleMapController mapController = await widget.controller.future;
 
-                                mapController.animateCamera(CameraUpdate.newLatLng(venueLocation));
-                                mapController.showMarkerInfoWindow(MarkerId(_markers[index].name));
-                              },
-                              child: Image.asset('assets/images/map_location_icon.png'),
-                            )
-                          ],
+                        mapController.animateCamera(CameraUpdate.newLatLng(venueLocation));
+                        mapController.showMarkerInfoWindow(MarkerId(_markers[index].name));
+                      },
+                      child: Container(
+                        height: 120.0,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: AssetImage('assets/images/map_marker_holder_bg.png'), fit: BoxFit.fill),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              AspectRatio(
+                                aspectRatio: 1,
+                                child: Container(
+                                    padding: EdgeInsets.all(10.0),
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          image: AssetImage('assets/images/map_sprite_holder.png'), fit: BoxFit.fill),
+                                    ),
+                                    child: Image.network(_markers[index].imgUrl)),
+                              ),
+                              SizedBox(
+                                width: 10.0,
+                              ),
+                              Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    _markers[index].name,
+                                    style: TextStyle(
+                                      fontSize: 24.0,
+                                      fontFamily: "Game_Tape",
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  Text(
+                                    'Upcoming events:',
+                                    style: TextStyle(
+                                      fontSize: 16.0,
+                                      fontFamily: "Game_Tape",
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  Text(
+                                    getNextEvent(_markers[index].name)?.artist ?? "No upcoming event",
+                                    style: TextStyle(
+                                      fontSize: 12.0,
+                                      fontFamily: "Game_Tape",
+                                      color: Color(0xFFFF77A8),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                width: 10.0,
+                              ),
+                              Image.asset('assets/images/map_location_icon.png')
+                            ],
+                          ),
                         ),
                       ),
                     ),

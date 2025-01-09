@@ -57,7 +57,7 @@ class CartCard extends StatelessWidget {
             // Product Details
             Expanded(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
@@ -98,20 +98,16 @@ class CartCard extends StatelessWidget {
                   ),
                   // Quantity Selector
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       // Decrease Quantity Button
                       GestureDetector(
                         onTap: () {
-                          if (quantity > 1) {
                             cartProvider.updateItemCount(
                               title,
                               size,
                               quantity - 1,
                             );
-                          } else {
-                            //cartProvider.removeItem(title, size);
-                          }
                         },
                         child: Image.asset(
                           'assets/images/product_detail_sprite.png',
