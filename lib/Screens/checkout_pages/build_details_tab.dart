@@ -16,15 +16,18 @@ Widget buildDetailsTab({
       child: SizedBox(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Personal Information',
-              style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                  fontFamily: 'Game_Tape',
-                  color: Colors.white),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Personal Information',
+                style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                    fontFamily: 'Game_Tape',
+                    color: Colors.white),
+              ),
             ),
             SizedBox(
               height: 2,
@@ -39,13 +42,16 @@ Widget buildDetailsTab({
             SizedBox(
               height: 97,
             ),
-            Text(
-              'Address Details',
-              style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                  fontFamily: 'Game_Tape',
-                  color: Colors.white),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Address Details',
+                style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                    fontFamily: 'Game_Tape',
+                    color: Colors.white),
+              ),
             ),
             SizedBox(
               height: 2,
@@ -61,9 +67,10 @@ Widget buildDetailsTab({
               height: 10,
             ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Stack(
-                  alignment: Alignment.center,
+                  // alignment: Alignment.center,
                   children: [
                     Container(
                       width: 162.0, // Set desired width
@@ -103,7 +110,7 @@ Widget buildDetailsTab({
                   width: 6,
                 ),
                 Stack(
-                  alignment: Alignment.center,
+                  // alignment: Alignment.center,
                   children: [
                     Container(
                       width: 162.0, // Set desired width

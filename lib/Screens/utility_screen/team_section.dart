@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:alcheringa/widgets/team_member_card.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class TeamSection extends StatelessWidget {
   @override
@@ -35,7 +36,7 @@ class TeamSection extends StatelessWidget {
                 TeamMemberCard(
                   name: 'Doremon',
                   role: 'Head',
-                  imagePath: 'assets/images/google.png',
+                  imagePath: 'assets/images/the_team_image.png',
                   onInstagramTap: () {
                     print('Instagram tapped!');
                   },
@@ -49,7 +50,7 @@ class TeamSection extends StatelessWidget {
                 TeamMemberCard(
                   name: 'sinchan',
                   role: 'Developer',
-                  imagePath: 'assets/images/google.png',
+                  imagePath: 'assets/images/the_team_image.png',
                   onInstagramTap: () {
                     print('Instagram tapped!');
                   },
@@ -73,7 +74,7 @@ class TeamSection extends StatelessWidget {
                 TeamMemberCard(
                   name: 'jerry',
                   role: 'Designer',
-                  imagePath: 'assets/images/google.png',
+                  imagePath: 'assets/images/the_team_image.png',
                   onInstagramTap: () {
                     print('Instagram tapped!');
                   },

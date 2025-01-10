@@ -38,7 +38,8 @@ class LikedEventsDatabase{
           time TEXT,
           stream INTEGER,
           descriptionShort TEXT,
-          iconurl TEXT
+          iconurl TEXT,
+          isArtistRevealed INTEGER
           )
           '''
         );

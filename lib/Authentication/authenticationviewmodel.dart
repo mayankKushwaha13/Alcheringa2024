@@ -174,9 +174,10 @@ Future<void> customLogin(String email, String password, BuildContext context,
       }
       final userData = await db.collection('USERS').doc(email).get().then((docSnapshot) async {
         if(docSnapshot.exists){
-          await prefs.setString('userName', docSnapshot.get('Name'));
-          await prefs.setString('email', docSnapshot.get('Email'));
-          await prefs.setString('PhotoURL', docSnapshot.get('PhotoURL'));
+          final data = docSnapshot.data() as Map<String, dynamic>;
+          await prefs.setString('userName', data['Name'] ?? '');
+          await prefs.setString('email', data['Email']);
+          await prefs.setString('PhotoURL', data['PhotoURL'] ?? '');
         }else{
           await saveSignInUserData(userCredential.user!);
         }
@@ -196,7 +197,7 @@ Future<void> customLogin(String email, String password, BuildContext context,
     if (context.mounted) showMessage(message, context);
   } catch (e) {
     if (context.mounted) {
-      showMessage('An error occurred. Please try again.', context);
+      showMessage('An error occurred. Please try again', context);
     }
   }
   onLoading(false);

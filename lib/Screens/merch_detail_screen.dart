@@ -379,17 +379,17 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
                             Image.asset(
                               alignment: Alignment.topCenter,
                               'assets/images/green_button.png',
-                              width: 150,
+                              width: 170,
                               fit: BoxFit.cover,
                             ),
                             Padding(
                               padding:
-                                  const EdgeInsets.symmetric(horizontal: 30),
+                                  const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
                               child: Text(
                                 "Buy now",
                                 style: const TextStyle(
                                   fontFamily: 'Brick_Pixel',
-                                  fontSize: 30,
+                                  fontSize: 25,
                                   fontWeight: FontWeight.w400,
                                   color: Color.fromRGBO(255, 241, 232, 1),
                                 ),
@@ -430,17 +430,17 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
                             Image.asset(
                               alignment: Alignment.topCenter,
                               'assets/images/sign_in.png',
-                              width: 150,
+                              width: 170,
                               fit: BoxFit.cover,
                             ),
                             Padding(
                               padding:
-                                  const EdgeInsets.symmetric(horizontal: 15),
+                                  const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                               child: Text(
                                 "Add to cart",
                                 style: const TextStyle(
                                   fontFamily: 'Brick_Pixel',
-                                  fontSize: 30,
+                                  fontSize: 25,
                                   fontWeight: FontWeight.w400,
                                   color: Color.fromRGBO(255, 241, 232, 1),
                                 ),

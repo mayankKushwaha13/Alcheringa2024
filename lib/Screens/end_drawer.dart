@@ -2,6 +2,7 @@ import 'package:alcheringa/Common/globals.dart';
 import 'package:alcheringa/Screens/orderScreen/order_screen.dart';
 import 'package:alcheringa/Screens/profile_setup/profile_page.dart';
 import 'package:alcheringa/Screens/sponsersScreen/sponser_screen.dart';
+import 'package:alcheringa/Screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../Model/view_model_main.dart';
@@ -47,7 +48,7 @@ class _EndDrawerState extends State<EndDrawer> {
         'iconPath': 'assets/images/sidebar_profile_icon.png',
         'onTap': () {
           widget.scaffoldState.currentState!.closeEndDrawer();
-          Navigator.push(context, MaterialPageRoute(builder: (_)=>ProfilePage()));
+          Navigator.push(context, MaterialPageRoute(builder: (_) => ProfilePage()));
         },
       },
       {
@@ -195,6 +196,11 @@ class _EndDrawerState extends State<EndDrawer> {
                     name: 'SIGN OUT',
                     iconPath: 'assets/images/sidebar_signout_icon.png',
                     onTap: () {
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (context) => welcomeScreen()),
+                        (Route<dynamic> route) => false,
+                      );
                       auth.signOut();
                     },
                   )
@@ -245,7 +251,8 @@ class SideBarItems extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 15.0),
                   child: Text(
                     name,
-                    style: TextStyle(fontSize: 18.0, fontFamily: 'Game_Tape', color: Colors.white,fontWeight: FontWeight.w400),
+                    style: TextStyle(
+                        fontSize: 18.0, fontFamily: 'Game_Tape', color: Colors.white, fontWeight: FontWeight.w400),
                   ),
                 )
               ],

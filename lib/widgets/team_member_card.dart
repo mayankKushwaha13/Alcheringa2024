@@ -25,7 +25,7 @@ class TeamMemberCard extends StatelessWidget {
       margin: const EdgeInsets.symmetric(vertical: 10),
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: AssetImage('assets/images/team_member_card.png'),
+          image: AssetImage('assets/images/the_team_box.png'),
           fit: BoxFit.fill,
         ),
       ),

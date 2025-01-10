@@ -3,6 +3,7 @@ import 'dart:developer' as dev;
 import 'dart:math';
 
 import 'package:alcheringa/Common/globals.dart';
+import 'package:alcheringa/Database/liked_events.dart';
 import 'package:alcheringa/Model/merchModel.dart';
 import 'package:alcheringa/Model/pass_model.dart';
 import 'package:alcheringa/Model/view_model_main.dart';
@@ -14,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../Model/eventdetail.dart';
+import 'event_detail_page.dart';
 import 'merch_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -25,23 +27,67 @@ class HomeScreen extends StatefulWidget {
 
 bool isLoading = true;
 
-class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
+class _HomeScreenState extends State<HomeScreen>
+    with SingleTickerProviderStateMixin {
   late final ScrollController _scrollController1;
   late final ScrollController _scrollController2;
-  final CarouselSliderController _carouselController = CarouselSliderController();
+  late final ScrollController _scrollController3;
+  final CarouselSliderController _carouselController =
+      CarouselSliderController();
   int _currentIndex = 0;
-
+  List<EventDetail> PronitesList = [];
+  late final List<EventDetail> displayedSuggestions;
   @override
   void initState() {
     super.initState();
     _scrollController1 = ScrollController();
     _scrollController2 = ScrollController();
-    final EventDetail event;
+    _scrollController3 = ScrollController();
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _startScrolling1();
       _startScrolling2();
+      _startScrolling3();
     });
     getMerchData();
+    getPronitesData();
+    initializeSuggestions();
+  }
+  void initializeSuggestions() {
+    final List<EventDetail> list = Provider.of<ViewModelMain>(context, listen: false).allEvents;
+    final List<EventDetail> suggestions = list.toList();
+
+    // Shuffle and pick a limited number of suggestions
+    suggestions.shuffle(Random());
+    displayedSuggestions = suggestions.take(20).toList();
+  }
+
+  Future<void> getPronitesData() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      // Create an instance of ViewModelMain
+      ViewModelMain viewModel = ViewModelMain();
+
+      // Fetch events
+      final _pronitesList = await viewModel.getFeaturedEvents();
+
+      // Debug print
+      print('Fetched ${PronitesList.length} events');
+
+      setState(() {
+        PronitesList = _pronitesList;
+      });
+    } catch (e) {
+      print("Error fetching events: $e");
+      // You might want to show an error message to the user here
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   void _startScrolling1() {
@@ -54,7 +100,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           curve: Curves.linear,
         )
             .then((_) {
-          if (_scrollController1.offset >= _scrollController1.position.maxScrollExtent) {
+          if (_scrollController1.offset >=
+              _scrollController1.position.maxScrollExtent) {
             // Reset scroll when reaching the end
             _scrollController1.jumpTo(0);
           }
@@ -74,11 +121,33 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           curve: Curves.linear,
         )
             .then((_) {
-          if (_scrollController2.offset >= _scrollController2.position.maxScrollExtent) {
+          if (_scrollController2.offset >=
+              _scrollController2.position.maxScrollExtent) {
             // Reset scroll when reaching the end
             _scrollController2.jumpTo(0);
           }
           _startScrolling2();
+        });
+      }
+    });
+  }
+
+  void _startScrolling3() {
+    Future.delayed(Duration(milliseconds: 100), () {
+      if (_scrollController3.hasClients) {
+        _scrollController3
+            .animateTo(
+          _scrollController3.offset + 100, // Scroll offset
+          duration: Duration(milliseconds: 1000),
+          curve: Curves.linear,
+        )
+            .then((_) {
+          if (_scrollController3.offset >=
+              _scrollController3.position.maxScrollExtent) {
+            // Reset scroll when reaching the end
+            _scrollController3.jumpTo(0);
+          }
+          _startScrolling3();
         });
       }
     });
@@ -90,8 +159,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   }
 
   void getPass() async {
-    final client =
-        RetrofitService(Dio(BaseOptions(contentType: "application/json")), baseUrl: "https://card.alcheringa.in/api/");
+    final client = RetrofitService(
+        Dio(BaseOptions(contentType: "application/json")),
+        baseUrl: "https://card.alcheringa.in/api/");
     try {
       final response = await client.getData(""); // pass email
       final json = jsonDecode(response);
@@ -112,6 +182,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       print("Error fetching merchandise: $e");
     } finally {
       setState(() {
+        merchList = merchList;
         isLoading = false;
       });
     }
@@ -325,13 +396,13 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   @override
   Widget build(BuildContext context) {
     List<EventDetail> list = Provider.of<ViewModelMain>(context).allEvents;
+
+    // Filter events based on type 'proshows'
+
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     final List<EventDetail> suggestions = list.toList();
-
     // Shuffle and pick a limited number of suggestions
-    suggestions.shuffle(Random());
-    final List<EventDetail> displayedSuggestions = suggestions.take(20).toList();
     return Scaffold(
       body: Stack(
         children: [
@@ -351,23 +422,29 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 SizedBox(
                   height: 400.0,
                   child: PageView.builder(
-                    controller: PageController(viewportFraction: 0.5, initialPage: 1000),
+                    controller: PageController(
+                        viewportFraction: 0.5, initialPage: 1000),
+                    // itemCount: displayedSuggestions.length,
                     itemBuilder: (context, index) {
-                      index = index % 2;
+                      final cardColorIndex = index % 2;
+                      index = index % 3;
+                      final event = PronitesList[index];
+                      final bool isRevealed = event.isArtistRevealed ?? false;
 
                       return Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            if (index % 2 == 1)
+                            if (cardColorIndex % 2 == 1)
                               Container(
                                 alignment: Alignment.centerLeft,
                                 width: 60.0,
                                 height: 35.0,
                                 decoration: BoxDecoration(
                                   image: DecorationImage(
-                                    image: AssetImage('assets/images/hero_section_hearts_pink.png'),
+                                    image: AssetImage(
+                                        'assets/images/hero_section_hearts_pink.png'),
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -376,7 +453,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                               SizedBox(
                                 height: 35,
                               ),
-                            if (index % 2 == 0)
+                            if (cardColorIndex % 2 == 0)
                               Expanded(
                                 flex: 2,
                                 child: Container(
@@ -384,12 +461,13 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                   alignment: Alignment.center,
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
-                                      image: AssetImage('assets/images/hero_section_unrevealed_text_holder.png'),
+                                      image: AssetImage(
+                                          'assets/images/hero_section_unrevealed_text_holder.png'),
                                       fit: BoxFit.fill,
                                     ),
                                   ),
                                   child: Text(
-                                    'Coming soon',
+                                    isRevealed ? event.artist : 'Coming soon',
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontFamily: 'Brick_pixel',
@@ -405,13 +483,19 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                 width: 220,
                                 decoration: BoxDecoration(
                                   image: DecorationImage(
-                                    image: AssetImage('assets/images/card_$index.png'),
+                                    image: NetworkImage(event.imgurl),
+                                    // 'assets/images/card_$index.png'),
                                     fit: BoxFit.fill,
                                   ),
                                 ),
+                                child: Image.asset(isRevealed
+                                    ? 'assets/images/event_cards_revealed${cardColorIndex}.png'
+                                    : 'assets/images/card_$index.png',
+                                  fit: BoxFit.fill,
+                                ),
                               ),
                             ),
-                            if (index % 2 == 1)
+                            if (cardColorIndex % 2 == 1)
                               Expanded(
                                 flex: 2,
                                 child: Container(
@@ -419,12 +503,13 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                   width: 220,
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
-                                      image: AssetImage('assets/images/hero_section_unrevealed_text_holder.png'),
+                                      image: AssetImage(
+                                          'assets/images/hero_section_unrevealed_text_holder.png'),
                                       fit: BoxFit.fill,
                                     ),
                                   ),
                                   child: Text(
-                                    'Coming soon',
+                                    isRevealed ? event.artist : 'Coming soon',
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontFamily: 'Brick_pixel',
@@ -433,14 +518,15 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                   ),
                                 ),
                               ),
-                            if (index % 2 == 0)
+                            if (cardColorIndex % 2 == 0)
                               Container(
                                 alignment: Alignment.centerLeft,
                                 width: 60.0,
                                 height: 35.0,
                                 decoration: BoxDecoration(
                                   image: DecorationImage(
-                                    image: AssetImage('assets/images/hero_section_hearts_blue.png'),
+                                    image: AssetImage(
+                                        'assets/images/hero_section_hearts_blue.png'),
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -471,13 +557,17 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       return Row(
                         children: [
                           ImageIcon(
-                            AssetImage('assets/images/hero_section_hearts_blue.png'),
+                            AssetImage(
+                                'assets/images/hero_section_hearts_blue.png'),
                             size: 90.0,
                           ),
                           SizedBox(width: 10),
                           Text(
                             "Crazy merch alert !!!",
-                            style: TextStyle(color: Color(0xFF182446), fontSize: 18, fontFamily: 'Game_Tape'),
+                            style: TextStyle(
+                                color: Color(0xFF182446),
+                                fontSize: 18,
+                                fontFamily: 'Game_Tape'),
                           ),
                           SizedBox(width: 50),
                         ],
@@ -495,63 +585,80 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   child: Stack(
                     alignment: Alignment.topCenter,
                     children: [
-                      Container(
-                        height: screenHeight * 0.4,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage('assets/images/merch_ribbon.png'),
-                            fit: BoxFit.cover,
-                          ),
+                      Positioned.fill(
+                        child: Image.asset(
+                          "assets/images/merch_ribbon.png",
                         ),
-                        child: Column(
-                          children: [
-                            isLoading
-                                ? Center(child: CircularProgressIndicator())
-                                : CarouselSlider(
-                                    carouselController: _carouselController,
-                                    options: CarouselOptions(
-                                      viewportFraction: 1.2,
-                                      autoPlay: true,
-                                      onPageChanged: (index, reason) {
-                                        setState(() {
-                                          _currentIndex = index;
-                                        });
-                                      },
-                                    ),
-                                    items: merchList
-                                        .map(
-                                          (item) => Builder(
-                                            builder: (context) {
-                                              return Stack(
-                                                alignment: Alignment.bottomCenter,
-                                                children: [
-                                                  item.image == null
-                                                      ? Image.asset(
-                                                          'assets/images/default_image.png',
-                                                        )
-                                                      : Transform(
-                                                          transform: Matrix4.rotationZ(0.1745),
-                                                          alignment: Alignment.center,
-                                                          child: Image.network(
-                                                            item.image ?? " ",
-                                                          ),
-                                                        ),
-                                                ],
-                                              );
-                                            },
-                                          ),
-                                        )
-                                        .toList(),
+                      ),
+                      Column(
+                        children: [
+                          isLoading
+                              ? Center(child: CircularProgressIndicator())
+                              : CarouselSlider(
+                                  carouselController: _carouselController,
+                                  options: CarouselOptions(
+                                    viewportFraction: 1.2,
+                                    autoPlay: true,
+                                    onPageChanged: (index, reason) {
+                                      setState(() {
+                                        _currentIndex = index;
+                                      });
+                                    },
                                   ),
-                            Builder(builder: (context) {
+                                  items: merchList
+                                      .map(
+                                        (item) => Builder(
+                                          builder: (context) {
+                                            return Stack(
+                                              alignment: Alignment.bottomCenter,
+                                              children: [
+                                                item.image == null
+                                                    ? Image.asset(
+                                                        'assets/images/default_image.png',
+                                                        height:
+                                                            screenHeight * 0.24,
+                                                      )
+                                                    : Transform(
+                                                        transform:
+                                                            Matrix4.rotationZ(
+                                                                0.1745),
+                                                        alignment:
+                                                            Alignment.center,
+                                                        child: Image.network(
+                                                          item.image ?? " ",
+                                                          height: screenHeight *
+                                                              0.24,
+                                                        ),
+                                                      ),
+                                              ],
+                                            );
+                                          },
+                                        ),
+                                      )
+                                      .toList(),
+                                ),
+                          Builder(builder: (context) {
+                            if (merchList.isNotEmpty) {
                               MerchModel item = merchList[_currentIndex];
                               return Text(
                                 item.name ?? " ",
-                                style: TextStyle(fontFamily: "Brick_Pixel", fontSize: 36, color: Colors.white),
+                                style: TextStyle(
+                                    fontFamily: "Brick_Pixel",
+                                    fontSize: 36,
+                                    color: Colors.white),
                               );
-                            })
-                          ],
-                        ),
+                            } else {
+                              return Text(
+                                "Loading ...",
+                                style: TextStyle(
+                                    fontFamily: "Brick_Pixel",
+                                    fontSize: 36,
+                                    color: Colors.white),
+                              );
+                            }
+                          }),
+                          Spacer()
+                        ],
                       ),
                       Positioned(
                         top: screenHeight * 0.16,
@@ -560,7 +667,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                           onTap: () {
                             _currentIndex--;
                             _carouselController.animateToPage(_currentIndex % 3,
-                                curve: Curves.fastEaseInToSlowEaseOut, duration: Duration(milliseconds: 800));
+                                curve: Curves.fastEaseInToSlowEaseOut,
+                                duration: Duration(milliseconds: 800));
                           },
                           child: Image.asset(
                             'assets/images/prev_button.png',
@@ -575,7 +683,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                           onTap: () {
                             _currentIndex++;
                             _carouselController.animateToPage(_currentIndex % 3,
-                                curve: Curves.fastEaseInToSlowEaseOut, duration: Duration(milliseconds: 800));
+                                curve: Curves.fastEaseInToSlowEaseOut,
+                                duration: Duration(milliseconds: 800));
                           },
                           child: Image.asset(
                             'assets/images/next_merch_button.png',
@@ -595,16 +704,21 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     ),
                     TextButton(
                         onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => MerchScreen()));
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => MerchScreen()));
                         },
                         child: Text(
                           "click to learn more!",
-                          style: TextStyle(fontFamily: "Game_Tape", fontSize: 24, color: Colors.white, shadows: [
-                            BoxShadow(
-                              offset: Offset(1.5, 1.5),
-                              color: Colors.blue,
-                            )
-                          ]),
+                          style: TextStyle(
+                              fontFamily: "Game_Tape",
+                              fontSize: 24,
+                              color: Colors.white,
+                              shadows: [
+                                BoxShadow(
+                                  offset: Offset(1.5, 1.5),
+                                  color: Colors.blue,
+                                )
+                              ]),
                         ))
                   ],
                 ),
@@ -624,13 +738,17 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       return Row(
                         children: [
                           ImageIcon(
-                            AssetImage('assets/images/hero_section_hearts_blue.png'),
+                            AssetImage(
+                                'assets/images/hero_section_hearts_blue.png'),
                             size: 90.0,
                           ),
                           SizedBox(width: 10),
                           Text(
                             "get your alcher card",
-                            style: TextStyle(color: Color(0xFF182446), fontSize: 18, fontFamily: 'Game_Tape'),
+                            style: TextStyle(
+                                color: Color(0xFF182446),
+                                fontSize: 18,
+                                fontFamily: 'Game_Tape'),
                           ),
                           SizedBox(width: 50),
                         ],
@@ -641,16 +759,53 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 SizedBox(
                   height: 50,
                 ),
+                // Alcher Card
+                Container(height: 400,width: 400,color: Colors.white,),
+                SizedBox(height: 50,),
+                // marquee text cool stuff for you
+                Container(
+                  color: Color.fromRGBO(255, 236, 38, 1),
+                  height: 40,
+                  child: ListView.builder(
+                    controller: _scrollController3,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 70,
+                    itemBuilder: (context, index) {
+                      return Row(
+                        children: [
+                          ImageIcon(
+                            AssetImage(
+                                'assets/images/hero_section_hearts_blue.png'),
+                            size: 90.0,
+                          ),
+                          SizedBox(width: 10),
+                          Text(
+                            "cool stuff for you !!!",
+                            style: TextStyle(
+                                color: Color(0xFF182446),
+                                fontSize: 18,
+                                fontFamily: 'Game_Tape'),
+                          ),
+                          SizedBox(width: 50),
+                        ],
+                      );
+                    },
+                  ),
+                ),
+                SizedBox(height: 20,),
                 // Below is event suggestion
                 SizedBox(
                   height: 350,
                   child: PageView.builder(
                     controller: PageController(viewportFraction: 0.8),
                     itemCount: (displayedSuggestions.length / 2).ceil(),
-                    itemBuilder: (BuildContext context, int pageIndex) {
+                    itemBuilder: (context, pageIndex) {
                       final int startIndex = pageIndex * 2;
                       final List<EventDetail> currentPageSuggestions =
-                          displayedSuggestions.skip(startIndex).take(2).toList();
+                          displayedSuggestions
+                              .skip(startIndex)
+                              .take(2)
+                              .toList();
 
                       return Column(
                         children: currentPageSuggestions
@@ -664,6 +819,43 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     },
                   ),
                 ),
+                // Liked Events
+                FutureBuilder(
+                  future: LikedEventsDatabase().readData(), builder: (context, snapshot){
+                    if(snapshot.hasData && snapshot.data!.isNotEmpty){
+                      List<EventDetail> likedEvents = snapshot.data!;
+                      return Column(
+                        children: [
+                          SizedBox(height: 16,),
+                          _buildHeading(text: "Liked Events", backgroundImage: "assets/images/heading.png"),
+                          SizedBox(height: 20,),
+                          SizedBox(
+                          height: screenHeight * 0.63,
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            itemCount: likedEvents.length,
+                            itemBuilder: (context, index) {
+                              EventDetail creatorCamp = likedEvents[index];
+                              return _buildCard(
+                                event: creatorCamp,
+                                headingSize: 18,
+                                isLiked:
+                                    likedEvents.indexWhere((element) => element.artist == creatorCamp.artist) !=
+                                            -1
+                                        ? true
+                                        : false,
+                              );
+                            },
+                          ),
+                        )
+                        ],
+                      );
+                    }
+                    else{
+                      return Container();
+                    }
+                }),
                 SizedBox(
                   height: bottomNavBarHeight,
                 ),
@@ -704,6 +896,133 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           //   ),
           // )
         ],
+      ),
+    );
+  }
+  Widget _buildHeading({
+    required String text,
+    required String backgroundImage,
+  }) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    return Container(
+      width: screenWidth,
+      height: screenWidth * 65 / 375,
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage(backgroundImage),
+          fit: BoxFit.fill,
+        ),
+      ),
+      child: Center(
+        child: Text(
+          text,
+          style: TextStyle(fontFamily: 'Game_Tape', fontSize: 30, color: Colors.white, shadows: [
+            Shadow(offset: Offset(2.5, 2), color: Colors.black, blurRadius: 2),
+          ]),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCard({
+    required EventDetail event,
+    required bool isLiked,
+    double headingSize = 20
+  }) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final widgetHeight = screenHeight * 0.6;
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+      child: GestureDetector(
+        onTap: () {
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => EventDetailPage(event: event)));
+        },
+        child: Column(
+          children: [
+            Stack(
+              children: [
+                Positioned.fill(
+                    child: ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: Image.network(
+                    event.imgurl,
+                    fit: BoxFit.cover,
+                  ),
+                )),
+                Container(
+                  height: widgetHeight,
+                  width: 186 * widgetHeight / 480,
+                  decoration: BoxDecoration(
+                      image: DecorationImage(image: AssetImage('assets/images/card.png'), fit: BoxFit.cover)),
+                ),
+                Positioned(
+                    top: 250 * widgetHeight / 480,
+                    left: 105 * widgetHeight / 480,
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () async {
+                        if (isLiked) {
+                          await LikedEventsDatabase().deleteData(event.artist);
+                        } else {
+                          await LikedEventsDatabase().insertData(event);
+                        }
+                        setState(() {});
+                      },
+                      child: Image(
+                        height: 65 * widgetHeight / 480,
+                        image: isLiked ? AssetImage('assets/images/bell1.png') : AssetImage('assets/images/bell.png'),
+                        // fit: BoxFit.cover,
+                      ),
+                    )),
+                // Heading
+                Positioned.fill(
+                  left: 25 * widgetHeight / 480,
+                  top: 336 * widgetHeight / 480,
+                  child: Text(
+                    event.artist,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(fontFamily: "Brick_Pixel", fontSize: headingSize, color: Colors.white),
+                  ),
+                ),
+                // Description
+                Positioned.fill(
+                  left: 25,
+                  top: 380 * widgetHeight / 480,
+                  right: 25,
+                  child: Text(
+                    event.descriptionEvent,
+                    maxLines: 3,
+                    overflow: TextOverflow.clip,
+                    style: TextStyle(fontFamily: "Game_Tape", fontSize: 12, color: Colors.orange),
+                  ),
+                ),
+                // Venue
+                Positioned.fill(
+                  left: 25,
+                  top: 441 * widgetHeight / 480,
+                  right: 25,
+                  child: Text(
+                    event.starttime.date > 5
+                        ? event.starttime.date.toString() +
+                            " Jan " +
+                            event.starttime.hours.toString() +
+                            " PM | " +
+                            event.venue
+                        : event.starttime.date.toString() +
+                            " Feb " +
+                            event.starttime.hours.toString() +
+                            " PM | " +
+                            event.venue,
+                    maxLines: 1,
+                    overflow: TextOverflow.clip,
+                    style: TextStyle(fontFamily: "Game_Tape", fontSize: 12, color: Colors.white),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

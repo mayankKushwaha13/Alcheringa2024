@@ -174,6 +174,7 @@ class _ActivityEventsScreenState extends State<ActivityEventsScreen> {
                               EventDetail creatorCamp = creatorscamplist[index];
                               return _buildCard(
                                 event: creatorCamp,
+                                headingSize: 18,
                                 isLiked:
                                     snapshot.data![1].indexWhere((element) => element.artist == creatorCamp.artist) !=
                                             -1
@@ -230,6 +231,7 @@ class _ActivityEventsScreenState extends State<ActivityEventsScreen> {
   Widget _buildCard({
     required EventDetail event,
     required bool isLiked,
+    double headingSize = 20
   }) {
     final screenHeight = MediaQuery.of(context).size.height;
     final widgetHeight = screenHeight * 0.6;
@@ -263,6 +265,7 @@ class _ActivityEventsScreenState extends State<ActivityEventsScreen> {
                     child: GestureDetector(
                       behavior: HitTestBehavior.opaque,
                       onTap: () async {
+                        print("Tapped");
                         if (isLiked) {
                           await LikedEventsDatabase().deleteData(event.artist);
                         } else {
@@ -284,7 +287,7 @@ class _ActivityEventsScreenState extends State<ActivityEventsScreen> {
                     event.artist,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(fontFamily: "Brick_Pixel", fontSize: 20, color: Colors.white),
+                    style: TextStyle(fontFamily: "Brick_Pixel", fontSize: headingSize, color: Colors.white),
                   ),
                 ),
                 // Description

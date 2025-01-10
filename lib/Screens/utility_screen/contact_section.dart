@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class ContactSection extends StatefulWidget {
   @override
@@ -176,42 +179,78 @@ class CategoryButton extends StatelessWidget {
   }
 }
 
-// Number Box Widget
+
 class NumberBox extends StatelessWidget {
   final String number;
 
   const NumberBox({required this.number});
 
+  Future<void> _makePhoneCall(String phoneNumber) async {
+    final status = await Permission.phone.request();
+    if (status.isGranted) {
+      final Uri callUri = Uri.parse("tel://$phoneNumber");
+      if (await canLaunchUrl(callUri)) {
+        await launchUrl(callUri);
+      } else {
+        throw 'Could not launch phone dialer';
+      }
+    } else {
+      print('Permission denied');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        print('Calling $number');
-      },
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 8),
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         width: 208,
         height: 75,
         decoration: BoxDecoration(
           image: const DecorationImage(
             image: AssetImage('assets/images/number_box.png'),
-            fit: BoxFit.cover,
+            fit: BoxFit.fill,
           ),
-          borderRadius: BorderRadius.circular(12),
         ),
-        child: Center(
-          child: Text(
-            number,
-            style: const TextStyle(
-              fontFamily: 'Game_Tape',
-              fontSize: 24,
-              fontWeight: FontWeight.w400,
-              height: 1.0,
-              color: Colors.white,
+        child: Row(
+          children: [
+            Expanded(
+              child: Container(
+                width: 50,
+                height: 50,
+                child: Center(
+                  child: Text(
+                    number,
+                    style: const TextStyle(
+                      fontFamily: 'Game_Tape',
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
             ),
-            textAlign: TextAlign.left,
-          ),
+            GestureDetector(
+              onTap: () async {
+                final phoneNumber = '$number';
+                await _makePhoneCall(phoneNumber);
+              },
+              child: Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  shape: BoxShape.rectangle,
+                  image: const DecorationImage(
+                    image: AssetImage('assets/images/call_button.png'),
+                    fit: BoxFit.fill,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 10),
+          ],
         ),
       ),
     );

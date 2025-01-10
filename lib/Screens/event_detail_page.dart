@@ -119,7 +119,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                     Text(
                       widget.event.type,
                       style: TextStyle(
-                        fontFamily: 'Brick_Pixel',
+                        fontFamily: 'Game_Tape',
                         color: Color.fromRGBO(255, 160, 194, 1),
                         fontSize: 20,
                         fontWeight: FontWeight.w400,
@@ -135,7 +135,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                           widget.event.venue,
                           textAlign: TextAlign.left,
                           style: TextStyle(
-                            fontFamily: 'Brick_Pixel',
+                            fontFamily: 'Game_Tape',
                             color: Color.fromRGBO(255, 241, 232, 1),
                             fontSize: 24,
                             fontWeight: FontWeight.w400,
@@ -145,7 +145,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                           '${widget.event.starttime.date}, ${widget.event.starttime.hours}:${widget.event.starttime.min}',
                           textAlign: TextAlign.right,
                           style: TextStyle(
-                            fontFamily: 'Brick_Pixel',
+                            fontFamily: 'Game_Tape',
                             color: Color.fromRGBO(255, 241, 232, 1),
                             fontWeight: FontWeight.w400,
                             fontSize: 24,
@@ -159,7 +159,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                     Text(
                       widget.event.descriptionEvent,
                       style: TextStyle(
-                        fontFamily: 'Brick_Pixel',
+                        fontFamily: 'Game_Tape',
                         color: Color.fromRGBO(255, 241, 232, 1),
                         fontSize: 16,
                         fontWeight: FontWeight.w400,
@@ -200,6 +200,12 @@ class _EventDetailPageState extends State<EventDetailPage> {
                                   color: Color.fromRGBO(255, 241, 232, 1),
                                   fontSize: 24,
                                   fontWeight: FontWeight.bold,
+                                  shadows: [
+                                    Shadow(
+                                      color: Colors.black,
+                                      blurRadius: 5
+                                    )
+                                  ]
                                 ),
                               ),
                             ],
@@ -244,6 +250,12 @@ class _EventDetailPageState extends State<EventDetailPage> {
                                   color: Color.fromRGBO(255, 241, 232, 1),
                                   fontSize: 24,
                                   fontWeight: FontWeight.bold,
+                                    shadows: [
+                                      Shadow(
+                                          color: Colors.black,
+                                          blurRadius: 5
+                                      )
+                                    ]
                                 ),
                               ),
                             ],
@@ -254,10 +266,13 @@ class _EventDetailPageState extends State<EventDetailPage> {
                     SizedBox(height: 30),
       
                     // Horizontal Divider
-                    Container(
-                      width: 325,
-                      height: 4,
-                      color: Color.fromRGBO(129, 177, 155, 1),
+                    Align(
+                      alignment: Alignment.center,
+                      child: Container(
+                        width: 325,
+                        height: 4,
+                        color: Color.fromRGBO(129, 177, 155, 1),
+                      ),
                     ),
                     SizedBox(height: 20),
       
@@ -330,13 +345,17 @@ class _EventDetailPageState extends State<EventDetailPage> {
                       ),
                     ),
                     // Event Category Text
-                    Text(
-                      widget.event.artist,
-                      style: TextStyle(
-                        fontFamily: 'Brick_Pixel',
-                        color: Color.fromRGBO(255, 241, 232, 1),
-                        fontSize: 24,
-                        fontWeight: FontWeight.w400,
+                    Flexible(
+                      child: Text(
+                        widget.event.artist,
+                        style: TextStyle(
+                          fontFamily: 'Brick_Pixel',
+                          color: Color.fromRGBO(255, 241, 232, 1),
+                          fontSize: 24,
+                          fontWeight: FontWeight.w400,
+                        ),
+                        overflow: TextOverflow.ellipsis, // Optional for truncation
+                        maxLines: 1, // Ensures single-line display
                       ),
                     ),
                     SizedBox(width: 30),
@@ -344,6 +363,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                 ),
               ),
             ),
+
           ],
         ),
       ),

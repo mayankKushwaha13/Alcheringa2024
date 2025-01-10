@@ -1,4 +1,5 @@
 import 'package:alcheringa/Common/globals.dart';
+import 'package:alcheringa/Screens/activity_pages/widgets/suggestion_events.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:alcheringa/Model/eventdetail.dart';
@@ -117,7 +118,7 @@ class _CompetitionsWidgetState extends State<CompetitionsWidget> {
                             children: currentPageEvents
                                 .map(
                                   (event) => Expanded(
-                                    child: CompetitionCard(event: event),
+                                    child: SuggestionCard(event: event),
                                   ),
                                 )
                                 .toList(),
