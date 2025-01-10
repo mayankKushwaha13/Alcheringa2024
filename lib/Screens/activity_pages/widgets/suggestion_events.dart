@@ -1,5 +1,6 @@
 import 'package:alcheringa/Model/eventdetail.dart';
 import 'package:flutter/material.dart';
+import 'package:marquee/marquee.dart';
 
 class SuggestionCard extends StatefulWidget {
   final EventDetail event;
@@ -82,7 +83,7 @@ class _SuggestionCardState extends State<SuggestionCard> {
                               overflow: TextOverflow.ellipsis,
                             ),
                             Text(
-                              "|",
+                              "| ",
                               textAlign: TextAlign.right,
                               style: TextStyle(
                                 color: Color(0xFFFFF1E8),
@@ -93,19 +94,30 @@ class _SuggestionCardState extends State<SuggestionCard> {
                                 letterSpacing: 0.15,
                               ),
                             ),
-                            Text(
-                              widget.event.venue,
-                              textAlign: TextAlign.right,
-                              style: TextStyle(
-                                color: Color(0xFFFFF1E8),
-                                fontSize: 16,
-                                fontFamily: 'Game_Tape',
-                                fontWeight: FontWeight.w400,
-                                height: 1.71,
-                                letterSpacing: 0.15,
+                            Expanded(
+                              child: SizedBox(
+                                height: 30, // Set a fixed height
+                                child: Marquee(
+                                  text: widget.event.venue,
+                                  style: TextStyle(
+                                    color: Color(0xFFFFF1E8),
+                                    fontSize: 16,
+                                    fontFamily: 'Game_Tape',
+                                    fontWeight: FontWeight.w400,
+                                    height: 1.71,
+                                    letterSpacing: 0.15,
+                                  ),
+                                  scrollAxis: Axis.horizontal,
+                                  blankSpace: 30.0,
+                                  velocity: 20.0,
+                                  startPadding: 10.0,
+                                  pauseAfterRound: Duration(seconds: 1),
+                                  showFadingOnlyWhenScrolling: true,
+                                  fadingEdgeStartFraction: 0.1,
+                                  fadingEdgeEndFraction: 0.1,
+                                ),
                               ),
-                              overflow: TextOverflow.ellipsis,
-                            )
+                            ),
                           ],
                         )
                       ],

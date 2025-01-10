@@ -36,6 +36,7 @@ class _HomeScreenState extends State<HomeScreen>
       CarouselSliderController();
   int _currentIndex = 0;
   List<EventDetail> PronitesList = [];
+  late final List<EventDetail> displayedSuggestions;
   @override
   void initState() {
     super.initState();
@@ -50,6 +51,15 @@ class _HomeScreenState extends State<HomeScreen>
     });
     getMerchData();
     getPronitesData();
+    initializeSuggestions();
+  }
+  void initializeSuggestions() {
+    final List<EventDetail> list = Provider.of<ViewModelMain>(context, listen: false).allEvents;
+    final List<EventDetail> suggestions = list.toList();
+
+    // Shuffle and pick a limited number of suggestions
+    suggestions.shuffle(Random());
+    displayedSuggestions = suggestions.take(20).toList();
   }
 
   Future<void> getPronitesData() async {
@@ -393,10 +403,6 @@ class _HomeScreenState extends State<HomeScreen>
     final screenWidth = MediaQuery.of(context).size.width;
     final List<EventDetail> suggestions = list.toList();
     // Shuffle and pick a limited number of suggestions
-    suggestions.shuffle(Random());
-    final List<EventDetail> displayedSuggestions =
-        suggestions.take(20).toList();
-
     return Scaffold(
       body: Stack(
         children: [
