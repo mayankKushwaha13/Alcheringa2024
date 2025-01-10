@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:alcheringa/Common/globals.dart';
 import 'package:alcheringa/Model/view_model_main.dart';
+import 'package:alcheringa/Screens/merch_screen.dart';
 import 'package:alcheringa/Screens/welcome_screen.dart';
 import 'package:alcheringa/screens/main_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -56,7 +57,7 @@ class MyApp extends StatelessWidget {
     Provider.of<ViewModelMain>(context, listen: false).getAllEvents();
 
     return MaterialApp(
-      home: SplashScreen(),
+      home: MerchScreen(),
       debugShowCheckedModeBanner: false,
     );
   }
