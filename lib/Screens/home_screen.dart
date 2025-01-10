@@ -32,13 +32,13 @@ class _HomeScreenState extends State<HomeScreen>
   final CarouselSliderController _carouselController =
       CarouselSliderController();
   int _currentIndex = 0;
-
+  bool isR = true;
   @override
   void initState() {
     super.initState();
     _scrollController1 = ScrollController();
     _scrollController2 = ScrollController();
-    final EventDetail event;
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _startScrolling1();
       _startScrolling2();
@@ -117,6 +117,7 @@ class _HomeScreenState extends State<HomeScreen>
       print("Error fetching merchandise: $e");
     } finally {
       setState(() {
+        merchList = merchList;
         isLoading = false;
       });
     }
@@ -330,14 +331,19 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   Widget build(BuildContext context) {
     List<EventDetail> list = Provider.of<ViewModelMain>(context).allEvents;
+
+    // Filter events based on type 'proshows'
+
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     final List<EventDetail> suggestions = list.toList();
-
+    List<EventDetail> proshowEvents =
+        list.where((event) => event.type == "Pronites").toList();
     // Shuffle and pick a limited number of suggestions
     suggestions.shuffle(Random());
     final List<EventDetail> displayedSuggestions =
         suggestions.take(20).toList();
+
     return Scaffold(
       body: Stack(
         children: [
@@ -359,9 +365,13 @@ class _HomeScreenState extends State<HomeScreen>
                   child: PageView.builder(
                     controller: PageController(
                         viewportFraction: 0.5, initialPage: 1000),
+                    itemCount: displayedSuggestions.length,
                     itemBuilder: (context, index) {
                       index = index % 2;
+                      EventDetail event = displayedSuggestions[index];
 
+                      // Check if the artist is revealed
+                      // bool? isRevealed = event.isArtistRevealed;
                       return Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
                         child: Column(
@@ -416,6 +426,7 @@ class _HomeScreenState extends State<HomeScreen>
                                   image: DecorationImage(
                                     image: AssetImage(
                                         'assets/images/card_$index.png'),
+                                    // 'assets/images/card_$index.png'),
                                     fit: BoxFit.fill,
                                   ),
                                 ),

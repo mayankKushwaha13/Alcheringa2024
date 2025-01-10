@@ -24,6 +24,7 @@ class EventDetail {
   bool stream = false;
   String descriptionShort;
   String iconURL;
+  bool isArtistRevealed = true;
 
   EventDetail({
     required this.artist,
@@ -41,26 +42,27 @@ class EventDetail {
     required this.reglink,
     required this.stream,
     required this.mode,
+    required this.isArtistRevealed,
   });
 
   factory EventDetail.fromMap(Map<String, dynamic> data) {
     return EventDetail(
-      descriptionShort: ".",
-      iconURL: ".",
-      artist: data['artist'],
-      category: data['category'],
-      starttime: OwnTime.fromMap(data['starttime']),
-      imgurl: data['imgurl'],
-      durationInMin: data['durationInMin'],
-      genre: List<String>.from(data['genre']),
-      descriptionEvent: data['descriptionEvent'],
-      venue: data['venue'],
-      type: data['type'],
-      joinlink: data['joinlink'],
-      reglink: data['reglink'],
-      mode: data['mode'],
-      stream: data['stream'],
-    );
+        descriptionShort: ".",
+        iconURL: ".",
+        artist: data['artist'],
+        category: data['category'],
+        starttime: OwnTime.fromMap(data['starttime']),
+        imgurl: data['imgurl'],
+        durationInMin: data['durationInMin'],
+        genre: List<String>.from(data['genre']),
+        descriptionEvent: data['descriptionEvent'],
+        venue: data['venue'],
+        type: data['type'],
+        joinlink: data['joinlink'],
+        reglink: data['reglink'],
+        mode: data['mode'],
+        stream: data['stream'],
+        isArtistRevealed: data['isArtistRevealed']);
   }
 
   factory EventDetail.fromTable(Map<String, dynamic> data) {
@@ -83,6 +85,7 @@ class EventDetail {
       reglink: data['reglink'],
       mode: data['mode'],
       stream: data['stream'] == 0 ? false : true,
+      isArtistRevealed: data['isArtistRevealed'],
     );
   }
   // Method to get the end time by adding duration to start time
@@ -113,7 +116,8 @@ class EventDetail {
           starttime.min.toString(),
       "stream": stream == false ? 0 : 1,
       "descriptionShort": descriptionShort,
-      "iconurl": iconURL
+      "iconurl": iconURL,
+      "isArtistRevealed": isArtistRevealed
     };
   }
 }
