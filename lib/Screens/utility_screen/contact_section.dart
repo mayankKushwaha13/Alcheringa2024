@@ -212,7 +212,6 @@ class NumberBox extends StatelessWidget {
             image: AssetImage('assets/images/number_box.png'),
             fit: BoxFit.fill,
           ),
-          borderRadius: BorderRadius.circular(12),
         ),
         child: Row(
           children: [
