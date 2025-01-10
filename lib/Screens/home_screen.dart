@@ -35,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen>
   final CarouselSliderController _carouselController =
       CarouselSliderController();
   int _currentIndex = 0;
-  bool isR = true;
+  List<EventDetail> PronitesList = [];
   @override
   void initState() {
     super.initState();
@@ -49,6 +49,35 @@ class _HomeScreenState extends State<HomeScreen>
       _startScrolling3();
     });
     getMerchData();
+    getPronitesData();
+  }
+
+  Future<void> getPronitesData() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      // Create an instance of ViewModelMain
+      ViewModelMain viewModel = ViewModelMain();
+
+      // Fetch events
+      final _pronitesList = await viewModel.getFeaturedEvents();
+
+      // Debug print
+      print('Fetched ${PronitesList.length} events');
+
+      setState(() {
+        PronitesList = _pronitesList;
+      });
+    } catch (e) {
+      print("Error fetching events: $e");
+      // You might want to show an error message to the user here
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   void _startScrolling1() {
@@ -363,8 +392,6 @@ class _HomeScreenState extends State<HomeScreen>
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     final List<EventDetail> suggestions = list.toList();
-    List<EventDetail> proshowEvents =
-        list.where((event) => event.type == "Pronites").toList();
     // Shuffle and pick a limited number of suggestions
     suggestions.shuffle(Random());
     final List<EventDetail> displayedSuggestions =
@@ -391,19 +418,20 @@ class _HomeScreenState extends State<HomeScreen>
                   child: PageView.builder(
                     controller: PageController(
                         viewportFraction: 0.5, initialPage: 1000),
-                    itemCount: displayedSuggestions.length,
+                    // itemCount: displayedSuggestions.length,
                     itemBuilder: (context, index) {
-                      index = index % 2;
-                      EventDetail event = displayedSuggestions[index];
+                      final cardColorIndex = index % 2;
+                      index = index % 3;
+                      print('hello build');
+                      final event = PronitesList[index];
+                      final bool isRevealed = event.isArtistRevealed ?? false;
 
-                      // Check if the artist is revealed
-                      // bool? isRevealed = event.isArtistRevealed;
                       return Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            if (index % 2 == 1)
+                            if (cardColorIndex % 2 == 1)
                               Container(
                                 alignment: Alignment.centerLeft,
                                 width: 60.0,
@@ -420,7 +448,7 @@ class _HomeScreenState extends State<HomeScreen>
                               SizedBox(
                                 height: 35,
                               ),
-                            if (index % 2 == 0)
+                            if (cardColorIndex % 2 == 0)
                               Expanded(
                                 flex: 2,
                                 child: Container(
@@ -434,7 +462,7 @@ class _HomeScreenState extends State<HomeScreen>
                                     ),
                                   ),
                                   child: Text(
-                                    'Coming soon',
+                                    isRevealed ? event.artist : 'Coming soon',
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontFamily: 'Brick_pixel',
@@ -450,15 +478,16 @@ class _HomeScreenState extends State<HomeScreen>
                                 width: 220,
                                 decoration: BoxDecoration(
                                   image: DecorationImage(
-                                    image: AssetImage(
-                                        'assets/images/card_$index.png'),
+                                    image: AssetImage(isRevealed
+                                        ? 'assets/images/event_cards_revealed${cardColorIndex}.png'
+                                        : 'assets/images/card_$index.png'),
                                     // 'assets/images/card_$index.png'),
                                     fit: BoxFit.fill,
                                   ),
                                 ),
                               ),
                             ),
-                            if (index % 2 == 1)
+                            if (cardColorIndex % 2 == 1)
                               Expanded(
                                 flex: 2,
                                 child: Container(
@@ -472,7 +501,7 @@ class _HomeScreenState extends State<HomeScreen>
                                     ),
                                   ),
                                   child: Text(
-                                    'Coming soon',
+                                    isRevealed ? event.artist : 'Coming soon',
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontFamily: 'Brick_pixel',
@@ -481,7 +510,7 @@ class _HomeScreenState extends State<HomeScreen>
                                   ),
                                 ),
                               ),
-                            if (index % 2 == 0)
+                            if (cardColorIndex % 2 == 0)
                               Container(
                                 alignment: Alignment.centerLeft,
                                 width: 60.0,
@@ -549,7 +578,9 @@ class _HomeScreenState extends State<HomeScreen>
                     alignment: Alignment.topCenter,
                     children: [
                       Positioned.fill(
-                        child: Image.asset("assets/images/merch_ribbon.png",),
+                        child: Image.asset(
+                          "assets/images/merch_ribbon.png",
+                        ),
                       ),
                       Column(
                         children: [

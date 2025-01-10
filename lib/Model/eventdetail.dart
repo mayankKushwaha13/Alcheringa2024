@@ -22,8 +22,8 @@ class EventDetail {
   String joinlink = "https://www.alcheringa.in";
   String reglink = "https://www.alcheringa.in";
   bool stream = false;
-  String descriptionShort;
-  String iconURL;
+  String descriptionShort = "";
+  String iconURL = "";
   bool isArtistRevealed = true;
 
   EventDetail({
