@@ -3,6 +3,7 @@ import 'dart:developer' as dev;
 import 'dart:math';
 
 import 'package:alcheringa/Common/globals.dart';
+import 'package:alcheringa/Database/liked_events.dart';
 import 'package:alcheringa/Model/merchModel.dart';
 import 'package:alcheringa/Model/pass_model.dart';
 import 'package:alcheringa/Model/view_model_main.dart';
@@ -14,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../Model/eventdetail.dart';
+import 'event_detail_page.dart';
 import 'merch_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -29,6 +31,7 @@ class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
   late final ScrollController _scrollController1;
   late final ScrollController _scrollController2;
+  late final ScrollController _scrollController3;
   final CarouselSliderController _carouselController =
       CarouselSliderController();
   int _currentIndex = 0;
@@ -38,10 +41,12 @@ class _HomeScreenState extends State<HomeScreen>
     super.initState();
     _scrollController1 = ScrollController();
     _scrollController2 = ScrollController();
+    _scrollController3 = ScrollController();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _startScrolling1();
       _startScrolling2();
+      _startScrolling3();
     });
     getMerchData();
   }
@@ -83,6 +88,27 @@ class _HomeScreenState extends State<HomeScreen>
             _scrollController2.jumpTo(0);
           }
           _startScrolling2();
+        });
+      }
+    });
+  }
+
+  void _startScrolling3() {
+    Future.delayed(Duration(milliseconds: 100), () {
+      if (_scrollController3.hasClients) {
+        _scrollController3
+            .animateTo(
+          _scrollController3.offset + 100, // Scroll offset
+          duration: Duration(milliseconds: 1000),
+          curve: Curves.linear,
+        )
+            .then((_) {
+          if (_scrollController3.offset >=
+              _scrollController3.position.maxScrollExtent) {
+            // Reset scroll when reaching the end
+            _scrollController3.jumpTo(0);
+          }
+          _startScrolling3();
         });
       }
     });
@@ -694,6 +720,40 @@ class _HomeScreenState extends State<HomeScreen>
                 SizedBox(
                   height: 50,
                 ),
+                // Alcher Card
+                Container(height: 400,width: 400,color: Colors.white,),
+                SizedBox(height: 50,),
+                // marquee text cool stuff for you
+                Container(
+                  color: Color.fromRGBO(255, 236, 38, 1),
+                  height: 40,
+                  child: ListView.builder(
+                    controller: _scrollController3,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 70,
+                    itemBuilder: (context, index) {
+                      return Row(
+                        children: [
+                          ImageIcon(
+                            AssetImage(
+                                'assets/images/hero_section_hearts_blue.png'),
+                            size: 90.0,
+                          ),
+                          SizedBox(width: 10),
+                          Text(
+                            "cool stuff for you !!!",
+                            style: TextStyle(
+                                color: Color(0xFF182446),
+                                fontSize: 18,
+                                fontFamily: 'Game_Tape'),
+                          ),
+                          SizedBox(width: 50),
+                        ],
+                      );
+                    },
+                  ),
+                ),
+                SizedBox(height: 20,),
                 // Below is event suggestion
                 SizedBox(
                   height: 350,
@@ -720,6 +780,43 @@ class _HomeScreenState extends State<HomeScreen>
                     },
                   ),
                 ),
+                // Liked Events
+                FutureBuilder(
+                  future: LikedEventsDatabase().readData(), builder: (context, snapshot){
+                    if(snapshot.hasData && snapshot.data!.isNotEmpty){
+                      List<EventDetail> likedEvents = snapshot.data!;
+                      return Column(
+                        children: [
+                          SizedBox(height: 16,),
+                          _buildHeading(text: "Liked Events", backgroundImage: "assets/images/heading.png"),
+                          SizedBox(height: 20,),
+                          SizedBox(
+                          height: screenHeight * 0.63,
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            itemCount: likedEvents.length,
+                            itemBuilder: (context, index) {
+                              EventDetail creatorCamp = likedEvents[index];
+                              return _buildCard(
+                                event: creatorCamp,
+                                headingSize: 18,
+                                isLiked:
+                                    likedEvents.indexWhere((element) => element.artist == creatorCamp.artist) !=
+                                            -1
+                                        ? true
+                                        : false,
+                              );
+                            },
+                          ),
+                        )
+                        ],
+                      );
+                    }
+                    else{
+                      return Container();
+                    }
+                }),
                 SizedBox(
                   height: bottomNavBarHeight,
                 ),
@@ -760,6 +857,133 @@ class _HomeScreenState extends State<HomeScreen>
           //   ),
           // )
         ],
+      ),
+    );
+  }
+  Widget _buildHeading({
+    required String text,
+    required String backgroundImage,
+  }) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    return Container(
+      width: screenWidth,
+      height: screenWidth * 65 / 375,
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage(backgroundImage),
+          fit: BoxFit.fill,
+        ),
+      ),
+      child: Center(
+        child: Text(
+          text,
+          style: TextStyle(fontFamily: 'Game_Tape', fontSize: 30, color: Colors.white, shadows: [
+            Shadow(offset: Offset(2.5, 2), color: Colors.black, blurRadius: 2),
+          ]),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCard({
+    required EventDetail event,
+    required bool isLiked,
+    double headingSize = 20
+  }) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final widgetHeight = screenHeight * 0.6;
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+      child: GestureDetector(
+        onTap: () {
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => EventDetailPage(event: event)));
+        },
+        child: Column(
+          children: [
+            Stack(
+              children: [
+                Positioned.fill(
+                    child: ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: Image.network(
+                    event.imgurl,
+                    fit: BoxFit.cover,
+                  ),
+                )),
+                Container(
+                  height: widgetHeight,
+                  width: 186 * widgetHeight / 480,
+                  decoration: BoxDecoration(
+                      image: DecorationImage(image: AssetImage('assets/images/card.png'), fit: BoxFit.cover)),
+                ),
+                Positioned(
+                    top: 250 * widgetHeight / 480,
+                    left: 105 * widgetHeight / 480,
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () async {
+                        if (isLiked) {
+                          await LikedEventsDatabase().deleteData(event.artist);
+                        } else {
+                          await LikedEventsDatabase().insertData(event);
+                        }
+                        setState(() {});
+                      },
+                      child: Image(
+                        height: 65 * widgetHeight / 480,
+                        image: isLiked ? AssetImage('assets/images/bell1.png') : AssetImage('assets/images/bell.png'),
+                        // fit: BoxFit.cover,
+                      ),
+                    )),
+                // Heading
+                Positioned.fill(
+                  left: 25 * widgetHeight / 480,
+                  top: 336 * widgetHeight / 480,
+                  child: Text(
+                    event.artist,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(fontFamily: "Brick_Pixel", fontSize: headingSize, color: Colors.white),
+                  ),
+                ),
+                // Description
+                Positioned.fill(
+                  left: 25,
+                  top: 380 * widgetHeight / 480,
+                  right: 25,
+                  child: Text(
+                    event.descriptionEvent,
+                    maxLines: 3,
+                    overflow: TextOverflow.clip,
+                    style: TextStyle(fontFamily: "Game_Tape", fontSize: 12, color: Colors.orange),
+                  ),
+                ),
+                // Venue
+                Positioned.fill(
+                  left: 25,
+                  top: 441 * widgetHeight / 480,
+                  right: 25,
+                  child: Text(
+                    event.starttime.date > 5
+                        ? event.starttime.date.toString() +
+                            " Jan " +
+                            event.starttime.hours.toString() +
+                            " PM | " +
+                            event.venue
+                        : event.starttime.date.toString() +
+                            " Feb " +
+                            event.starttime.hours.toString() +
+                            " PM | " +
+                            event.venue,
+                    maxLines: 1,
+                    overflow: TextOverflow.clip,
+                    style: TextStyle(fontFamily: "Game_Tape", fontSize: 12, color: Colors.white),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

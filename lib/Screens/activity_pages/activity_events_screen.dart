@@ -265,6 +265,7 @@ class _ActivityEventsScreenState extends State<ActivityEventsScreen> {
                     child: GestureDetector(
                       behavior: HitTestBehavior.opaque,
                       onTap: () async {
+                        print("Tapped");
                         if (isLiked) {
                           await LikedEventsDatabase().deleteData(event.artist);
                         } else {

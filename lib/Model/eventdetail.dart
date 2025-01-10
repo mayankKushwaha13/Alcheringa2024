@@ -85,7 +85,7 @@ class EventDetail {
       reglink: data['reglink'],
       mode: data['mode'],
       stream: data['stream'] == 0 ? false : true,
-      isArtistRevealed: data['isArtistRevealed'],
+      isArtistRevealed: data['isArtistRevealed'] == 0 ? false : true,
     );
   }
   // Method to get the end time by adding duration to start time
@@ -117,7 +117,7 @@ class EventDetail {
       "stream": stream == false ? 0 : 1,
       "descriptionShort": descriptionShort,
       "iconurl": iconURL,
-      "isArtistRevealed": isArtistRevealed
+      "isArtistRevealed": isArtistRevealed == false ? 0 : 1,
     };
   }
 }
