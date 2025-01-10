@@ -139,10 +139,14 @@ class CartScreen extends StatelessWidget {
               // "Buy" button at the bottom
               GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => CheckoutPage()),
-                  );
+                  if (cartProvider.cartItems.isNotEmpty) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => CheckoutPage()),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Your Cart Is Empty! Nothing to purchase.")),);
+                  }
                 },
                 child: Stack(
                   alignment: Alignment.center,
