@@ -330,13 +330,17 @@ class _EventDetailPageState extends State<EventDetailPage> {
                       ),
                     ),
                     // Event Category Text
-                    Text(
-                      widget.event.artist,
-                      style: TextStyle(
-                        fontFamily: 'Brick_Pixel',
-                        color: Color.fromRGBO(255, 241, 232, 1),
-                        fontSize: 24,
-                        fontWeight: FontWeight.w400,
+                    Flexible(
+                      child: Text(
+                        widget.event.artist,
+                        style: TextStyle(
+                          fontFamily: 'Brick_Pixel',
+                          color: Color.fromRGBO(255, 241, 232, 1),
+                          fontSize: 24,
+                          fontWeight: FontWeight.w400,
+                        ),
+                        overflow: TextOverflow.ellipsis, // Optional for truncation
+                        maxLines: 1, // Ensures single-line display
                       ),
                     ),
                     SizedBox(width: 30),
@@ -344,6 +348,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                 ),
               ),
             ),
+
           ],
         ),
       ),
