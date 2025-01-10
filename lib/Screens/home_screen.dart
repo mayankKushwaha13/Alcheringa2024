@@ -544,11 +544,17 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                         .toList(),
                                   ),
                             Builder(builder: (context) {
-                              MerchModel item = merchList[_currentIndex];
+                              if(merchList.isNotEmpty){MerchModel item = merchList[_currentIndex];
                               return Text(
                                 item.name ?? " ",
                                 style: TextStyle(fontFamily: "Brick_Pixel", fontSize: 36, color: Colors.white),
-                              );
+                              );}
+                              else{
+                                return Text(
+                                  "Loading ...",
+                                  style: TextStyle(fontFamily: "Brick_Pixel", fontSize: 36, color: Colors.white),
+                                );
+                              }
                             })
                           ],
                         ),
