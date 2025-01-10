@@ -102,7 +102,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 SizedBox(height: 16.0),
 
                 // Content Section
-                _buildContentForTab(_currentIndex),
+                Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 34),
+                    child: _buildContentForTab(_currentIndex)),
                 SizedBox(height: 16.0),
 
                 // Next Button
