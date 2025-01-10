@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class CompetitionCard extends StatefulWidget {
   final EventDetail event;
 
-  const CompetitionCard({required this.event, Key? key}) : super(key: key);
+  const CompetitionCard({required this.event, super.key});
 
   @override
   State<CompetitionCard> createState() => _CompetitionCardState();
@@ -17,7 +17,7 @@ class _CompetitionCardState extends State<CompetitionCard> {
     final mq = MediaQuery.of(context).size;
 
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
       child: GestureDetector(
         onTap: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) => EventDetailPage(event: widget.event)));

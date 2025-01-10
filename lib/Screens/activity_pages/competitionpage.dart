@@ -106,7 +106,7 @@ class _CompetitionsWidgetState extends State<CompetitionsWidget> {
                     SizedBox(
                       height: 400,
                       child: PageView.builder(
-                        controller: PageController(viewportFraction: 1),
+                        controller: PageController(viewportFraction: 0.9),
                         itemCount: (eventList.length / 2).ceil(),
                         itemBuilder: (BuildContext context, int pageIndex) {
                           final int startIndex = pageIndex * 2;

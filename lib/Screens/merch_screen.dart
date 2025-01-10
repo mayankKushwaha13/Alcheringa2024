@@ -72,7 +72,7 @@ class _MerchScreenState extends State<MerchScreen> {
                     const Text(
                       'MERCHANDIZE',
                       style: TextStyle(
-                        fontFamily: 'AlcherPixel',
+                        fontFamily: 'Game_Tape',
                         fontSize: 20,
                         fontWeight: FontWeight.w400,
                         color: Color.fromRGBO(255, 119, 168, 1),
@@ -97,7 +97,7 @@ class _MerchScreenState extends State<MerchScreen> {
                     Text(
                       'Merchandise',
                       style: TextStyle(
-                        fontFamily: 'AlcherPixel',
+                        fontFamily: 'Game_Tape',
                         fontSize: 27,
                         fontWeight: FontWeight.w400,
                         color: Color.fromRGBO(255, 241, 232, 1),
@@ -117,7 +117,7 @@ class _MerchScreenState extends State<MerchScreen> {
                             child: Text(
                               'No Merchandise Available',
                               style: TextStyle(
-                                fontFamily: 'AlcherPixel',
+                                fontFamily: 'Game_Tape',
                                 fontSize: 20,
                                 color: Colors.white,
                               ),
@@ -211,7 +211,7 @@ class MerchandiseItem extends StatelessWidget {
                       Text(
                         title,
                         style: const TextStyle(
-                          fontFamily: 'AlcherPixelBold',
+                          fontFamily: 'Game_Tape',
                           fontSize: 23,
                           fontWeight: FontWeight.w400,
                           color: Color.fromRGBO(255, 241, 232, 1),
@@ -220,7 +220,7 @@ class MerchandiseItem extends StatelessWidget {
                       Text(
                         subtitle,
                         style: const TextStyle(
-                          fontFamily: 'AlcherPixel',
+                          fontFamily: 'Game_Tape',
                           fontSize: 17,
                           fontWeight: FontWeight.w400,
                           color: Color.fromRGBO(255, 119, 168, 1),
@@ -229,7 +229,7 @@ class MerchandiseItem extends StatelessWidget {
                       Text(
                         'Rs $price.00/-',
                         style: const TextStyle(
-                          fontFamily: 'AlcherPixel',
+                          fontFamily: 'Game_Tape',
                           fontSize: 18,
                           fontWeight: FontWeight.w400,
                           color: Color.fromRGBO(255, 241, 232, 1),
@@ -258,7 +258,7 @@ class MerchandiseItem extends StatelessWidget {
                       const Text(
                         'DONT MISS OUT - ',
                         style: TextStyle(
-                          fontFamily: 'AlcherPixel',
+                          fontFamily: 'Game_Tape',
                           fontSize: 15,
                           fontWeight: FontWeight.w400,
                           color: Color.fromRGBO(255, 241, 232, 1),
@@ -267,7 +267,7 @@ class MerchandiseItem extends StatelessWidget {
                       Text(
                         limitedStockMessage,
                         style: const TextStyle(
-                          fontFamily: 'AlcherPixel',
+                          fontFamily: 'Game_Tape',
                           fontSize: 15,
                           fontWeight: FontWeight.w400,
                           color: Color.fromRGBO(255, 119, 168, 1),
@@ -316,6 +316,7 @@ class MerchandiseItem extends StatelessWidget {
               left: 0,
               bottom: 0,
               child: Container(
+              padding: EdgeInsets.all(10.0),
                 decoration: BoxDecoration(
                     image: DecorationImage(
                   image: AssetImage(
@@ -327,9 +328,8 @@ class MerchandiseItem extends StatelessWidget {
                   child: Text(
                     "Add to cart",
                     style: const TextStyle(
-                      fontFamily: 'AlcherPixel',
-                      fontSize: 35,
-                      fontWeight: FontWeight.w400,
+                      fontFamily: 'Brick_Pixel',
+                      fontSize: 20,
                       color: Color.fromRGBO(255, 241, 232, 1),
                     ),
                   ),

@@ -59,6 +59,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
           ),
           child: SingleChildScrollView(
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 // Header Section
                 Container(
