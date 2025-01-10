@@ -62,7 +62,7 @@ class EventDetail {
         reglink: data['reglink'],
         mode: data['mode'],
         stream: data['stream'],
-        isArtistRevealed: data['isArtistRevealed']);
+        isArtistRevealed: data['isArtistRevealed'] ?? false);
   }
 
   factory EventDetail.fromTable(Map<String, dynamic> data) {
