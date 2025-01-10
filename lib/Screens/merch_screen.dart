@@ -198,7 +198,7 @@ class MerchandiseItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(20.0),
+                    padding: const EdgeInsets.only(top: 20),
                     child: Image.network(
                       image,
                       width: MediaQuery.of(context).size.width * 0.2,
@@ -241,7 +241,7 @@ class MerchandiseItem extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 160, left: 15),
+              padding: const EdgeInsets.only(top: 145, left: 3),
               child: Stack(
                 children: [
                   Image.asset(
