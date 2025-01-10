@@ -528,12 +528,14 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                                   item.image == null
                                                       ? Image.asset(
                                                           'assets/images/default_image.png',
+                                                          height: screenHeight * 0.24,
                                                         )
                                                       : Transform(
                                                           transform: Matrix4.rotationZ(0.1745),
                                                           alignment: Alignment.center,
                                                           child: Image.network(
                                                             item.image ?? " ",
+                                                            height: screenHeight * 0.24,
                                                           ),
                                                         ),
                                                 ],
@@ -555,7 +557,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                   style: TextStyle(fontFamily: "Brick_Pixel", fontSize: 36, color: Colors.white),
                                 );
                               }
-                            })
+                            }),
+                            Spacer()
                           ],
                         ),
                       ),
