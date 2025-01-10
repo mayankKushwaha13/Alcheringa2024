@@ -25,18 +25,20 @@ class HomeScreen extends StatefulWidget {
 
 bool isLoading = true;
 
-class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
+class _HomeScreenState extends State<HomeScreen>
+    with SingleTickerProviderStateMixin {
   late final ScrollController _scrollController1;
   late final ScrollController _scrollController2;
-  final CarouselSliderController _carouselController = CarouselSliderController();
+  final CarouselSliderController _carouselController =
+      CarouselSliderController();
   int _currentIndex = 0;
-
+  bool isR = true;
   @override
   void initState() {
     super.initState();
     _scrollController1 = ScrollController();
     _scrollController2 = ScrollController();
-    final EventDetail event;
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _startScrolling1();
       _startScrolling2();
@@ -54,7 +56,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           curve: Curves.linear,
         )
             .then((_) {
-          if (_scrollController1.offset >= _scrollController1.position.maxScrollExtent) {
+          if (_scrollController1.offset >=
+              _scrollController1.position.maxScrollExtent) {
             // Reset scroll when reaching the end
             _scrollController1.jumpTo(0);
           }
@@ -74,7 +77,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           curve: Curves.linear,
         )
             .then((_) {
-          if (_scrollController2.offset >= _scrollController2.position.maxScrollExtent) {
+          if (_scrollController2.offset >=
+              _scrollController2.position.maxScrollExtent) {
             // Reset scroll when reaching the end
             _scrollController2.jumpTo(0);
           }
@@ -90,8 +94,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   }
 
   void getPass() async {
-    final client =
-        RetrofitService(Dio(BaseOptions(contentType: "application/json")), baseUrl: "https://card.alcheringa.in/api/");
+    final client = RetrofitService(
+        Dio(BaseOptions(contentType: "application/json")),
+        baseUrl: "https://card.alcheringa.in/api/");
     try {
       final response = await client.getData(""); // pass email
       final json = jsonDecode(response);
@@ -112,6 +117,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       print("Error fetching merchandise: $e");
     } finally {
       setState(() {
+        merchList = merchList;
         isLoading = false;
       });
     }
@@ -325,13 +331,19 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   @override
   Widget build(BuildContext context) {
     List<EventDetail> list = Provider.of<ViewModelMain>(context).allEvents;
+
+    // Filter events based on type 'proshows'
+
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     final List<EventDetail> suggestions = list.toList();
-
+    List<EventDetail> proshowEvents =
+        list.where((event) => event.type == "Pronites").toList();
     // Shuffle and pick a limited number of suggestions
     suggestions.shuffle(Random());
-    final List<EventDetail> displayedSuggestions = suggestions.take(20).toList();
+    final List<EventDetail> displayedSuggestions =
+        suggestions.take(20).toList();
+
     return Scaffold(
       body: Stack(
         children: [
@@ -351,10 +363,15 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 SizedBox(
                   height: 400.0,
                   child: PageView.builder(
-                    controller: PageController(viewportFraction: 0.5, initialPage: 1000),
+                    controller: PageController(
+                        viewportFraction: 0.5, initialPage: 1000),
+                    itemCount: displayedSuggestions.length,
                     itemBuilder: (context, index) {
                       index = index % 2;
+                      EventDetail event = displayedSuggestions[index];
 
+                      // Check if the artist is revealed
+                      // bool? isRevealed = event.isArtistRevealed;
                       return Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
                         child: Column(
@@ -367,7 +384,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                 height: 35.0,
                                 decoration: BoxDecoration(
                                   image: DecorationImage(
-                                    image: AssetImage('assets/images/hero_section_hearts_pink.png'),
+                                    image: AssetImage(
+                                        'assets/images/hero_section_hearts_pink.png'),
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -384,7 +402,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                   alignment: Alignment.center,
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
-                                      image: AssetImage('assets/images/hero_section_unrevealed_text_holder.png'),
+                                      image: AssetImage(
+                                          'assets/images/hero_section_unrevealed_text_holder.png'),
                                       fit: BoxFit.fill,
                                     ),
                                   ),
@@ -405,7 +424,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                 width: 220,
                                 decoration: BoxDecoration(
                                   image: DecorationImage(
-                                    image: AssetImage('assets/images/card_$index.png'),
+                                    image: AssetImage(
+                                        'assets/images/card_$index.png'),
+                                    // 'assets/images/card_$index.png'),
                                     fit: BoxFit.fill,
                                   ),
                                 ),
@@ -419,7 +440,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                   width: 220,
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
-                                      image: AssetImage('assets/images/hero_section_unrevealed_text_holder.png'),
+                                      image: AssetImage(
+                                          'assets/images/hero_section_unrevealed_text_holder.png'),
                                       fit: BoxFit.fill,
                                     ),
                                   ),
@@ -440,7 +462,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                 height: 35.0,
                                 decoration: BoxDecoration(
                                   image: DecorationImage(
-                                    image: AssetImage('assets/images/hero_section_hearts_blue.png'),
+                                    image: AssetImage(
+                                        'assets/images/hero_section_hearts_blue.png'),
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -471,13 +494,17 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       return Row(
                         children: [
                           ImageIcon(
-                            AssetImage('assets/images/hero_section_hearts_blue.png'),
+                            AssetImage(
+                                'assets/images/hero_section_hearts_blue.png'),
                             size: 90.0,
                           ),
                           SizedBox(width: 10),
                           Text(
                             "Crazy merch alert !!!",
-                            style: TextStyle(color: Color(0xFF182446), fontSize: 18, fontFamily: 'Game_Tape'),
+                            style: TextStyle(
+                                color: Color(0xFF182446),
+                                fontSize: 18,
+                                fontFamily: 'Game_Tape'),
                           ),
                           SizedBox(width: 50),
                         ],
@@ -523,19 +550,21 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                           (item) => Builder(
                                             builder: (context) {
                                               return Stack(
-                                                alignment: Alignment.bottomCenter,
+                                                alignment:
+                                                    Alignment.bottomCenter,
                                                 children: [
                                                   item.image == null
                                                       ? Image.asset(
                                                           'assets/images/default_image.png',
-                                                          height: screenHeight * 0.24,
                                                         )
                                                       : Transform(
-                                                          transform: Matrix4.rotationZ(0.1745),
-                                                          alignment: Alignment.center,
+                                                          transform:
+                                                              Matrix4.rotationZ(
+                                                                  0.1745),
+                                                          alignment:
+                                                              Alignment.center,
                                                           child: Image.network(
                                                             item.image ?? " ",
-                                                            height: screenHeight * 0.24,
                                                           ),
                                                         ),
                                                 ],
@@ -546,19 +575,16 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                         .toList(),
                                   ),
                             Builder(builder: (context) {
-                              if(merchList.isNotEmpty){MerchModel item = merchList[_currentIndex];
+                              print('Hello ${merchList.toString()}');
+                              MerchModel item = merchList[_currentIndex];
                               return Text(
                                 item.name ?? " ",
-                                style: TextStyle(fontFamily: "Brick_Pixel", fontSize: 36, color: Colors.white),
-                              );}
-                              else{
-                                return Text(
-                                  "Loading ...",
-                                  style: TextStyle(fontFamily: "Brick_Pixel", fontSize: 36, color: Colors.white),
-                                );
-                              }
-                            }),
-                            Spacer()
+                                style: TextStyle(
+                                    fontFamily: "Brick_Pixel",
+                                    fontSize: 36,
+                                    color: Colors.white),
+                              );
+                            })
                           ],
                         ),
                       ),
@@ -569,7 +595,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                           onTap: () {
                             _currentIndex--;
                             _carouselController.animateToPage(_currentIndex % 3,
-                                curve: Curves.fastEaseInToSlowEaseOut, duration: Duration(milliseconds: 800));
+                                curve: Curves.fastEaseInToSlowEaseOut,
+                                duration: Duration(milliseconds: 800));
                           },
                           child: Image.asset(
                             'assets/images/prev_button.png',
@@ -584,7 +611,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                           onTap: () {
                             _currentIndex++;
                             _carouselController.animateToPage(_currentIndex % 3,
-                                curve: Curves.fastEaseInToSlowEaseOut, duration: Duration(milliseconds: 800));
+                                curve: Curves.fastEaseInToSlowEaseOut,
+                                duration: Duration(milliseconds: 800));
                           },
                           child: Image.asset(
                             'assets/images/next_merch_button.png',
@@ -604,16 +632,21 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     ),
                     TextButton(
                         onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => MerchScreen()));
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => MerchScreen()));
                         },
                         child: Text(
                           "click to learn more!",
-                          style: TextStyle(fontFamily: "Game_Tape", fontSize: 24, color: Colors.white, shadows: [
-                            BoxShadow(
-                              offset: Offset(1.5, 1.5),
-                              color: Colors.blue,
-                            )
-                          ]),
+                          style: TextStyle(
+                              fontFamily: "Game_Tape",
+                              fontSize: 24,
+                              color: Colors.white,
+                              shadows: [
+                                BoxShadow(
+                                  offset: Offset(1.5, 1.5),
+                                  color: Colors.blue,
+                                )
+                              ]),
                         ))
                   ],
                 ),
@@ -633,13 +666,17 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       return Row(
                         children: [
                           ImageIcon(
-                            AssetImage('assets/images/hero_section_hearts_blue.png'),
+                            AssetImage(
+                                'assets/images/hero_section_hearts_blue.png'),
                             size: 90.0,
                           ),
                           SizedBox(width: 10),
                           Text(
                             "get your alcher card",
-                            style: TextStyle(color: Color(0xFF182446), fontSize: 18, fontFamily: 'Game_Tape'),
+                            style: TextStyle(
+                                color: Color(0xFF182446),
+                                fontSize: 18,
+                                fontFamily: 'Game_Tape'),
                           ),
                           SizedBox(width: 50),
                         ],
@@ -659,7 +696,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     itemBuilder: (BuildContext context, int pageIndex) {
                       final int startIndex = pageIndex * 2;
                       final List<EventDetail> currentPageSuggestions =
-                          displayedSuggestions.skip(startIndex).take(2).toList();
+                          displayedSuggestions
+                              .skip(startIndex)
+                              .take(2)
+                              .toList();
 
                       return Column(
                         children: currentPageSuggestions
