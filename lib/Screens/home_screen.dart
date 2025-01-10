@@ -428,7 +428,6 @@ class _HomeScreenState extends State<HomeScreen>
                     itemBuilder: (context, index) {
                       final cardColorIndex = index % 2;
                       index = index % 3;
-                      print('hello build');
                       final event = PronitesList[index];
                       final bool isRevealed = event.isArtistRevealed ?? false;
 
@@ -484,12 +483,15 @@ class _HomeScreenState extends State<HomeScreen>
                                 width: 220,
                                 decoration: BoxDecoration(
                                   image: DecorationImage(
-                                    image: AssetImage(isRevealed
-                                        ? 'assets/images/event_cards_revealed${cardColorIndex}.png'
-                                        : 'assets/images/card_$index.png'),
+                                    image: NetworkImage(event.imgurl),
                                     // 'assets/images/card_$index.png'),
                                     fit: BoxFit.fill,
                                   ),
+                                ),
+                                child: Image.asset(isRevealed
+                                    ? 'assets/images/event_cards_revealed${cardColorIndex}.png'
+                                    : 'assets/images/card_$index.png',
+                                  fit: BoxFit.fill,
                                 ),
                               ),
                             ),
@@ -797,7 +799,7 @@ class _HomeScreenState extends State<HomeScreen>
                   child: PageView.builder(
                     controller: PageController(viewportFraction: 0.8),
                     itemCount: (displayedSuggestions.length / 2).ceil(),
-                    itemBuilder: (BuildContext context, int pageIndex) {
+                    itemBuilder: (context, pageIndex) {
                       final int startIndex = pageIndex * 2;
                       final List<EventDetail> currentPageSuggestions =
                           displayedSuggestions
