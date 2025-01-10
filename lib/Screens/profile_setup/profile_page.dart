@@ -7,7 +7,6 @@ import 'package:alcheringa/Screens/profile_setup/widgets/intrest_button.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
 
@@ -17,7 +16,7 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   late final Future<List<String>> interests;
-  String? _image;
+  String? _image; 
   final TextEditingController nicknameController = TextEditingController();
   late Future<String> _imageUrl;
 
@@ -28,7 +27,7 @@ class _ProfilePageState extends State<ProfilePage> {
       interests = ViewModelMain().getInterests(auth.currentUser!.email!);
       _imageUrl = ViewModelMain().getValue('PhotoURL');
     } else {
-      interests = Future.value([]); // Return an empty list for safety
+      interests = Future.value([]); 
     }
   }
 
@@ -51,121 +50,63 @@ class _ProfilePageState extends State<ProfilePage> {
                 children: [
                   GestureDetector(
                     onTap: () async {
-                      /* final ImagePicker picker = ImagePicker();
+                      final ImagePicker picker = ImagePicker();
                       final XFile? image =
                           await picker.pickImage(source: ImageSource.gallery);
 
-                      if (image != null) {
-                        setState(() {
-                          _image = image.path;
-                        });
-                      } */
+                      setState(() {
+                        _image = image?.path ??
+                            'assets/images/cat.jpeg'; // Default cat photo
+                      });
                     },
                     child: Stack(
                       children: [
-                        Positioned.fill(
-                          child: 
-                          FutureBuilder<String?>(
-                    future: _imageUrl,
-                    builder: (BuildContext context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return SizedBox();
-                      }
-                      if (snapshot.hasError) {
-                        print("error in fetching image");
-                        return _image == null
-                              ? Center(
-                                  child: Container(
-                                    color: Colors.green,
-                                    child: const Text(
-                                      "Pick your\n image",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontFamily: 'Game_Tape',
-                                        color: Colors.white60,
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                )
-                              : Padding(
-                                padding: const EdgeInsets.fromLTRB(15,10,15,30.0),
-                                child: Image.file(
-                                    File(_image!),
-                                    fit: BoxFit.cover,
-                                  ),
-                              );
-                      }
-                      if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                        print("no image found");
-                         return _image == null
-                              ? Center(
-                                  child: Container(
-                                    color: Colors.green,
-                                    child: const Text(
-                                      "Pick your\n image",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontFamily: 'Game_Tape',
-                                        color: Colors.white60,
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                )
-                              : Padding(
-                                padding: const EdgeInsets.fromLTRB(15,10,15,30.0),
-                                child: Image.file(
-                                    File(_image!),
-                                    fit: BoxFit.cover,
-                                  ),
-                              );;
-                      }
+          Image.asset('assets/images/profile_setup_pfp.png'),
 
-                      final String? uri = snapshot.data!;
-                      if(_imageUrl!=null||_imageUrl==" "){
-                      return Padding(
-                                padding: const EdgeInsets.fromLTRB(15,10,15,30.0),
-                                child: Image.network(
-                                    uri!,
-                                    fit: BoxFit.cover,
-                                  ),
-                              );
-                              }
-
-                              return _image == null
-                              ? Center(
-                                  child: Container(
-                                    color: Colors.green,
-                                    child: const Text(
-                                      "Pick your\n image",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontFamily: 'Game_Tape',
-                                        color: Colors.white60,
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                )
-                              : Padding(
-                                padding: const EdgeInsets.fromLTRB(15,10,15,30.0),
-                                child: Image.file(
-                                    File(_image!),
-                                    fit: BoxFit.cover,
-                                  ),
-                              );
-                    },
-                  )
-                
-                          
-                          
-                          ,
+                        Container(
+                          margin: const EdgeInsets.all(30),
+                          child: _image != null
+                              ? (_image!.startsWith('assets')
+                                  ? Image.asset(
+                                      _image!,
+                                      width: 220,
+                                      height: 220,
+                                      fit: BoxFit.cover,
+                                    )
+                                  : Image.file(
+                                      File(_image!),
+                                      width: 220,
+                                      height: 220,
+                                      fit: BoxFit.cover,
+                                    ))
+                              : FutureBuilder<String?>(
+                                  future: _imageUrl,
+                                  builder: (BuildContext context,
+                                      AsyncSnapshot<String?> snapshot) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return const CircularProgressIndicator();
+                                    }
+                                    if (snapshot.hasError ||
+                                        !snapshot.hasData ||
+                                        snapshot.data!.isEmpty) {
+                                      return Image.asset(
+                                        'assets/images/cat.jpeg',
+                                        width: 230,
+                                        height: 230,
+                                        fit: BoxFit.cover,
+                                      ); // Default cat image
+                                    }
+                                    return Image.network(
+                                      snapshot.data!,
+                                      width: 230,
+                                      height: 230,
+                                      fit: BoxFit.cover,
+                                    );
+                                  },
+                                ),
                         ),
-                        Image.asset('assets/images/profile_setup_pfp.png'),
+                        
                       ],
                     ),
                   ),
@@ -193,15 +134,15 @@ class _ProfilePageState extends State<ProfilePage> {
                     future: interests,
                     builder: (BuildContext context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return SizedBox();
+                        return const CircularProgressIndicator();
                       }
                       if (snapshot.hasError) {
-                        print("error in fetching intrests");
+                        print("Error in fetching interests");
                         return const SizedBox();
                       }
                       if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                        print("no intrets found");
-                         return const SizedBox();
+                        print("No interests found");
+                        return const SizedBox();
                       }
 
                       final List<String> interestList = snapshot.data!;
