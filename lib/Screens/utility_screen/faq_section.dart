@@ -8,7 +8,7 @@ class FaqSection extends StatefulWidget {
 class _FaqSectionState extends State<FaqSection> {
   List<FaqItem> _faqItems = [
     FaqItem(
-      question: '   Where can I buy the executive   pass?',
+      question: 'Where can I buy the executive pass?',
       answer:
       'You can buy the executive pass from the Alcheringa website or at the venue.',
     ),
@@ -18,17 +18,17 @@ class _FaqSectionState extends State<FaqSection> {
       'Yes, you can update your event schedule by logging into your Alcheringa account.',
     ),
     FaqItem(
-      question: '   What if I have a query about my   registration?',
+      question: 'What if I have a query about my registration?',
       answer:
       'You can contact the Alcheringa team at support@alcheringa.in or call +91 0000000022.',
     ),
     FaqItem(
-      question: '   Where can I find the event map?',
+      question: 'Where can I find the event map?',
       answer:
       'The event map will be available on the Alcheringa website and at the venue.',
     ),
     FaqItem(
-      question: '   Where can I park my vehicle?',
+      question: 'Where can I park my vehicle?',
       answer:
       'Parking facilities are available at the venue. Please follow the designated parking areas.',
     ),
