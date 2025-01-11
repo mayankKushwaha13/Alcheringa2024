@@ -34,8 +34,8 @@ class TeamMemberCard extends StatelessWidget {
           // Profile Picture Container
           Container(
             margin: const EdgeInsets.all(16),
-            width: 110,
-            height: 110,
+            width: 100,
+            height: 100,
             decoration: BoxDecoration(
               shape: BoxShape.rectangle,
               image: DecorationImage(

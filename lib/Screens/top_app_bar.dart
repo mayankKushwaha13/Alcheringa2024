@@ -55,34 +55,43 @@ class _TopAppBarState extends State<TopAppBar> {
                             builder: (_) => NotificationScreen()));
                   },
                   icon:
-                      Image.asset('assets/images/appbar_notification_icon.png'),
+                  Image.asset('assets/images/appbar_notification_icon.png'),
                 ),
               ),
             ],
           ),
-          Image.asset('assets/images/appbar_alcheringa.png'),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              IconButton(
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => Searchscreen()));
-                },
-                icon: Image.asset('assets/images/appbar_search_icon.png'),
+          Expanded(
+            flex: 2,
+            child: Center(
+              child: Image.asset(
+                'assets/images/appbar_alcheringa.png',
+                fit: BoxFit.contain,
+                height: 32, // Adjust size as needed
               ),
-            ],
+            ),
           ),
+
         ],
       ),
       actions: [
-        IconButton(
-          onPressed: () {
-            widget.scaffoldState.currentState!.openEndDrawer();
-          },
-          icon: Image.asset(
-            'assets/images/appbar_menu_icon.png',
-          ),
+        Row(
+          children: [
+            IconButton(
+              onPressed: () {
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (_) => Searchscreen()));
+              },
+              icon: Image.asset('assets/images/appbar_search_icon.png'),
+            ),
+            IconButton(
+              onPressed: () {
+                widget.scaffoldState.currentState!.openEndDrawer();
+              },
+              icon: Image.asset(
+                'assets/images/appbar_menu_icon.png',
+              ),
+            ),
+          ],
         ),
       ],
     );

@@ -9,84 +9,76 @@ class TeamSection extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Stack(
         children: [
-          Positioned(
-            top: 0,
-            left: 0,
-            child: Image.asset(
-              'assets/images/the_team.png',
-              width: 170,
-              height: 52,
-            ),
-          ),
-          Transform.translate(
-            offset: Offset(15, 0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 45),
-                Text(
-                  'Developer ◝ ( ᵔ ᗜᵔ ) ◜',
-                  style: TextStyle(
-                    fontFamily: 'Game_Tape',
-                    fontSize: 22,
-                    fontWeight: FontWeight.w400,
-                    color: Color.fromRGBO(255, 163, 0, 1),
-                  ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Image.asset(
+                'assets/images/the_team.png',
+                width: 170,
+                height: 52,
+              ),
+              Text(
+                'Developer ◝ ( ᵔ ᗜᵔ ) ◜',
+                style: TextStyle(
+                  fontFamily: 'Game_Tape',
+                  fontSize: 22,
+                  fontWeight: FontWeight.w400,
+                  color: Color.fromRGBO(255, 163, 0, 1),
                 ),
-                TeamMemberCard(
-                  name: 'Doremon',
-                  role: 'Head',
-                  imagePath: 'assets/images/the_team_image.png',
-                  onInstagramTap: () {
-                    print('Instagram tapped!');
-                  },
-                  onLinkedInTap: () {
-                    print('LinkedIn tapped!');
-                  },
-                  onMailTap: () {
-                    print('Mail tapped!');
-                  },
+              ),
+              TeamMemberCard(
+                name: 'Doremon',
+                role: 'Head',
+                imagePath: 'assets/images/the_team_image.png',
+                onInstagramTap: () {
+                  print('Instagram tapped!');
+                },
+                onLinkedInTap: () {
+                  print('LinkedIn tapped!');
+                },
+                onMailTap: () {
+                  print('Mail tapped!');
+                },
+              ),
+              TeamMemberCard(
+                name: 'sinchan',
+                role: 'Developer',
+                imagePath: 'assets/images/the_team_image.png',
+                onInstagramTap: () {
+                  print('Instagram tapped!');
+                },
+                onLinkedInTap: () {
+                  print('LinkedIn tapped!');
+                },
+                onMailTap: () {
+                  print('Mail tapped!');
+                },
+              ),
+              SizedBox(height: 20),
+              Text(
+                'Designers   (｡́•︿•̀｡)',
+                style: TextStyle(
+                  fontFamily: 'Game_Tape',
+                  fontSize: 22,
+                  fontWeight: FontWeight.w400,
+                  color: Color.fromRGBO(255, 163, 0, 1),
                 ),
-                TeamMemberCard(
-                  name: 'sinchan',
-                  role: 'Developer',
-                  imagePath: 'assets/images/the_team_image.png',
-                  onInstagramTap: () {
-                    print('Instagram tapped!');
-                  },
-                  onLinkedInTap: () {
-                    print('LinkedIn tapped!');
-                  },
-                  onMailTap: () {
-                    print('Mail tapped!');
-                  },
-                ),
-                SizedBox(height: 20),
-                Text(
-                  'Designers   (｡́•︿•̀｡)',
-                  style: TextStyle(
-                    fontFamily: 'Game_Tape',
-                    fontSize: 22,
-                    fontWeight: FontWeight.w400,
-                    color: Color.fromRGBO(255, 163, 0, 1),
-                  ),
-                ),
-                TeamMemberCard(
-                  name: 'jerry',
-                  role: 'Designer',
-                  imagePath: 'assets/images/the_team_image.png',
-                  onInstagramTap: () {
-                    print('Instagram tapped!');
-                  },
-                  onLinkedInTap: () {
-                    print('LinkedIn tapped!');
-                  },
-                  onMailTap: () {
-                    print('Mail tapped!');
-                  },
-                ),
-              ],
-            ),
+              ),
+              TeamMemberCard(
+                name: 'jerry',
+                role: 'Designer',
+                imagePath: 'assets/images/the_team_image.png',
+                onInstagramTap: () {
+                  print('Instagram tapped!');
+                },
+                onLinkedInTap: () {
+                  print('LinkedIn tapped!');
+                },
+                onMailTap: () {
+                  print('Mail tapped!');
+                },
+              ),
+            ],
           ),
         ],
       ),

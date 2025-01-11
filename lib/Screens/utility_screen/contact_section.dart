@@ -156,7 +156,6 @@ class CategoryButton extends StatelessWidget {
                 color: isSelected ? Colors.amber : Colors.transparent,
                 width: 3,
               ),
-              borderRadius: BorderRadius.circular(12),
               image: DecorationImage(
                 image: AssetImage(imagePath),
                 fit: BoxFit.cover,
