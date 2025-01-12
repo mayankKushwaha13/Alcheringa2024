@@ -16,7 +16,7 @@ class _sponsorScreenState extends State<sponsorScreen> {
       extendBodyBehindAppBar: true,
       appBar: _appBar(context),
       body: Container(
-              padding: EdgeInsets.all(15),
+              padding: EdgeInsets.only(left: 15,right: 15 ,top: 100),
               width: double.infinity,
               height: MediaQuery.of(context).size.height,
               decoration: BoxDecoration(

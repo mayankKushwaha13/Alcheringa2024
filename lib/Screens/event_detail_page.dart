@@ -199,12 +199,12 @@ class _EventDetailPageState extends State<EventDetailPage> {
                                   fontFamily: 'Brick_Pixel',
                                   color: Color.fromRGBO(255, 241, 232, 1),
                                   fontSize: 24,
-                                  fontWeight: FontWeight.bold,
-                                  shadows: [
-                                    Shadow(
-                                      color: Colors.black,
-                                      blurRadius: 5
-                                    )
+                                  fontWeight: FontWeight.w400,
+                                    shadows: [
+                                      Shadow(
+                                          offset: Offset(2.5, 2),
+                                          color: Colors.black,
+                                          blurRadius: 2),
                                   ]
                                 ),
                               ),
@@ -249,12 +249,12 @@ class _EventDetailPageState extends State<EventDetailPage> {
                                   fontFamily: 'Brick_Pixel',
                                   color: Color.fromRGBO(255, 241, 232, 1),
                                   fontSize: 24,
-                                  fontWeight: FontWeight.bold,
+                                  fontWeight: FontWeight.w400,
                                     shadows: [
                                       Shadow(
+                                          offset: Offset(2.5, 2),
                                           color: Colors.black,
-                                          blurRadius: 5
-                                      )
+                                          blurRadius: 2),
                                     ]
                                 ),
                               ),
