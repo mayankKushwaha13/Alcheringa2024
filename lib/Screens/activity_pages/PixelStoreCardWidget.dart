@@ -1,5 +1,6 @@
 import 'package:alcheringa/Model/stall_model.dart';
 import 'package:alcheringa/Screens/activity_pages/stalls_description_page.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:marquee/marquee.dart';
 
@@ -36,7 +37,7 @@ class PixelStoreCard extends StatelessWidget {
             left: screenWidth * 0.057,
             top: screenHeight * 0.03,
             child: Image(
-              image: NetworkImage(stall.imgurl),
+              image: CachedNetworkImageProvider(stall.imgurl),
               fit: BoxFit.fill,
             ),
           )

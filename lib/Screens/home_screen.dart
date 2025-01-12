@@ -54,10 +54,8 @@ class _HomeScreenState extends State<HomeScreen>
     getPronitesData();
     initializeSuggestions();
   }
-
   void initializeSuggestions() {
-    final List<EventDetail> list =
-        Provider.of<ViewModelMain>(context, listen: false).allEvents;
+    final List<EventDetail> list = Provider.of<ViewModelMain>(context, listen: false).allEvents;
     final List<EventDetail> suggestions = list.toList();
 
     // Shuffle and pick a limited number of suggestions
@@ -431,58 +429,61 @@ class _HomeScreenState extends State<HomeScreen>
                     itemBuilder: (context, index) {
                       final cardColorIndex = index % 2;
                       index = index % 3;
-                      if (PronitesList.isNotEmpty) {
-                        final event = PronitesList[index];
-                        final bool isRevealed = event.isArtistRevealed ?? false;
+                      final event = PronitesList[index];
+                      final bool isRevealed = event.isArtistRevealed ?? false;
 
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              if (cardColorIndex % 2 == 1)
-                                Container(
-                                  alignment: Alignment.centerLeft,
-                                  width: 60.0,
-                                  height: 35.0,
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            if (cardColorIndex % 2 == 1)
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                width: 60.0,
+                                height: 35.0,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: AssetImage(
+                                        'assets/images/hero_section_hearts_pink.png'),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              )
+                            else
+                              SizedBox(
+                                height: 35,
+                              ),
+                            if (cardColorIndex % 2 == 0)
+                              Expanded(
+                                flex: 2,
+                                child: Container(
+                                  width: 220,
+                                  alignment: Alignment.center,
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
                                       image: AssetImage(
-                                          'assets/images/hero_section_hearts_pink.png'),
-                                      fit: BoxFit.cover,
+                                          'assets/images/hero_section_unrevealed_text_holder.png'),
+                                      fit: BoxFit.fill,
                                     ),
                                   ),
-                                )
-                              else
-                                SizedBox(
-                                  height: 35,
-                                ),
-                              if (cardColorIndex % 2 == 0)
-                                Expanded(
-                                  flex: 2,
-                                  child: Container(
-                                    width: 220,
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        image: AssetImage(
-                                            'assets/images/hero_section_unrevealed_text_holder.png'),
-                                        fit: BoxFit.fill,
-                                      ),
-                                    ),
-                                    child: Text(
-                                      isRevealed ? event.artist : 'Coming soon',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: 'Brick_pixel',
-                                        fontSize: 20.0,
-                                      ),
+                                  child: Text(
+                                    isRevealed ? event.artist : 'Coming soon',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: 'Brick_pixel',
+                                      fontSize: 20.0,
                                     ),
                                   ),
                                 ),
-                              const SizedBox(height: 8.0),
-                              Expanded(
-                                flex: 9,
+                              ),
+                            const SizedBox(height: 8.0),
+                            Expanded(
+                              flex: 9,
+                              child: GestureDetector(
+                                onTap: (){
+                                  Navigator.push(context, MaterialPageRoute(builder: (_)=>EventDetailPage(event: event)));
+                                },
                                 child: Container(
                                   width: 220,
                                   decoration: BoxDecoration(
@@ -492,58 +493,57 @@ class _HomeScreenState extends State<HomeScreen>
                                       fit: BoxFit.fill,
                                     ),
                                   ),
-                                  child: Image.asset(
-                                    isRevealed
-                                        ? 'assets/images/event_cards_revealed${cardColorIndex}.png'
-                                        : 'assets/images/card_$index.png',
+                                  child: Image.asset(isRevealed
+                                      ? 'assets/images/event_cards_revealed${cardColorIndex}.png'
+                                      : 'assets/images/card_$index.png',
                                     fit: BoxFit.fill,
                                   ),
                                 ),
                               ),
-                              if (cardColorIndex % 2 == 1)
-                                Expanded(
-                                  flex: 2,
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    width: 220,
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        image: AssetImage(
-                                            'assets/images/hero_section_unrevealed_text_holder.png'),
-                                        fit: BoxFit.fill,
-                                      ),
-                                    ),
-                                    child: Text(
-                                      isRevealed ? event.artist : 'Coming soon',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: 'Brick_pixel',
-                                        fontSize: 20.0,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              if (cardColorIndex % 2 == 0)
-                                Container(
-                                  alignment: Alignment.centerLeft,
-                                  width: 60.0,
-                                  height: 35.0,
+                            ),
+                            if (cardColorIndex % 2 == 1)
+                              Expanded(
+                                flex: 2,
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  width: 220,
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
                                       image: AssetImage(
-                                          'assets/images/hero_section_hearts_blue.png'),
-                                      fit: BoxFit.cover,
+                                          'assets/images/hero_section_unrevealed_text_holder.png'),
+                                      fit: BoxFit.fill,
                                     ),
                                   ),
-                                )
-                              else
-                                SizedBox(
-                                  height: 35,
+                                  child: Text(
+                                    isRevealed ? event.artist : 'Coming soon',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: 'Brick_pixel',
+                                      fontSize: 20.0,
+                                    ),
+                                  ),
                                 ),
-                            ],
-                          ),
-                        );
-                      }
+                              ),
+                            if (cardColorIndex % 2 == 0)
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                width: 60.0,
+                                height: 35.0,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: AssetImage(
+                                        'assets/images/hero_section_hearts_blue.png'),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              )
+                            else
+                              SizedBox(
+                                height: 35,
+                              ),
+                          ],
+                        ),
+                      );
                     },
                   ),
                 ),
@@ -766,14 +766,8 @@ class _HomeScreenState extends State<HomeScreen>
                   height: 50,
                 ),
                 // Alcher Card
-                Container(
-                  height: 400,
-                  width: 400,
-                  color: Colors.white,
-                ),
-                SizedBox(
-                  height: 50,
-                ),
+                Container(height: 400,width: 400,color: Colors.white,),
+                SizedBox(height: 50,),
                 // marquee text cool stuff for you
                 Container(
                   color: Color.fromRGBO(255, 236, 38, 1),
@@ -804,9 +798,7 @@ class _HomeScreenState extends State<HomeScreen>
                     },
                   ),
                 ),
-                SizedBox(
-                  height: 20,
-                ),
+                SizedBox(height: 20,),
                 // Below is event suggestion
                 SizedBox(
                   height: 350,
@@ -835,48 +827,41 @@ class _HomeScreenState extends State<HomeScreen>
                 ),
                 // Liked Events
                 FutureBuilder(
-                    future: LikedEventsDatabase().readData(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                        List<EventDetail> likedEvents = snapshot.data!;
-                        return Column(
-                          children: [
-                            SizedBox(
-                              height: 16,
-                            ),
-                            _buildHeading(
-                                text: "Liked Events",
-                                backgroundImage: "assets/images/heading.png"),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            SizedBox(
-                              height: screenHeight * 0.63,
-                              child: ListView.builder(
-                                shrinkWrap: true,
-                                scrollDirection: Axis.horizontal,
-                                itemCount: likedEvents.length,
-                                itemBuilder: (context, index) {
-                                  EventDetail creatorCamp = likedEvents[index];
-                                  return _buildCard(
-                                    event: creatorCamp,
-                                    headingSize: 18,
-                                    isLiked: likedEvents.indexWhere((element) =>
-                                                element.artist ==
-                                                creatorCamp.artist) !=
+                  future: LikedEventsDatabase().readData(), builder: (context, snapshot){
+                    if(snapshot.hasData && snapshot.data!.isNotEmpty){
+                      List<EventDetail> likedEvents = snapshot.data!;
+                      return Column(
+                        children: [
+                          SizedBox(height: 16,),
+                          _buildHeading(text: "Liked Events", backgroundImage: "assets/images/heading.png"),
+                          SizedBox(height: 20,),
+                          SizedBox(
+                          height: screenHeight * 0.63,
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            itemCount: likedEvents.length,
+                            itemBuilder: (context, index) {
+                              EventDetail creatorCamp = likedEvents[index];
+                              return _buildCard(
+                                event: creatorCamp,
+                                headingSize: 18,
+                                isLiked:
+                                    likedEvents.indexWhere((element) => element.artist == creatorCamp.artist) !=
                                             -1
                                         ? true
                                         : false,
-                                  );
-                                },
-                              ),
-                            )
-                          ],
-                        );
-                      } else {
-                        return Container();
-                      }
-                    }),
+                              );
+                            },
+                          ),
+                        )
+                        ],
+                      );
+                    }
+                    else{
+                      return Container();
+                    }
+                }),
                 SizedBox(
                   height: bottomNavBarHeight,
                 ),
@@ -920,7 +905,6 @@ class _HomeScreenState extends State<HomeScreen>
       ),
     );
   }
-
   Widget _buildHeading({
     required String text,
     required String backgroundImage,
@@ -938,31 +922,26 @@ class _HomeScreenState extends State<HomeScreen>
       child: Center(
         child: Text(
           text,
-          style: TextStyle(
-              fontFamily: 'Game_Tape',
-              fontSize: 30,
-              color: Colors.white,
-              shadows: [
-                Shadow(
-                    offset: Offset(2.5, 2), color: Colors.black, blurRadius: 2),
-              ]),
+          style: TextStyle(fontFamily: 'Game_Tape', fontSize: 30, color: Colors.white, shadows: [
+            Shadow(offset: Offset(2.5, 2), color: Colors.black, blurRadius: 2),
+          ]),
         ),
       ),
     );
   }
 
-  Widget _buildCard(
-      {required EventDetail event,
-      required bool isLiked,
-      double headingSize = 20}) {
+  Widget _buildCard({
+    required EventDetail event,
+    required bool isLiked,
+    double headingSize = 20
+  }) {
     final screenHeight = MediaQuery.of(context).size.height;
     final widgetHeight = screenHeight * 0.6;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
       child: GestureDetector(
         onTap: () {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => EventDetailPage(event: event)));
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => EventDetailPage(event: event)));
         },
         child: Column(
           children: [
@@ -971,8 +950,7 @@ class _HomeScreenState extends State<HomeScreen>
                 Positioned.fill(
                     child: ClipRRect(
                   borderRadius: BorderRadius.circular(16),
-                  child: CachedNetworkImage(
-                    imageUrl: event.imgurl,
+                  child: CachedNetworkImage(imageUrl:event.imgurl,
                     fit: BoxFit.cover,
                   ),
                 )),
@@ -980,9 +958,7 @@ class _HomeScreenState extends State<HomeScreen>
                   height: widgetHeight,
                   width: 186 * widgetHeight / 480,
                   decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage('assets/images/card.png'),
-                          fit: BoxFit.cover)),
+                      image: DecorationImage(image: AssetImage('assets/images/card.png'), fit: BoxFit.cover)),
                 ),
                 Positioned(
                     top: 250 * widgetHeight / 480,
@@ -999,9 +975,7 @@ class _HomeScreenState extends State<HomeScreen>
                       },
                       child: Image(
                         height: 65 * widgetHeight / 480,
-                        image: isLiked
-                            ? AssetImage('assets/images/bell1.png')
-                            : AssetImage('assets/images/bell.png'),
+                        image: isLiked ? AssetImage('assets/images/bell1.png') : AssetImage('assets/images/bell.png'),
                         // fit: BoxFit.cover,
                       ),
                     )),
@@ -1013,10 +987,7 @@ class _HomeScreenState extends State<HomeScreen>
                     event.artist,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                        fontFamily: "Brick_Pixel",
-                        fontSize: headingSize,
-                        color: Colors.white),
+                    style: TextStyle(fontFamily: "Brick_Pixel", fontSize: headingSize, color: Colors.white),
                   ),
                 ),
                 // Description
@@ -1028,10 +999,7 @@ class _HomeScreenState extends State<HomeScreen>
                     event.descriptionEvent,
                     maxLines: 3,
                     overflow: TextOverflow.clip,
-                    style: TextStyle(
-                        fontFamily: "Game_Tape",
-                        fontSize: 12,
-                        color: Colors.orange),
+                    style: TextStyle(fontFamily: "Game_Tape", fontSize: 12, color: Colors.orange),
                   ),
                 ),
                 // Venue
@@ -1053,10 +1021,7 @@ class _HomeScreenState extends State<HomeScreen>
                             event.venue,
                     maxLines: 1,
                     overflow: TextOverflow.clip,
-                    style: TextStyle(
-                        fontFamily: "Game_Tape",
-                        fontSize: 12,
-                        color: Colors.white),
+                    style: TextStyle(fontFamily: "Game_Tape", fontSize: 12, color: Colors.white),
                   ),
                 ),
               ],

@@ -128,7 +128,7 @@ Future<void> updateProfilePicture(File file, String email, String name) async {
 
     // Step 7: Update SharedPreferences
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('name', name);
+    await prefs.setString('userName', name);
     await prefs.setString('PhotoURL', url);
 
     print('Profile picture updated successfully!');
@@ -178,9 +178,21 @@ Future<void> updateProfilePicture(File file, String email, String name) async {
   }
 }
  */
-void onUpdateProfile(
-    BuildContext context, File image, String email, String name) {
+void onUpdateProfile(BuildContext context, File image, String email, String name) {
+  // Show progress indicator dialog
+  showDialog(
+    context: context,
+    barrierDismissible: false, // Prevent dismissing the dialog
+    builder: (BuildContext context) {
+      return Dialog(
+        backgroundColor: Colors.transparent,
+        child: Center(child: CircularProgressIndicator()),
+      );
+    },
+  );
+
   updateProfilePicture(image, email, name).then((_) {
+    Navigator.pop(context); // Close the progress dialog
     // Show success Snackbar
     print("updated pfp");
     ScaffoldMessenger.of(context).showSnackBar(
@@ -190,6 +202,7 @@ void onUpdateProfile(
       ),
     );
   }).catchError((error) {
+    Navigator.pop(context); // Close the progress dialog
     // Show error Snackbar
     print("error pfp");
     ScaffoldMessenger.of(context).showSnackBar(
@@ -200,6 +213,7 @@ void onUpdateProfile(
     );
   });
 }
+
 
 Future<void> sendVerificationEmail(BuildContext context) async {
   try {

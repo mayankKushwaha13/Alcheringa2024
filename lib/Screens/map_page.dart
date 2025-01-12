@@ -274,7 +274,7 @@ class _MapPageState extends State<MapPage> {
                                           Text(
                                             _venueList[index].name,
                                             style: TextStyle(
-                                              fontSize: 24.0,
+                                              fontSize: 22.0,
                                               fontFamily: "Game_Tape",
                                               color: Colors.white,
                                             ),
@@ -282,7 +282,7 @@ class _MapPageState extends State<MapPage> {
                                           Text(
                                             'Upcoming events:',
                                             style: TextStyle(
-                                              fontSize: 16.0,
+                                              fontSize: 15.0,
                                               fontFamily: "Game_Tape",
                                               color: Colors.white,
                                             ),
@@ -292,7 +292,7 @@ class _MapPageState extends State<MapPage> {
                                                     ?.artist ??
                                                 "No upcoming event",
                                             style: TextStyle(
-                                              fontSize: 12.0,
+                                              fontSize: 11.0,
                                               fontFamily: "Game_Tape",
                                               color: Color(0xFFFF77A8),
                                             ),
