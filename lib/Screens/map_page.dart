@@ -405,7 +405,8 @@ class _BottomSheetState extends State<BottomSheet> {
                             MarkerId(_markers[index].name));
                       },
                       child: Container(
-                        height: 120.0,
+                        height: 99.0,
+                        width: 327,
                         decoration: BoxDecoration(
                           image: DecorationImage(
                               image: AssetImage(
