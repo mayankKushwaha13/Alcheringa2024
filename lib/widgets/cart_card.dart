@@ -25,9 +25,9 @@ class CartCard extends StatelessWidget {
     final cartProvider = Provider.of<CartProvider>(context, listen: false);
 
     return Container(
-      width: 327,
+      //width: 327,
       height: 250, // Fixed height to avoid render flow error
-      margin: EdgeInsets.all(16.0),
+      margin: EdgeInsets.all(0.0),
       decoration: BoxDecoration(
         image: DecorationImage(
           image: AssetImage('assets/images/product_details.png'),

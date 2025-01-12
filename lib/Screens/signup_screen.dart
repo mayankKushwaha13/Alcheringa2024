@@ -249,16 +249,16 @@ class _SignupScreenState extends State<SignupScreen> {
                                             MediaQuery.of(context).size.width *
                                                 0.09,
                                         onPressed: () async {
-                                          await signInWithGoogle(context,
-                                              onLoading: _setLoading, isLoggedIn: _setIsLoggedIn);
-                                          if (isLoggedIn && context.mounted) {
-                                            Navigator.pushReplacement(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      const MainScreen()),
-                                            );
-                                          }
+                                         // await signInWithGoogle(context,
+                                            //  onLoading: _setLoading, isLoggedIn: _setIsLoggedIn);
+                                         // if (isLoggedIn && context.mounted) {
+                                           // Navigator.pushReplacement(
+                                             //context,
+                                             // MaterialPageRoute(
+                                                  //builder: (context) =>
+                                                     // const MainScreen()),
+                                          //  );
+                                         // }
                                         },
                                       ),
                                       // Spacing between buttons
