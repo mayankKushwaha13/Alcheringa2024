@@ -1,4 +1,5 @@
 import 'dart:async';
+
 // import 'dart:ui' as ui;
 import 'package:alcheringa/Common/globals.dart';
 import 'package:alcheringa/Model/eventdetail.dart';
@@ -49,18 +50,18 @@ class _MapPageState extends State<MapPage> {
           position: venue.latLng,
           icon: BitmapDescriptor.defaultMarker,
           infoWindow: InfoWindow(
-            title: venue.name,
-            snippet: venue.description,
-            onTap: () async {
-              final googleMapsUrl =Uri.parse('https://www.google.com/maps/dir/?api=1&destination=${venue.latLng.latitude},${venue.latLng.longitude}');
+              title: venue.name,
+              snippet: venue.description,
+              onTap: () async {
+                final googleMapsUrl = Uri.parse(
+                    'https://www.google.com/maps/dir/?api=1&destination=${venue.latLng.latitude},${venue.latLng.longitude}');
 
-              if (await canLaunchUrl(googleMapsUrl)) {
-                await launchUrl(googleMapsUrl);
-              } else {
-                throw 'Could not open Google Maps';
-              }
-            }
-          ));
+                if (await canLaunchUrl(googleMapsUrl)) {
+                  await launchUrl(googleMapsUrl);
+                } else {
+                  throw 'Could not open Google Maps';
+                }
+              }));
     }).toSet();
   }
 
@@ -81,14 +82,18 @@ class _MapPageState extends State<MapPage> {
     int currentHour = current.hour;
     int currentMin = current.minute;
 
-    OwnTime now = OwnTime(date: currentDay, hours: currentHour, min: currentMin);
+    OwnTime now =
+        OwnTime(date: currentDay, hours: currentHour, min: currentMin);
 
-    var filteredEvents = eventList.where((event) => event.venue == venue && event.starttime.isAfter(now)).toList();
+    var filteredEvents = eventList
+        .where((event) => event.venue == venue && event.starttime.isAfter(now))
+        .toList();
     if (filteredEvents.isEmpty) {
       return null;
     }
 
-    EventDetail nextEvent = filteredEvents.reduce((a, b) => a.starttime.isAfter(b.starttime) ? b : a);
+    EventDetail nextEvent = filteredEvents
+        .reduce((a, b) => a.starttime.isAfter(b.starttime) ? b : a);
 
     return nextEvent;
   }
@@ -100,7 +105,10 @@ class _MapPageState extends State<MapPage> {
       });
     } else {
       setState(() {
-        _filteredVenue = _venueList.where((venue) => venue.name.toLowerCase().contains(query.toLowerCase())).toList();
+        _filteredVenue = _venueList
+            .where((venue) =>
+                venue.name.toLowerCase().contains(query.toLowerCase()))
+            .toList();
       });
     }
   }
@@ -126,13 +134,14 @@ class _MapPageState extends State<MapPage> {
         children: [
           GoogleMap(
             style: mapstyle,
-            initialCameraPosition: CameraPosition(target: _center, zoom: _currentZoom),
+            initialCameraPosition:
+                CameraPosition(target: _center, zoom: _currentZoom),
             onMapCreated: _onMapCreated,
             zoomControlsEnabled: false,
             myLocationEnabled: _isPermissionGranted,
             myLocationButtonEnabled: false,
             markers: _markers,
-            minMaxZoomPreference: MinMaxZoomPreference(16,20),
+            minMaxZoomPreference: MinMaxZoomPreference(16, 20),
           ),
           Positioned(
             top: 20.0,
@@ -159,10 +168,13 @@ class _MapPageState extends State<MapPage> {
                                 onTap: () async {
                                   FocusScope.of(context).unfocus();
                                   final venueLocation = venue.latLng;
-                                  final GoogleMapController controller = await _controller.future;
+                                  final GoogleMapController controller =
+                                      await _controller.future;
 
-                                  controller.animateCamera(CameraUpdate.newLatLng(venueLocation));
-                                  controller.showMarkerInfoWindow(MarkerId(venue.name));
+                                  controller.animateCamera(
+                                      CameraUpdate.newLatLng(venueLocation));
+                                  controller.showMarkerInfoWindow(
+                                      MarkerId(venue.name));
                                   setState(() {
                                     _textFieldController.text = '';
                                   });
@@ -172,7 +184,10 @@ class _MapPageState extends State<MapPage> {
                                   width: double.infinity,
                                   decoration: BoxDecoration(
                                     color: Color.fromRGBO(131, 118, 156, 1),
-                                    border: Border.all(color: Colors.black, width: 2.0, style: BorderStyle.solid),
+                                    border: Border.all(
+                                        color: Colors.black,
+                                        width: 2.0,
+                                        style: BorderStyle.solid),
                                   ),
                                   child: Text(
                                     venue.name,
@@ -207,20 +222,26 @@ class _MapPageState extends State<MapPage> {
                       child: Row(
                         children: List.generate(_markers.length, (index) {
                           return Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 10.0),
                             child: GestureDetector(
                               onTap: () async {
                                 final venueLocation = _venueList[index].latLng;
-                                final GoogleMapController mapController = await _controller.future;
+                                final GoogleMapController mapController =
+                                    await _controller.future;
 
-                                mapController.animateCamera(CameraUpdate.newLatLng(venueLocation));
-                                mapController.showMarkerInfoWindow(MarkerId(_venueList[index].name));
+                                mapController.animateCamera(
+                                    CameraUpdate.newLatLng(venueLocation));
+                                mapController.showMarkerInfoWindow(
+                                    MarkerId(_venueList[index].name));
                               },
                               child: Container(
                                 height: 120.0,
                                 decoration: BoxDecoration(
                                   image: DecorationImage(
-                                      image: AssetImage('assets/images/map_marker_holder_bg.png'), fit: BoxFit.fill),
+                                      image: AssetImage(
+                                          'assets/images/map_marker_holder_bg.png'),
+                                      fit: BoxFit.fill),
                                 ),
                                 child: Padding(
                                   padding: const EdgeInsets.all(20.0),
@@ -233,16 +254,22 @@ class _MapPageState extends State<MapPage> {
                                             padding: EdgeInsets.all(10.0),
                                             decoration: BoxDecoration(
                                               image: DecorationImage(
-                                                  image: AssetImage('assets/images/map_sprite_holder.png'), fit: BoxFit.fill),
+                                                  image: AssetImage(
+                                                      'assets/images/map_sprite_holder.png'),
+                                                  fit: BoxFit.fill),
                                             ),
-                                            child: CachedNetworkImage(imageUrl: _venueList[index].imgUrl,)),
+                                            child: CachedNetworkImage(
+                                              imageUrl:
+                                                  _venueList[index].imgUrl,
+                                            )),
                                       ),
                                       SizedBox(
                                         width: 10.0,
                                       ),
                                       Column(
                                         mainAxisSize: MainAxisSize.min,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             _venueList[index].name,
@@ -261,7 +288,9 @@ class _MapPageState extends State<MapPage> {
                                             ),
                                           ),
                                           Text(
-                                            getNextEvent(_venueList[index].name)?.artist ?? "No upcoming event",
+                                            getNextEvent(_venueList[index].name)
+                                                    ?.artist ??
+                                                "No upcoming event",
                                             style: TextStyle(
                                               fontSize: 12.0,
                                               fontFamily: "Game_Tape",
@@ -273,7 +302,8 @@ class _MapPageState extends State<MapPage> {
                                       SizedBox(
                                         width: 10.0,
                                       ),
-                                      Image.asset('assets/images/map_location_icon.png')
+                                      Image.asset(
+                                          'assets/images/map_location_icon.png')
                                     ],
                                   ),
                                 ),
@@ -325,14 +355,18 @@ class _BottomSheetState extends State<BottomSheet> {
     int currentHour = current.hour;
     int currentMin = current.minute;
 
-    OwnTime now = OwnTime(date: currentDay, hours: currentHour, min: currentMin);
+    OwnTime now =
+        OwnTime(date: currentDay, hours: currentHour, min: currentMin);
 
-    var filteredEvents = eventList.where((event) => event.venue == venue && event.starttime.isAfter(now)).toList();
+    var filteredEvents = eventList
+        .where((event) => event.venue == venue && event.starttime.isAfter(now))
+        .toList();
     if (filteredEvents.isEmpty) {
       return null;
     }
 
-    EventDetail nextEvent = filteredEvents.reduce((a, b) => a.starttime.isAfter(b.starttime) ? b : a);
+    EventDetail nextEvent = filteredEvents
+        .reduce((a, b) => a.starttime.isAfter(b.starttime) ? b : a);
 
     return nextEvent;
   }
@@ -358,20 +392,25 @@ class _BottomSheetState extends State<BottomSheet> {
               child: Row(
                 children: List.generate(_markers.length, (index) {
                   return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 5.0),
                     child: GestureDetector(
                       onTap: () async {
                         final venueLocation = _markers[index].latLng;
-                        final GoogleMapController mapController = await widget.controller.future;
+                        final GoogleMapController mapController =
+                            await widget.controller.future;
 
-                        mapController.animateCamera(CameraUpdate.newLatLng(venueLocation));
-                        mapController.showMarkerInfoWindow(MarkerId(_markers[index].name));
+                        mapController.animateCamera(
+                            CameraUpdate.newLatLng(venueLocation));
+                        mapController.showMarkerInfoWindow(
+                            MarkerId(_markers[index].name));
                       },
                       child: Container(
                         height: 120.0,
                         decoration: BoxDecoration(
                           image: DecorationImage(
-                              image: AssetImage('assets/images/map_marker_holder_bg.png'), fit: BoxFit.fill),
+                              image: AssetImage(
+                                  'assets/images/map_marker_holder_bg.png'),
+                              fit: BoxFit.fill),
                         ),
                         child: Padding(
                           padding: const EdgeInsets.all(20.0),
@@ -384,9 +423,12 @@ class _BottomSheetState extends State<BottomSheet> {
                                     padding: EdgeInsets.all(10.0),
                                     decoration: BoxDecoration(
                                       image: DecorationImage(
-                                          image: AssetImage('assets/images/map_sprite_holder.png'), fit: BoxFit.fill),
+                                          image: AssetImage(
+                                              'assets/images/map_sprite_holder.png'),
+                                          fit: BoxFit.fill),
                                     ),
-                                    child: CachedNetworkImage(imageUrl:_markers[index].imgUrl)),
+                                    child: CachedNetworkImage(
+                                        imageUrl: _markers[index].imgUrl)),
                               ),
                               SizedBox(
                                 width: 10.0,
@@ -412,7 +454,9 @@ class _BottomSheetState extends State<BottomSheet> {
                                     ),
                                   ),
                                   Text(
-                                    getNextEvent(_markers[index].name)?.artist ?? "No upcoming event",
+                                    getNextEvent(_markers[index].name)
+                                            ?.artist ??
+                                        "No upcoming event",
                                     style: TextStyle(
                                       fontSize: 12.0,
                                       fontFamily: "Game_Tape",
