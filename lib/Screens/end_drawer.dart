@@ -138,18 +138,20 @@ class _EndDrawerState extends State<EndDrawer> {
                                 if (snapshot.connectionState == ConnectionState.waiting) {
                                   return CircularProgressIndicator();
                                 }
-                                if (snapshot.hasData) {
-                                  return CachedNetworkImage(imageUrl:snapshot.data!,
+                                if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                                  return CachedNetworkImage(
+                                    imageUrl:snapshot.data!,
                                     width: 120.0, // Adjust size
                                     height: 120.0,
                                     fit: BoxFit.cover
                                   );
                                 }
-                                log("HERE");
+                                // log("HERE");
                                 return Image.asset(
                                   'assets/images/cat.jpg',
-                                  width: 70.0, // Adjust size
-                                  height: 70.0,
+                                  width: 120.0, // Adjust size
+                                  height: 120.0,
+                                  fit: BoxFit.cover,
                                 );
                               },
                             ),
