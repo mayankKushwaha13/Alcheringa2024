@@ -119,98 +119,101 @@ class _EndDrawerState extends State<EndDrawer> {
                   ),
                 ),
               ),
-              ListView(
-                padding: EdgeInsets.only(top: 50.0, left: 20.0, right: 39.0),
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        Image.asset(
-                          'assets/images/sidebar_profile_bg.png',
-                        ),
-                        Column(
-                          children: [
-                            FutureBuilder(
-                              future: _loadImage(),
-                              builder: (context, snapshot) {
-                                if (snapshot.connectionState == ConnectionState.waiting) {
-                                  return CircularProgressIndicator();
-                                }
-                                if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                                  return CachedNetworkImage(
-                                    imageUrl:snapshot.data!,
+              Padding(
+                padding: const EdgeInsets.only(bottom: 30.0, top: 10.0),
+                child: ListView(
+                  padding: EdgeInsets.only(top: 40.0, left: 20.0, right: 39.0),
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          Image.asset(
+                            'assets/images/sidebar_profile_bg.png',
+                          ),
+                          Column(
+                            children: [
+                              FutureBuilder(
+                                future: _loadImage(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState == ConnectionState.waiting) {
+                                    return CircularProgressIndicator();
+                                  }
+                                  if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                                    return CachedNetworkImage(
+                                      imageUrl:snapshot.data!,
+                                      width: 120.0, // Adjust size
+                                      height: 120.0,
+                                      fit: BoxFit.cover
+                                    );
+                                  }
+                                  // log("HERE");
+                                  return Image.asset(
+                                    'assets/images/cat.jpg',
                                     width: 120.0, // Adjust size
                                     height: 120.0,
-                                    fit: BoxFit.cover
+                                    fit: BoxFit.cover,
                                   );
-                                }
-                                // log("HERE");
-                                return Image.asset(
-                                  'assets/images/cat.jpg',
-                                  width: 120.0, // Adjust size
-                                  height: 120.0,
-                                  fit: BoxFit.cover,
-                                );
-                              },
-                            ),
-                            SizedBox(
-                              height: 30.0,
-                            ),
-                            Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                Image.asset('assets/images/sidebar_profile_name_bg.png'),
-                                FutureBuilder(
-                                  future: _getName(),
-                                  builder: (context, snapshot) {
-                                    return Text(
-                                      snapshot.data ?? "Unknown",
-                                      style: TextStyle(fontSize: 16.0, fontFamily: 'Game_Tape', color: Colors.white),
-                                    );
-                                  },
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ],
+                                },
+                              ),
+                              SizedBox(
+                                height: 30.0,
+                              ),
+                              Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  Image.asset('assets/images/sidebar_profile_name_bg.png'),
+                                  FutureBuilder(
+                                    future: _getName(),
+                                    builder: (context, snapshot) {
+                                      return Text(
+                                        snapshot.data ?? "Unknown",
+                                        style: TextStyle(fontSize: 16.0, fontFamily: 'Game_Tape', color: Colors.white),
+                                      );
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  ...sideBarItemsList1.map(
-                    (item) => SideBarItems(
-                      name: item['name'],
-                      iconPath: item['iconPath'],
-                      onTap: item['onTap'],
+                    ...sideBarItemsList1.map(
+                      (item) => SideBarItems(
+                        name: item['name'],
+                        iconPath: item['iconPath'],
+                        onTap: item['onTap'],
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 25.0,
-                  ),
-                  ...sideBarItemsList2.map(
-                    (item) => SideBarItems(
-                      name: item['name'],
-                      iconPath: item['iconPath'],
-                      onTap: item['onTap'],
+                    SizedBox(
+                      height: 25.0,
                     ),
-                  ),
-                  SizedBox(
-                    height: 25.0,
-                  ),
-                  SideBarItems(
-                    name: 'SIGN OUT',
-                    iconPath: 'assets/images/sidebar_signout_icon.png',
-                    onTap: () {
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(builder: (context) => welcomeScreen()),
-                        (Route<dynamic> route) => false,
-                      );
-                      auth.signOut();
-                    },
-                  )
-                ],
+                    ...sideBarItemsList2.map(
+                      (item) => SideBarItems(
+                        name: item['name'],
+                        iconPath: item['iconPath'],
+                        onTap: item['onTap'],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 25.0,
+                    ),
+                    SideBarItems(
+                      name: 'SIGN OUT',
+                      iconPath: 'assets/images/sidebar_signout_icon.png',
+                      onTap: () {
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(builder: (context) => welcomeScreen()),
+                          (Route<dynamic> route) => false,
+                        );
+                        auth.signOut();
+                      },
+                    )
+                  ],
+                ),
               ),
             ],
           ),

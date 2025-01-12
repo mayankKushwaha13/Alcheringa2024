@@ -6,9 +6,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:marquee/marquee.dart';
-
 import 'package:provider/provider.dart';
-
 import '../../Model/eventdetail.dart';
 import '../../Model/view_model_main.dart';
 import '../../utils/styles/colors.dart';
@@ -44,7 +42,6 @@ class _SearchscreenState extends State<Searchscreen> {
       setState(() {
         _stalls = stalls;
         _allEvents = events;
-        // print("This is stalls list: ${stalls.first.imgurl}");
         _filteredStalls = List.from(_stalls);
       });
       print('Hello ${_stalls.first.name}');

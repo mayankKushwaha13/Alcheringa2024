@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreenContainerWidget extends StatelessWidget {
@@ -42,7 +43,7 @@ class HomeScreenContainerWidget extends StatelessWidget {
                         height: 200,
                         decoration: BoxDecoration(
                             image: DecorationImage(
-                              image: NetworkImage(imgurl),
+                              image: CachedNetworkImageProvider(imgurl),
                               fit: BoxFit.cover,
                             ),
                             borderRadius: BorderRadius.only(
