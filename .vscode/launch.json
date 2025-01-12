@@ -8,7 +8,7 @@
             "name": "Alcheringa2024",
             "request": "launch",
             "type": "dart",
-            "program": "lib/screens/main.dart"
+            "program": "lib/main.dart"
         },
         {
             "name": "Alcheringa2024 (profile mode)",
@@ -21,7 +21,7 @@
             "request": "launch",
             "type": "dart",
             "flutterMode": "release",
-            "program": "lib/screens/main.dart"
+            "program": "lib/main.dart"
         }
     ]
 }

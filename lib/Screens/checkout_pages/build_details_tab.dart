@@ -33,12 +33,12 @@ Widget buildDetailsTab({
               height: 2,
             ),
             CustomImageTextField(
-                hintText: 'Enter your name', controller: nameController),
+                hintText: 'Enter your name', controller: nameController,),
             SizedBox(
               height: 10,
             ),
             CustomImageTextField(
-                hintText: 'Phone Number', controller: phoneController),
+                hintText: 'Phone Number', controller: phoneController, isNumber: true,),
             SizedBox(
               height: 97,
             ),
@@ -57,12 +57,12 @@ Widget buildDetailsTab({
               height: 2,
             ),
             CustomImageTextField(
-                hintText: 'Address Line 1', controller: addressLine1Controller),
+                hintText: 'Address Line 1', controller: addressLine1Controller,),
             SizedBox(
               height: 10,
             ),
             CustomImageTextField(
-                hintText: 'Address Line 2', controller: addressLine2Controller),
+                hintText: 'Address Line 2', controller: addressLine2Controller,),
             SizedBox(
               height: 10,
             ),
@@ -152,7 +152,7 @@ Widget buildDetailsTab({
               height: 10,
             ),
             CustomImageTextField(
-                hintText: 'Pincode', controller: pincodeController),
+                hintText: 'Pincode', controller: pincodeController, isNumber: true,),
             SizedBox(
               height: 19,
             ),
