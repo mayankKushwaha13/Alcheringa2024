@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:alcheringa/Common/globals.dart';
 import 'package:alcheringa/Model/view_model_main.dart';
 import 'package:alcheringa/Screens/welcome_screen.dart';
+import 'package:alcheringa/provider/event_provider.dart';
 import 'package:alcheringa/screens/main_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -35,6 +36,7 @@ Future<void> main() async {
     providers: [
       ChangeNotifierProvider(create: (_) => ViewModelMain()),
       ChangeNotifierProvider(create: (_) => cartProvider),
+      ChangeNotifierProvider(create: (_) => EventProvider()),
       // ChangeNotifierProvider(
       //   create: (_) => ScheduleViewModel(),
       //   child: Schedule(),
@@ -93,20 +95,22 @@ class _SplashScreenState extends State<SplashScreen> {
     //   print(value);
     // });
 
-    _controller = VideoPlayerController.asset("assets/SplashMovie/splash_screen.mp4")
-      ..initialize().then((_) {
-        setState(() {
-          _controller.play();
-          isUserLoggedIn = isLoggedIn;
-          _controller.setLooping(true);
-        });
-      });
+    _controller =
+        VideoPlayerController.asset("assets/SplashMovie/splash_screen.mp4")
+          ..initialize().then((_) {
+            setState(() {
+              _controller.play();
+              isUserLoggedIn = isLoggedIn;
+              _controller.setLooping(true);
+            });
+          });
 
     Timer(
       const Duration(seconds: 3),
       () {
         // checking signup screen, change it to main screen after done
-        final nextScreen = isUserLoggedIn && isVerified ? const MainScreen() : welcomeScreen();
+        final nextScreen =
+            isUserLoggedIn && isVerified ? const MainScreen() : welcomeScreen();
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => nextScreen),
