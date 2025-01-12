@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:alcheringa/Common/globals.dart';
 import 'package:alcheringa/Screens/orderScreen/order_screen.dart';
 import 'package:alcheringa/Screens/profile_setup/profile_page.dart';
@@ -135,15 +137,16 @@ class _EndDrawerState extends State<EndDrawer> {
                                 if (snapshot.connectionState == ConnectionState.waiting) {
                                   return CircularProgressIndicator();
                                 }
-                                if (snapshot.hasData) {
+                                if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                                   return Image.network(
                                     snapshot.data!,
                                     width: 120.0, // Adjust size
                                     height: 120.0,
                                   );
                                 }
+                                log("HERE");
                                 return Image.asset(
-                                  'assets/images/home_selected.png',
+                                  'assets/images/cat.jpg',
                                   width: 70.0, // Adjust size
                                   height: 70.0,
                                 );
