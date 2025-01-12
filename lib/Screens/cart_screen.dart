@@ -124,13 +124,16 @@ class CartScreen extends StatelessWidget {
                         itemCount: cartProvider.cartItems.length,
                         itemBuilder: (context, index) {
                           final item = cartProvider.cartItems[index];
-                          return CartCard(
-                            title: item.name,
-                            subtitle: item.type,
-                            price: double.parse(item.price),
-                            size: item.size,
-                            imageUrl: item.imageUrl,
-                            quantity: int.parse(item.count),
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 15),
+                            child: CartCard(
+                              title: item.name,
+                              subtitle: item.type,
+                              price: double.parse(item.price),
+                              size: item.size,
+                              imageUrl: item.imageUrl,
+                              quantity: int.parse(item.count),
+                            ),
                           );
                         },
                       ),
@@ -151,13 +154,16 @@ class CartScreen extends StatelessWidget {
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
-                    Container(
-                      width: 190.0,
-                      height: 50.47,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage('assets/images/sign_in.png'),
-                          fit: BoxFit.cover,
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Container(
+                        width: 190.0,
+                        height: 50.47,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage('assets/images/sign_in.png'),
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                     ),

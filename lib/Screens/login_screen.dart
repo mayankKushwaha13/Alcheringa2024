@@ -222,15 +222,15 @@ class _LoginScreenState extends State<LoginScreen> {
                                 logoSize:
                                 MediaQuery.of(context).size.width * 0.09,
                                 onPressed: () async {
-                                  await signInWithGoogle(context, onLoading: _setLoading, isLoggedIn: _setLoggedIn);
-                                  if (isLoggedIn && context.mounted) {
-                                    Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                          const MainScreen()),
-                                    );
-                                  }
+                                  //await signInWithGoogle(context, onLoading: _setLoading, isLoggedIn: _setLoggedIn);
+                                  //if (isLoggedIn && context.mounted) {
+                                   // Navigator.pushReplacement(
+                                    //  context,
+                                     // MaterialPageRoute(
+                                       //   builder: (context) =>
+                                        //  const MainScreen()),
+                                    //);
+                                 // }
                                 },
                               ),
                               // Spacing between buttons

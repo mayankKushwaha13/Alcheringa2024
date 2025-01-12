@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "671924222085-svnaifj0bl1no74lnqf0tfv056igvajh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.alcheringa.alcheringa",
+            "certificate_hash": "db06e35060cc734c2fe8aeaa30cdcd6e871ae1b9"
+          }
+        },
+        {
           "client_id": "671924222085-as1eeb5n4mf0q88g9sugdri43i09k178.apps.googleusercontent.com",
           "client_type": 3
         }

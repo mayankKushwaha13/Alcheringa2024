@@ -20,21 +20,25 @@ class _IntrestButtonState extends State<IntrestButton> {
   void toggleSelection() {
     setState(() {
       selected = !selected;
-      if(widget.onSelected!=null)widget.onSelected!(widget.intrest, selected);
+      if (widget.onSelected != null) {
+        widget.onSelected!(widget.intrest, selected);
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: toggleSelection,
+      onTap: widget.onSelected != null ? toggleSelection : null,
       child: Stack(
         children: [
           Positioned.fill(
             child: Image.asset(
-              selected
-                  ? "assets/images/profile_setup_interest_bg_sel.png"
-                  : "assets/images/profile_setup_interest_bg_unsel.png",
+              widget.onSelected == null
+                  ? "assets/images/profile_setup_interest_bg_unsel.png"
+                  : selected
+                      ? "assets/images/profile_setup_interest_bg_sel.png"
+                      : "assets/images/profile_setup_interest_bg_unsel.png",
             ),
           ),
           Positioned.fill(
@@ -43,8 +47,8 @@ class _IntrestButtonState extends State<IntrestButton> {
                 widget.intrest,
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontFamily: 'Game_Tape',
-                  color: selected ? Color(0xFF83769C) : Color(0xFF1D2B53),
+                  fontFamily: 'Alcherpixel',
+                  color: widget.onSelected == null?Color(0xFF1D2B53):selected ? Color(0xFF83769C) : Color(0xFF1D2B53),
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                 ),

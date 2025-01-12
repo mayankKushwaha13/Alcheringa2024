@@ -68,6 +68,23 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   decoration: BoxDecoration(
                     color: Colors.black.withOpacity(0.5),
                   ),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 15.0),
+                          child: Image.asset(
+                            'assets/images/back_button.png',
+                            width: 54.0,
+                            height: 54.0,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
                 SizedBox(height: 20.0),
 
@@ -78,13 +95,13 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     alignment: Alignment.center,
                     children: [
                       Container(
-                        width: 345.0,
+                        width: MediaQuery.of(context).size.width,
                         height: 54,
                         decoration: BoxDecoration(
                           image: DecorationImage(
                             image: AssetImage(
                                 'assets/images/progress_details.png'),
-                            fit: BoxFit.cover,
+                            fit: BoxFit.fill,
                           ),
                         ),
                       ),
@@ -103,13 +120,13 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
                 // Content Section
                 Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 34),
+                    padding: EdgeInsets.symmetric(horizontal: 12),
                     child: _buildContentForTab(_currentIndex)),
                 SizedBox(height: 16.0),
 
                 // Next Button
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 55),
+                  padding: EdgeInsets.symmetric(horizontal: 12),
                   child: GestureDetector(
                     onTap: () {
                       if ((areFieldsValid() && _currentIndex == 1)) {
@@ -127,16 +144,19 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     child: Stack(
                       alignment: Alignment.center,
                       children: [
-                        Container(
-                          width: 206,
-                          height: 59,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: _currentIndex != 3
-                                  ? AssetImage('assets/images/next_button.png')
-                                  : AssetImage(
-                                      'assets/images/continue_shopping.png'),
-                              fit: BoxFit.cover,
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Container(
+                            width: 206,
+                            height: 59,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: _currentIndex != 3
+                                    ? AssetImage('assets/images/next_button.png')
+                                    : AssetImage(
+                                        'assets/images/continue_shopping.png'),
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
                         ),

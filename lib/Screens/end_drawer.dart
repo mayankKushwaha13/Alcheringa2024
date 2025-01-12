@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:alcheringa/Common/globals.dart';
 import 'package:alcheringa/Screens/orderScreen/order_screen.dart';
 import 'package:alcheringa/Screens/profile_setup/profile_page.dart';
 import 'package:alcheringa/Screens/sponsersScreen/sponser_screen.dart';
 import 'package:alcheringa/Screens/welcome_screen.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../Model/view_model_main.dart';
@@ -136,14 +139,15 @@ class _EndDrawerState extends State<EndDrawer> {
                                   return CircularProgressIndicator();
                                 }
                                 if (snapshot.hasData) {
-                                  return Image.network(
-                                    snapshot.data!,
+                                  return CachedNetworkImage(imageUrl:snapshot.data!,
                                     width: 120.0, // Adjust size
                                     height: 120.0,
+                                    fit: BoxFit.cover
                                   );
                                 }
+                                log("HERE");
                                 return Image.asset(
-                                  'assets/images/home_selected.png',
+                                  'assets/images/cat.jpg',
                                   width: 70.0, // Adjust size
                                   height: 70.0,
                                 );
