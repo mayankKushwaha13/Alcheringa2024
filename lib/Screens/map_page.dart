@@ -31,6 +31,7 @@ class _MapPageState extends State<MapPage> {
   String selectedVenue = '';
   List<VenueModel> _filteredVenue = [];
   List<VenueModel> _venueList = [];
+  List<EventDetail> eventList = [];
 
   void _onMapCreated(GoogleMapController controller) {
     _controller.complete(controller);
@@ -64,11 +65,31 @@ class _MapPageState extends State<MapPage> {
 
   Future<void> getData() async {
     final venueList = await ViewModelMain().getVenues();
+    final _eventList = await ViewModelMain().getAllEvents();
     setState(() {
       _markers = convertToMarkers(venueList);
       _venueList = venueList;
       _filteredVenue = venueList;
+      eventList = _eventList;
     });
+  }
+
+  EventDetail? getNextEvent(String venue) {
+    DateTime current = DateTime.now();
+    int currentDay = current.day;
+    int currentHour = current.hour;
+    int currentMin = current.minute;
+
+    OwnTime now = OwnTime(date: currentDay, hours: currentHour, min: currentMin);
+
+    var filteredEvents = eventList.where((event) => event.venue == venue && event.starttime.isAfter(now)).toList();
+    if (filteredEvents.isEmpty) {
+      return null;
+    }
+
+    EventDetail nextEvent = filteredEvents.reduce((a, b) => a.starttime.isAfter(b.starttime) ? b : a);
+
+    return nextEvent;
   }
 
   void _filterVenue(String query) {
@@ -87,11 +108,11 @@ class _MapPageState extends State<MapPage> {
   void initState() {
     super.initState();
     _checkAndRequestPermission();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _scaffoldKey.currentState?.showBottomSheet((BuildContext context) {
-        return BottomSheet(controller: _controller,);
-      });
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   _scaffoldKey.currentState?.showBottomSheet((BuildContext context) {
+    //     return BottomSheet(controller: _controller,);
+    //   });
+    // });
     getData();
   }
 
@@ -170,6 +191,104 @@ class _MapPageState extends State<MapPage> {
               ),
             ),
           ),
+          Positioned(
+            bottom: 0,
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: List.generate(_markers.length, (index) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                            child: GestureDetector(
+                              onTap: () async {
+                                final venueLocation = _venueList[index].latLng;
+                                final GoogleMapController mapController = await _controller.future;
+
+                                mapController.animateCamera(CameraUpdate.newLatLng(venueLocation));
+                                mapController.showMarkerInfoWindow(MarkerId(_venueList[index].name));
+                              },
+                              child: Container(
+                                height: 120.0,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image: AssetImage('assets/images/map_marker_holder_bg.png'), fit: BoxFit.fill),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(20.0),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      AspectRatio(
+                                        aspectRatio: 1,
+                                        child: Container(
+                                            padding: EdgeInsets.all(10.0),
+                                            decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                  image: AssetImage('assets/images/map_sprite_holder.png'), fit: BoxFit.fill),
+                                            ),
+                                            child: Image.network(_venueList[index].imgUrl)),
+                                      ),
+                                      SizedBox(
+                                        width: 10.0,
+                                      ),
+                                      Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            _venueList[index].name,
+                                            style: TextStyle(
+                                              fontSize: 24.0,
+                                              fontFamily: "Game_Tape",
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          Text(
+                                            'Upcoming events:',
+                                            style: TextStyle(
+                                              fontSize: 16.0,
+                                              fontFamily: "Game_Tape",
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          Text(
+                                            getNextEvent(_venueList[index].name)?.artist ?? "No upcoming event",
+                                            style: TextStyle(
+                                              fontSize: 12.0,
+                                              fontFamily: "Game_Tape",
+                                              color: Color(0xFFFF77A8),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        width: 10.0,
+                                      ),
+                                      Image.asset('assets/images/map_location_icon.png')
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        }),
+                      ),
+                    ),
+                    SizedBox(
+                      height: bottomNavBarHeight,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          )
         ],
       ),
     );
