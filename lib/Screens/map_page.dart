@@ -134,7 +134,7 @@ class _MapPageState extends State<MapPage> {
             minMaxZoomPreference: MinMaxZoomPreference(16,20),
           ),
           Positioned(
-            top: 30.0,
+            top: 20.0,
             left: 0.0,
             right: 0.0,
             child: Padding(
@@ -145,6 +145,7 @@ class _MapPageState extends State<MapPage> {
                     hintText: 'Search',
                     controller: _textFieldController,
                     onChanged: _filterVenue,
+                    height: 50,
                   ),
                   if (_textFieldController.text.isNotEmpty)
                     Padding(
