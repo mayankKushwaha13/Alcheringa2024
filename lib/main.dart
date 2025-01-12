@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:alcheringa/Common/globals.dart';
 import 'package:alcheringa/Model/view_model_main.dart';
-import 'package:alcheringa/Screens/merch_screen.dart';
 import 'package:alcheringa/Screens/welcome_screen.dart';
 import 'package:alcheringa/screens/main_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -11,10 +10,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 
-import '../Database/DBHandler.dart';
-import '../Notification/notification_services.dart';
-import '../firebase_options.dart';
-import '../provider/cart_provider.dart';
+import 'Database/DBHandler.dart';
+import 'Notification/notification_services.dart';
+import 'firebase_options.dart';
+import 'provider/cart_provider.dart';
 
 @pragma('vm:entry-poiny')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -99,6 +98,7 @@ class _SplashScreenState extends State<SplashScreen> {
         setState(() {
           _controller.play();
           isUserLoggedIn = isLoggedIn;
+          _controller.setLooping(true);
         });
       });
 
@@ -117,8 +117,10 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: SizedBox.expand(child: VideoPlayer(_controller)),
+    return Scaffold(
+      body: Center(
+        child: Expanded(child: VideoPlayer(_controller)),
+      ),
     );
   }
 }
