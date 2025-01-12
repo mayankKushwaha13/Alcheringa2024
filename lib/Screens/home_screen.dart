@@ -9,6 +9,7 @@ import 'package:alcheringa/Model/pass_model.dart';
 import 'package:alcheringa/Model/view_model_main.dart';
 import 'package:alcheringa/Screens/activity_pages/widgets/suggestion_events.dart';
 import 'package:alcheringa/Services/retrofit.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -944,8 +945,7 @@ class _HomeScreenState extends State<HomeScreen>
                 Positioned.fill(
                     child: ClipRRect(
                   borderRadius: BorderRadius.circular(16),
-                  child: Image.network(
-                    event.imgurl,
+                  child: CachedNetworkImage(imageUrl:event.imgurl,
                     fit: BoxFit.cover,
                   ),
                 )),

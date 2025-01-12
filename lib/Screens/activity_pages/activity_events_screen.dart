@@ -3,6 +3,7 @@ import 'package:alcheringa/Database/liked_events.dart';
 import 'package:alcheringa/Model/eventdetail.dart';
 import 'package:alcheringa/Model/view_model_main.dart';
 import 'package:alcheringa/Screens/event_detail_page.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class ActivityEventsScreen extends StatefulWidget {
@@ -248,8 +249,8 @@ class _ActivityEventsScreenState extends State<ActivityEventsScreen> {
                 Positioned.fill(
                     child: ClipRRect(
                   borderRadius: BorderRadius.circular(16),
-                  child: Image.network(
-                    event.imgurl,
+                  child: CachedNetworkImage(
+                    imageUrl:event.imgurl,
                     fit: BoxFit.cover,
                   ),
                 )),

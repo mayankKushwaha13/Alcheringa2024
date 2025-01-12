@@ -1,6 +1,7 @@
 import 'package:alcheringa/Model/orders.dart';
 import 'package:alcheringa/Model/view_model_main.dart';
 import 'package:alcheringa/utils/styles/colors.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class OrderList extends StatelessWidget {
@@ -47,7 +48,7 @@ class OrderList extends StatelessWidget {
                           width: 135,
                           child: Padding(
                             padding: const EdgeInsets.all(5),
-                            child: Image.network(order.image),
+                            child: CachedNetworkImage(imageUrl:order.image),
                           ),
                         ),
                         SizedBox(width: 15,),

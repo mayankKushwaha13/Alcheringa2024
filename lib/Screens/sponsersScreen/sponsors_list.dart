@@ -1,6 +1,7 @@
 import 'package:alcheringa/Model/sponsors_model.dart';
 import 'package:alcheringa/Model/view_model_main.dart';
 import 'package:alcheringa/utils/styles/colors.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:marquee/marquee.dart';
@@ -78,8 +79,7 @@ class _sponsors_listState extends State<sponsors_list> {
                                     width: 3,
                                   ),
                                 ),
-                                child: Image.network(
-                                  sponsor.imageurl,
+                                child: CachedNetworkImage(imageUrl:sponsor.imageurl,
                                   fit: BoxFit.fitHeight,
                                 ),
                               ),
@@ -145,8 +145,7 @@ class _sponsors_listState extends State<sponsors_list> {
                                   width: 3,
                                 ),
                               ),
-                              child: Image.network(
-                                sponsor.imageurl,
+                              child: CachedNetworkImage(imageUrl:sponsor.imageurl,
                                 fit: BoxFit.fitHeight,
                               ),
                             ),

@@ -6,6 +6,7 @@ import 'package:alcheringa/Model/own_time.dart';
 import 'package:alcheringa/Model/venue_model.dart';
 import 'package:alcheringa/Model/view_model_main.dart';
 import 'package:alcheringa/Screens/activity_pages/pixel_text_field.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -234,7 +235,7 @@ class _MapPageState extends State<MapPage> {
                                               image: DecorationImage(
                                                   image: AssetImage('assets/images/map_sprite_holder.png'), fit: BoxFit.fill),
                                             ),
-                                            child: Image.network(_venueList[index].imgUrl)),
+                                            child: CachedNetworkImage(imageUrl: _venueList[index].imgUrl,)),
                                       ),
                                       SizedBox(
                                         width: 10.0,
@@ -385,7 +386,7 @@ class _BottomSheetState extends State<BottomSheet> {
                                       image: DecorationImage(
                                           image: AssetImage('assets/images/map_sprite_holder.png'), fit: BoxFit.fill),
                                     ),
-                                    child: Image.network(_markers[index].imgUrl)),
+                                    child: CachedNetworkImage(imageUrl:_markers[index].imgUrl)),
                               ),
                               SizedBox(
                                 width: 10.0,

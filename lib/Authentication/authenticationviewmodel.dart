@@ -81,8 +81,56 @@ Future<void> addIntrestToDb(List<String> intrestList, String email) async {
   }
 }
 
+Future<void> updateProfilePicture(File file, String email, String name) async {
+  try {
+    // Step 1: Read the file as bytes
+    List<int> imageBytes = await file.readAsBytes();
 
+    // Step 2: Decode the image
+    img.Image? image = img.decodeImage(Uint8List.fromList(imageBytes));
+    if (image == null) {
+      throw Exception("Unable to decode the image file");
+    }
 
+    // Step 3: Compress the image
+    List<int> compressedBytes = img.encodeJpg(image, quality: 60);
+
+    // Step 4: Upload to Firebase Storage
+    final ref = FirebaseStorage.instance.ref().child('Users/$email.jpg'); // Use a unique path
+    TaskSnapshot uploadSnapshot = await ref.putData(
+      Uint8List.fromList(compressedBytes),
+      SettableMetadata(contentType: 'image/jpeg'), // Set MIME type explicitly
+    );
+
+    if (uploadSnapshot.state != TaskState.success) {
+      throw Exception("Failed to upload the image");
+    }
+
+    print('Data transferred: ${uploadSnapshot.bytesTransferred / (1024 * 1024)} MB');
+
+    // Step 5: Get the download URL
+    String url = await ref.getDownloadURL();
+    print("Download URL: $url");
+
+    // Step 6: Update Firestore with the correct URL
+    await FirebaseFirestore.instance.collection('USERS').doc(email).update({
+      'Name': name,
+      'PhotoURL': url,
+    });
+
+    // Step 7: Update SharedPreferences
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('name', name);
+    await prefs.setString('PhotoURL', url);
+
+    print('Profile picture updated successfully!');
+  } catch (e, stackTrace) {
+    print("Error updating profile picture: $e");
+    print("Stack trace: $stackTrace");
+  }
+}
+
+/* 
 Future<void> updateProfilePicture(File file, String email, String name) async {
   try {
     List<int> imageBytes = await file.readAsBytes();
@@ -104,6 +152,8 @@ Future<void> updateProfilePicture(File file, String email, String name) async {
 
     String url = await ref.getDownloadURL();
 
+    print("url = $url");
+
     await FirebaseFirestore.instance.collection('USERS').doc(email).update({
       'Name': name,
       'PhotoURL': url,
@@ -119,7 +169,7 @@ Future<void> updateProfilePicture(File file, String email, String name) async {
     print("Error updating profile picture: $e");
   }
 }
-
+ */
 void onUpdateProfile(BuildContext context, File image, String email, String name) {
   updateProfilePicture(image, email, name).then((_) {
     // Show success Snackbar

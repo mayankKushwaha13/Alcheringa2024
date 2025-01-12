@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:alcheringa/Model/stall_model.dart';
 import 'package:alcheringa/Screens/activity_pages/widgets/competition_card.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:marquee/marquee.dart';
@@ -218,8 +219,8 @@ Widget _buildCard({
         Stack(
           children: [
             Positioned.fill(
-                child: Image(
-              image: NetworkImage(event.imgurl),
+                child: CachedNetworkImage(
+              imageUrl: event.imgurl,
               fit: BoxFit.cover,
             )),
             Container(
