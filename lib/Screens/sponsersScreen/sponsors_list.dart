@@ -3,9 +3,7 @@ import 'package:alcheringa/Model/view_model_main.dart';
 import 'package:alcheringa/utils/styles/colors.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:marquee/marquee.dart';
-import 'package:provider/provider.dart';
 
 class sponsors_list extends StatefulWidget {
   @override

@@ -21,7 +21,7 @@ class CustomImageTextField extends StatelessWidget {
           decoration: BoxDecoration(
             image: DecorationImage(
               image: AssetImage('assets/images/checkout_textField.png'),
-              fit: BoxFit.cover,
+              fit: BoxFit.fill,
             ),
           ),
           child: Padding(

@@ -19,7 +19,7 @@ Widget buildReviewTab({
 
   return SafeArea(
     child: Padding(
-      padding: EdgeInsets.only(left: 45),
+      padding: EdgeInsets.symmetric(horizontal: 5),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -28,6 +28,7 @@ Widget buildReviewTab({
           Padding(
             padding: EdgeInsets.only(right: 10),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment:
                   CrossAxisAlignment.start, // Aligns columns at the top
               children: [
@@ -68,7 +69,7 @@ Widget buildReviewTab({
                   ],
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 44),
+                  padding: EdgeInsets.only(left: 0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -115,14 +116,13 @@ Widget buildReviewTab({
             ),
           ),
           SizedBox(height: 46),
-
           // Orders Section
           Text(
             'Your Orders:',
             style: TextStyle(
               fontWeight: FontWeight.w400,
               fontFamily: 'Game_Tape',
-              fontSize: 16,
+              fontSize: 20,
               color: Color.fromRGBO(255, 119, 168, 1),
             ),
           ),
