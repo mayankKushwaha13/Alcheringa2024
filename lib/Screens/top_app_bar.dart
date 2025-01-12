@@ -55,7 +55,7 @@ class _TopAppBarState extends State<TopAppBar> {
                             builder: (_) => NotificationScreen()));
                   },
                   icon:
-                  Image.asset('assets/images/appbar_notification_icon.png'),
+                      Image.asset('assets/images/appbar_notification_icon.png'),
                 ),
               ),
             ],
@@ -70,7 +70,6 @@ class _TopAppBarState extends State<TopAppBar> {
               ),
             ),
           ),
-
         ],
       ),
       actions: [

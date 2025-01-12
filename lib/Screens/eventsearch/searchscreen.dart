@@ -21,15 +21,13 @@ class Searchscreen extends StatefulWidget {
 }
 
 class _SearchscreenState extends State<Searchscreen> {
-
   //  List<EventDetail> searchedEvents =[];
   //  List<StallModel> searchedStalls = [];
   List<StallModel> _stalls = [];
   List<StallModel> _filteredStalls = [];
   List<EventDetail> _filteredEvents = [];
   List<EventDetail> _allEvents = [];
-    final TextEditingController _textFieldController = TextEditingController();
-
+  final TextEditingController _textFieldController = TextEditingController();
 
   @override
   void initState() {
@@ -40,7 +38,7 @@ class _SearchscreenState extends State<Searchscreen> {
   Future<List<StallModel>> getData() async {
     try {
       final stalls = await ViewModelMain().getStalls();
-      final  List<EventDetail> events = await ViewModelMain().getAllEvents();
+      final List<EventDetail> events = await ViewModelMain().getAllEvents();
       _filteredEvents = events;
       _filteredStalls = stalls;
       setState(() {
@@ -53,34 +51,33 @@ class _SearchscreenState extends State<Searchscreen> {
     } catch (e) {
       print('Error fetching data: $e');
     }
-    
+
     return _stalls;
   }
 
- void _filter(String query) {
-  List<StallModel> filteredStalls;
-  List<EventDetail> filteredEvents;
+  void _filter(String query) {
+    List<StallModel> filteredStalls;
+    List<EventDetail> filteredEvents;
 
-  if (query.isEmpty) {
-    filteredStalls = List.from(_stalls);
-    filteredEvents = List.from(_allEvents);
-  } else {
-    filteredStalls = _stalls
-        .where((stall) =>
-            stall.name.toLowerCase().contains(query.toLowerCase()))
-        .toList();
-    filteredEvents = _allEvents
-        .where((event) =>
-            event.artist.toLowerCase().contains(query.toLowerCase()))
-        .toList();
+    if (query.isEmpty) {
+      filteredStalls = List.from(_stalls);
+      filteredEvents = List.from(_allEvents);
+    } else {
+      filteredStalls = _stalls
+          .where(
+              (stall) => stall.name.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+      filteredEvents = _allEvents
+          .where((event) =>
+              event.artist.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    }
+
+    setState(() {
+      _filteredStalls = filteredStalls;
+      _filteredEvents = filteredEvents;
+    });
   }
-
-  setState(() {
-    _filteredStalls = filteredStalls;
-    _filteredEvents = filteredEvents;
-  });
-}
-
 
   @override
   Widget build(BuildContext context) {
@@ -143,7 +140,7 @@ class _SearchscreenState extends State<Searchscreen> {
                   ),
                   child: TextField(
                     controller: _textFieldController,
-                    onChanged: _filter,//todo
+                    onChanged: _filter, //todo
                     style: TextStyle(
                       fontFamily: 'Game_Tape',
                       fontSize: 20,
@@ -161,16 +158,17 @@ class _SearchscreenState extends State<Searchscreen> {
                             horizontal: 16, vertical: 14)),
                   ),
                 ),
-      
+
                 SizedBox(
                   height: mq.height * 0.04,
                 ),
 
-                Expanded(child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      const Padding(
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        const Padding(
                           padding: EdgeInsets.symmetric(horizontal: 16.0),
                           child: Text(
                             'Suggestions',
@@ -185,26 +183,31 @@ class _SearchscreenState extends State<Searchscreen> {
                         SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: Row(
-                            children: _filteredEvents.where((event)=> event.category =="Event").toList().map((event){
+                            children: _filteredEvents
+                                .where((event) => event.category == "Event")
+                                .toList()
+                                .map((event) {
                               return _buildCard(context: context, event: event);
                             }).toList(),
                           ),
                         ),
-                        SizedBox(height:20,),
+                        SizedBox(
+                          height: 20,
+                        ),
                         Column(
-                          children: _filteredEvents.where((event)=> event.category != "Event").toList().map((event){
-                            return CompetitionCard(event: event);
-                          }).toList()
-                          )
-                    ],
+                            children: _filteredEvents
+                                .where((event) => event.category != "Event")
+                                .toList()
+                                .map((event) {
+                          return CompetitionCard(event: event);
+                        }).toList())
+                      ],
+                    ),
                   ),
-                ),)
+                )
               ]))),
     );
   }
-
-      
-
 }
 
 Widget _buildCard({
@@ -240,9 +243,7 @@ Widget _buildCard({
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
-                    fontFamily: "Game_Tape",
-                    fontSize: 20,
-                    color: Colors.white),
+                    fontFamily: "Game_Tape", fontSize: 20, color: Colors.white),
               ),
             ),
             // Description
@@ -270,9 +271,7 @@ Widget _buildCard({
                 maxLines: 3,
                 overflow: TextOverflow.clip,
                 style: TextStyle(
-                    fontFamily: "Game_Tape",
-                    fontSize: 12,
-                    color: Colors.white),
+                    fontFamily: "Game_Tape", fontSize: 12, color: Colors.white),
               ),
             ),
             Positioned.fill(
@@ -292,11 +291,12 @@ Widget _buildCard({
                 velocity: 20.0, // Speed of the scrolling text
                 pauseAfterRound: Duration(seconds: 1), // Pause between loops
                 startPadding: 10.0, // Padding before the text starts
-                accelerationDuration: Duration(seconds: 1), // Acceleration effect
-                decelerationDuration: Duration(seconds: 1), // Deceleration effect
+                accelerationDuration:
+                    Duration(seconds: 1), // Acceleration effect
+                decelerationDuration:
+                    Duration(seconds: 1), // Deceleration effect
               ),
             ),
-
           ],
         ),
       ],
