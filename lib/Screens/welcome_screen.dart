@@ -19,7 +19,7 @@ class welcomeScreen extends StatelessWidget {
 
             // Logo on top of the background
             Positioned(
-               top: MediaQuery.of(context).size.height*0.15,
+              top: MediaQuery.of(context).size.height * 0.15,
               left: 0,
               right: 0,
               child: Center(
@@ -50,8 +50,12 @@ class welcomeScreen extends StatelessWidget {
               child: Column(
                 children: [
                   GestureDetector(
-                    onTap:(){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) =>  LoginScreen(),));
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => LoginScreen(),
+                          ));
                     },
                     child: SizedBox(
                       width: 190,
@@ -66,17 +70,16 @@ class welcomeScreen extends StatelessWidget {
                           Text(
                             'Login',
                             style: TextStyle(
-                              fontFamily: 'Brick_Pixel',
-                              color: Colors.white,
-                              fontSize: 30,
-                              fontWeight: FontWeight.w400,
+                                fontFamily: 'Brick_Pixel',
+                                color: Colors.white,
+                                fontSize: 30,
+                                fontWeight: FontWeight.w400,
                                 shadows: [
                                   Shadow(
                                       offset: Offset(2.5, 2),
                                       color: Colors.black,
                                       blurRadius: 2),
-                                ]
-                            ),
+                                ]),
                           ),
                         ],
                       ),
@@ -85,8 +88,12 @@ class welcomeScreen extends StatelessWidget {
                   SizedBox(height: 5),
                   // Button with text
                   GestureDetector(
-                    onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) =>  SignupScreen(),));
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SignupScreen(),
+                          ));
                     },
                     child: SizedBox(
                       width: 190,
@@ -101,17 +108,16 @@ class welcomeScreen extends StatelessWidget {
                           Text(
                             'Sign up',
                             style: TextStyle(
-                              fontFamily: 'Brick_Pixel',
-                              color: Colors.white,
-                              fontSize: 30,
-                              fontWeight: FontWeight.w400,
+                                fontFamily: 'Brick_Pixel',
+                                color: Colors.white,
+                                fontSize: 30,
+                                fontWeight: FontWeight.w400,
                                 shadows: [
                                   Shadow(
                                       offset: Offset(2.5, 2),
                                       color: Colors.black,
                                       blurRadius: 2),
-                                ]
-                            ),
+                                ]),
                           ),
                         ],
                       ),
@@ -119,16 +125,16 @@ class welcomeScreen extends StatelessWidget {
                   ),
                   // Text below the button
                   SizedBox(height: 5), // Spacing between button and text
-                  Text(
-                    'or Continue as a guest',
-                    style: TextStyle(
-                      fontFamily: 'Game_Tape',
-                      color: Color(0xff2DABFF),
-                      fontSize: 16,
-
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
+                  // Text(
+                  //   'or Continue as a guest',
+                  //   style: TextStyle(
+                  //     fontFamily: 'Game_Tape',
+                  //     color: Color(0xff2DABFF),
+                  //     fontSize: 16,
+                  //
+                  //   ),
+                  //   textAlign: TextAlign.center,
+                  // ),
                 ],
               ),
             ),
