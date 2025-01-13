@@ -1,4 +1,5 @@
 import 'package:alcheringa/Common/globals.dart';
+import 'package:alcheringa/Screens/loading%20screen.dart';
 import 'package:alcheringa/Screens/main_screen.dart';
 import 'package:alcheringa/Screens/profile_setup/setup_profile.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _isLoading = false;
+  bool _isPasswordVisible = false; // Track password visibility
 
   void _setLoading(bool isLoading) {
     setState(() {
@@ -98,13 +100,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               controller: _emailController
                           ),
                           SizedBox(height: screenHeight * 0.02),
-                          _buildTextField(
-                              hint: 'Password',
-                              isPassword: true,
-                              backgroundImage:
-                              'assets/images/emailbackground.png',
-                              controller: _passwordController
-                          ),
+                          _buildPasswordField(), // Use custom password field
                           SizedBox(height: screenHeight * 0.01),
                           Align(
                             alignment: Alignment.center,
@@ -138,22 +134,40 @@ class _LoginScreenState extends State<LoginScreen> {
                             onTap: _isLoading
                                 ? null
                                 : () async {
-                              await customLogin(_emailController.text,
-                                  _passwordController.text, context,
-                                  onLoading: _setLoading, isLoggedIn: _setLoggedIn);
+                              // Navigate to the LoadingScreen
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const LoadingScreen()),
+                              );
+
+                              await customLogin(
+                                _emailController.text,
+                                _passwordController.text,
+                                context,
+                                onLoading: _setLoading,
+                                isLoggedIn: _setLoggedIn,
+                              );
+
                               if (isLoggedIn && context.mounted && auth.currentUser!.emailVerified) {
-                                
-                                if(auth.currentUser != null){
-                                    if(auth.currentUser!.metadata.creationTime==auth.currentUser!.metadata.lastSignInTime){
-                                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=>ProfileSetup()));
-                                    }else {
-                                      Navigator.pushAndRemoveUntil(
-                                        context,
-                                        MaterialPageRoute(builder: (context) => const MainScreen()),
-                                            (Route<dynamic> route) => false,
-                                      );
-                                    }
+                                if (auth.currentUser != null) {
+                                  if (auth.currentUser!.metadata.creationTime ==
+                                      auth.currentUser!.metadata.lastSignInTime) {
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(builder: (_) => ProfileSetup()),
+                                    );
+                                  } else {
+                                    Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => const MainScreen()),
+                                          (Route<dynamic> route) => false,
+                                    );
+                                  }
                                 }
+                              } else {
+                                // Return to the login screen if authentication fails
+                                Navigator.pop(context);
                               }
                             },
                             child: Stack(
@@ -224,13 +238,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                 onPressed: () async {
                                   //await signInWithGoogle(context, onLoading: _setLoading, isLoggedIn: _setLoggedIn);
                                   //if (isLoggedIn && context.mounted) {
-                                   // Navigator.pushReplacement(
-                                    //  context,
-                                     // MaterialPageRoute(
-                                       //   builder: (context) =>
-                                        //  const MainScreen()),
-                                    //);
-                                 // }
+                                  // Navigator.pushReplacement(
+                                  //  context,
+                                  // MaterialPageRoute(
+                                  //   builder: (context) =>
+                                  //  const MainScreen()),
+                                  //);
+                                  // }
                                 },
                               ),
                               // Spacing between buttons
@@ -342,6 +356,56 @@ class _LoginScreenState extends State<LoginScreen> {
           border: InputBorder.none,
           contentPadding:
           const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        ),
+      ),
+    );
+  }
+
+  // Custom Password Field with Show/Hide functionality
+  Widget _buildPasswordField() {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
+    return Container(
+      width: screenWidth * 0.7,
+      height: screenHeight * 0.07,
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('assets/images/emailbackground.png'),
+          fit: BoxFit.fill,
+        ),
+      ),
+      child: TextField(
+        controller: _passwordController,
+        obscureText: !_isPasswordVisible, // Toggle visibility
+        style: TextStyle(
+          fontFamily: 'Game_Tape',
+          fontSize: 20,
+          color: Color(0xFFFF77A8),
+        ),
+        decoration: InputDecoration(
+          hintText: 'Password',
+          hintStyle: const TextStyle(
+            fontFamily: 'Game_Tape',
+            fontSize: 20,
+            color: Color(0xFFFF77A8),
+          ),
+          border: InputBorder.none,
+          contentPadding:
+          const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+          suffixIcon: IconButton(
+            icon: Icon(
+              _isPasswordVisible
+                  ? Icons.visibility
+                  : Icons.visibility_off,
+              color: Color(0xFFFF77A8),
+            ),
+            onPressed: () {
+              setState(() {
+                _isPasswordVisible = !_isPasswordVisible; // Toggle visibility
+              });
+            },
+          ),
         ),
       ),
     );
