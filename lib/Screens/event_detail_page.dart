@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:alcheringa/Model/eventdetail.dart';
@@ -96,7 +97,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                         decoration: BoxDecoration(
                           color: Colors.black.withOpacity(0.3),
                           image: DecorationImage(
-                            image: NetworkImage(widget.event.imgurl),
+                            image: CachedNetworkImageProvider(widget.event.imgurl),
                             fit: BoxFit.fill, // Use BoxFit.cover to make it fit
                           ),
                         ),

@@ -22,26 +22,29 @@ class _ProfilePageState extends State<ProfilePage> {
   String? _image;
   final TextEditingController nicknameController = TextEditingController();
   late Future<String> _imageUrl;
+  String? imageUri;
   List<String> selectedIntrests=[];
 
   @override
   void initState() {
     super.initState();
     _imageUrl = ViewModelMain().getValue('PhotoURL');
-    nicknameController.text = auth.currentUser?.displayName ?? "Nickname";
+   
+    //nicknameController.text = auth.currentUser?.displayName ?? "Nickname";
     getDatas();
   }
 
   Future<void> getDatas() async {
+    nicknameController.text= await ViewModelMain().getValue('userName');
     if (auth.currentUser != null && auth.currentUser!.email != null) {
       interests = await ViewModelMain().getInterests(auth.currentUser!.email!);
-      print(interests.length);
-
-      setState(() {});
+      imageUri = await ViewModelMain().getValue('PhotoURL');
+      
     } else {
-      print("something fiisy");
       interests = []; // Return an empty list for safety
     }
+    
+    setState(() {});
   }
 
   void onSave() {
@@ -89,6 +92,7 @@ class _ProfilePageState extends State<ProfilePage> {
             Image.asset(
               'assets/images/profile_setup_bg.png',
               fit: BoxFit.cover,
+              alignment: Alignment.topCenter,
             ),
             Positioned(
               top: 5,
@@ -100,7 +104,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   } else {
                     onSave();
                   }
-                  } , child: Icon(isEdit?Icons.save:Icons.edit,color: Color(0xFF1D2B53), size: 35))
+                  } , child: Icon(isEdit?Icons.save:Icons.edit,color: Color(0xFFfff1e8), size: 35))
               
             ),
             Padding(
@@ -122,7 +126,16 @@ class _ProfilePageState extends State<ProfilePage> {
                                 }
 
                                 if (snapshot.hasError || snapshot.data == null || snapshot.data!.isEmpty) {
-                                  return _buildImageOverlay("Pick your\nimage");
+                                   print(_imageUrl);
+                                  return Positioned.fill(
+                              child: Padding(
+                                padding:const EdgeInsets.fromLTRB(15, 10, 15, 30.0),
+                                child: Image.asset(
+                                  "assets/images/default_profile_pic.png",
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            );
                                 }
 
                                 final String? uri = snapshot.data;

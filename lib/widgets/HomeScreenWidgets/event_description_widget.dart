@@ -1,4 +1,5 @@
 import 'package:alcheringa/Model/own_time.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class EventDescriptionWidget extends StatelessWidget {
@@ -41,7 +42,7 @@ class EventDescriptionWidget extends StatelessWidget {
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(20), topRight: Radius.circular(20)),
               child: Image(
-                image: NetworkImage(imgurl),
+                image: CachedNetworkImageProvider(imgurl),
                 fit: BoxFit.cover,
               )),
           SizedBox(

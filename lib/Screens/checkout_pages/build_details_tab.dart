@@ -11,7 +11,6 @@ Widget buildDetailsTab({
   required TextEditingController pincodeController,
 }) {
   return Container(
-
     padding: EdgeInsets.symmetric(horizontal: 10),
     child: SingleChildScrollView(
       child: SizedBox(
@@ -34,12 +33,12 @@ Widget buildDetailsTab({
               height: 2,
             ),
             CustomImageTextField(
-                hintText: 'Enter your name', controller: nameController),
+                hintText: 'Enter your name', controller: nameController,),
             SizedBox(
               height: 10,
             ),
             CustomImageTextField(
-                hintText: 'Phone Number', controller: phoneController),
+                hintText: 'Phone Number', controller: phoneController, isNumber: true,),
             SizedBox(
               height: 97,
             ),
@@ -58,99 +57,94 @@ Widget buildDetailsTab({
               height: 2,
             ),
             CustomImageTextField(
-                hintText: 'Address Line 1', controller: addressLine1Controller),
+                hintText: 'Address Line 1', controller: addressLine1Controller,),
             SizedBox(
               height: 10,
             ),
             CustomImageTextField(
-                hintText: 'Address Line 2', controller: addressLine2Controller),
+                hintText: 'Address Line 2', controller: addressLine2Controller,),
             SizedBox(
               height: 10,
             ),
             Row(
-
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Flexible(
-                  child: Stack(
-                    // alignment: Alignment.center,
-                    children: [
-                      Container(
-                        //width: 155.0, // Set desired width
-                        height: 54, // Set desired height
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage(
-                                'assets/images/checkout_textField2.png'),
-                            fit: BoxFit.fill,
-                          ),
+                Stack(
+                  // alignment: Alignment.center,
+                  children: [
+                    Container(
+                      width: 162.0, // Set desired width
+                      height: 54, // Set desired height
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage(
+                              'assets/images/checkout_textField2.png'),
+                          fit: BoxFit.fill,
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 15),
-                          child: TextField(
-                            controller: cityController,
-                            decoration: InputDecoration(
-                              hintText: 'City',
-                              hintStyle: TextStyle(color: Colors.grey),
-                              border: InputBorder.none, // Remove default border
-                              contentPadding: EdgeInsets.symmetric(
-                                horizontal: 16,
-                                vertical: 7,
-                              ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 15),
+                        child: TextField(
+                          controller: cityController,
+                          decoration: InputDecoration(
+                            hintText: 'City',
+                            hintStyle: TextStyle(color: Colors.grey),
+                            border: InputBorder.none, // Remove default border
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 7,
                             ),
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontFamily: 'Game_Tape',
-                              fontWeight: FontWeight.w400,
-                            ),
+                          ),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontFamily: 'Game_Tape',
+                            fontWeight: FontWeight.w400,
                           ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
                 SizedBox(
-                  width: 6,
+                  width: 1,
                 ),
-                Flexible(
-                  child: Stack(
-                    // alignment: Alignment.center,
-                    children: [
-                      Container(
-                       // width: 155.0, // Set desired width
-                        height: 54, // Set desired height
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage(
-                                'assets/images/checkout_textField2.png'),
-                            fit: BoxFit.fill,
-                          ),
+                Stack(
+                  // alignment: Alignment.center,
+                  children: [
+                    Container(
+                      width: 162.0, // Set desired width
+                      height: 54, // Set desired height
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage(
+                              'assets/images/checkout_textField2.png'),
+                          fit: BoxFit.fill,
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 15),
-                          child: TextField(
-                            controller: stateController,
-                            decoration: InputDecoration(
-                              hintText: 'State',
-                              hintStyle: TextStyle(color: Colors.grey),
-                              border: InputBorder.none, // Remove default border
-                              contentPadding: EdgeInsets.symmetric(
-                                horizontal: 16,
-                                vertical: 7,
-                              ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 15),
+                        child: TextField(
+                          controller: stateController,
+                          decoration: InputDecoration(
+                            hintText: 'State',
+                            hintStyle: TextStyle(color: Colors.grey),
+                            border: InputBorder.none, // Remove default border
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 7,
                             ),
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontFamily: 'Game_Tape',
-                              fontWeight: FontWeight.w400,
-                            ),
+                          ),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontFamily: 'Game_Tape',
+                            fontWeight: FontWeight.w400,
                           ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -158,7 +152,7 @@ Widget buildDetailsTab({
               height: 10,
             ),
             CustomImageTextField(
-                hintText: 'Pincode', controller: pincodeController),
+                hintText: 'Pincode', controller: pincodeController, isNumber: true,),
             SizedBox(
               height: 19,
             ),

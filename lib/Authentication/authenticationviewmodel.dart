@@ -1,13 +1,15 @@
+import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
+
 import 'package:alcheringa/common/resource.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image/image.dart' as img;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../common/globals.dart';
 
@@ -70,8 +72,11 @@ Future<void> registerUserInDatabaseCustom(String name, String email) async {
 
 Future<void> addIntrestToDb(List<String> intrestList, String email) async {
   try {
-    
-    final doc = db.collection('USERS').doc(email).collection("interests").doc("interests");
+    final doc = db
+        .collection('USERS')
+        .doc(email)
+        .collection("interests")
+        .doc("interests");
 
     await doc.set({"interests": FieldValue.arrayUnion(intrestList)});
 
@@ -96,7 +101,9 @@ Future<void> updateProfilePicture(File file, String email, String name) async {
     List<int> compressedBytes = img.encodeJpg(image, quality: 60);
 
     // Step 4: Upload to Firebase Storage
-    final ref = FirebaseStorage.instance.ref().child('Users/$email.jpg'); // Use a unique path
+    final ref = FirebaseStorage.instance
+        .ref()
+        .child('Users/$email.jpg'); // Use a unique path
     TaskSnapshot uploadSnapshot = await ref.putData(
       Uint8List.fromList(compressedBytes),
       SettableMetadata(contentType: 'image/jpeg'), // Set MIME type explicitly
@@ -106,7 +113,8 @@ Future<void> updateProfilePicture(File file, String email, String name) async {
       throw Exception("Failed to upload the image");
     }
 
-    print('Data transferred: ${uploadSnapshot.bytesTransferred / (1024 * 1024)} MB');
+    print(
+        'Data transferred: ${uploadSnapshot.bytesTransferred / (1024 * 1024)} MB');
 
     // Step 5: Get the download URL
     String url = await ref.getDownloadURL();
@@ -120,7 +128,7 @@ Future<void> updateProfilePicture(File file, String email, String name) async {
 
     // Step 7: Update SharedPreferences
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('name', name);
+    await prefs.setString('userName', name);
     await prefs.setString('PhotoURL', url);
 
     print('Profile picture updated successfully!');
@@ -130,7 +138,7 @@ Future<void> updateProfilePicture(File file, String email, String name) async {
   }
 }
 
-/* 
+/*
 Future<void> updateProfilePicture(File file, String email, String name) async {
   try {
     List<int> imageBytes = await file.readAsBytes();
@@ -171,7 +179,20 @@ Future<void> updateProfilePicture(File file, String email, String name) async {
 }
  */
 void onUpdateProfile(BuildContext context, File image, String email, String name) {
+  // Show progress indicator dialog
+  showDialog(
+    context: context,
+    barrierDismissible: false, // Prevent dismissing the dialog
+    builder: (BuildContext context) {
+      return Dialog(
+        backgroundColor: Colors.transparent,
+        child: Center(child: CircularProgressIndicator()),
+      );
+    },
+  );
+
   updateProfilePicture(image, email, name).then((_) {
+    Navigator.pop(context); // Close the progress dialog
     // Show success Snackbar
     print("updated pfp");
     ScaffoldMessenger.of(context).showSnackBar(
@@ -181,6 +202,7 @@ void onUpdateProfile(BuildContext context, File image, String email, String name
       ),
     );
   }).catchError((error) {
+    Navigator.pop(context); // Close the progress dialog
     // Show error Snackbar
     print("error pfp");
     ScaffoldMessenger.of(context).showSnackBar(
@@ -191,6 +213,7 @@ void onUpdateProfile(BuildContext context, File image, String email, String name
     );
   });
 }
+
 
 Future<void> sendVerificationEmail(BuildContext context) async {
   try {
@@ -222,13 +245,17 @@ Future<void> customLogin(String email, String password, BuildContext context,
         onLoading(false);
         return;
       }
-      final userData = await db.collection('USERS').doc(email).get().then((docSnapshot) async {
-        if(docSnapshot.exists){
+      final userData = await db
+          .collection('USERS')
+          .doc(email)
+          .get()
+          .then((docSnapshot) async {
+        if (docSnapshot.exists) {
           final data = docSnapshot.data() as Map<String, dynamic>;
           await prefs.setString('userName', data['Name'] ?? '');
           await prefs.setString('email', data['Email']);
           await prefs.setString('PhotoURL', data['PhotoURL'] ?? '');
-        }else{
+        } else {
           await saveSignInUserData(userCredential.user!);
         }
       });
@@ -281,7 +308,7 @@ Future<void> signInWithGoogle(BuildContext context,
       showMessage('Google Sign-In failed', context);
     }
   } on Exception catch (e) {
-    print("Sign in with google failed $e");
+    log("Sign in with google failed $e");
     showMessage('Google Sign-In failed', context);
   }
   onLoading(false);
@@ -306,6 +333,7 @@ Future<void> signInWithMicrosoft(BuildContext context,
       showMessage('Microsoft Sign-In failed', context);
     }
   } on Exception catch (e) {
+    log("Sign in with micro failed $e");
     showMessage('Microsoft Sign-In failed', context);
     print(e);
   }

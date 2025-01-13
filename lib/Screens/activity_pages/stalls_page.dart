@@ -31,7 +31,6 @@ class _StallsPageState extends State<StallsPage> {
         print("This is stalls list: ${stalls.first.imgurl}");
         _filteredStalls = List.from(_stalls);
       });
-      print('Hello ${_stalls.first.name}');
     } catch (e) {
       print('Error fetching data: $e');
     }

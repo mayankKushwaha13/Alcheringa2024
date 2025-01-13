@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class CustomImageTextField extends StatelessWidget {
   final String hintText;
   final TextEditingController controller;
+  final bool isNumber;
 
   const CustomImageTextField({
     Key? key,
     required this.hintText,
     required this.controller,
+    this.isNumber = false,
   }) : super(key: key);
 
   @override
@@ -27,6 +30,8 @@ class CustomImageTextField extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 15),
             child: TextField(
+              keyboardType: isNumber? TextInputType.number : null,
+              inputFormatters: isNumber?[FilteringTextInputFormatter.digitsOnly]:null,
               controller: controller,
               decoration: InputDecoration(
                 hintText: hintText,
