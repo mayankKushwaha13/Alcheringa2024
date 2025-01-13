@@ -421,7 +421,7 @@ class _HomeScreenState extends State<HomeScreen>
               children: [
                 // Hero section
                 SizedBox(
-                  height: 400.0,
+                  height: 500.0,
                   child: PageView.builder(
                     controller: PageController(
                         viewportFraction: 0.6, initialPage: 1000),
@@ -458,7 +458,7 @@ class _HomeScreenState extends State<HomeScreen>
                               Expanded(
                                 flex: 2,
                                 child: Container(
-                                  width: 220,
+                                  width: 250,
                                   alignment: Alignment.center,
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
@@ -481,7 +481,7 @@ class _HomeScreenState extends State<HomeScreen>
                             Expanded(
                               flex: 9,
                               child: Container(
-                                width: 220,
+                                width: 250,
                                 decoration: BoxDecoration(
                                   image: DecorationImage(
                                     image: NetworkImage(event.imgurl),
@@ -511,7 +511,7 @@ class _HomeScreenState extends State<HomeScreen>
                                 flex: 2,
                                 child: Container(
                                   alignment: Alignment.center,
-                                  width: 220,
+                                  width: 250,
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
                                       image: AssetImage(

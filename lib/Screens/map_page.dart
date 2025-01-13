@@ -34,6 +34,7 @@ class _MapPageState extends State<MapPage> {
   List<VenueModel> _filteredVenue = [];
   List<VenueModel> _venueList = [];
   List<EventDetail> eventList = [];
+  late BitmapDescriptor customMarker;
 
   void _onMapCreated(GoogleMapController controller) {
     _controller.complete(controller);
@@ -43,12 +44,22 @@ class _MapPageState extends State<MapPage> {
     _isPermissionGranted = await ViewModelMain().requestLocationPermission();
   }
 
+  void loadCustomMarker() async {
+    final _customMarker = await BitmapDescriptor.asset(
+      const ImageConfiguration(size: Size(40, 50)),
+      'assets/images/map_marker.png',
+    );
+    setState(() {
+      customMarker = _customMarker;
+    });
+  }
+
   Set<Marker> convertToMarkers(List<VenueModel> venueList) {
     return venueList.map((venue) {
       return Marker(
           markerId: MarkerId(venue.name),
           position: venue.latLng,
-          icon: BitmapDescriptor.defaultMarker,
+          icon: customMarker,
           infoWindow: InfoWindow(
               title: venue.name,
               snippet: venue.description,
@@ -116,6 +127,7 @@ class _MapPageState extends State<MapPage> {
   @override
   void initState() {
     super.initState();
+    loadCustomMarker();
     _checkAndRequestPermission();
     // WidgetsBinding.instance.addPostFrameCallback((_) {
     //   _scaffoldKey.currentState?.showBottomSheet((BuildContext context) {

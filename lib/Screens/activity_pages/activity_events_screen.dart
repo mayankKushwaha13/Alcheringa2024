@@ -273,7 +273,7 @@ class _ActivityEventsScreenState extends State<ActivityEventsScreen> {
                 // Description
                 Positioned.fill(
                   left: 25,
-                  top: 380 * widgetHeight / 480,
+                  top: 380 * widgetHeight / 485,
                   right: 25,
                   child: Text(
                     event.descriptionEvent,
