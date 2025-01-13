@@ -92,6 +92,7 @@ class _ProfilePageState extends State<ProfilePage> {
             Image.asset(
               'assets/images/profile_setup_bg.png',
               fit: BoxFit.cover,
+              alignment: Alignment.topCenter,
             ),
             Positioned(
               top: 5,

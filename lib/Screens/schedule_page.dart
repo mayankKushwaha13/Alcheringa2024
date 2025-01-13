@@ -275,296 +275,294 @@ final List<String> keys = ["All","Lecture Halls","Grounds","Library Area", "Admi
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      body: SafeArea(
-        child: Stack(
-          children: [
-            // Background Image
-            Positioned.fill(
-              child: Image.asset(
-                'assets/images/schedule_screen_bg.png',
-                fit: BoxFit.cover,
-              ),
+      body: Stack(
+        children: [
+          // Background Image
+          Positioned.fill(
+            child: Image.asset(
+              'assets/images/schedule_screen_bg.png',
+              fit: BoxFit.cover,
             ),
+          ),
 
-            Column(
-              children: [
-                // Day Selector Row
-                Container(
-                  height: 70,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: List.generate(4, (index) {
-                      final days = ['DAY 0', 'DAY 1', 'DAY 2', 'DAY 3'];
-                      return GestureDetector(
-                        onTap: () {
-                          onDaySelected(index);
-                        },
-                        child: Text(
-                          days[index],
-                          style: TextStyle(
-                            color: dayColor(index),
-                            fontFamily: 'Game_Tape',
-                            fontSize: 20.0,
-                          ),
+          Column(
+            children: [
+              // Day Selector Row
+              Container(
+                height: 70,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: List.generate(4, (index) {
+                    final days = ['DAY 0', 'DAY 1', 'DAY 2', 'DAY 3'];
+                    return GestureDetector(
+                      onTap: () {
+                        onDaySelected(index);
+                      },
+                      child: Text(
+                        days[index],
+                        style: TextStyle(
+                          color: dayColor(index),
+                          fontFamily: 'Game_Tape',
+                          fontSize: 20.0,
                         ),
-                      );
-                    }),
-                  ),
+                      ),
+                    );
+                  }),
                 ),
+              ),
 
-                // Filter Row
-                Container(
-                  height: 80,
-                  child: Row(
-                    children: [
-                      // Date Display
-                      SizedBox(
-                        width: 71,
+              // Filter Row
+              Container(
+                height: 80,
+                child: Row(
+                  children: [
+                    // Date Display
+                    SizedBox(
+                      width: 71,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            date,
+                            style: TextStyle(
+                              fontFamily: 'Brick_Pixel',
+                              fontSize: 24,
+                              color: Color(0xFFCA3562),
+                            ),
+                          ),
+                          Text(
+                            month,
+                            style: TextStyle(
+                              fontFamily: 'Brick_Pixel',
+                              fontSize: 24,
+                              color: Color(0xFFCA3562),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      width: 22.0,
+                    ),
+
+                    // Vertical Divider
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 10),
+                      child: VerticalDivider(
+                        width: 4,
+                        color: Colors.grey,
+                      ),
+                    ),
+                    // Venue Dropdown
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(
-                              date,
+                            // Venue Category Dropdown
+                            DropdownButtonFormField<String>(
+                              value: selectedVenueCategory,
                               style: TextStyle(
-                                fontFamily: 'Brick_Pixel',
-                                fontSize: 24,
-                                color: Color(0xFFCA3562),
+                                fontFamily: 'Game_Tape',
+                                fontSize: 20.0,
+                                color: Color(0xFFFFF1E8),
                               ),
-                            ),
-                            Text(
-                              month,
-                              style: TextStyle(
-                                fontFamily: 'Brick_Pixel',
-                                fontSize: 24,
-                                color: Color(0xFFCA3562),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        width: 22.0,
-                      ),
-                      
-                      // Vertical Divider
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 10),
-                        child: VerticalDivider(
-                          width: 4,
-                          color: Colors.grey,
-                        ),
-                      ),
-                      // Venue Dropdown
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                          child: Column(
-                            children: [
-                              // Venue Category Dropdown
-                              DropdownButtonFormField<String>(
-                                value: selectedVenueCategory,
-                                style: TextStyle(
-                                  fontFamily: 'Game_Tape',
-                                  fontSize: 20.0,
-                                  color: Color(0xFFFFF1E8),
+                              items: keys.map((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                              onChanged: onVenueCategoryChanged,
+                              dropdownColor: Color(0xFF1D2B53),
+                              decoration: InputDecoration(
+                                contentPadding:
+                                    EdgeInsets.symmetric(horizontal: 30.0),
+                                fillColor: Color(0xFF1D2B53),
+                                filled: true,
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.pink, width: 2),
+                                  borderRadius: BorderRadius.zero,
                                 ),
-                                items: keys.map((String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value),
-                                  );
-                                }).toList(),
-                                onChanged: onVenueCategoryChanged,
-                                dropdownColor: Color(0xFF1D2B53),
-                                decoration: InputDecoration(
-                                  contentPadding:
-                                      EdgeInsets.symmetric(horizontal: 30.0),
-                                  fillColor: Color(0xFF1D2B53),
-                                  filled: true,
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.pink, width: 2),
-                                    borderRadius: BorderRadius.zero,
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.pink, width: 2),
-                                    borderRadius: BorderRadius.zero,
-                                  ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.pink, width: 2),
+                                  borderRadius: BorderRadius.zero,
                                 ),
                               ),
-                              SizedBox(height: 10),
-                              ],
-                          ),
+                            ),
+                            SizedBox(height: 10),
+                            ],
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
+              ),
 
-                Container(
-                  height: 2,
-                  color: Colors.grey,
-                ),
-                Expanded(
-                  child: SingleChildScrollView(
-                    controller: verticalController,
-                    child: Column(
-                      children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // Time Column
-                            SizedBox(
-                              width: 95,
-                              child: Column(
-                                children: [
-                                  Container(
-                                    height: 60,
+              Container(
+                height: 2,
+                color: Colors.grey,
+              ),
+              Expanded(
+                child: SingleChildScrollView(
+                  controller: verticalController,
+                  child: Column(
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Time Column
+                          SizedBox(
+                            width: 95,
+                            child: Column(
+                              children: [
+                                Container(
+                                  height: 60,
+                                  decoration: BoxDecoration(
+                                      border: Border(
+                                    bottom: BorderSide(color: Colors.grey.withOpacity(1), ),
+                                    right: BorderSide(color: Colors.grey.withOpacity(1), ),
+                                  )),
+                                ), // Empty space for top alignment
+                                ...List.generate(
+                                  15, // Each hour block
+                                  (index) => Container(
+                                    height: hourHeight,
                                     decoration: BoxDecoration(
-                                        border: Border(
-                                      bottom: BorderSide(color: Colors.grey.withOpacity(1), ),
-                                      right: BorderSide(color: Colors.grey.withOpacity(1), ),
-                                    )),
-                                  ), // Empty space for top alignment
-                                  ...List.generate(
-                                    15, // Each hour block
-                                    (index) => Container(
-                                      height: hourHeight,
-                                      decoration: BoxDecoration(
-                                        border: Border(
-                                          bottom: BorderSide(
-                                            color: Colors.grey.withOpacity(1),
-                                          ),
-                                          right: BorderSide(
-                                            color: Colors.grey.withOpacity(1),
-                                          ),
+                                      border: Border(
+                                        bottom: BorderSide(
+                                          color: Colors.grey.withOpacity(1),
+                                        ),
+                                        right: BorderSide(
+                                          color: Colors.grey.withOpacity(1),
                                         ),
                                       ),
-                                      child: Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 8.0),
-                                          child: Text(
-                                            formatTimeToAmPm(index + 8),
-                                            style: const TextStyle(
-                                              fontFamily: 'Game_Tape',
-                                              fontSize: 19,
-                                              color: Colors.white,
-                                            ),
+                                    ),
+                                    child: Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 8.0),
+                                        child: Text(
+                                          formatTimeToAmPm(index + 8),
+                                          style: const TextStyle(
+                                            fontFamily: 'Game_Tape',
+                                            fontSize: 19,
+                                            color: Colors.white,
                                           ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
+                          ),
 
-                            // Venue Time Slots and Events
-                            Expanded(
-                              child: isLoading
-                                  ? Center(child: CircularProgressIndicator())
-                                  : SingleChildScrollView(
-                                      scrollDirection: Axis.horizontal,
-                                      controller: horizontalController,
-                                      child: Row(
-                                        children: (selectedVenueCategory ==
-                                                    'All'
-                                                ? itemListMap["All"]!
-                                                : itemListMap[selectedVenueCategory] ??[]).map((venue) {
-                                          final venueEvents = filteredEvents.where((event) => event.venue.toLowerCase() == venue.toLowerCase()).toList();
-                                          return SizedBox(
-                                            width: 200, //column width for every block ie the place
-                                            child: Column(
-                                              children: [
-                                                Container(
-                                                  decoration:BoxDecoration(
-                                                            border: Border(
-                                                              bottom: BorderSide( color: Colors.grey.withOpacity(1),),
-                                                              right: BorderSide(color: Colors.grey.withOpacity(1),),
-                                                            ),
-                                                          ),
-                                                  height: 60,
-                                                  alignment: Alignment.center,
-                                                  child: Text(venue,
-                                                    style: const TextStyle(
-                                                      fontSize: 18,
-                                                      color: Colors.white,
-                                                      fontWeight:FontWeight.bold,
-                                                      fontFamily: 'Game_Tape',
-                                                    ),
-                                                  ),
-                                                ),
-                                                Stack(
-                                                  children: [
-                                                    // Time Slots
-                                                    Column(
-                                                      children: List.generate(15,(index) => Container(
-                                                          height: hourHeight,
-                                                          decoration: BoxDecoration(
+                          // Venue Time Slots and Events
+                          Expanded(
+                            child: isLoading
+                                ? Center(child: CircularProgressIndicator())
+                                : SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    controller: horizontalController,
+                                    child: Row(
+                                      children: (selectedVenueCategory ==
+                                                  'All'
+                                              ? itemListMap["All"]!
+                                              : itemListMap[selectedVenueCategory] ??[]).map((venue) {
+                                        final venueEvents = filteredEvents.where((event) => event.venue.toLowerCase() == venue.toLowerCase()).toList();
+                                        return SizedBox(
+                                          width: 200, //column width for every block ie the place
+                                          child: Column(
+                                            children: [
+                                              Container(
+                                                decoration:BoxDecoration(
                                                           border: Border(
                                                             bottom: BorderSide( color: Colors.grey.withOpacity(1),),
                                                             right: BorderSide(color: Colors.grey.withOpacity(1),),
                                                           ),
                                                         ),
+                                                height: 60,
+                                                alignment: Alignment.center,
+                                                child: Text(venue,
+                                                  style: const TextStyle(
+                                                    fontSize: 18,
+                                                    color: Colors.white,
+                                                    fontWeight:FontWeight.bold,
+                                                    fontFamily: 'Game_Tape',
+                                                  ),
+                                                ),
+                                              ),
+                                              Stack(
+                                                children: [
+                                                  // Time Slots
+                                                  Column(
+                                                    children: List.generate(15,(index) => Container(
+                                                        height: hourHeight,
+                                                        decoration: BoxDecoration(
+                                                        border: Border(
+                                                          bottom: BorderSide( color: Colors.grey.withOpacity(1),),
+                                                          right: BorderSide(color: Colors.grey.withOpacity(1),),
                                                         ),
                                                       ),
+                                                      ),
                                                     ),
-                                                    // Events for the Venue
-                                                    ...venueEvents.map((event) {
-                                                      final start =event.starttime;
-                                                      final end =event.getEndTime();
-                                                      final startOffset =(start.hours - 8) +(start.min / 60);
-                                                      final duration = (end.hours -start.hours) + (end.min - start.min) /60;
-                                                      return Positioned(
-                                                        top: startOffset *(hourHeight),
-                                                        left: 8,
-                                                        right: 8,
-                                                        child: Container(
-                                                          height: duration *hourHeight,
-                                                          padding:const EdgeInsets.all(8),
-                                                          decoration:BoxDecoration(
-                                                            color: Colors.blueAccent.withOpacity(0.8),
-                                                            borderRadius:
-                                                                BorderRadius.circular(8),
-                                                          ),
-                                                          child: Column(
-                                                            crossAxisAlignment:CrossAxisAlignment.start,
-                                                            children: [
-                                                              Text(
-                                                                event.type,
-                                                                style:const TextStyle(
-                                                                  color: Colors.white,
-                                                                  fontWeight:FontWeight.bold,
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ),
+                                                  ),
+                                                  // Events for the Venue
+                                                  ...venueEvents.map((event) {
+                                                    final start =event.starttime;
+                                                    final end =event.getEndTime();
+                                                    final startOffset =(start.hours - 8) +(start.min / 60);
+                                                    final duration = (end.hours -start.hours) + (end.min - start.min) /60;
+                                                    return Positioned(
+                                                      top: startOffset *(hourHeight),
+                                                      left: 8,
+                                                      right: 8,
+                                                      child: Container(
+                                                        height: duration *hourHeight,
+                                                        padding:const EdgeInsets.all(8),
+                                                        decoration:BoxDecoration(
+                                                          color: Colors.blueAccent.withOpacity(0.8),
+                                                          borderRadius:
+                                                              BorderRadius.circular(8),
                                                         ),
-                                                      );
-                                                    }).toList(),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                          );
-                                        }).toList(),
-                                      ),
+                                                        child: Column(
+                                                          crossAxisAlignment:CrossAxisAlignment.start,
+                                                          children: [
+                                                            Text(
+                                                              event.type,
+                                                              style:const TextStyle(
+                                                                color: Colors.white,
+                                                                fontWeight:FontWeight.bold,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    );
+                                                  }).toList(),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      }).toList(),
                                     ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height:bottomNavBarHeight), // Adjusted for the bottom of the schedule
-                      ],
-                    ),
+                                  ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height:bottomNavBarHeight), // Adjusted for the bottom of the schedule
+                    ],
                   ),
                 ),
-              ],
-            ),
-          ],
-        ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

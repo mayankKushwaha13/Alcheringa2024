@@ -1,6 +1,7 @@
 import 'package:alcheringa/Notification/notification_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../../Model/notification_model.dart';
 import '../../Model/view_model_main.dart';
 import '../../utils/styles/colors.dart';
@@ -59,22 +60,18 @@ AppBar _appBar(BuildContext context){
   return AppBar(
     automaticallyImplyLeading: false,
     backgroundColor: Colors.black.withOpacity(.5),
-    title: GestureDetector(
-      onTap: (){
-      },
-      child:Padding(
-        padding: const EdgeInsets.only(left: 5.0,bottom: 10),
-        child: GestureDetector(
-          onTap: () {
-            Navigator.pop(context);
-          },
-          child: Image.asset(
-            'assets/images/back_button.png',
-            width: 54.0,
-            height: 54.0,
-          ),
-        ),),
-    ),
+    leading: Padding(
+      padding: const EdgeInsets.only(left: 5.0,bottom: 10),
+      child: GestureDetector(
+        onTap: () {
+          Navigator.pop(context);
+        },
+        child: Image.asset(
+          'assets/images/back_button.png',
+          width: 54.0,
+          height: 54.0,
+        ),
+      ),),
     actions: [
       Padding(
           padding: EdgeInsets.only(bottom: 5,right: 20),
