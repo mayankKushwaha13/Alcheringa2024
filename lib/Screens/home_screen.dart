@@ -424,7 +424,7 @@ class _HomeScreenState extends State<HomeScreen>
                   height: 400.0,
                   child: PageView.builder(
                     controller: PageController(
-                        viewportFraction: 0.5, initialPage: 1000),
+                        viewportFraction: 0.6, initialPage: 1000),
                     // itemCount: displayedSuggestions.length,
                     itemBuilder: (context, index) {
                       final cardColorIndex = index % 2;
@@ -480,19 +480,20 @@ class _HomeScreenState extends State<HomeScreen>
                             const SizedBox(height: 8.0),
                             Expanded(
                               flex: 9,
-                              child: GestureDetector(
-                                onTap: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (_)=>EventDetailPage(event: event)));
-                                },
-                                child: Container(
-                                  width: 220,
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image: NetworkImage(event.imgurl),
-                                      // 'assets/images/card_$index.png'),
-                                      fit: BoxFit.fill,
-                                    ),
+                              child: Container(
+                                width: 220,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: NetworkImage(event.imgurl),
+                                    alignment: Alignment.center,
+                                    // 'assets/images/card_$index.png'),
+                                    fit: BoxFit.cover,
                                   ),
+                                ),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => EventDetailPage(event: event)));
+                                  },
                                   child: Image.asset(isRevealed
                                       ? 'assets/images/event_cards_revealed${cardColorIndex}.png'
                                       : 'assets/images/card_$index.png',
@@ -501,6 +502,10 @@ class _HomeScreenState extends State<HomeScreen>
                                 ),
                               ),
                             ),
+                            if(cardColorIndex % 2 == 1)
+                              SizedBox(
+                                height: 7.0,
+                              ),
                             if (cardColorIndex % 2 == 1)
                               Expanded(
                                 flex: 2,

@@ -1,12 +1,13 @@
+import 'package:alcheringa/Common/globals.dart';
+import 'package:alcheringa/Database/liked_events.dart';
+import 'package:alcheringa/Model/eventdetail.dart';
+import 'package:alcheringa/Model/view_model_main.dart';
+import 'package:alcheringa/Screens/event_detail_page.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../Common/globals.dart';
-import '../../Database/liked_events.dart';
-import '../../Model/eventdetail.dart';
 import '../../provider/event_provider.dart';
-import '../../screens/event_detail_page.dart';
 
 class ActivityEventsScreen extends StatefulWidget {
   const ActivityEventsScreen({super.key});
@@ -15,7 +16,44 @@ class ActivityEventsScreen extends StatefulWidget {
   State<ActivityEventsScreen> createState() => _ActivityEventsScreenState();
 }
 
+List<EventDetail> proniteslist = [];
+List<EventDetail> proshowslist = [];
+List<EventDetail> creatorscamplist = [];
+List<EventDetail> alllist = [];
+
 class _ActivityEventsScreenState extends State<ActivityEventsScreen> {
+  void getEvents() async {
+    alllist = await ViewModelMain().getAllEvents();
+    proniteslist = await getPronites();
+    proshowslist = await getProshows();
+    creatorscamplist = await getCreatorsCamp();
+    setState(() {});
+  }
+
+  Future<List<EventDetail>> getPronites() async {
+    proniteslist = alllist
+        .where((element) =>
+            element.type.replaceAll("\\s", "").toUpperCase() == "Pronites".replaceAll("\\s", "").toUpperCase())
+        .toList();
+    return proniteslist;
+  }
+
+  Future<List<EventDetail>> getProshows() async {
+    proshowslist = alllist
+        .where((element) =>
+            element.type.replaceAll("\\s", "").toUpperCase() == "Proshows".replaceAll("\\s", "").toUpperCase())
+        .toList();
+    return proshowslist;
+  }
+
+  Future<List<EventDetail>> getCreatorsCamp() async {
+    creatorscamplist = alllist
+        .where((element) =>
+            element.type.replaceAll("\\s", "").toUpperCase() == "Creators' Camp".replaceAll("\\s", "").toUpperCase())
+        .toList();
+    return creatorscamplist;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -162,32 +200,29 @@ class _ActivityEventsScreenState extends State<ActivityEventsScreen> {
   Widget _buildCard({
     required EventDetail event,
     required bool isLiked,
-    double headingSize = 20,
+    double headingSize = 20
   }) {
     final screenHeight = MediaQuery.of(context).size.height;
     final widgetHeight = screenHeight * 0.6;
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
       child: GestureDetector(
         onTap: () {
-          Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => EventDetailPage(event: event),
-          ));
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => EventDetailPage(event: event)));
         },
         child: Column(
           children: [
             Stack(
               children: [
                 Positioned.fill(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(16),
-                    child: CachedNetworkImage(
-                      imageUrl: event.imgurl,
-                      fit: BoxFit.cover,
-                    ),
+                    child: ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: CachedNetworkImage(
+                    imageUrl:event.imgurl,
+                    fit: BoxFit.cover,
+                    alignment: Alignment.center,
                   ),
-                ),
+                )),
                 Container(
                   height: widgetHeight,
                   width: 186 * widgetHeight / 480,
@@ -235,6 +270,7 @@ class _ActivityEventsScreenState extends State<ActivityEventsScreen> {
                     ),
                   ),
                 ),
+                // Description
                 Positioned.fill(
                   left: 25,
                   top: 380 * widgetHeight / 480,
@@ -250,12 +286,13 @@ class _ActivityEventsScreenState extends State<ActivityEventsScreen> {
                     ),
                   ),
                 ),
+                // Venue
                 Positioned.fill(
                   left: 25,
                   top: 441 * widgetHeight / 480,
                   right: 25,
                   child: Text(
-                    "${event.starttime.date} ${event.starttime.hours} PM | ${event.venue}",
+                    getTimeAndVenue(event),
                     maxLines: 1,
                     overflow: TextOverflow.clip,
                     style: const TextStyle(
@@ -271,6 +308,18 @@ class _ActivityEventsScreenState extends State<ActivityEventsScreen> {
         ),
       ),
     );
+  }
+
+  String getTimeAndVenue(EventDetail event) {
+    int date = event.starttime.date;
+    int hour = event.starttime.hours;
+    int min = event.starttime.min;
+
+    String month = date >= 31 ? 'Jan' : 'Feb';
+    String timeSuffix = event.starttime.hours >= 12 ? 'PM' : 'AM';
+    String displayHour = event.starttime.hours > 12 ? "${event.starttime.hours - 12}" : "${event.starttime.hours}";
+
+    return '$date $month, $displayHour $timeSuffix | ${event.venue}';
   }
 }
 

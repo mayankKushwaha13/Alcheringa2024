@@ -58,51 +58,53 @@ class _ActivityPageState extends State<ActivityPage> {
                 padding: const EdgeInsets.all(8.0),
                 child: SizedBox(
                   height: 70,
-                  child: ListView(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          _changeTab(0);
-                          setState(() {
-                            _selectedTab = 0;
-                          });
-                        },
-                        child: Image.asset(
-                          _selectedTab == 0
-                              ? 'assets/images/events_icon_selected.png'
-                              : 'assets/images/events_icon_unselected.png',
+                  child: SingleChildScrollView(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            _changeTab(0);
+                            setState(() {
+                              _selectedTab = 0;
+                            });
+                          },
+                          child: Image.asset(
+                            _selectedTab == 0
+                                ? 'assets/images/events_icon_selected.png'
+                                : 'assets/images/events_icon_unselected.png',
+                          ),
                         ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          _changeTab(1);
-                          setState(() {
-                            _selectedTab = 1;
-                          });
-                        },
-                        child: Image.asset(
-                          _selectedTab == 1
-                              ? 'assets/images/competitions_icon_selected.png'
-                              : 'assets/images/competitions_icon_unselected.png',
+                        GestureDetector(
+                          onTap: () {
+                            _changeTab(1);
+                            setState(() {
+                              _selectedTab = 1;
+                            });
+                          },
+                          child: Image.asset(
+                            _selectedTab == 1
+                                ? 'assets/images/competitions_icon_selected.png'
+                                : 'assets/images/competitions_icon_unselected.png',
+                          ),
                         ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          _changeTab(2);
-                          setState(() {
-                            _selectedTab = 2;
-                          });
-                        },
-                        child: Image.asset(
-                          _selectedTab == 2
-                              ? 'assets/images/stalls_icon_selected.png'
-                              : 'assets/images/stalls_icon_unselected.png',
+                        GestureDetector(
+                          onTap: () {
+                            _changeTab(2);
+                            setState(() {
+                              _selectedTab = 2;
+                            });
+                          },
+                          child: Image.asset(
+                            _selectedTab == 2
+                                ? 'assets/images/stalls_icon_selected.png'
+                                : 'assets/images/stalls_icon_unselected.png',
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    ),
+                  )
                 ),
               ),
               // PageView
@@ -121,31 +123,6 @@ class _ActivityPageState extends State<ActivityPage> {
             ],
           ),
         ],
-      ),
-    );
-  }
-}
-
-class EventsWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        "Events Content",
-        style: TextStyle(color: Colors.white, fontSize: 24),
-      ),
-    );
-  }
-}
-
-
-class StallsWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        "Stalls Content",
-        style: TextStyle(color: Colors.white, fontSize: 24),
       ),
     );
   }
