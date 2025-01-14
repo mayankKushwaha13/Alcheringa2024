@@ -79,7 +79,7 @@ class _SplashScreenState extends State<SplashScreen> {
   NotificationServices notificationSerivces = NotificationServices();
 
   Future<void> _requestPermission() async {
-    await ViewModelMain().requestNotificationPermission();
+    // await ViewModelMain().requestNotificationPermission();
     await ViewModelMain().requestLocationPermission();
   }
 
@@ -88,14 +88,14 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     isLoggedIn = auth.currentUser != null;
     isVerified = isLoggedIn && auth.currentUser!.emailVerified ?? false;
-    // notificationSerivces.requestNotificationPermission();
+    notificationSerivces.requestNotificationPermisions();
     notificationSerivces.forgroundMessage();
     notificationSerivces.firebaseInit(context);
     _requestPermission();
-    notificationSerivces.isTokenRefresh();
-    // notificationSerivces.getDeviceToken().then((value) {
-    //   print(value);
-    // });
+    notificationSerivces.isRefreshToken();
+    notificationSerivces.getDeviceToken().then((value) {
+      print('$value');
+    });
 
     _controller =
         VideoPlayerController.asset("assets/SplashMovie/splash_screen.mp4")

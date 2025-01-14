@@ -64,7 +64,7 @@ class _MapPageState extends State<MapPage> {
   // }
   Future<void> loadCustomMarker() async {
     customMarker = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(size: Size(40, 50)),
+      ImageConfiguration(size: Size(90, 70)),
       'assets/images/map_marker.png',
     );
   }
