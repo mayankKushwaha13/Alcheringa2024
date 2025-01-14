@@ -1,8 +1,9 @@
+import 'package:alcheringa/Screens/checkout_pages/checkout_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../provider/cart_provider.dart';
-import '../../widgets/cart_card.dart';
+
 
 Widget buildReviewTab({
   required BuildContext context, // Pass context to access CartProvider
@@ -147,7 +148,7 @@ Widget buildReviewTab({
               itemCount: cartProvider.cartItems.length,
               itemBuilder: (context, index) {
                 final item = cartProvider.cartItems[index];
-                return CartCard(
+                return checkoutcard(
                   title: item.name,
                   subtitle: item.type,
                   price: double.parse(item.price),

@@ -620,28 +620,34 @@ class _HomeScreenState extends State<HomeScreen>
                                       .map(
                                         (item) => Builder(
                                           builder: (context) {
-                                            return Stack(
-                                              alignment: Alignment.bottomCenter,
-                                              children: [
-                                                item.image == null
-                                                    ? Image.asset(
-                                                        'assets/images/default_image.png',
-                                                        height:
-                                                            screenHeight * 0.24,
-                                                      )
-                                                    : Transform(
-                                                        transform:
-                                                            Matrix4.rotationZ(
-                                                                0.1745),
-                                                        alignment:
-                                                            Alignment.center,
-                                                        child: CachedNetworkImage(
-                                                          imageUrl: item.image ?? " ",
-                                                          height: screenHeight *
-                                                              0.24,
+                                            return GestureDetector(
+                                              onTap: (){
+                                                Navigator.of(context).push(MaterialPageRoute(
+                                                    builder: (context) => MerchScreen()));
+                                              },
+                                              child: Stack(
+                                                alignment: Alignment.bottomCenter,
+                                                children: [
+                                                  item.image == null
+                                                      ? Image.asset(
+                                                          'assets/images/default_image.png',
+                                                          height:
+                                                              screenHeight * 0.24,
+                                                        )
+                                                      : Transform(
+                                                          transform:
+                                                              Matrix4.rotationZ(
+                                                                  0.1745),
+                                                          alignment:
+                                                              Alignment.center,
+                                                          child: CachedNetworkImage(
+                                                            imageUrl: item.image ?? " ",
+                                                            height: screenHeight *
+                                                                0.24,
+                                                          ),
                                                         ),
-                                                      ),
-                                              ],
+                                                ],
+                                              ),
                                             );
                                           },
                                         ),

@@ -1,4 +1,5 @@
 import 'package:alcheringa/Authentication/reset_password.dart';
+import 'package:alcheringa/Screens/login_screen.dart';
 import 'package:alcheringa/common/resource.dart';
 import 'package:flutter/material.dart';
 
@@ -104,16 +105,20 @@ class ResetPasswordScreen extends StatelessWidget {
                             GestureDetector(
                               onTap: () {
                                 String email = _emailController.text.trim();
+
                                 RegExp emailRegex = RegExp(
                                     r'^[A-Za-z0-9._+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$');
                                 if (email.isNotEmpty &&
                                     emailRegex.hasMatch(email)) {
                                   resetPassword(email, context);
+                                  Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginScreen()));
                                 } else {
                                   showMessage(
                                       'Please enter valid email address',
                                       context);
                                 }
+
+
                               },
                               child: Stack(
                                 alignment: Alignment.center,

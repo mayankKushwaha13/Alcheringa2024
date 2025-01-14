@@ -69,82 +69,86 @@ Widget buildDetailsTab({
             Row(
               //mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Stack(
-                  // alignment: Alignment.center,
-                  children: [
-                    Container(
-                      width: 162.0, // Set desired width
-                      height: 54, // Set desired height
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage(
-                              'assets/images/checkout_textField2.png'),
-                          fit: BoxFit.fill,
+                Flexible(
+                  child: Stack(
+                    // alignment: Alignment.center,
+                    children: [
+                      Container(
+                        width: 162.0, // Set desired width
+                        height: 54, // Set desired height
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage(
+                                'assets/images/checkout_textField2.png'),
+                            fit: BoxFit.fill,
+                          ),
                         ),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 15),
-                        child: TextField(
-                          controller: cityController,
-                          decoration: InputDecoration(
-                            hintText: 'City',
-                            hintStyle: TextStyle(color: Colors.grey),
-                            border: InputBorder.none, // Remove default border
-                            contentPadding: EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 7,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 15),
+                          child: TextField(
+                            controller: cityController,
+                            decoration: InputDecoration(
+                              hintText: 'City',
+                              hintStyle: TextStyle(color: Colors.grey),
+                              border: InputBorder.none, // Remove default border
+                              contentPadding: EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 7,
+                              ),
+                            ),
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontFamily: 'Game_Tape',
+                              fontWeight: FontWeight.w400,
                             ),
                           ),
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontFamily: 'Game_Tape',
-                            fontWeight: FontWeight.w400,
-                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
                 SizedBox(
-                  width: 1,
+                  width: 2,
                 ),
-                Stack(
-                  // alignment: Alignment.center,
-                  children: [
-                    Container(
-                      width: 162.0, // Set desired width
-                      height: 54, // Set desired height
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage(
-                              'assets/images/checkout_textField2.png'),
-                          fit: BoxFit.fill,
+                Flexible(
+                  child: Stack(
+                    // alignment: Alignment.center,
+                    children: [
+                      Container(
+                        width: 162.0, // Set desired width
+                        height: 54, // Set desired height
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage(
+                                'assets/images/checkout_textField2.png'),
+                            fit: BoxFit.fill,
+                          ),
                         ),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 15),
-                        child: TextField(
-                          controller: stateController,
-                          decoration: InputDecoration(
-                            hintText: 'State',
-                            hintStyle: TextStyle(color: Colors.grey),
-                            border: InputBorder.none, // Remove default border
-                            contentPadding: EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 7,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 15),
+                          child: TextField(
+                            controller: stateController,
+                            decoration: InputDecoration(
+                              hintText: 'State',
+                              hintStyle: TextStyle(color: Colors.grey),
+                              border: InputBorder.none, // Remove default border
+                              contentPadding: EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 7,
+                              ),
+                            ),
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontFamily: 'Game_Tape',
+                              fontWeight: FontWeight.w400,
                             ),
                           ),
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontFamily: 'Game_Tape',
-                            fontWeight: FontWeight.w400,
-                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ],
             ),

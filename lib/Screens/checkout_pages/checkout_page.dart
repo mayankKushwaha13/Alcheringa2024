@@ -1,3 +1,4 @@
+import 'package:alcheringa/Screens/home_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'build_confirmation_tab.dart';
@@ -160,14 +161,19 @@ class _CheckoutPageState extends State<CheckoutPage> {
                             ),
                           ),
                         ),
-                        Text(
-                          _currentIndex < 3 ? 'Next' : 'Continue\nShopping',
-                          style: TextStyle(
-                            fontFamily: 'Brick_Pixel',
-                            color: Colors.white,
-                            fontSize: _currentIndex != 3 ? 20.0 : 24,
-                            fontWeight: FontWeight.w400,
-                            height: 0.9,
+                        GestureDetector(
+                          onTap: (){
+                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
+                          },
+                          child: Text(
+                            _currentIndex < 3 ? 'Next' : 'Continue\nShopping',
+                            style: TextStyle(
+                              fontFamily: 'Brick_Pixel',
+                              color: Colors.white,
+                              fontSize: _currentIndex != 3 ? 20.0 : 24,
+                              fontWeight: FontWeight.w400,
+                              height: 0.9,
+                            ),
                           ),
                         ),
                       ],

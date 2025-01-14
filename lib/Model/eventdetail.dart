@@ -68,7 +68,7 @@ class EventDetail {
   factory EventDetail.fromTable(Map<String, dynamic> data) {
     return EventDetail(
       descriptionShort: data['descriptionShort'],
-      iconURL: data['iconURL'],
+      iconURL: data['iconurl'],
       artist: data['artist'],
       category: data['category'],
       starttime: OwnTime(

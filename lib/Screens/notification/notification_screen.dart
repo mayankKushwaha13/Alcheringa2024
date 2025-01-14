@@ -176,7 +176,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
             style: TextStyle(
               color: AppColors.Pink,
               fontFamily: "Game_Tape",
-              fontSize: 35,
+              fontSize: 24,
             ),
           ),
         ),

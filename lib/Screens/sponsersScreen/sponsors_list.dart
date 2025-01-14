@@ -78,7 +78,7 @@ class _sponsors_listState extends State<sponsors_list> {
                                   ),
                                 ),
                                 child: CachedNetworkImage(imageUrl:sponsor.imageurl,
-                                  fit: BoxFit.fitHeight,
+                                  //fit: BoxFit.cover,
                                 ),
                               ),
                               SizedBox(height: 8),
