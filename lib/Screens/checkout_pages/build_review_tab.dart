@@ -203,7 +203,9 @@ Widget buildReviewTab({
                             color: Color.fromRGBO(131, 118, 156, 1)),
                       ),
                       Text(
-                        'Rs. 420', // Static for now; update as needed
+                        cartProvider.totalPrice.toStringAsFixed(2) != '0.00'
+                            ? 'Rs. 420'
+                            : '0', // Static for now; update as needed
                         style: TextStyle(
                             fontWeight: FontWeight.w400,
                             fontFamily: 'Game_Tape',
@@ -224,7 +226,7 @@ Widget buildReviewTab({
                             color: Color.fromRGBO(131, 118, 156, 1)),
                       ),
                       Text(
-                        'Rs. ${(cartProvider.totalPrice + 420).toStringAsFixed(2)}', // Include shipping
+                        'Rs. ${(cartProvider.totalPrice + cartProvider.totalItems != 0 ? 420 : 0).toStringAsFixed(2)}', // Include shipping
                         style: TextStyle(
                             fontWeight: FontWeight.w400,
                             fontFamily: 'Game_Tape',
