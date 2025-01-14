@@ -1,5 +1,6 @@
 import 'package:alcheringa/Model/eventdetail.dart';
 import 'package:alcheringa/Screens/event_detail_page.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:marquee/marquee.dart';
 
@@ -16,6 +17,7 @@ class _CompetitionCardState extends State<CompetitionCard> {
   @override
   Widget build(BuildContext context) {
     final mq = MediaQuery.of(context).size;
+    print('hello: ${widget.event.iconURL}');
 
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
@@ -41,9 +43,12 @@ class _CompetitionCardState extends State<CompetitionCard> {
                   // widget.event.iconURL==null || widget.event.iconURL==""
                   // ?Image.asset( "assets/images/basketball.png",scale: 1.2,)
                   // :Image.network(widget.event.iconURL),
-                  Image.asset(
-                    "assets/images/basketball.png",
+                  CachedNetworkImage(
                     scale: 1.2,
+                    imageUrl: widget.event.iconURL,
+                    errorWidget: (context, url, error) => Image.asset(
+                        'assets/images/basketball.png'
+                    ),
                   ),
                   SizedBox(
                     width: 5,
