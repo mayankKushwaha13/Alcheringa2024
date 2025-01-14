@@ -4,6 +4,7 @@ import 'package:alcheringa/Common/globals.dart';
 import 'package:alcheringa/Model/view_model_main.dart';
 import 'package:alcheringa/Screens/welcome_screen.dart';
 import 'package:alcheringa/provider/event_provider.dart';
+import 'package:alcheringa/provider/stall_provider.dart';
 import 'package:alcheringa/screens/main_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -37,6 +38,7 @@ Future<void> main() async {
       ChangeNotifierProvider(create: (_) => ViewModelMain()),
       ChangeNotifierProvider(create: (_) => cartProvider),
       ChangeNotifierProvider(create: (_) => EventProvider()),
+      ChangeNotifierProvider(create: (_) => StallProvider()),
       // ChangeNotifierProvider(
       //   create: (_) => ScheduleViewModel(),
       //   child: Schedule(),

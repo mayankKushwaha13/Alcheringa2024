@@ -1,7 +1,6 @@
 import 'package:alcheringa/Common/globals.dart';
 import 'package:alcheringa/Database/liked_events.dart';
 import 'package:alcheringa/Model/eventdetail.dart';
-import 'package:alcheringa/Model/view_model_main.dart';
 import 'package:alcheringa/Screens/event_detail_page.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -22,37 +21,40 @@ List<EventDetail> creatorscamplist = [];
 List<EventDetail> alllist = [];
 
 class _ActivityEventsScreenState extends State<ActivityEventsScreen> {
-  void getEvents() async {
-    alllist = await ViewModelMain().getAllEvents();
-    proniteslist = await getPronites();
-    proshowslist = await getProshows();
-    creatorscamplist = await getCreatorsCamp();
-    setState(() {});
-  }
-
-  Future<List<EventDetail>> getPronites() async {
-    proniteslist = alllist
-        .where((element) =>
-            element.type.replaceAll("\\s", "").toUpperCase() == "Pronites".replaceAll("\\s", "").toUpperCase())
-        .toList();
-    return proniteslist;
-  }
-
-  Future<List<EventDetail>> getProshows() async {
-    proshowslist = alllist
-        .where((element) =>
-            element.type.replaceAll("\\s", "").toUpperCase() == "Proshows".replaceAll("\\s", "").toUpperCase())
-        .toList();
-    return proshowslist;
-  }
-
-  Future<List<EventDetail>> getCreatorsCamp() async {
-    creatorscamplist = alllist
-        .where((element) =>
-            element.type.replaceAll("\\s", "").toUpperCase() == "Creators' Camp".replaceAll("\\s", "").toUpperCase())
-        .toList();
-    return creatorscamplist;
-  }
+  // void getEvents() async {
+  //   alllist = await ViewModelMain().getAllEvents();
+  //   proniteslist = await getPronites();
+  //   proshowslist = await getProshows();
+  //   creatorscamplist = await getCreatorsCamp();
+  //   setState(() {});
+  // }
+  //
+  // Future<List<EventDetail>> getPronites() async {
+  //   proniteslist = alllist
+  //       .where((element) =>
+  //           element.type.replaceAll("\\s", "").toUpperCase() ==
+  //           "Pronites".replaceAll("\\s", "").toUpperCase())
+  //       .toList();
+  //   return proniteslist;
+  // }
+  //
+  // Future<List<EventDetail>> getProshows() async {
+  //   proshowslist = alllist
+  //       .where((element) =>
+  //           element.type.replaceAll("\\s", "").toUpperCase() ==
+  //           "Proshows".replaceAll("\\s", "").toUpperCase())
+  //       .toList();
+  //   return proshowslist;
+  // }
+  //
+  // Future<List<EventDetail>> getCreatorsCamp() async {
+  //   creatorscamplist = alllist
+  //       .where((element) =>
+  //           element.type.replaceAll("\\s", "").toUpperCase() ==
+  //           "Creators' Camp".replaceAll("\\s", "").toUpperCase())
+  //       .toList();
+  //   return creatorscamplist;
+  // }
 
   @override
   void initState() {
@@ -69,12 +71,6 @@ class _ActivityEventsScreenState extends State<ActivityEventsScreen> {
     final screenHeight = MediaQuery.of(context).size.height;
     final eventProvider = Provider.of<EventProvider>(context);
 
-    if (eventProvider.isLoading) {
-      return Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      );
-    }
-
     return Scaffold(
       body: Stack(
         children: [
@@ -85,46 +81,48 @@ class _ActivityEventsScreenState extends State<ActivityEventsScreen> {
             ),
           ),
           Center(
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  // Pronites
-                  _buildHeading(
-                    text: "Pronites",
-                    backgroundImage: "assets/images/heading.png",
-                  ),
-                  const SizedBox(height: 20),
-                  _buildEventList(
-                    screenHeight: screenHeight,
-                    events: eventProvider.pronites,
-                  ),
+            child: eventProvider.isLoading
+                ? CircularProgressIndicator()
+                : SingleChildScrollView(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        // Pronites
+                        _buildHeading(
+                          text: "Pronites",
+                          backgroundImage: "assets/images/heading.png",
+                        ),
+                        const SizedBox(height: 20),
+                        _buildEventList(
+                          screenHeight: screenHeight,
+                          events: eventProvider.pronites,
+                        ),
 
-                  // Proshows
-                  _buildHeading(
-                    text: "Proshows",
-                    backgroundImage: "assets/images/heading.png",
-                  ),
-                  const SizedBox(height: 20),
-                  _buildEventList(
-                    screenHeight: screenHeight,
-                    events: eventProvider.proshows,
-                  ),
+                        // Proshows
+                        _buildHeading(
+                          text: "Proshows",
+                          backgroundImage: "assets/images/heading.png",
+                        ),
+                        const SizedBox(height: 20),
+                        _buildEventList(
+                          screenHeight: screenHeight,
+                          events: eventProvider.proshows,
+                        ),
 
-                  // Creators' Camp
-                  _buildHeading(
-                    text: "Creators' Camp",
-                    backgroundImage: "assets/images/heading.png",
+                        // Creators' Camp
+                        _buildHeading(
+                          text: "Creators' Camp",
+                          backgroundImage: "assets/images/heading.png",
+                        ),
+                        const SizedBox(height: 20),
+                        _buildEventList(
+                          screenHeight: screenHeight,
+                          events: eventProvider.creatorsCamp,
+                        ),
+                        SizedBox(height: bottomNavBarHeight),
+                      ],
+                    ),
                   ),
-                  const SizedBox(height: 20),
-                  _buildEventList(
-                    screenHeight: screenHeight,
-                    events: eventProvider.creatorsCamp,
-                  ),
-                  SizedBox(height: bottomNavBarHeight),
-                ],
-              ),
-            ),
           )
         ],
       ),
@@ -197,18 +195,18 @@ class _ActivityEventsScreenState extends State<ActivityEventsScreen> {
     );
   }
 
-  Widget _buildCard({
-    required EventDetail event,
-    required bool isLiked,
-    double headingSize = 20
-  }) {
+  Widget _buildCard(
+      {required EventDetail event,
+      required bool isLiked,
+      double headingSize = 20}) {
     final screenHeight = MediaQuery.of(context).size.height;
     final widgetHeight = screenHeight * 0.6;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
       child: GestureDetector(
         onTap: () {
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => EventDetailPage(event: event)));
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => EventDetailPage(event: event)));
         },
         child: Column(
           children: [
@@ -218,7 +216,7 @@ class _ActivityEventsScreenState extends State<ActivityEventsScreen> {
                     child: ClipRRect(
                   borderRadius: BorderRadius.circular(16),
                   child: CachedNetworkImage(
-                    imageUrl:event.imgurl,
+                    imageUrl: event.imgurl,
                     fit: BoxFit.cover,
                     alignment: Alignment.center,
                   ),
@@ -317,7 +315,9 @@ class _ActivityEventsScreenState extends State<ActivityEventsScreen> {
 
     String month = date >= 31 ? 'Jan' : 'Feb';
     String timeSuffix = event.starttime.hours >= 12 ? 'PM' : 'AM';
-    String displayHour = event.starttime.hours > 12 ? "${event.starttime.hours - 12}" : "${event.starttime.hours}";
+    String displayHour = event.starttime.hours > 12
+        ? "${event.starttime.hours - 12}"
+        : "${event.starttime.hours}";
 
     return '$date $month, $displayHour $timeSuffix | ${event.venue}';
   }
