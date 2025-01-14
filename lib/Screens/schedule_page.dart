@@ -525,7 +525,10 @@ final List<String> keys = ["All","Lecture Halls","Grounds","Library Area", "Admi
                                                         height: duration *hourHeight,
                                                         padding:const EdgeInsets.all(8),
                                                         decoration:BoxDecoration(
-                                                          color: Colors.blueAccent.withOpacity(0.8),
+                                                          image: DecorationImage(
+                                                            image: AssetImage('assets/images/schedule_event_bg.png'),
+                                                            fit: BoxFit.cover
+                                                          ),
                                                           borderRadius:
                                                               BorderRadius.circular(8),
                                                         ),
