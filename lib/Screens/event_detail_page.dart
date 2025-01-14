@@ -291,7 +291,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
       
                     // Suggestions Cards
                     SizedBox(
-                      height: 400,
+                      height: 350,
                       child: PageView.builder(
                         controller: PageController(viewportFraction: 1),
                         itemCount: (displayedSuggestions.length / 2).ceil(),

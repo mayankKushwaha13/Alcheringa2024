@@ -49,8 +49,8 @@ class _StallsPageState extends State<StallsPage> {
     } else {
       setState(() {
         _filteredStalls = _stalls
-            .where((restaurant) =>
-                restaurant.name.toLowerCase().contains(query.toLowerCase()))
+            .where((stall) =>
+                stall.name.toLowerCase().contains(query.toLowerCase()))
             .toList();
       });
     }
@@ -64,8 +64,12 @@ class _StallsPageState extends State<StallsPage> {
       return const Center(child: CircularProgressIndicator());
     }
 
-    final stalls = stallProvider.stalls;
-    _filteredStalls = _filteredStalls.isEmpty ? stalls : _filteredStalls;
+    // Update local state when stalls are fetched
+    if (_stalls.isEmpty) {
+      _stalls = stallProvider.stalls;
+      _filteredStalls = List.from(_stalls); // Initialize the filtered list
+    }
+
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Container(

@@ -162,43 +162,46 @@ class _SearchscreenState extends State<Searchscreen> {
 
                 Expanded(
                   child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16.0),
-                          child: Text(
-                            'Suggestions',
-                            style: TextStyle(
-                              fontFamily: 'Game_Tape',
-                              fontSize: 20,
-                              color: Colors.white,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 16.0),
+                            child: Text(
+                              'Suggestions',
+                              style: TextStyle(
+                                fontFamily: 'Game_Tape',
+                                fontSize: 20,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
-                        ),
-                        SizedBox(height: 5),
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: _filteredEvents
-                                .where((event) => event.category == "Event")
-                                .toList()
-                                .map((event) {
-                              return _buildCard(context: context, event: event);
-                            }).toList(),
+                          SizedBox(height: 5),
+                          SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: _filteredEvents
+                                  .where((event) => event.category == "Event")
+                                  .toList()
+                                  .map((event) {
+                                return _buildCard(context: context, event: event);
+                              }).toList(),
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Column(
-                            children: _filteredEvents
-                                .where((event) => event.category != "Event")
-                                .toList()
-                                .map((event) {
-                          return CompetitionCard(event: event);
-                        }).toList())
-                      ],
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Column(
+                              children: _filteredEvents
+                                  .where((event) => event.category != "Event")
+                                  .toList()
+                                  .map((event) {
+                            return CompetitionCard(event: event);
+                          }).toList())
+                        ],
+                      ),
                     ),
                   ),
                 )

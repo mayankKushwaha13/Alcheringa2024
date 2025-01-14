@@ -484,7 +484,7 @@ class _HomeScreenState extends State<HomeScreen>
                                 width: 250,
                                 decoration: BoxDecoration(
                                   image: DecorationImage(
-                                    image: NetworkImage(event.imgurl),
+                                    image: CachedNetworkImageProvider(event.imgurl),
                                     alignment: Alignment.center,
                                     // 'assets/images/card_$index.png'),
                                     fit: BoxFit.cover,
@@ -635,8 +635,8 @@ class _HomeScreenState extends State<HomeScreen>
                                                                 0.1745),
                                                         alignment:
                                                             Alignment.center,
-                                                        child: Image.network(
-                                                          item.image ?? " ",
+                                                        child: CachedNetworkImage(
+                                                          imageUrl: item.image ?? " ",
                                                           height: screenHeight *
                                                               0.24,
                                                         ),
