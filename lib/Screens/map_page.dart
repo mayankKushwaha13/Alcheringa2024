@@ -10,7 +10,10 @@ import 'package:alcheringa/Screens/activity_pages/pixel_text_field.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../provider/event_provider.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
@@ -38,20 +41,32 @@ class _MapPageState extends State<MapPage> {
 
   void _onMapCreated(GoogleMapController controller) {
     _controller.complete(controller);
+    controller.setMapStyle(mapstyle);
   }
+
+  //
+  // void _onMapCreated(GoogleMapController controller) {
+  //   _controller.complete(controller);
+  // }
 
   void _checkAndRequestPermission() async {
     _isPermissionGranted = await ViewModelMain().requestLocationPermission();
   }
 
-  void loadCustomMarker() async {
-    final _customMarker = await BitmapDescriptor.asset(
-      const ImageConfiguration(size: Size(40, 50)),
+  // void loadCustomMarker() async {
+  //   final _customMarker = await BitmapDescriptor.asset(
+  //     const ImageConfiguration(size: Size(40, 50)),
+  //     'assets/images/map_marker.png',
+  //   );
+  //   setState(() {
+  //     customMarker = _customMarker;
+  //   });
+  // }
+  Future<void> loadCustomMarker() async {
+    customMarker = await BitmapDescriptor.fromAssetImage(
+      ImageConfiguration(size: Size(40, 50)),
       'assets/images/map_marker.png',
     );
-    setState(() {
-      customMarker = _customMarker;
-    });
   }
 
   Set<Marker> convertToMarkers(List<VenueModel> venueList) {
@@ -109,14 +124,14 @@ class _MapPageState extends State<MapPage> {
     return nextEvent;
   }
 
-  void _filterVenue(String query) {
+  void _filterVenue(String query, List<VenueModel> venues) {
     if (query.isEmpty) {
       setState(() {
-        _filteredVenue = List.from(_venueList);
+        _filteredVenue = List.from(venues);
       });
     } else {
       setState(() {
-        _filteredVenue = _venueList
+        _filteredVenue = venues
             .where((venue) =>
                 venue.name.toLowerCase().contains(query.toLowerCase()))
             .toList();
@@ -124,21 +139,43 @@ class _MapPageState extends State<MapPage> {
     }
   }
 
+  // void _filterVenue(String query) {
+  //   if (query.isEmpty) {
+  //     setState(() {
+  //       _filteredVenue = List.from(_venueList);
+  //     });
+  //   } else {
+  //     setState(() {
+  //       _filteredVenue = _venueList
+  //           .where((venue) =>
+  //               venue.name.toLowerCase().contains(query.toLowerCase()))
+  //           .toList();
+  //     });
+  //   }
+  // }
+
   @override
   void initState() {
     super.initState();
     loadCustomMarker();
     _checkAndRequestPermission();
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   _scaffoldKey.currentState?.showBottomSheet((BuildContext context) {
-    //     return BottomSheet(controller: _controller,);
-    //   });
-    // });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final eventProvider = Provider.of<EventProvider>(context, listen: false);
+      eventProvider.fetchEvents();
+    });
     getData();
   }
 
   @override
   Widget build(BuildContext context) {
+    final eventProvider = Provider.of<EventProvider>(context);
+
+    if (eventProvider.isLoading) {
+      return Center(child: CircularProgressIndicator());
+    }
+
+    final venues = eventProvider.venues;
+    final events = eventProvider.allEvents;
     return Scaffold(
       key: _scaffoldKey,
       resizeToAvoidBottomInset: false,
@@ -166,7 +203,7 @@ class _MapPageState extends State<MapPage> {
                   PixelTextField(
                     hintText: 'Search',
                     controller: _textFieldController,
-                    onChanged: _filterVenue,
+                    onChanged: (query) => _filterVenue(query, venues),
                     height: 50,
                   ),
                   if (_textFieldController.text.isNotEmpty)
