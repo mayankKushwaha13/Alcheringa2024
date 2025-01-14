@@ -5,6 +5,8 @@ import '../Model/view_model_main.dart';
 
 class StallProvider with ChangeNotifier {
   List<StallModel> _stalls = [];
+
+  List<StallModel> _filteredStalls = [];
   bool _isLoading = false;
 
   List<StallModel> get stalls => _stalls;
@@ -17,6 +19,7 @@ class StallProvider with ChangeNotifier {
     try {
       final fetchedStalls = await ViewModelMain().getStalls();
       _stalls = fetchedStalls;
+      _filteredStalls = List.from(_stalls);
     } catch (e) {
       print('Error fetching stalls: $e');
     }
