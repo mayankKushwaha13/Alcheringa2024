@@ -10,7 +10,10 @@ import 'package:alcheringa/Screens/activity_pages/pixel_text_field.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../provider/event_provider.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
@@ -38,20 +41,32 @@ class _MapPageState extends State<MapPage> {
 
   void _onMapCreated(GoogleMapController controller) {
     _controller.complete(controller);
+    controller.setMapStyle(mapstyle);
   }
+
+  //
+  // void _onMapCreated(GoogleMapController controller) {
+  //   _controller.complete(controller);
+  // }
 
   void _checkAndRequestPermission() async {
     _isPermissionGranted = await ViewModelMain().requestLocationPermission();
   }
 
-  void loadCustomMarker() async {
-    final _customMarker = await BitmapDescriptor.asset(
-      const ImageConfiguration(size: Size(40, 50)),
+  // void loadCustomMarker() async {
+  //   final _customMarker = await BitmapDescriptor.asset(
+  //     const ImageConfiguration(size: Size(40, 50)),
+  //     'assets/images/map_marker.png',
+  //   );
+  //   setState(() {
+  //     customMarker = _customMarker;
+  //   });
+  // }
+  Future<void> loadCustomMarker() async {
+    customMarker = await BitmapDescriptor.fromAssetImage(
+      ImageConfiguration(size: Size(90, 70)),
       'assets/images/map_marker.png',
     );
-    setState(() {
-      customMarker = _customMarker;
-    });
   }
 
   Set<Marker> convertToMarkers(List<VenueModel> venueList) {
@@ -93,52 +108,63 @@ class _MapPageState extends State<MapPage> {
     int currentHour = current.hour;
     int currentMin = current.minute;
 
-    OwnTime now =
-        OwnTime(date: currentDay, hours: currentHour, min: currentMin);
+    OwnTime now = OwnTime(date: currentDay, hours: currentHour, min: currentMin);
 
-    var filteredEvents = eventList
-        .where((event) => event.venue == venue && event.starttime.isAfter(now))
-        .toList();
+    var filteredEvents = eventList.where((event) => event.venue == venue && event.starttime.isAfter(now)).toList();
     if (filteredEvents.isEmpty) {
       return null;
     }
 
-    EventDetail nextEvent = filteredEvents
-        .reduce((a, b) => a.starttime.isAfter(b.starttime) ? b : a);
+    EventDetail nextEvent = filteredEvents.reduce((a, b) => a.starttime.isAfter(b.starttime) ? b : a);
 
     return nextEvent;
   }
 
-  void _filterVenue(String query) {
+  void _filterVenue(String query, List<VenueModel> venues) {
     if (query.isEmpty) {
       setState(() {
-        _filteredVenue = List.from(_venueList);
+        _filteredVenue = List.from(venues);
       });
     } else {
       setState(() {
-        _filteredVenue = _venueList
-            .where((venue) =>
-                venue.name.toLowerCase().contains(query.toLowerCase()))
-            .toList();
+        _filteredVenue = venues.where((venue) => venue.name.toLowerCase().contains(query.toLowerCase())).toList();
       });
     }
   }
+
+  // void _filterVenue(String query) {
+  //   if (query.isEmpty) {
+  //     setState(() {
+  //       _filteredVenue = List.from(_venueList);
+  //     });
+  //   } else {
+  //     setState(() {
+  //       _filteredVenue = _venueList
+  //           .where((venue) =>
+  //               venue.name.toLowerCase().contains(query.toLowerCase()))
+  //           .toList();
+  //     });
+  //   }
+  // }
 
   @override
   void initState() {
     super.initState();
     loadCustomMarker();
     _checkAndRequestPermission();
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   _scaffoldKey.currentState?.showBottomSheet((BuildContext context) {
-    //     return BottomSheet(controller: _controller,);
-    //   });
-    // });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final eventProvider = Provider.of<EventProvider>(context, listen: false);
+      eventProvider.fetchEvents();
+    });
     getData();
   }
 
   @override
   Widget build(BuildContext context) {
+    final eventProvider = Provider.of<EventProvider>(context);
+
+    final venues = eventProvider.venues;
+    final events = eventProvider.allEvents;
     return Scaffold(
       key: _scaffoldKey,
       resizeToAvoidBottomInset: false,
@@ -146,8 +172,7 @@ class _MapPageState extends State<MapPage> {
         children: [
           GoogleMap(
             style: mapstyle,
-            initialCameraPosition:
-                CameraPosition(target: _center, zoom: _currentZoom),
+            initialCameraPosition: CameraPosition(target: _center, zoom: _currentZoom),
             onMapCreated: _onMapCreated,
             zoomControlsEnabled: false,
             myLocationEnabled: _isPermissionGranted,
@@ -155,184 +180,177 @@ class _MapPageState extends State<MapPage> {
             markers: _markers,
             minMaxZoomPreference: MinMaxZoomPreference(16, 20),
           ),
-          Positioned(
-            top: 20.0,
-            left: 0.0,
-            right: 0.0,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30.0),
-              child: Column(
-                children: [
-                  PixelTextField(
-                    hintText: 'Search',
-                    controller: _textFieldController,
-                    onChanged: _filterVenue,
-                    height: 50,
-                  ),
-                  if (_textFieldController.text.isNotEmpty)
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: SingleChildScrollView(
+          eventProvider.isLoading
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : Stack(
+                  children: [
+                    Positioned(
+                      top: 20.0,
+                      left: 0.0,
+                      right: 0.0,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 30.0),
                         child: Column(
                           children: [
-                            ..._filteredVenue.map((venue) {
-                              return GestureDetector(
-                                onTap: () async {
-                                  FocusScope.of(context).unfocus();
-                                  final venueLocation = venue.latLng;
-                                  final GoogleMapController controller =
-                                      await _controller.future;
-
-                                  controller.animateCamera(
-                                      CameraUpdate.newLatLng(venueLocation));
-                                  controller.showMarkerInfoWindow(
-                                      MarkerId(venue.name));
-                                  setState(() {
-                                    _textFieldController.text = '';
-                                  });
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.all(15.0),
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                    color: Color.fromRGBO(131, 118, 156, 1),
-                                    border: Border.all(
-                                        color: Colors.black,
-                                        width: 2.0,
-                                        style: BorderStyle.solid),
-                                  ),
-                                  child: Text(
-                                    venue.name,
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: "Game_Tape",
-                                      fontSize: 20.0,
-                                    ),
-                                  ),
-                                ),
-                              );
-                            })
-                          ],
-                        ),
-                      ),
-                    ),
-                ],
-              ),
-            ),
-          ),
-          Positioned(
-            bottom: 0,
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: List.generate(_markers.length, (index) {
-                          return Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 10.0),
-                            child: GestureDetector(
-                              onTap: () async {
-                                final venueLocation = _venueList[index].latLng;
-                                final GoogleMapController mapController =
-                                    await _controller.future;
-
-                                mapController.animateCamera(
-                                    CameraUpdate.newLatLng(venueLocation));
-                                mapController.showMarkerInfoWindow(
-                                    MarkerId(_venueList[index].name));
-                              },
-                              child: Container(
-                                height: 120.0,
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      image: AssetImage(
-                                          'assets/images/map_marker_holder_bg.png'),
-                                      fit: BoxFit.fill),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(20.0),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
+                            PixelTextField(
+                              hintText: 'Search',
+                              controller: _textFieldController,
+                              onChanged: (query) => _filterVenue(query, venues),
+                              height: 50,
+                            ),
+                            if (_textFieldController.text.isNotEmpty)
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                                child: SingleChildScrollView(
+                                  child: Column(
                                     children: [
-                                      AspectRatio(
-                                        aspectRatio: 1,
-                                        child: Container(
-                                            padding: EdgeInsets.all(10.0),
+                                      ..._filteredVenue.map((venue) {
+                                        return GestureDetector(
+                                          onTap: () async {
+                                            FocusScope.of(context).unfocus();
+                                            final venueLocation = venue.latLng;
+                                            final GoogleMapController controller = await _controller.future;
+
+                                            controller.animateCamera(CameraUpdate.newLatLng(venueLocation));
+                                            controller.showMarkerInfoWindow(MarkerId(venue.name));
+                                            setState(() {
+                                              _textFieldController.text = '';
+                                            });
+                                          },
+                                          child: Container(
+                                            padding: EdgeInsets.all(15.0),
+                                            width: double.infinity,
                                             decoration: BoxDecoration(
-                                              image: DecorationImage(
-                                                  image: AssetImage(
-                                                      'assets/images/map_sprite_holder.png'),
-                                                  fit: BoxFit.fill),
+                                              color: Color.fromRGBO(131, 118, 156, 1),
+                                              border:
+                                                  Border.all(color: Colors.black, width: 2.0, style: BorderStyle.solid),
                                             ),
-                                            child: CachedNetworkImage(
-                                              imageUrl:
-                                                  _venueList[index].imgUrl,
-                                            )),
-                                      ),
-                                      SizedBox(
-                                        width: 10.0,
-                                      ),
-                                      Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            _venueList[index].name,
-                                            style: TextStyle(
-                                              fontSize: 22.0,
-                                              fontFamily: "Game_Tape",
-                                              color: Colors.white,
+                                            child: Text(
+                                              venue.name,
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontFamily: "Game_Tape",
+                                                fontSize: 20.0,
+                                              ),
                                             ),
                                           ),
-                                          Text(
-                                            'Upcoming events:',
-                                            style: TextStyle(
-                                              fontSize: 15.0,
-                                              fontFamily: "Game_Tape",
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                          Text(
-                                            getNextEvent(_venueList[index].name)
-                                                    ?.artist ??
-                                                "No upcoming event",
-                                            style: TextStyle(
-                                              fontSize: 11.0,
-                                              fontFamily: "Game_Tape",
-                                              color: Color(0xFFFF77A8),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        width: 10.0,
-                                      ),
-                                      Image.asset(
-                                          'assets/images/map_location_icon.png')
+                                        );
+                                      })
                                     ],
                                   ),
                                 ),
                               ),
-                            ),
-                          );
-                        }),
+                          ],
+                        ),
                       ),
                     ),
-                    SizedBox(
-                      height: bottomNavBarHeight,
+                    Positioned(
+                      bottom: 0,
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 20.0),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: List.generate(_markers.length, (index) {
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                                      child: GestureDetector(
+                                        onTap: () async {
+                                          final venueLocation = _venueList[index].latLng;
+                                          final GoogleMapController mapController = await _controller.future;
+
+                                          mapController.animateCamera(CameraUpdate.newLatLng(venueLocation));
+                                          mapController.showMarkerInfoWindow(MarkerId(_venueList[index].name));
+                                        },
+                                        child: Container(
+                                          height: 120.0,
+                                          decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                                image: AssetImage('assets/images/map_marker_holder_bg.png'),
+                                                fit: BoxFit.fill),
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(20.0),
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                AspectRatio(
+                                                  aspectRatio: 1,
+                                                  child: Container(
+                                                      padding: EdgeInsets.all(10.0),
+                                                      decoration: BoxDecoration(
+                                                        image: DecorationImage(
+                                                            image: AssetImage('assets/images/map_sprite_holder.png'),
+                                                            fit: BoxFit.fill),
+                                                      ),
+                                                      child: CachedNetworkImage(
+                                                        imageUrl: _venueList[index].imgUrl,
+                                                      )),
+                                                ),
+                                                SizedBox(
+                                                  width: 10.0,
+                                                ),
+                                                Column(
+                                                  mainAxisSize: MainAxisSize.min,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      _venueList[index].name,
+                                                      style: TextStyle(
+                                                        fontSize: 22.0,
+                                                        fontFamily: "Game_Tape",
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      'Upcoming events:',
+                                                      style: TextStyle(
+                                                        fontSize: 15.0,
+                                                        fontFamily: "Game_Tape",
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      getNextEvent(_venueList[index].name)?.artist ??
+                                                          "No upcoming event",
+                                                      style: TextStyle(
+                                                        fontSize: 11.0,
+                                                        fontFamily: "Game_Tape",
+                                                        color: Color(0xFFFF77A8),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                SizedBox(
+                                                  width: 10.0,
+                                                ),
+                                                Image.asset('assets/images/map_location_icon.png')
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  }),
+                                ),
+                              ),
+                              SizedBox(
+                                height: bottomNavBarHeight,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 ),
-              ),
-            ),
-          )
         ],
       ),
     );
@@ -367,18 +385,14 @@ class _BottomSheetState extends State<BottomSheet> {
     int currentHour = current.hour;
     int currentMin = current.minute;
 
-    OwnTime now =
-        OwnTime(date: currentDay, hours: currentHour, min: currentMin);
+    OwnTime now = OwnTime(date: currentDay, hours: currentHour, min: currentMin);
 
-    var filteredEvents = eventList
-        .where((event) => event.venue == venue && event.starttime.isAfter(now))
-        .toList();
+    var filteredEvents = eventList.where((event) => event.venue == venue && event.starttime.isAfter(now)).toList();
     if (filteredEvents.isEmpty) {
       return null;
     }
 
-    EventDetail nextEvent = filteredEvents
-        .reduce((a, b) => a.starttime.isAfter(b.starttime) ? b : a);
+    EventDetail nextEvent = filteredEvents.reduce((a, b) => a.starttime.isAfter(b.starttime) ? b : a);
 
     return nextEvent;
   }
@@ -408,22 +422,17 @@ class _BottomSheetState extends State<BottomSheet> {
                     child: GestureDetector(
                       onTap: () async {
                         final venueLocation = _markers[index].latLng;
-                        final GoogleMapController mapController =
-                            await widget.controller.future;
+                        final GoogleMapController mapController = await widget.controller.future;
 
-                        mapController.animateCamera(
-                            CameraUpdate.newLatLng(venueLocation));
-                        mapController.showMarkerInfoWindow(
-                            MarkerId(_markers[index].name));
+                        mapController.animateCamera(CameraUpdate.newLatLng(venueLocation));
+                        mapController.showMarkerInfoWindow(MarkerId(_markers[index].name));
                       },
                       child: Container(
                         height: 99.0,
                         width: 327,
                         decoration: BoxDecoration(
                           image: DecorationImage(
-                              image: AssetImage(
-                                  'assets/images/map_marker_holder_bg.png'),
-                              fit: BoxFit.fill),
+                              image: AssetImage('assets/images/map_marker_holder_bg.png'), fit: BoxFit.fill),
                         ),
                         child: Padding(
                           padding: const EdgeInsets.all(20.0),
@@ -436,12 +445,9 @@ class _BottomSheetState extends State<BottomSheet> {
                                     padding: EdgeInsets.all(10.0),
                                     decoration: BoxDecoration(
                                       image: DecorationImage(
-                                          image: AssetImage(
-                                              'assets/images/map_sprite_holder.png'),
-                                          fit: BoxFit.fill),
+                                          image: AssetImage('assets/images/map_sprite_holder.png'), fit: BoxFit.fill),
                                     ),
-                                    child: CachedNetworkImage(
-                                        imageUrl: _markers[index].imgUrl)),
+                                    child: CachedNetworkImage(imageUrl: _markers[index].imgUrl)),
                               ),
                               SizedBox(
                                 width: 10.0,
@@ -467,9 +473,7 @@ class _BottomSheetState extends State<BottomSheet> {
                                     ),
                                   ),
                                   Text(
-                                    getNextEvent(_markers[index].name)
-                                            ?.artist ??
-                                        "No upcoming event",
+                                    getNextEvent(_markers[index].name)?.artist ?? "No upcoming event",
                                     style: TextStyle(
                                       fontSize: 12.0,
                                       fontFamily: "Game_Tape",

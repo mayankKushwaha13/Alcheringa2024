@@ -70,10 +70,10 @@ class _MerchScreenState extends State<MerchScreen> {
                       ),
                     ),
                     const Text(
-                      'MERCHANDIZE',
+                      'Merchandize',
                       style: TextStyle(
                         fontFamily: 'Game_Tape',
-                        fontSize: 20,
+                        fontSize: 24,
                         fontWeight: FontWeight.w400,
                         color: Color.fromRGBO(255, 119, 168, 1),
                       ),

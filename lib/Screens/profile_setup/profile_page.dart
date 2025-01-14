@@ -191,10 +191,10 @@ class _ProfilePageState extends State<ProfilePage> {
                               enabled: isEdit,
                               controller: nicknameController,
                               style: const TextStyle(
-                                fontFamily: 'Alcherpixel',
+                                fontFamily: 'Game_Tape',
                                 color: Colors.white60,
                                 fontSize: 24,
-                                fontWeight: FontWeight.bold,
+                                fontWeight: FontWeight.w600,
                               ),
                               textAlign: TextAlign.center,
                             ),
@@ -264,7 +264,7 @@ Widget _buildImageOverlay(String text) {
             text,
             textAlign: TextAlign.center,
             style: const TextStyle(
-              fontFamily: 'Alcherpixel',
+              fontFamily: 'Game_Tape',
               color: Colors.white60,
               fontSize: 24,
               fontWeight: FontWeight.bold,

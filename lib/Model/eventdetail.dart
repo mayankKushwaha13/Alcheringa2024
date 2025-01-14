@@ -47,8 +47,8 @@ class EventDetail {
 
   factory EventDetail.fromMap(Map<String, dynamic> data) {
     return EventDetail(
-        descriptionShort: ".",
-        iconURL: ".",
+        descriptionShort: data['descriptionShort'],
+        iconURL: data['iconURL'],
         artist: data['artist'],
         category: data['category'],
         starttime: OwnTime.fromMap(data['starttime']),

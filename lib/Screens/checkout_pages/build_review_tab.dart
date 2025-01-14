@@ -1,8 +1,9 @@
+import 'package:alcheringa/Screens/checkout_pages/checkout_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../provider/cart_provider.dart';
-import '../../widgets/cart_card.dart';
+
 
 Widget buildReviewTab({
   required BuildContext context, // Pass context to access CartProvider
@@ -147,7 +148,7 @@ Widget buildReviewTab({
               itemCount: cartProvider.cartItems.length,
               itemBuilder: (context, index) {
                 final item = cartProvider.cartItems[index];
-                return CartCard(
+                return checkoutcard(
                   title: item.name,
                   subtitle: item.type,
                   price: double.parse(item.price),
@@ -203,7 +204,9 @@ Widget buildReviewTab({
                             color: Color.fromRGBO(131, 118, 156, 1)),
                       ),
                       Text(
-                        'Rs. 420', // Static for now; update as needed
+                        cartProvider.totalPrice.toStringAsFixed(2) != '0.00'
+                            ? 'Rs. 420'
+                            : '0', // Static for now; update as needed
                         style: TextStyle(
                             fontWeight: FontWeight.w400,
                             fontFamily: 'Game_Tape',
@@ -224,7 +227,7 @@ Widget buildReviewTab({
                             color: Color.fromRGBO(131, 118, 156, 1)),
                       ),
                       Text(
-                        'Rs. ${(cartProvider.totalPrice + 420).toStringAsFixed(2)}', // Include shipping
+                        'Rs. ${(cartProvider.totalPrice + cartProvider.totalItems != 0 ? 420 : 0).toStringAsFixed(2)}', // Include shipping
                         style: TextStyle(
                             fontWeight: FontWeight.w400,
                             fontFamily: 'Game_Tape',

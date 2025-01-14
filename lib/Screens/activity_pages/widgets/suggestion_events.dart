@@ -1,5 +1,6 @@
 import 'package:alcheringa/Model/eventdetail.dart';
 import 'package:alcheringa/Screens/event_detail_page.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:marquee/marquee.dart';
 
@@ -12,6 +13,14 @@ class SuggestionCard extends StatefulWidget {
 }
 
 class _SuggestionCardState extends State<SuggestionCard> {
+
+  @override
+  void initState() {
+    print('Hello ${widget.event.artist} ${widget.event.iconURL}');
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final mq = MediaQuery.of(context).size;
@@ -39,7 +48,13 @@ class _SuggestionCardState extends State<SuggestionCard> {
                   // widget.event.iconURL==null || widget.event.iconURL==""
                   // ?Image.asset( "assets/images/basketball.png",scale: 1.2,)
                   // :Image.network(widget.event.iconURL),
-                  Image.asset( "assets/images/basketball.png",scale: 1.2,),
+                  // Image.asset( "assets/images/basketball.png",scale: 1.2,),
+                  CachedNetworkImage(
+                    imageUrl: widget.event.iconURL,
+                    errorWidget: (context, url, error) => Image.asset(
+                      'assets/images/basketball.png'
+                    ),
+                  ),
                   SizedBox(
                     width: 5,
                   ),

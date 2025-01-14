@@ -105,7 +105,7 @@ class _CompetitionsWidgetState extends State<CompetitionsWidget> {
                   children: [
                     HeaderTitle(type: key),
                     SizedBox(
-                      height: 400,
+                      height: 350,
                       child: PageView.builder(
                         controller: PageController(viewportFraction: 0.9),
                         itemCount: (eventList.length / 2).ceil(),

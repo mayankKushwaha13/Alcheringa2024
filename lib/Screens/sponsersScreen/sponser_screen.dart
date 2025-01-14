@@ -55,6 +55,6 @@ AppBar _appBar(BuildContext context){
             style: TextStyle(
                 color: AppColors.Pink,
                 fontFamily: 'Game_Tape',
-                fontSize: 35),))
+                fontSize: 24),))
     ],);
 }

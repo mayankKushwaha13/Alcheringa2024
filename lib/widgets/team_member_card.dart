@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class TeamMemberCard extends StatelessWidget {
+class TeamMember {
   final String name;
   final String role;
   final String imagePath;
@@ -8,7 +8,7 @@ class TeamMemberCard extends StatelessWidget {
   final VoidCallback onLinkedInTap;
   final VoidCallback onMailTap;
 
-  TeamMemberCard({
+  TeamMember({
     required this.name,
     required this.role,
     required this.imagePath,
@@ -16,12 +16,18 @@ class TeamMemberCard extends StatelessWidget {
     required this.onLinkedInTap,
     required this.onMailTap,
   });
+}
+
+class TeamMemberCard extends StatelessWidget {
+  final TeamMember teamMember;
+
+  const TeamMemberCard({Key? key, required this.teamMember}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 150, // Adjusted height for better spacing
-      width: 350, // Adjusted width for better layout
+      height: 150,
+      width: 350,
       margin: const EdgeInsets.symmetric(vertical: 10),
       decoration: BoxDecoration(
         image: DecorationImage(
@@ -31,17 +37,31 @@ class TeamMemberCard extends StatelessWidget {
       ),
       child: Row(
         children: [
-          // Profile Picture Container
           Container(
             margin: const EdgeInsets.all(16),
             width: 100,
             height: 100,
-            decoration: BoxDecoration(
-              shape: BoxShape.rectangle,
-              image: DecorationImage(
-                image: AssetImage(imagePath),
-                fit: BoxFit.cover,
-              ),
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                // Blue border PNG
+                Image.asset(
+                  'assets/images/blue_border.png', // Replace with your blue border PNG
+                  fit: BoxFit.cover,
+                  width: 110, // Slightly larger than the image
+                  height: 110,
+                ),
+                // Actual profile picture
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Image.asset(
+                    teamMember.imagePath,
+                    fit: BoxFit.cover,
+                    width: 100,
+                    height: 100,
+                  ),
+                ),
+              ],
             ),
           ),
           SizedBox(width: 10),
@@ -51,7 +71,7 @@ class TeamMemberCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  name,
+                  teamMember.name,
                   style: TextStyle(
                     fontFamily: 'Game_Tape',
                     fontSize: 20,
@@ -60,9 +80,8 @@ class TeamMemberCard extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 5),
-                // Role
                 Text(
-                  role,
+                  teamMember.role,
                   style: TextStyle(
                     fontFamily: 'Game_Tape',
                     fontSize: 18,
@@ -71,23 +90,22 @@ class TeamMemberCard extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 15),
-                // Social Media Icons
                 Row(
                   children: [
                     IconButton(
                       icon: Image.asset('assets/images/instagram_icon.png'),
                       iconSize: 24,
-                      onPressed: onInstagramTap,
+                      onPressed: teamMember.onInstagramTap,
                     ),
                     IconButton(
                       icon: Image.asset('assets/images/linkedin_icon.png'),
                       iconSize: 24,
-                      onPressed: onLinkedInTap,
+                      onPressed: teamMember.onLinkedInTap,
                     ),
                     IconButton(
                       icon: Image.asset('assets/images/mail_icon.png'),
                       iconSize: 24,
-                      onPressed: onMailTap,
+                      onPressed: teamMember.onMailTap,
                     ),
                   ],
                 ),

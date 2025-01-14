@@ -1,8 +1,9 @@
 import 'package:alcheringa/Common/globals.dart';
 import 'package:alcheringa/Model/stall_model.dart';
-import 'package:alcheringa/Model/view_model_main.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../../provider/stall_provider.dart';
 import 'PixelStoreCardWidget.dart';
 
 class StallsPage extends StatefulWidget {
@@ -20,22 +21,25 @@ class _StallsPageState extends State<StallsPage> {
   @override
   void initState() {
     super.initState();
-    getData();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final stallProvider = Provider.of<StallProvider>(context, listen: false);
+      stallProvider.fetchStalls();
+    });
   }
 
-  Future<List<StallModel>> getData() async {
-    try {
-      final stalls = await ViewModelMain().getStalls();
-      setState(() {
-        _stalls = stalls;
-        print("This is stalls list: ${stalls.first.imgurl}");
-        _filteredStalls = List.from(_stalls);
-      });
-    } catch (e) {
-      print('Error fetching data: $e');
-    }
-    return _stalls;
-  }
+  // Future<List<StallModel>> getData() async {
+  //   try {
+  //     final stalls = await ViewModelMain().getStalls();
+  //     setState(() {
+  //       _stalls = stalls;
+  //       print("This is stalls list: ${stalls.first.imgurl}");
+  //       _filteredStalls = List.from(_stalls);
+  //     });
+  //   } catch (e) {
+  //     print('Error fetching data: $e');
+  //   }
+  //   return _stalls;
+  // }
 
   void _filterStalls(String query) {
     if (query.isEmpty) {
@@ -44,14 +48,28 @@ class _StallsPageState extends State<StallsPage> {
       });
     } else {
       setState(() {
-        _filteredStalls =
-            _stalls.where((restaurant) => restaurant.name.toLowerCase().contains(query.toLowerCase())).toList();
+        _filteredStalls = _stalls
+            .where((stall) =>
+                stall.name.toLowerCase().contains(query.toLowerCase()))
+            .toList();
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final stallProvider = Provider.of<StallProvider>(context);
+
+    if (stallProvider.isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    // Update local state when stalls are fetched
+    if (_stalls.isEmpty) {
+      _stalls = stallProvider.stalls;
+      _filteredStalls = List.from(_stalls); // Initialize the filtered list
+    }
+
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Container(
@@ -62,7 +80,8 @@ class _StallsPageState extends State<StallsPage> {
               opacity: 1.0,
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.0), // Transparent background
+                  color:
+                      Colors.white.withOpacity(0.0), // Transparent background
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Column(
@@ -136,10 +155,18 @@ class PixelTextField extends StatelessWidget {
             controller: controller,
             onChanged: onChanged,
             keyboardType: keyboardType,
-            style: const TextStyle(color: Colors.white, fontSize: 22, fontFamily: 'Game_Tape',fontWeight: FontWeight.w500),
+            style: const TextStyle(
+                color: Colors.white,
+                fontSize: 22,
+                fontFamily: 'Game_Tape',
+                fontWeight: FontWeight.w500),
             decoration: InputDecoration(
               hintText: hintText,
-              hintStyle: const TextStyle(color: Color(0xff83769c), fontFamily: 'Game_Tape', fontSize: 22,fontWeight: FontWeight.w500),
+              hintStyle: const TextStyle(
+                  color: Color(0xff83769c),
+                  fontFamily: 'Game_Tape',
+                  fontSize: 22,
+                  fontWeight: FontWeight.w500),
               border: InputBorder.none,
               contentPadding: const EdgeInsets.symmetric(
                 horizontal: 25,

@@ -4,6 +4,7 @@ import 'package:alcheringa/Common/globals.dart';
 import 'package:alcheringa/Model/view_model_main.dart';
 import 'package:alcheringa/Screens/welcome_screen.dart';
 import 'package:alcheringa/provider/event_provider.dart';
+import 'package:alcheringa/provider/stall_provider.dart';
 import 'package:alcheringa/screens/main_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -37,6 +38,7 @@ Future<void> main() async {
       ChangeNotifierProvider(create: (_) => ViewModelMain()),
       ChangeNotifierProvider(create: (_) => cartProvider),
       ChangeNotifierProvider(create: (_) => EventProvider()),
+      ChangeNotifierProvider(create: (_) => StallProvider()),
       // ChangeNotifierProvider(
       //   create: (_) => ScheduleViewModel(),
       //   child: Schedule(),
@@ -77,7 +79,7 @@ class _SplashScreenState extends State<SplashScreen> {
   NotificationServices notificationSerivces = NotificationServices();
 
   Future<void> _requestPermission() async {
-    await ViewModelMain().requestNotificationPermission();
+    // await ViewModelMain().requestNotificationPermission();
     await ViewModelMain().requestLocationPermission();
   }
 
@@ -86,14 +88,14 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     isLoggedIn = auth.currentUser != null;
     isVerified = isLoggedIn && auth.currentUser!.emailVerified ?? false;
-    // notificationSerivces.requestNotificationPermission();
+    notificationSerivces.requestNotificationPermisions();
     notificationSerivces.forgroundMessage();
     notificationSerivces.firebaseInit(context);
     _requestPermission();
-    notificationSerivces.isTokenRefresh();
-    // notificationSerivces.getDeviceToken().then((value) {
-    //   print(value);
-    // });
+    notificationSerivces.isRefreshToken();
+    notificationSerivces.getDeviceToken().then((value) {
+      print('$value');
+    });
 
     _controller =
         VideoPlayerController.asset("assets/SplashMovie/splash_screen.mp4")

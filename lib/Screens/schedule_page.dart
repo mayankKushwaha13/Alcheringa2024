@@ -1,3 +1,4 @@
+import 'package:alcheringa/Screens/event_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -521,25 +522,51 @@ final List<String> keys = ["All","Lecture Halls","Grounds","Library Area", "Admi
                                                       top: startOffset *(hourHeight),
                                                       left: 8,
                                                       right: 8,
-                                                      child: Container(
-                                                        height: duration *hourHeight,
-                                                        padding:const EdgeInsets.all(8),
-                                                        decoration:BoxDecoration(
-                                                          color: Colors.blueAccent.withOpacity(0.8),
-                                                          borderRadius:
-                                                              BorderRadius.circular(8),
-                                                        ),
-                                                        child: Column(
-                                                          crossAxisAlignment:CrossAxisAlignment.start,
-                                                          children: [
-                                                            Text(
-                                                              event.type,
-                                                              style:const TextStyle(
-                                                                color: Colors.white,
-                                                                fontWeight:FontWeight.bold,
+                                                      child: GestureDetector(
+                                                        onTap: () {
+                                                          Navigator.push(context, MaterialPageRoute(builder: (context) => EventDetailPage(event: event)));
+                                                        },
+                                                        child: Container(
+                                                          height: duration *hourHeight,
+                                                          padding:const EdgeInsets.all(8),
+                                                          decoration:BoxDecoration(
+                                                            image: DecorationImage(
+                                                              image: AssetImage('assets/images/schedule_event_bg.png'),
+                                                              fit: BoxFit.cover
+                                                            ),
+                                                            borderRadius:
+                                                                BorderRadius.circular(8),
+                                                          ),
+                                                          child: Center(
+                                                            child: SingleChildScrollView(
+                                                              child: Column(
+                                                                crossAxisAlignment:CrossAxisAlignment.start,
+                                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                                children: [
+                                                                  Text(
+                                                                    event.artist,
+                                                                    style: const TextStyle(
+                                                                      fontSize: 25,
+                                                                      color: Color(0xFFFFF1E8),
+                                                                      fontWeight:FontWeight.bold,
+                                                                      fontFamily: 'Game_Tape',
+                                                                    ),
+                                                                    overflow: TextOverflow.ellipsis,
+                                                                  ),
+                                                                  Text(
+                                                                    event.type,
+                                                                    style: const TextStyle(
+                                                                      fontSize: 13,
+                                                                      color: Color(0xFFFFF1E8),
+                                                                      fontWeight:FontWeight.bold,
+                                                                      fontFamily: 'Game_Tape',
+                                                                    ),
+                                                                    overflow: TextOverflow.ellipsis,
+                                                                  )
+                                                                ],
                                                               ),
                                                             ),
-                                                          ],
+                                                          ),
                                                         ),
                                                       ),
                                                     );
