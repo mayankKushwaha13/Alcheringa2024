@@ -81,7 +81,11 @@ class _FaqSectionState extends State<FaqSection> {
                           height: 80,
                           decoration: BoxDecoration(
                             image: DecorationImage(
-                              image: AssetImage('assets/images/faq_box.png'),
+                              image: AssetImage(
+                                isExpanded
+                                    ? 'assets/images/faq_box_clicked.png' // Image for expanded state
+                                    : 'assets/images/faq_box.png', // Image for collapsed state
+                              ),
                               fit: BoxFit.fill,
                             ),
                           ),

@@ -40,7 +40,10 @@ class _ContactSectionState extends State<ContactSection> {
             mainAxisAlignment: MainAxisAlignment.center, // Center buttons horizontally
             children: [
               CategoryButton(
-                imagePath: 'assets/images/medicine.png',
+                backgroundImagePath: selectedCategory == 'Medicine'
+                    ? 'assets/images/box_clicked.png'
+                    : 'assets/images/box_not_clicked.png',
+                iconImagePath: 'assets/images/medicine_icon.png',
                 isSelected: selectedCategory == 'Medicine',
                 onTap: () => setState(() {
                   selectedCategory = selectedCategory == 'Medicine' ? '' : 'Medicine';
@@ -50,7 +53,10 @@ class _ContactSectionState extends State<ContactSection> {
               ),
               const SizedBox(width: 30),
               CategoryButton(
-                imagePath: 'assets/images/transport.png',
+                backgroundImagePath: selectedCategory == 'Transport'
+                    ? 'assets/images/box_clicked.png'
+                    : 'assets/images/box_not_clicked.png',
+                iconImagePath: 'assets/images/transport_icon.png',
                 isSelected: selectedCategory == 'Transport',
                 onTap: () => setState(() {
                   selectedCategory = selectedCategory == 'Transport' ? '' : 'Transport';
@@ -60,7 +66,10 @@ class _ContactSectionState extends State<ContactSection> {
               ),
               const SizedBox(width: 30),
               CategoryButton(
-                imagePath: 'assets/images/admin.png',
+                backgroundImagePath: selectedCategory == 'Admin'
+                    ? 'assets/images/box_clicked.png'
+                    : 'assets/images/box_not_clicked.png',
+                iconImagePath: 'assets/images/admin_icon.png',
                 isSelected: selectedCategory == 'Admin',
                 onTap: () => setState(() {
                   selectedCategory = selectedCategory == 'Admin' ? '' : 'Admin';
@@ -127,14 +136,16 @@ class _ContactSectionState extends State<ContactSection> {
 
 // Category Button Widget
 class CategoryButton extends StatelessWidget {
-  final String imagePath;
+  final String backgroundImagePath;
+  final String iconImagePath;
   final bool isSelected;
   final VoidCallback onTap;
   final String label;
   final bool showLabel;
 
   const CategoryButton({
-    required this.imagePath,
+    required this.backgroundImagePath,
+    required this.iconImagePath,
     required this.isSelected,
     required this.onTap,
     required this.label,
@@ -148,19 +159,20 @@ class CategoryButton extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
-            width: 70,
-            height: 70,
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: isSelected ? Colors.amber : Colors.transparent,
-                width: 3,
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              Image.asset(
+                backgroundImagePath,
+                width: 72,
+                height: 72,
               ),
-              image: DecorationImage(
-                image: AssetImage(imagePath),
-                fit: BoxFit.cover,
+              Image.asset(
+                iconImagePath,
+                width: 68,
+                height: 68,
               ),
-            ),
+            ],
           ),
           const SizedBox(height: 5),
           if (showLabel)
@@ -177,7 +189,6 @@ class CategoryButton extends StatelessWidget {
     );
   }
 }
-
 
 class NumberBox extends StatelessWidget {
   final String number;
