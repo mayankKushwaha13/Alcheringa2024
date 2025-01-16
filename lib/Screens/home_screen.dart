@@ -14,7 +14,9 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
+import '../Common/resource.dart';
 import '../Model/eventdetail.dart';
 import 'event_detail_page.dart';
 import 'merch_screen.dart';
@@ -41,11 +43,12 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   void initState() {
     super.initState();
-    _scrollController1 = ScrollController();
-    _scrollController2 = ScrollController();
-    _scrollController3 = ScrollController();
+
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      _scrollController1 = ScrollController();
+      _scrollController2 = ScrollController();
+      _scrollController3 = ScrollController();
       _startScrolling1();
       _startScrolling2();
       _startScrolling3();
@@ -53,12 +56,67 @@ class _HomeScreenState extends State<HomeScreen>
     getMerchData();
     getPronitesData();
     initializeSuggestions();
+    getPassList();
+  }
+
+
+  @override
+  void dispose() {
+    _scrollController1.dispose();
+    _scrollController2.dispose();
+    _scrollController3.dispose();
+    super.dispose();
+  }
+
+  Future<void> getData() async {
+    if(viewModelMain.allEvents.isEmpty){
+      await viewModelMain.getAllEvents();
+    }
+    if(viewModelMain.allEvents.isEmpty){
+      await viewModelMain.getAllEvents();
+    }
+    if(viewModelMain.allEvents.isEmpty){
+      await viewModelMain.getAllEvents();
+    }
+    if(viewModelMain.allEvents.isEmpty){
+      await viewModelMain.getAllEvents();
+    }
+    if(viewModelMain.allEvents.isEmpty){
+      await viewModelMain.getAllEvents();
+    }
+    if(viewModelMain.allEvents.isEmpty){
+      await viewModelMain.getAllEvents();
+    }
+    if(viewModelMain.allEvents.isEmpty){
+      await viewModelMain.getAllEvents();
+    }
+    if(viewModelMain.allEvents.isEmpty){
+      await viewModelMain.getAllEvents();
+    }
+  }
+
+  Future<void> getPassList() async {
+    try {
+      await viewModelMain.getPass();
+      print('Pass fetched ${viewModelMain.passList}');
+      if (viewModelMain.passList.isEmpty) {
+        setState(() async {
+          viewModelMain.passList = await viewModelMain.getPassListFromSharedPreferences();
+        });
+        print('Cards fetched ${viewModelMain.passList} from shared preferences');
+      }
+    } catch (e) {
+      print('Error fetching cards $e');
+      showMessage('Please check your internet connection', context);
+    }
   }
 
   void initializeSuggestions() {
-    final List<EventDetail> list =
-        Provider.of<ViewModelMain>(context, listen: false).allEvents;
-    final List<EventDetail> suggestions = list.toList();
+    final List<EventDetail> list = Provider.of<ViewModelMain>(context, listen: false).allEvents;
+    final List<EventDetail> suggestions = list
+        .where((element) =>
+            element.category.replaceAll("\\s", "").toUpperCase() == "Competitions".replaceAll("\\s", "").toUpperCase())
+        .toList();
 
     // Shuffle and pick a limited number of suggestions
     suggestions.shuffle(Random());
@@ -611,8 +669,7 @@ class _HomeScreenState extends State<HomeScreen>
                                   carouselController: _carouselController,
                                   options: CarouselOptions(
                                     viewportFraction: 1.2,
-                                    autoPlay: false,
-                                    // reverse: true,
+                                    autoPlay: true,
                                     onPageChanged: (index, reason) {
                                       setState(() {
                                         _currentIndex = index;
@@ -645,7 +702,8 @@ class _HomeScreenState extends State<HomeScreen>
                                                               Alignment.center,
                                                           child: CachedNetworkImage(
                                                             imageUrl: item.image ?? " ",
-                                                            height: screenHeight * 0.24,
+                                                            height: screenHeight *
+                                                                0.24,
                                                           ),
                                                         ),
                                                 ],
@@ -779,10 +837,26 @@ class _HomeScreenState extends State<HomeScreen>
                   height: 50,
                 ),
                 // Alcher Card
-                Container(
-                  height: 400,
-                  width: 400,
-                  color: Colors.white,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Container(
+                    height: 400,
+                    width: 400,
+                    color: Colors.white,
+                    child: viewModelMain.passList.isEmpty
+                        ? Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : PageView.builder(
+                            itemCount: viewModelMain.passList.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return QrImageView(
+                                data: viewModelMain.passList[index].id,
+                                embeddedImage: AssetImage('assets/file.png'),
+                              );
+                            },
+                          ),
+                  ),
                 ),
                 SizedBox(
                   height: 50,
@@ -817,9 +891,7 @@ class _HomeScreenState extends State<HomeScreen>
                     },
                   ),
                 ),
-                SizedBox(
-                  height: 20,
-                ),
+                SizedBox(height: 20,),
                 // Below is event suggestion
                 SizedBox(
                   height: 350,
@@ -857,9 +929,7 @@ class _HomeScreenState extends State<HomeScreen>
                             SizedBox(
                               height: 16,
                             ),
-                            _buildHeading(
-                                text: "Liked Events",
-                                backgroundImage: "assets/images/heading.png"),
+                            _buildHeading(text: "Liked Events", backgroundImage: "assets/images/heading.png"),
                             SizedBox(
                               height: 20,
                             ),
@@ -874,12 +944,10 @@ class _HomeScreenState extends State<HomeScreen>
                                   return _buildCard(
                                     event: creatorCamp,
                                     headingSize: 18,
-                                    isLiked: likedEvents.indexWhere((element) =>
-                                                element.artist ==
-                                                creatorCamp.artist) !=
-                                            -1
-                                        ? true
-                                        : false,
+                                    isLiked:
+                                        likedEvents.indexWhere((element) => element.artist == creatorCamp.artist) != -1
+                                            ? true
+                                            : false,
                                   );
                                 },
                               ),
@@ -933,7 +1001,6 @@ class _HomeScreenState extends State<HomeScreen>
       ),
     );
   }
-
   Widget _buildHeading({
     required String text,
     required String backgroundImage,
@@ -951,31 +1018,22 @@ class _HomeScreenState extends State<HomeScreen>
       child: Center(
         child: Text(
           text,
-          style: TextStyle(
-              fontFamily: 'Game_Tape',
-              fontSize: 30,
-              color: Colors.white,
-              shadows: [
-                Shadow(
-                    offset: Offset(2.5, 2), color: Colors.black, blurRadius: 2),
-              ]),
+          style: TextStyle(fontFamily: 'Game_Tape', fontSize: 30, color: Colors.white, shadows: [
+            Shadow(offset: Offset(2.5, 2), color: Colors.black, blurRadius: 2),
+          ]),
         ),
       ),
     );
   }
 
-  Widget _buildCard(
-      {required EventDetail event,
-      required bool isLiked,
-      double headingSize = 20}) {
+  Widget _buildCard({required EventDetail event, required bool isLiked, double headingSize = 20}) {
     final screenHeight = MediaQuery.of(context).size.height;
     final widgetHeight = screenHeight * 0.6;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
       child: GestureDetector(
         onTap: () {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => EventDetailPage(event: event)));
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => EventDetailPage(event: event)));
         },
         child: Column(
           children: [
@@ -984,8 +1042,7 @@ class _HomeScreenState extends State<HomeScreen>
                 Positioned.fill(
                     child: ClipRRect(
                   borderRadius: BorderRadius.circular(16),
-                  child: CachedNetworkImage(
-                    imageUrl: event.imgurl,
+                  child: CachedNetworkImage(imageUrl:event.imgurl,
                     fit: BoxFit.cover,
                   ),
                 )),
@@ -993,9 +1050,7 @@ class _HomeScreenState extends State<HomeScreen>
                   height: widgetHeight,
                   width: 186 * widgetHeight / 480,
                   decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage('assets/images/card.png'),
-                          fit: BoxFit.cover)),
+                      image: DecorationImage(image: AssetImage('assets/images/card.png'), fit: BoxFit.cover)),
                 ),
                 Positioned(
                     top: 250 * widgetHeight / 480,
@@ -1012,9 +1067,7 @@ class _HomeScreenState extends State<HomeScreen>
                       },
                       child: Image(
                         height: 65 * widgetHeight / 480,
-                        image: isLiked
-                            ? AssetImage('assets/images/bell1.png')
-                            : AssetImage('assets/images/bell.png'),
+                        image: isLiked ? AssetImage('assets/images/bell1.png') : AssetImage('assets/images/bell.png'),
                         // fit: BoxFit.cover,
                       ),
                     )),
@@ -1026,10 +1079,7 @@ class _HomeScreenState extends State<HomeScreen>
                     event.artist,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                        fontFamily: "Brick_Pixel",
-                        fontSize: headingSize,
-                        color: Colors.white),
+                    style: TextStyle(fontFamily: "Brick_Pixel", fontSize: headingSize, color: Colors.white),
                   ),
                 ),
                 // Description
@@ -1041,10 +1091,7 @@ class _HomeScreenState extends State<HomeScreen>
                     event.descriptionEvent,
                     maxLines: 3,
                     overflow: TextOverflow.clip,
-                    style: TextStyle(
-                        fontFamily: "Game_Tape",
-                        fontSize: 12,
-                        color: Colors.orange),
+                    style: TextStyle(fontFamily: "Game_Tape", fontSize: 12, color: Colors.orange),
                   ),
                 ),
                 // Venue
@@ -1066,10 +1113,7 @@ class _HomeScreenState extends State<HomeScreen>
                             event.venue,
                     maxLines: 1,
                     overflow: TextOverflow.clip,
-                    style: TextStyle(
-                        fontFamily: "Game_Tape",
-                        fontSize: 12,
-                        color: Colors.white),
+                    style: TextStyle(fontFamily: "Game_Tape", fontSize: 12, color: Colors.white),
                   ),
                 ),
               ],
