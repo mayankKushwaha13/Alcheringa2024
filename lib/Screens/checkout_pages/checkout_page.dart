@@ -27,20 +27,35 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
   // Function to validate fields
   bool areFieldsValid() {
-    return nameController.text.isNotEmpty &&
-        phoneController.text.isNotEmpty &&
-        addressLine1Controller.text.isNotEmpty &&
-        addressLine2Controller.text.isNotEmpty &&
-        cityController.text.isNotEmpty &&
-        stateController.text.isNotEmpty &&
-        pincodeController.text.isNotEmpty;
+    if (nameController.text.isEmpty ||
+        phoneController.text.isEmpty ||
+        addressLine1Controller.text.isEmpty ||
+        addressLine2Controller.text.isEmpty ||
+        cityController.text.isEmpty ||
+        stateController.text.isEmpty ||
+        pincodeController.text.isEmpty) {
+      showValidationError('Please fill in all fields before proceeding.');
+      return false;
+    }
+
+    if (phoneController.text.length != 10 || !RegExp(r'^\d{10}$').hasMatch(phoneController.text)) {
+      showValidationError('Phone number must be of 10 digits.');
+      return false;
+    }
+
+    if (pincodeController.text.length != 6 || !RegExp(r'^\d{6}$').hasMatch(pincodeController.text)) {
+      showValidationError('Pincode must be of 6 digits.');
+      return false;
+    }
+
+    return true;
   }
 
   // Show a snackbar if validation fails
-  void showValidationError() {
+  void showValidationError(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Please fill in all fields before proceeding.'),
+        content: Text(message),
         backgroundColor: Colors.red,
       ),
     );
@@ -91,8 +106,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 SizedBox(height: 20.0),
 
                 // Progress Bar Section (Conditional)
-                if (_currentIndex !=
-                    3) // Only show this in Details and Review tabs
+                if (_currentIndex != 3) // Only show this in Details and Review tabs
                   Stack(
                     alignment: Alignment.center,
                     children: [
@@ -131,13 +145,11 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   padding: EdgeInsets.symmetric(horizontal: 12),
                   child: GestureDetector(
                     onTap: () {
-                      if ((areFieldsValid() && _currentIndex == 1)) {
+                      if (_currentIndex == 1 && areFieldsValid()) {
                         setState(() {
                           _currentIndex++;
                         });
-                      } else if ((!areFieldsValid() && _currentIndex == 1)) {
-                        showValidationError();
-                      } else if (_currentIndex < 3) {
+                      } else if (_currentIndex > 1 && _currentIndex < 3) {
                         setState(() {
                           _currentIndex++;
                         });
@@ -156,15 +168,15 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                 image: _currentIndex != 3
                                     ? AssetImage('assets/images/next_button.png')
                                     : AssetImage(
-                                        'assets/images/continue_shopping.png'),
+                                    'assets/images/continue_shopping.png'),
                                 fit: BoxFit.cover,
                               ),
                             ),
                           ),
                         ),
                         GestureDetector(
-                          onTap: (){
-                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>MainScreen()));
+                          onTap: () {
+                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainScreen()));
                           },
                           child: Text(
                             _currentIndex < 3 ? 'Next' : 'Continue\nShopping',
