@@ -45,7 +45,6 @@ class _SearchscreenState extends State<Searchscreen> {
         _allEvents = events;
         _filteredStalls = List.from(_stalls);
       });
-      print('Hello ${_stalls.first.name}');
     } catch (e) {
       print('Error fetching data: $e');
     }

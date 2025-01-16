@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-
+import 'dart:typed_data';
 import '../provider/event_provider.dart';
 
 class MapPage extends StatefulWidget {
@@ -63,10 +63,8 @@ class _MapPageState extends State<MapPage> {
   //   });
   // }
   Future<void> loadCustomMarker() async {
-    customMarker = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(size: Size(90, 70)),
-      'assets/images/map_marker.png',
-    );
+    final Uint8List markerIcon = await viewModelMain.getBytesFromAsset('assets/images/map_marker.png', 40);
+    customMarker = BitmapDescriptor.bytes(markerIcon);
   }
 
   Set<Marker> convertToMarkers(List<VenueModel> venueList) {
@@ -92,8 +90,9 @@ class _MapPageState extends State<MapPage> {
   }
 
   Future<void> getData() async {
-    final venueList = await ViewModelMain().getVenues();
-    final _eventList = await ViewModelMain().getAllEvents();
+    await loadCustomMarker();
+    final venueList = viewModelMain.venuesList;
+    final _eventList = viewModelMain.allEvents;
     setState(() {
       _markers = convertToMarkers(venueList);
       _venueList = venueList;
@@ -150,7 +149,6 @@ class _MapPageState extends State<MapPage> {
   @override
   void initState() {
     super.initState();
-    loadCustomMarker();
     _checkAndRequestPermission();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final eventProvider = Provider.of<EventProvider>(context, listen: false);
@@ -180,7 +178,7 @@ class _MapPageState extends State<MapPage> {
             markers: _markers,
             minMaxZoomPreference: MinMaxZoomPreference(16, 20),
           ),
-          eventProvider.isLoading
+          viewModelMain.venuesList.isEmpty
               ? Center(
                   child: CircularProgressIndicator(),
                 )
@@ -371,8 +369,8 @@ class _BottomSheetState extends State<BottomSheet> {
   List<VenueModel> _markers = [];
 
   Future<void> getData() async {
-    final _venueList = await ViewModelMain().getVenues();
-    final _eventList = await ViewModelMain().getAllEvents();
+    final _venueList = viewModelMain.venuesList;
+    final _eventList = viewModelMain.allEvents;
     setState(() {
       _markers = _venueList;
       eventList = _eventList;

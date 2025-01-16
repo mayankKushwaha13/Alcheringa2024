@@ -17,7 +17,6 @@ class _CompetitionCardState extends State<CompetitionCard> {
   @override
   Widget build(BuildContext context) {
     final mq = MediaQuery.of(context).size;
-    print('hello: ${widget.event.iconURL}');
 
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),

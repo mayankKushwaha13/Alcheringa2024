@@ -43,20 +43,19 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   void initState() {
     super.initState();
-
-
+    _scrollController1 = ScrollController();
+    _scrollController2 = ScrollController();
+    _scrollController3 = ScrollController();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _scrollController1 = ScrollController();
-      _scrollController2 = ScrollController();
-      _scrollController3 = ScrollController();
       _startScrolling1();
       _startScrolling2();
       _startScrolling3();
     });
-    getMerchData();
-    getPronitesData();
+    // getMerchData();
+    // getPronitesData();
     initializeSuggestions();
-    getPassList();
+    // getPassList();
+    getData();
   }
 
 
@@ -71,28 +70,71 @@ class _HomeScreenState extends State<HomeScreen>
   Future<void> getData() async {
     if(viewModelMain.allEvents.isEmpty){
       await viewModelMain.getAllEvents();
+      print('Fetched all events');
+      setState(() {});
     }
-    if(viewModelMain.allEvents.isEmpty){
-      await viewModelMain.getAllEvents();
+    if(viewModelMain.interestList.isEmpty){
+      await viewModelMain.getInterests(auth.currentUser!.email!);
+      print('Fetched interest events');
+      setState(() {});
     }
-    if(viewModelMain.allEvents.isEmpty){
-      await viewModelMain.getAllEvents();
+    if(viewModelMain.merchMerch.isEmpty){
+      await viewModelMain.getMerchMerch();
+      print('Fetched merch events');
+      setState(() {});
     }
-    if(viewModelMain.allEvents.isEmpty){
-      await viewModelMain.getAllEvents();
+    if(viewModelMain.featuredEventsWithLive.isEmpty){
+      await viewModelMain.getFeaturedEvents();
+      print('Fetched featured events');
+      setState(() {});
     }
-    if(viewModelMain.allEvents.isEmpty){
-      await viewModelMain.getAllEvents();
+    if(viewModelMain.utilityList.isEmpty){
+      await viewModelMain.getUtilities();
+      print('Fetched utilitties events');
+      setState(() {});
     }
-    if(viewModelMain.allEvents.isEmpty){
-      await viewModelMain.getAllEvents();
+    if(viewModelMain.informalList.isEmpty){
+      await viewModelMain.getInformals();
+      print('Fetched informals events');
+      setState(() {});
     }
-    if(viewModelMain.allEvents.isEmpty){
-      await viewModelMain.getAllEvents();
+    if(viewModelMain.stallList.isEmpty){
+      await viewModelMain.getStalls();
+      print('Fetched stalls events');
+      setState(() {});
     }
-    if(viewModelMain.allEvents.isEmpty){
-      await viewModelMain.getAllEvents();
+    if(viewModelMain.venuesList.isEmpty){
+      await viewModelMain.getVenues();
+      print('Fetched venues events');
+      setState(() {});
     }
+    if(viewModelMain.allNotification.isEmpty){
+      await viewModelMain.getAllNotifications();
+      print('Fetched notifications events');
+      setState(() {});
+    }
+    if(viewModelMain.allsponsors.isEmpty){
+      await viewModelMain.getsponsors();
+      print('Fetched sponsors events');
+      setState(() {});
+    }
+    if(viewModelMain.orderDetails.isEmpty){
+      await viewModelMain.getOrderDetails();
+      print('Fetched orderdetails events');
+      setState(() {});
+    }
+    if(viewModelMain.passList.isEmpty){
+      await viewModelMain.getPass();
+      if (viewModelMain.passList.isEmpty) {
+        setState(() async {
+          viewModelMain.passList = await viewModelMain.getPassListFromSharedPreferences();
+        });
+        print('Cards fetched ${viewModelMain.passList} from shared preferences');
+      }
+      print('Fetched passes events');
+      setState(() {});
+    }
+    print('Running all data');
   }
 
   Future<void> getPassList() async {
@@ -138,9 +180,6 @@ class _HomeScreenState extends State<HomeScreen>
       // Debug print
       print('Fetched ${PronitesList.length} events');
 
-      setState(() {
-        PronitesList = _pronitesList;
-      });
     } catch (e) {
       print("Error fetching events: $e");
       // You might want to show an error message to the user here
@@ -231,21 +270,6 @@ class _HomeScreenState extends State<HomeScreen>
       dev.log(response);
     } catch (e) {
       dev.log(e.toString());
-    }
-  }
-
-  List<MerchModel> merchList = [];
-
-  Future<void> getMerchData() async {
-    try {
-      merchList = await ViewModelMain().getMerchMerch();
-    } catch (e) {
-      print("Error fetching merchandise: $e");
-    } finally {
-      setState(() {
-        merchList = merchList;
-        isLoading = false;
-      });
     }
   }
 
@@ -482,14 +506,18 @@ class _HomeScreenState extends State<HomeScreen>
                 // Hero section
                 SizedBox(
                   height: 500.0,
-                  child: PageView.builder(
+                  child: viewModelMain.featuredEventsWithLive.isEmpty
+                  ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                  : PageView.builder(
                     controller: PageController(
                         viewportFraction: 0.6, initialPage: 1000),
                     // itemCount: displayedSuggestions.length,
                     itemBuilder: (context, index) {
                       final cardColorIndex = index % 2;
                       index = index % 3;
-                      final event = PronitesList[index];
+                      final event = viewModelMain.featuredEventsWithLive[index];
                       final bool isRevealed = event.isArtistRevealed ?? false;
 
                       return Padding(
@@ -610,7 +638,7 @@ class _HomeScreenState extends State<HomeScreen>
                         ),
                       );
                     },
-                  ),
+                  )
                 ),
 
                 SizedBox(
@@ -619,7 +647,7 @@ class _HomeScreenState extends State<HomeScreen>
                 // marquee text crazy merch alert
                 Container(
                   color: Color.fromRGBO(255, 236, 38, 1),
-                  height: 40,
+                  height: 30,
                   child: ListView.builder(
                     controller: _scrollController1,
                     scrollDirection: Axis.horizontal,
@@ -663,7 +691,7 @@ class _HomeScreenState extends State<HomeScreen>
                       ),
                       Column(
                         children: [
-                          isLoading
+                          viewModelMain.merchMerch.isEmpty
                               ? Center(child: CircularProgressIndicator())
                               : CarouselSlider(
                                   carouselController: _carouselController,
@@ -676,7 +704,7 @@ class _HomeScreenState extends State<HomeScreen>
                                       });
                                     },
                                   ),
-                                  items: merchList
+                                  items: viewModelMain.merchMerch
                                       .map(
                                         (item) => Builder(
                                           builder: (context) {
@@ -715,8 +743,8 @@ class _HomeScreenState extends State<HomeScreen>
                                       .toList(),
                                 ),
                           Builder(builder: (context) {
-                            if (merchList.isNotEmpty) {
-                              MerchModel item = merchList[_currentIndex];
+                            if (viewModelMain.merchMerch.isNotEmpty) {
+                              MerchModel item = viewModelMain.merchMerch[_currentIndex];
                               return Text(
                                 item.name ?? " ",
                                 style: TextStyle(
@@ -806,7 +834,7 @@ class _HomeScreenState extends State<HomeScreen>
                 //marquee text get your alcher card
                 Container(
                   color: Color.fromRGBO(255, 236, 38, 1),
-                  height: 40,
+                  height: 30,
                   child: ListView.builder(
                     controller: _scrollController2,
                     scrollDirection: Axis.horizontal,
@@ -864,7 +892,7 @@ class _HomeScreenState extends State<HomeScreen>
                 // marquee text cool stuff for you
                 Container(
                   color: Color.fromRGBO(255, 236, 38, 1),
-                  height: 40,
+                  height: 30,
                   child: ListView.builder(
                     controller: _scrollController3,
                     scrollDirection: Axis.horizontal,
