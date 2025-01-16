@@ -26,6 +26,7 @@ class _SearchscreenState extends State<Searchscreen> {
   List<EventDetail> _filteredEvents = [];
   List<EventDetail> _allEvents = [];
   final TextEditingController _textFieldController = TextEditingController();
+  bool toSuggest = true;
 
   @override
   void initState() {
@@ -37,7 +38,7 @@ class _SearchscreenState extends State<Searchscreen> {
     try {
       final stalls = await ViewModelMain().getStalls();
       final List<EventDetail> events = await ViewModelMain().getAllEvents();
-      _filteredEvents = events;
+      suggestionList(events);
       _filteredStalls = stalls;
       setState(() {
         _stalls = stalls;
@@ -52,14 +53,34 @@ class _SearchscreenState extends State<Searchscreen> {
     return _stalls;
   }
 
+  void suggestionList(List<EventDetail> events) {
+    final random = Random();
+
+// Function to take a random subset of a list
+    List<T> takeRandom<T>(List<T> list, int count) {
+      final copy = List.of(list);
+      copy.shuffle(random);
+      return copy.take(count).toList();
+    }
+
+    _filteredEvents = [
+      ...takeRandom(
+          events.where((event) => event.category == "Event").toList(), 3),
+      ...takeRandom(
+          events.where((event) => event.category != "Event").toList(), 3),
+    ];
+  }
+
   void _filter(String query) {
     List<StallModel> filteredStalls;
-    List<EventDetail> filteredEvents;
+    List<EventDetail>? filteredEvents;
 
     if (query.isEmpty) {
       filteredStalls = List.from(_stalls);
-      filteredEvents = List.from(_allEvents);
+      suggestionList(_allEvents);
+      toSuggest = true;
     } else {
+      toSuggest = false;
       filteredStalls = _stalls
           .where(
               (stall) => stall.name.toLowerCase().contains(query.toLowerCase()))
@@ -72,7 +93,7 @@ class _SearchscreenState extends State<Searchscreen> {
 
     setState(() {
       _filteredStalls = filteredStalls;
-      _filteredEvents = filteredEvents;
+      if (filteredEvents != null) _filteredEvents = filteredEvents;
     });
   }
 
@@ -155,11 +176,22 @@ class _SearchscreenState extends State<Searchscreen> {
                             horizontal: 16, vertical: 14)),
                   ),
                 ),
-
-                SizedBox(
-                  height: mq.height * 0.04,
+                SizedBox(height: 5),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 25.0),
+                    child: Text(
+                      toSuggest ? 'Suggestions' : "",
+                      style: TextStyle(
+                        fontFamily: 'Game_Tape',
+                        fontSize: 20,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
                 ),
-
+                SizedBox(height: 10,),
                 Expanded(
                   child: SingleChildScrollView(
                     child: Padding(
@@ -167,18 +199,6 @@ class _SearchscreenState extends State<Searchscreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 16.0),
-                            child: Text(
-                              'Suggestions',
-                              style: TextStyle(
-                                fontFamily: 'Game_Tape',
-                                fontSize: 20,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: 5),
                           SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
                             child: Row(
@@ -186,7 +206,8 @@ class _SearchscreenState extends State<Searchscreen> {
                                   .where((event) => event.category == "Event")
                                   .toList()
                                   .map((event) {
-                                return _buildCard(context: context, event: event);
+                                return _buildCard(
+                                    context: context, event: event);
                               }).toList(),
                             ),
                           ),
