@@ -179,7 +179,7 @@ class TeamSection extends StatelessWidget {
             ),
           ),
           ...developerteamMembers
-              .map((member) => TeamMemberCard(teamMember: member))
+              .map((member) => Center(child: TeamMemberCard(teamMember: member)))
               .toList(),
           SizedBox(height: 20),
           Text(
@@ -192,7 +192,7 @@ class TeamSection extends StatelessWidget {
             ),
           ),
           ...designTeamMembers
-              .map((member) => TeamMemberCard(teamMember: member))
+              .map((member) => Center(child: TeamMemberCard(teamMember: member)))
               .toList(),
         ],
       ),

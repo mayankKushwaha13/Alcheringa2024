@@ -8,14 +8,12 @@
             "name": "Alcheringa2024",
             "request": "launch",
             "type": "dart",
-            "program": "lib/main.dart"
         },
         {
             "name": "Alcheringa2024 (profile mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile",
-            "program": "lib/screens/main.dart"
         },
         {
             "name": "Alcheringa2024 (release mode)",
@@ -23,9 +21,16 @@
             "type": "dart",
             "flutterMode": "release",
 <<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
             "program": "lib/main.dart"
 =======
             "program": "lib/screens/main.dart"
+>>>>>>> Stashed changes
+=======
+            "program": "lib/screens/main.dart"
+>>>>>>> Stashed changes
 >>>>>>> Stashed changes
         }
     ]

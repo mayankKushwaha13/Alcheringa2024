@@ -54,8 +54,10 @@ class _HomeScreenState extends State<HomeScreen>
     getPronitesData();
     initializeSuggestions();
   }
+
   void initializeSuggestions() {
-    final List<EventDetail> list = Provider.of<ViewModelMain>(context, listen: false).allEvents;
+    final List<EventDetail> list =
+        Provider.of<ViewModelMain>(context, listen: false).allEvents;
     final List<EventDetail> suggestions = list.toList();
 
     // Shuffle and pick a limited number of suggestions
@@ -609,7 +611,8 @@ class _HomeScreenState extends State<HomeScreen>
                                   carouselController: _carouselController,
                                   options: CarouselOptions(
                                     viewportFraction: 1.2,
-                                    autoPlay: true,
+                                    autoPlay: false,
+                                    // reverse: true,
                                     onPageChanged: (index, reason) {
                                       setState(() {
                                         _currentIndex = index;
@@ -642,8 +645,7 @@ class _HomeScreenState extends State<HomeScreen>
                                                               Alignment.center,
                                                           child: CachedNetworkImage(
                                                             imageUrl: item.image ?? " ",
-                                                            height: screenHeight *
-                                                                0.24,
+                                                            height: screenHeight * 0.24,
                                                           ),
                                                         ),
                                                 ],
@@ -777,8 +779,14 @@ class _HomeScreenState extends State<HomeScreen>
                   height: 50,
                 ),
                 // Alcher Card
-                Container(height: 400,width: 400,color: Colors.white,),
-                SizedBox(height: 50,),
+                Container(
+                  height: 400,
+                  width: 400,
+                  color: Colors.white,
+                ),
+                SizedBox(
+                  height: 50,
+                ),
                 // marquee text cool stuff for you
                 Container(
                   color: Color.fromRGBO(255, 236, 38, 1),
@@ -809,7 +817,9 @@ class _HomeScreenState extends State<HomeScreen>
                     },
                   ),
                 ),
-                SizedBox(height: 20,),
+                SizedBox(
+                  height: 20,
+                ),
                 // Below is event suggestion
                 SizedBox(
                   height: 350,
@@ -838,41 +848,48 @@ class _HomeScreenState extends State<HomeScreen>
                 ),
                 // Liked Events
                 FutureBuilder(
-                  future: LikedEventsDatabase().readData(), builder: (context, snapshot){
-                    if(snapshot.hasData && snapshot.data!.isNotEmpty){
-                      List<EventDetail> likedEvents = snapshot.data!;
-                      return Column(
-                        children: [
-                          SizedBox(height: 16,),
-                          _buildHeading(text: "Liked Events", backgroundImage: "assets/images/heading.png"),
-                          SizedBox(height: 20,),
-                          SizedBox(
-                          height: screenHeight * 0.63,
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            scrollDirection: Axis.horizontal,
-                            itemCount: likedEvents.length,
-                            itemBuilder: (context, index) {
-                              EventDetail creatorCamp = likedEvents[index];
-                              return _buildCard(
-                                event: creatorCamp,
-                                headingSize: 18,
-                                isLiked:
-                                    likedEvents.indexWhere((element) => element.artist == creatorCamp.artist) !=
+                    future: LikedEventsDatabase().readData(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                        List<EventDetail> likedEvents = snapshot.data!;
+                        return Column(
+                          children: [
+                            SizedBox(
+                              height: 16,
+                            ),
+                            _buildHeading(
+                                text: "Liked Events",
+                                backgroundImage: "assets/images/heading.png"),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            SizedBox(
+                              height: screenHeight * 0.63,
+                              child: ListView.builder(
+                                shrinkWrap: true,
+                                scrollDirection: Axis.horizontal,
+                                itemCount: likedEvents.length,
+                                itemBuilder: (context, index) {
+                                  EventDetail creatorCamp = likedEvents[index];
+                                  return _buildCard(
+                                    event: creatorCamp,
+                                    headingSize: 18,
+                                    isLiked: likedEvents.indexWhere((element) =>
+                                                element.artist ==
+                                                creatorCamp.artist) !=
                                             -1
                                         ? true
                                         : false,
-                              );
-                            },
-                          ),
-                        )
-                        ],
-                      );
-                    }
-                    else{
-                      return Container();
-                    }
-                }),
+                                  );
+                                },
+                              ),
+                            )
+                          ],
+                        );
+                      } else {
+                        return Container();
+                      }
+                    }),
                 SizedBox(
                   height: bottomNavBarHeight,
                 ),
@@ -916,6 +933,7 @@ class _HomeScreenState extends State<HomeScreen>
       ),
     );
   }
+
   Widget _buildHeading({
     required String text,
     required String backgroundImage,
@@ -933,26 +951,31 @@ class _HomeScreenState extends State<HomeScreen>
       child: Center(
         child: Text(
           text,
-          style: TextStyle(fontFamily: 'Game_Tape', fontSize: 30, color: Colors.white, shadows: [
-            Shadow(offset: Offset(2.5, 2), color: Colors.black, blurRadius: 2),
-          ]),
+          style: TextStyle(
+              fontFamily: 'Game_Tape',
+              fontSize: 30,
+              color: Colors.white,
+              shadows: [
+                Shadow(
+                    offset: Offset(2.5, 2), color: Colors.black, blurRadius: 2),
+              ]),
         ),
       ),
     );
   }
 
-  Widget _buildCard({
-    required EventDetail event,
-    required bool isLiked,
-    double headingSize = 20
-  }) {
+  Widget _buildCard(
+      {required EventDetail event,
+      required bool isLiked,
+      double headingSize = 20}) {
     final screenHeight = MediaQuery.of(context).size.height;
     final widgetHeight = screenHeight * 0.6;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
       child: GestureDetector(
         onTap: () {
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => EventDetailPage(event: event)));
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => EventDetailPage(event: event)));
         },
         child: Column(
           children: [
@@ -961,7 +984,8 @@ class _HomeScreenState extends State<HomeScreen>
                 Positioned.fill(
                     child: ClipRRect(
                   borderRadius: BorderRadius.circular(16),
-                  child: CachedNetworkImage(imageUrl:event.imgurl,
+                  child: CachedNetworkImage(
+                    imageUrl: event.imgurl,
                     fit: BoxFit.cover,
                   ),
                 )),
@@ -969,7 +993,9 @@ class _HomeScreenState extends State<HomeScreen>
                   height: widgetHeight,
                   width: 186 * widgetHeight / 480,
                   decoration: BoxDecoration(
-                      image: DecorationImage(image: AssetImage('assets/images/card.png'), fit: BoxFit.cover)),
+                      image: DecorationImage(
+                          image: AssetImage('assets/images/card.png'),
+                          fit: BoxFit.cover)),
                 ),
                 Positioned(
                     top: 250 * widgetHeight / 480,
@@ -986,7 +1012,9 @@ class _HomeScreenState extends State<HomeScreen>
                       },
                       child: Image(
                         height: 65 * widgetHeight / 480,
-                        image: isLiked ? AssetImage('assets/images/bell1.png') : AssetImage('assets/images/bell.png'),
+                        image: isLiked
+                            ? AssetImage('assets/images/bell1.png')
+                            : AssetImage('assets/images/bell.png'),
                         // fit: BoxFit.cover,
                       ),
                     )),
@@ -998,7 +1026,10 @@ class _HomeScreenState extends State<HomeScreen>
                     event.artist,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(fontFamily: "Brick_Pixel", fontSize: headingSize, color: Colors.white),
+                    style: TextStyle(
+                        fontFamily: "Brick_Pixel",
+                        fontSize: headingSize,
+                        color: Colors.white),
                   ),
                 ),
                 // Description
@@ -1010,7 +1041,10 @@ class _HomeScreenState extends State<HomeScreen>
                     event.descriptionEvent,
                     maxLines: 3,
                     overflow: TextOverflow.clip,
-                    style: TextStyle(fontFamily: "Game_Tape", fontSize: 12, color: Colors.orange),
+                    style: TextStyle(
+                        fontFamily: "Game_Tape",
+                        fontSize: 12,
+                        color: Colors.orange),
                   ),
                 ),
                 // Venue
@@ -1032,7 +1066,10 @@ class _HomeScreenState extends State<HomeScreen>
                             event.venue,
                     maxLines: 1,
                     overflow: TextOverflow.clip,
-                    style: TextStyle(fontFamily: "Game_Tape", fontSize: 12, color: Colors.white),
+                    style: TextStyle(
+                        fontFamily: "Game_Tape",
+                        fontSize: 12,
+                        color: Colors.white),
                   ),
                 ),
               ],

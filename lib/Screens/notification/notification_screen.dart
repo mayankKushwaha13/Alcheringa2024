@@ -102,8 +102,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
                               children: [
                                 NotificationTile(notification: notification),
                                 //to be removed later
-                                NotificationTile(notification: notification),
-                                NotificationTile(notification: notification),
+                                // NotificationTile(notification: notification),
+                                // NotificationTile(notification: notification),
                               ],
                             );
                           },
@@ -176,7 +176,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
             style: TextStyle(
               color: AppColors.Pink,
               fontFamily: "Game_Tape",
-              fontSize: 24,
+              fontSize: 35,
             ),
           ),
         ),
