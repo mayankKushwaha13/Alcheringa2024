@@ -4,14 +4,22 @@ import 'package:alcheringa/Common/globals.dart';
 import 'package:alcheringa/Screens/orderScreen/order_screen.dart';
 import 'package:alcheringa/Screens/profile_setup/profile_page.dart';
 import 'package:alcheringa/Screens/sponsersScreen/sponser_screen.dart';
+import 'package:alcheringa/Screens/textscreens/privacy_policy_screen.dart';
+import 'package:alcheringa/Screens/textscreens/t_and_c.dart';
 import 'package:alcheringa/Screens/welcome_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import 'textscreens/about_screen.dart';
 
 import '../Model/view_model_main.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class EndDrawer extends StatefulWidget {
-  const EndDrawer({super.key, required this.scaffoldState, required this.onTapped});
+  const EndDrawer(
+      {super.key, required this.scaffoldState, required this.onTapped});
 
   final GlobalKey<ScaffoldState> scaffoldState;
   final Function onTapped;
@@ -27,7 +35,8 @@ class _EndDrawerState extends State<EndDrawer> {
   Future<String?> _loadImage() async {
     photoURL = await ViewModelMain().getValue('PhotoURL');
     try {
-      final response = await NetworkImage(photoURL!).resolve(ImageConfiguration());
+      final response =
+          await NetworkImage(photoURL!).resolve(ImageConfiguration());
       if (response == null) {
         throw Exception('Failed to load image');
       }
@@ -51,7 +60,8 @@ class _EndDrawerState extends State<EndDrawer> {
         'iconPath': 'assets/images/sidebar_profile_icon.png',
         'onTap': () {
           widget.scaffoldState.currentState!.closeEndDrawer();
-          Navigator.push(context, MaterialPageRoute(builder: (_) => ProfilePage()));
+          Navigator.push(
+              context, MaterialPageRoute(builder: (_) => ProfilePage()));
         },
       },
       {
@@ -137,16 +147,17 @@ class _EndDrawerState extends State<EndDrawer> {
                               FutureBuilder(
                                 future: _loadImage(),
                                 builder: (context, snapshot) {
-                                  if (snapshot.connectionState == ConnectionState.waiting) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
                                     return CircularProgressIndicator();
                                   }
-                                  if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                                  if (snapshot.hasData &&
+                                      snapshot.data!.isNotEmpty) {
                                     return CachedNetworkImage(
-                                      imageUrl:snapshot.data!,
-                                      width: 120.0, // Adjust size
-                                      height: 120.0,
-                                      fit: BoxFit.cover
-                                    );
+                                        imageUrl: snapshot.data!,
+                                        width: 120.0, // Adjust size
+                                        height: 120.0,
+                                        fit: BoxFit.cover);
                                   }
                                   // log("HERE");
                                   return Image.asset(
@@ -163,13 +174,17 @@ class _EndDrawerState extends State<EndDrawer> {
                               Stack(
                                 alignment: Alignment.center,
                                 children: [
-                                  Image.asset('assets/images/sidebar_profile_name_bg.png'),
+                                  Image.asset(
+                                      'assets/images/sidebar_profile_name_bg.png'),
                                   FutureBuilder(
                                     future: _getName(),
                                     builder: (context, snapshot) {
                                       return Text(
                                         snapshot.data ?? "Unknown",
-                                        style: TextStyle(fontSize: 16.0, fontFamily: 'Game_Tape', color: Colors.white),
+                                        style: TextStyle(
+                                            fontSize: 16.0,
+                                            fontFamily: 'Game_Tape',
+                                            color: Colors.white),
                                       );
                                     },
                                   ),
@@ -206,11 +221,94 @@ class _EndDrawerState extends State<EndDrawer> {
                       onTap: () {
                         Navigator.pushAndRemoveUntil(
                           context,
-                          MaterialPageRoute(builder: (context) => welcomeScreen()),
+                          MaterialPageRoute(
+                              builder: (context) => welcomeScreen()),
                           (Route<dynamic> route) => false,
                         );
                         auth.signOut();
                       },
+                    ),
+                    GestureDetector(
+                      onTap: () async {
+                        final Uri uri = Uri.parse('https://www.alcheringa.in/');
+                        if (await canLaunchUrl(uri)) {
+                          await launchUrl(uri);
+                        } else {
+                          throw 'Could not launch $uri';
+                        }
+                      },
+                      child: Text(
+                        'alcheringa.in',
+                        style: TextStyle(
+                          color: Colors.white,
+                          decoration: TextDecoration.underline,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        TextButton(
+                            style: TextButton.styleFrom(
+                              padding: EdgeInsets.all(6),
+                              minimumSize: Size(0, 0),
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Aboutscreen()),
+                              );
+                            },
+                            child: Text(
+                              'ABOUT',
+                              style: TextStyle(
+                                color: Color(0xFF7E2553),
+                                fontSize: 12,
+                              ),
+                            )),
+                        TextButton(
+                            style: TextButton.styleFrom(
+                              padding: EdgeInsets.all(6),
+                              minimumSize: Size(0, 0),
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => TermsScreen()),
+                              );
+                            },
+                            child: Text(
+                              'T&C',
+                              style: TextStyle(
+                                color: Color(0xFF7E2553),
+                                fontSize: 12,
+                              ),
+                            )),
+                        TextButton(
+                            style: TextButton.styleFrom(
+                              padding: EdgeInsets.all(6),
+                              minimumSize: Size(0, 0),
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        PrivacyPolicyScreen()),
+                              );
+                            },
+                            child: Text(
+                              'PRIVACY POLICY',
+                              style: TextStyle(
+                                  color: Color(0xFF7E2553), fontSize: 12),
+                            ))
+                      ],
                     )
                   ],
                 ),
@@ -228,7 +326,11 @@ class SideBarItems extends StatelessWidget {
   final String iconPath;
   final VoidCallback onTap;
 
-  const SideBarItems({super.key, required this.name, required this.iconPath, required this.onTap});
+  const SideBarItems(
+      {super.key,
+      required this.name,
+      required this.iconPath,
+      required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -261,7 +363,10 @@ class SideBarItems extends StatelessWidget {
                   child: Text(
                     name,
                     style: TextStyle(
-                        fontSize: 18.0, fontFamily: 'Game_Tape', color: Colors.white, fontWeight: FontWeight.w400),
+                        fontSize: 18.0,
+                        fontFamily: 'Game_Tape',
+                        color: Colors.white,
+                        fontWeight: FontWeight.w400),
                   ),
                 )
               ],

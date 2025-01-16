@@ -40,7 +40,7 @@ class _TopAppBarState extends State<TopAppBar> {
                   '2',
                   style: TextStyle(
                     color: Color(0xFFCA3562),
-                    fontFamily: 'Game_Tape',
+                    fontFamily: 'Alcherpixel',
                   ),
                 ),
                 position: badges.BadgePosition.bottomEnd(bottom: 0, end: 10),
@@ -60,37 +60,29 @@ class _TopAppBarState extends State<TopAppBar> {
               ),
             ],
           ),
-          Expanded(
-            flex: 2,
-            child: Center(
-              child: Image.asset(
-                'assets/images/appbar_alcheringa.png',
-                fit: BoxFit.contain,
-                height: 32, // Adjust size as needed
+          Image.asset('assets/images/appbar_alcheringa.png'),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              IconButton(
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (_) => Searchscreen()));
+                },
+                icon: Image.asset('assets/images/appbar_search_icon.png'),
               ),
-            ),
+            ],
           ),
         ],
       ),
       actions: [
-        Row(
-          children: [
-            IconButton(
-              onPressed: () {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (_) => Searchscreen()));
-              },
-              icon: Image.asset('assets/images/appbar_search_icon.png'),
-            ),
-            IconButton(
-              onPressed: () {
-                widget.scaffoldState.currentState!.openEndDrawer();
-              },
-              icon: Image.asset(
-                'assets/images/appbar_menu_icon.png',
-              ),
-            ),
-          ],
+        IconButton(
+          onPressed: () {
+            widget.scaffoldState.currentState!.openEndDrawer();
+          },
+          icon: Image.asset(
+            'assets/images/appbar_menu_icon.png',
+          ),
         ),
       ],
     );

@@ -38,9 +38,9 @@ class TeamMemberCard extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            margin: const EdgeInsets.all(16),
-            width: 100,
-            height: 100,
+            margin: const EdgeInsets.fromLTRB(2, 2, 2, 8),
+            width: 145,
+            height: 145,
             child: Stack(
               alignment: Alignment.center,
               children: [
@@ -48,8 +48,8 @@ class TeamMemberCard extends StatelessWidget {
                 Image.asset(
                   'assets/images/blue_border.png', // Replace with your blue border PNG
                   fit: BoxFit.cover,
-                  width: 110, // Slightly larger than the image
-                  height: 110,
+                  width: 130, // Slightly larger than the image
+                  height: 130,
                 ),
                 // Actual profile picture
                 Padding(
@@ -57,8 +57,8 @@ class TeamMemberCard extends StatelessWidget {
                   child: Image.asset(
                     teamMember.imagePath,
                     fit: BoxFit.cover,
-                    width: 100,
-                    height: 100,
+                    width: 115,
+                    height: 115,
                   ),
                 ),
               ],
@@ -70,6 +70,9 @@ class TeamMemberCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                SizedBox(
+                  height: 25,
+                ),
                 Text(
                   teamMember.name,
                   style: TextStyle(
@@ -79,7 +82,7 @@ class TeamMemberCard extends StatelessWidget {
                     color: Color.fromRGBO(126, 37, 83, 1),
                   ),
                 ),
-                SizedBox(height: 5),
+                // SizedBox(height: 5),
                 Text(
                   teamMember.role,
                   style: TextStyle(
@@ -89,9 +92,12 @@ class TeamMemberCard extends StatelessWidget {
                     color: Color.fromRGBO(41, 173, 255, 1),
                   ),
                 ),
-                SizedBox(height: 15),
+                SizedBox(height: 10),
                 Row(
                   children: [
+                    SizedBox(
+                      width: 15,
+                    ),
                     IconButton(
                       icon: Image.asset('assets/images/instagram_icon.png'),
                       iconSize: 24,
