@@ -14,7 +14,9 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
+import '../Common/resource.dart';
 import '../Model/eventdetail.dart';
 import 'event_detail_page.dart';
 import 'merch_screen.dart';
@@ -44,19 +46,119 @@ class _HomeScreenState extends State<HomeScreen>
     _scrollController1 = ScrollController();
     _scrollController2 = ScrollController();
     _scrollController3 = ScrollController();
-
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _startScrolling1();
       _startScrolling2();
       _startScrolling3();
     });
-    getMerchData();
-    getPronitesData();
+    // getMerchData();
+    // getPronitesData();
     initializeSuggestions();
+    // getPassList();
+    getData();
   }
+
+
+  @override
+  void dispose() {
+    _scrollController1.dispose();
+    _scrollController2.dispose();
+    _scrollController3.dispose();
+    super.dispose();
+  }
+
+  Future<void> getData() async {
+    if(viewModelMain.allEvents.isEmpty){
+      await viewModelMain.getAllEvents();
+      print('Fetched all events');
+      setState(() {});
+    }
+    if(viewModelMain.interestList.isEmpty){
+      await viewModelMain.getInterests(auth.currentUser!.email!);
+      print('Fetched interest events');
+      setState(() {});
+    }
+    if(viewModelMain.merchMerch.isEmpty){
+      await viewModelMain.getMerchMerch();
+      print('Fetched merch events');
+      setState(() {});
+    }
+    if(viewModelMain.featuredEventsWithLive.isEmpty){
+      await viewModelMain.getFeaturedEvents();
+      print('Fetched featured events');
+      setState(() {});
+    }
+    if(viewModelMain.utilityList.isEmpty){
+      await viewModelMain.getUtilities();
+      print('Fetched utilitties events');
+      setState(() {});
+    }
+    if(viewModelMain.informalList.isEmpty){
+      await viewModelMain.getInformals();
+      print('Fetched informals events');
+      setState(() {});
+    }
+    if(viewModelMain.stallList.isEmpty){
+      await viewModelMain.getStalls();
+      print('Fetched stalls events');
+      setState(() {});
+    }
+    if(viewModelMain.venuesList.isEmpty){
+      await viewModelMain.getVenues();
+      print('Fetched venues events');
+      setState(() {});
+    }
+    if(viewModelMain.allNotification.isEmpty){
+      await viewModelMain.getAllNotifications();
+      print('Fetched notifications events');
+      setState(() {});
+    }
+    if(viewModelMain.allsponsors.isEmpty){
+      await viewModelMain.getsponsors();
+      print('Fetched sponsors events');
+      setState(() {});
+    }
+    if(viewModelMain.orderDetails.isEmpty){
+      await viewModelMain.getOrderDetails();
+      print('Fetched orderdetails events');
+      setState(() {});
+    }
+    if(viewModelMain.passList.isEmpty){
+      await viewModelMain.getPass();
+      if (viewModelMain.passList.isEmpty) {
+        setState(() async {
+          viewModelMain.passList = await viewModelMain.getPassListFromSharedPreferences();
+        });
+        print('Cards fetched ${viewModelMain.passList} from shared preferences');
+      }
+      print('Fetched passes events');
+      setState(() {});
+    }
+    print('Running all data');
+  }
+
+  Future<void> getPassList() async {
+    try {
+      await viewModelMain.getPass();
+      print('Pass fetched ${viewModelMain.passList}');
+      if (viewModelMain.passList.isEmpty) {
+        setState(() async {
+          viewModelMain.passList = await viewModelMain.getPassListFromSharedPreferences();
+        });
+        print('Cards fetched ${viewModelMain.passList} from shared preferences');
+      }
+    } catch (e) {
+      print('Error fetching cards $e');
+      showMessage('Please check your internet connection', context);
+    }
+  }
+
   void initializeSuggestions() {
     final List<EventDetail> list = Provider.of<ViewModelMain>(context, listen: false).allEvents;
-    final List<EventDetail> suggestions = list.toList();
+    final List<EventDetail> suggestions = list
+        .where((element) =>
+            element.category.replaceAll("\\s", "").toUpperCase() == "Competitions".replaceAll("\\s", "").toUpperCase())
+        .toList();
 
     // Shuffle and pick a limited number of suggestions
     suggestions.shuffle(Random());
@@ -78,9 +180,6 @@ class _HomeScreenState extends State<HomeScreen>
       // Debug print
       print('Fetched ${PronitesList.length} events');
 
-      setState(() {
-        PronitesList = _pronitesList;
-      });
     } catch (e) {
       print("Error fetching events: $e");
       // You might want to show an error message to the user here
@@ -171,21 +270,6 @@ class _HomeScreenState extends State<HomeScreen>
       dev.log(response);
     } catch (e) {
       dev.log(e.toString());
-    }
-  }
-
-  List<MerchModel> merchList = [];
-
-  Future<void> getMerchData() async {
-    try {
-      merchList = await ViewModelMain().getMerchMerch();
-    } catch (e) {
-      print("Error fetching merchandise: $e");
-    } finally {
-      setState(() {
-        merchList = merchList;
-        isLoading = false;
-      });
     }
   }
 
@@ -422,14 +506,18 @@ class _HomeScreenState extends State<HomeScreen>
                 // Hero section
                 SizedBox(
                   height: 500.0,
-                  child: PageView.builder(
+                  child: viewModelMain.featuredEventsWithLive.isEmpty
+                  ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                  : PageView.builder(
                     controller: PageController(
                         viewportFraction: 0.6, initialPage: 1000),
                     // itemCount: displayedSuggestions.length,
                     itemBuilder: (context, index) {
                       final cardColorIndex = index % 2;
                       index = index % 3;
-                      final event = PronitesList[index];
+                      final event = viewModelMain.featuredEventsWithLive[index];
                       final bool isRevealed = event.isArtistRevealed ?? false;
 
                       return Padding(
@@ -550,7 +638,7 @@ class _HomeScreenState extends State<HomeScreen>
                         ),
                       );
                     },
-                  ),
+                  )
                 ),
 
                 SizedBox(
@@ -559,7 +647,7 @@ class _HomeScreenState extends State<HomeScreen>
                 // marquee text crazy merch alert
                 Container(
                   color: Color.fromRGBO(255, 236, 38, 1),
-                  height: 40,
+                  height: 30,
                   child: ListView.builder(
                     controller: _scrollController1,
                     scrollDirection: Axis.horizontal,
@@ -603,7 +691,7 @@ class _HomeScreenState extends State<HomeScreen>
                       ),
                       Column(
                         children: [
-                          isLoading
+                          viewModelMain.merchMerch.isEmpty
                               ? Center(child: CircularProgressIndicator())
                               : CarouselSlider(
                                   carouselController: _carouselController,
@@ -616,7 +704,7 @@ class _HomeScreenState extends State<HomeScreen>
                                       });
                                     },
                                   ),
-                                  items: merchList
+                                  items: viewModelMain.merchMerch
                                       .map(
                                         (item) => Builder(
                                           builder: (context) {
@@ -655,8 +743,8 @@ class _HomeScreenState extends State<HomeScreen>
                                       .toList(),
                                 ),
                           Builder(builder: (context) {
-                            if (merchList.isNotEmpty) {
-                              MerchModel item = merchList[_currentIndex];
+                            if (viewModelMain.merchMerch.isNotEmpty) {
+                              MerchModel item = viewModelMain.merchMerch[_currentIndex];
                               return Text(
                                 item.name ?? " ",
                                 style: TextStyle(
@@ -746,7 +834,7 @@ class _HomeScreenState extends State<HomeScreen>
                 //marquee text get your alcher card
                 Container(
                   color: Color.fromRGBO(255, 236, 38, 1),
-                  height: 40,
+                  height: 30,
                   child: ListView.builder(
                     controller: _scrollController2,
                     scrollDirection: Axis.horizontal,
@@ -777,12 +865,34 @@ class _HomeScreenState extends State<HomeScreen>
                   height: 50,
                 ),
                 // Alcher Card
-                Container(height: 400,width: 400,color: Colors.white,),
-                SizedBox(height: 50,),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Container(
+                    height: 400,
+                    width: 400,
+                    color: Colors.white,
+                    child: viewModelMain.passList.isEmpty
+                        ? Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : PageView.builder(
+                            itemCount: viewModelMain.passList.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return QrImageView(
+                                data: viewModelMain.passList[index].id,
+                                embeddedImage: AssetImage('assets/file.png'),
+                              );
+                            },
+                          ),
+                  ),
+                ),
+                SizedBox(
+                  height: 50,
+                ),
                 // marquee text cool stuff for you
                 Container(
                   color: Color.fromRGBO(255, 236, 38, 1),
-                  height: 40,
+                  height: 30,
                   child: ListView.builder(
                     controller: _scrollController3,
                     scrollDirection: Axis.horizontal,
@@ -838,41 +948,44 @@ class _HomeScreenState extends State<HomeScreen>
                 ),
                 // Liked Events
                 FutureBuilder(
-                  future: LikedEventsDatabase().readData(), builder: (context, snapshot){
-                    if(snapshot.hasData && snapshot.data!.isNotEmpty){
-                      List<EventDetail> likedEvents = snapshot.data!;
-                      return Column(
-                        children: [
-                          SizedBox(height: 16,),
-                          _buildHeading(text: "Liked Events", backgroundImage: "assets/images/heading.png"),
-                          SizedBox(height: 20,),
-                          SizedBox(
-                          height: screenHeight * 0.63,
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            scrollDirection: Axis.horizontal,
-                            itemCount: likedEvents.length,
-                            itemBuilder: (context, index) {
-                              EventDetail creatorCamp = likedEvents[index];
-                              return _buildCard(
-                                event: creatorCamp,
-                                headingSize: 18,
-                                isLiked:
-                                    likedEvents.indexWhere((element) => element.artist == creatorCamp.artist) !=
-                                            -1
-                                        ? true
-                                        : false,
-                              );
-                            },
-                          ),
-                        )
-                        ],
-                      );
-                    }
-                    else{
-                      return Container();
-                    }
-                }),
+                    future: LikedEventsDatabase().readData(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                        List<EventDetail> likedEvents = snapshot.data!;
+                        return Column(
+                          children: [
+                            SizedBox(
+                              height: 16,
+                            ),
+                            _buildHeading(text: "Liked Events", backgroundImage: "assets/images/heading.png"),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            SizedBox(
+                              height: screenHeight * 0.63,
+                              child: ListView.builder(
+                                shrinkWrap: true,
+                                scrollDirection: Axis.horizontal,
+                                itemCount: likedEvents.length,
+                                itemBuilder: (context, index) {
+                                  EventDetail creatorCamp = likedEvents[index];
+                                  return _buildCard(
+                                    event: creatorCamp,
+                                    headingSize: 18,
+                                    isLiked:
+                                        likedEvents.indexWhere((element) => element.artist == creatorCamp.artist) != -1
+                                            ? true
+                                            : false,
+                                  );
+                                },
+                              ),
+                            )
+                          ],
+                        );
+                      } else {
+                        return Container();
+                      }
+                    }),
                 SizedBox(
                   height: bottomNavBarHeight,
                 ),
@@ -941,11 +1054,7 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
-  Widget _buildCard({
-    required EventDetail event,
-    required bool isLiked,
-    double headingSize = 20
-  }) {
+  Widget _buildCard({required EventDetail event, required bool isLiked, double headingSize = 20}) {
     final screenHeight = MediaQuery.of(context).size.height;
     final widgetHeight = screenHeight * 0.6;
     return Padding(

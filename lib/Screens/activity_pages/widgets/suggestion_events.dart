@@ -13,14 +13,6 @@ class SuggestionCard extends StatefulWidget {
 }
 
 class _SuggestionCardState extends State<SuggestionCard> {
-
-  @override
-  void initState() {
-    print('Hello ${widget.event.artist} ${widget.event.iconURL}');
-
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     final mq = MediaQuery.of(context).size;

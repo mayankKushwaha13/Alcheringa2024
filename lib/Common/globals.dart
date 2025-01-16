@@ -1,4 +1,5 @@
 import 'package:alcheringa/Database/DBHandler.dart';
+import 'package:alcheringa/Model/view_model_main.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -14,3 +15,4 @@ FirebaseStorage st = FirebaseStorage.instance;
 double bottomNavBarHeight = 0;
 List<PassModel> pass = [];
 DBHandler dbHandler = DBHandler();
+ViewModelMain viewModelMain = ViewModelMain();

@@ -1,3 +1,4 @@
+import 'package:alcheringa/Common/globals.dart';
 import 'package:alcheringa/Notification/notification_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -7,10 +8,7 @@ import '../../Model/view_model_main.dart';
 import '../../utils/styles/colors.dart';
 
 class NotificationScreen extends StatefulWidget {
-  final Future<List<NotificationModel>> notificationsFuture;
-
-  NotificationScreen({super.key})
-      : notificationsFuture = ViewModelMain().getAllNotifications();
+  const NotificationScreen({super.key});
 
   @override
   State<NotificationScreen> createState() => _NotificationScreenState();
@@ -59,7 +57,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
             children: [
               Expanded(
                   child: FutureBuilder(
-                future: widget.notificationsFuture,
+                future: viewModelMain.getAllNotifications(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(
@@ -102,8 +100,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
                               children: [
                                 NotificationTile(notification: notification),
                                 //to be removed later
-                                NotificationTile(notification: notification),
-                                NotificationTile(notification: notification),
+                                // NotificationTile(notification: notification),
+                                // NotificationTile(notification: notification),
                               ],
                             );
                           },
@@ -176,7 +174,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
             style: TextStyle(
               color: AppColors.Pink,
               fontFamily: "Game_Tape",
-              fontSize: 24,
+              fontSize: 35,
             ),
           ),
         ),

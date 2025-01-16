@@ -1,4 +1,6 @@
+import 'package:alcheringa/Model/view_model_main.dart';
 import 'package:alcheringa/Screens/home_screen.dart';
+import 'package:alcheringa/Screens/main_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'build_confirmation_tab.dart';
@@ -26,29 +28,78 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
   // Function to validate fields
   bool areFieldsValid() {
-    return nameController.text.isNotEmpty &&
-        phoneController.text.isNotEmpty &&
-        addressLine1Controller.text.isNotEmpty &&
-        addressLine2Controller.text.isNotEmpty &&
-        cityController.text.isNotEmpty &&
-        stateController.text.isNotEmpty &&
-        pincodeController.text.isNotEmpty;
+    if (nameController.text.isEmpty ||
+        phoneController.text.isEmpty ||
+        addressLine1Controller.text.isEmpty ||
+        addressLine2Controller.text.isEmpty ||
+        cityController.text.isEmpty ||
+        stateController.text.isEmpty ||
+        pincodeController.text.isEmpty) {
+      showValidationError('Please fill in all fields before proceeding.');
+      return false;
+    }
+
+    if (phoneController.text.length != 10 || !RegExp(r'^\d{10}$').hasMatch(phoneController.text)) {
+      showValidationError('Phone number must be of 10 digits.');
+      return false;
+    }
+
+    if (pincodeController.text.length != 6 || !RegExp(r'^\d{6}$').hasMatch(pincodeController.text)) {
+      showValidationError('Pincode must be of 6 digits.');
+      return false;
+    }
+
+    return true;
   }
 
   // Show a snackbar if validation fails
-  void showValidationError() {
+  void showValidationError(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Please fill in all fields before proceeding.'),
+        content: Text(message),
         backgroundColor: Colors.red,
       ),
     );
   }
 
+ 
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Color(0xFF0f162a),
+          automaticallyImplyLeading: false,
+          title: Container(
+            padding: EdgeInsets.only(right: 10.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Image.asset(
+                    'assets/images/back_button.png',
+                    width: 50.0,
+                    height: 50.0,
+                  ),
+                ),
+                Text(
+                  "Check Out",
+                  style: TextStyle(
+                    fontFamily: 'Game_Tape',
+                    fontSize: 24,
+                    fontWeight: FontWeight.w400,
+                    color: Color(0xFFFFF1E8),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        
         body: Container(
           width: double.infinity,
           height: MediaQuery.of(context).size.height,
@@ -62,7 +113,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // Header Section
+                /* // Header Section
                 Container(
                   width: double.infinity,
                   height: 84,
@@ -87,11 +138,10 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     ),
                   ),
                 ),
-                SizedBox(height: 20.0),
-
+                 */
+SizedBox(height: 20.0),
                 // Progress Bar Section (Conditional)
-                if (_currentIndex !=
-                    3) // Only show this in Details and Review tabs
+                if (_currentIndex != 3) // Only show this in Details and Review tabs
                   Stack(
                     alignment: Alignment.center,
                     children: [
@@ -108,10 +158,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
                       ),
                       // Tab Text
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           _buildTab("Details", 1),
-                          SizedBox(width: 99),
                           _buildTab("Review", 2),
                         ],
                       ),
@@ -130,13 +179,11 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   padding: EdgeInsets.symmetric(horizontal: 12),
                   child: GestureDetector(
                     onTap: () {
-                      if ((areFieldsValid() && _currentIndex == 1)) {
+                      if (_currentIndex == 1 && areFieldsValid()) {
                         setState(() {
                           _currentIndex++;
                         });
-                      } else if ((!areFieldsValid() && _currentIndex == 1)) {
-                        showValidationError();
-                      } else if (_currentIndex < 3) {
+                      } else if (_currentIndex > 1 && _currentIndex < 3) {
                         setState(() {
                           _currentIndex++;
                         });
@@ -155,15 +202,15 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                 image: _currentIndex != 3
                                     ? AssetImage('assets/images/next_button.png')
                                     : AssetImage(
-                                        'assets/images/continue_shopping.png'),
+                                    'assets/images/continue_shopping.png'),
                                 fit: BoxFit.cover,
                               ),
                             ),
                           ),
                         ),
                         GestureDetector(
-                          onTap: (){
-                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
+                          onTap: () {
+                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainScreen()));
                           },
                           child: Text(
                             _currentIndex < 3 ? 'Next' : 'Continue\nShopping',
@@ -217,7 +264,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
           pincodeController: pincodeController,
         );
       case 2:
-        return buildReviewTab(
+        return BuildReviewTab(
             name: nameController.text,
             phone: phoneController.text,
             addressLine1: addressLine1Controller.text,
@@ -225,7 +272,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
             city: cityController.text,
             state: stateController.text,
             pincode: pincodeController.text,
-            context: context);
+            /* context: context */);
       case 3:
         return buildConfirmationTab();
       default:

@@ -52,7 +52,8 @@ class _MerchScreenState extends State<MerchScreen> {
             children: [
               // Header Section
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0, vertical: 16.0),
                 decoration: BoxDecoration(
                   color: Colors.black.withOpacity(0.5),
                 ),
@@ -73,7 +74,7 @@ class _MerchScreenState extends State<MerchScreen> {
                       'Merchandize',
                       style: TextStyle(
                         fontFamily: 'Game_Tape',
-                        fontSize: 24,
+                        fontSize: 25,
                         fontWeight: FontWeight.w400,
                         color: Color.fromRGBO(255, 119, 168, 1),
                       ),
@@ -81,31 +82,34 @@ class _MerchScreenState extends State<MerchScreen> {
                   ],
                 ),
               ),
-              const SizedBox(height: 20.0),
-              Stack(children: [
-                Image.asset(
-                  alignment: Alignment.topCenter,
-                  'assets/images/1.png', // Replace with your image path
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                ),
-                Center(
-                    child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(height: 15),
-                    Text(
-                      'Merchandise',
-                      style: TextStyle(
-                        fontFamily: 'Game_Tape',
-                        fontSize: 27,
-                        fontWeight: FontWeight.w400,
-                        color: Color.fromRGBO(255, 241, 232, 1),
-                      ),
+              const SizedBox(height: 10.0),
+              Stack(
+                children: [
+                  ClipRRect(
+                    child: Image.asset(
+                      "assets/images/1.png",
+                      fit: BoxFit.cover,
+                      width: double.infinity,
                     ),
-                  ],
-                ))
-              ]),
+                  ),
+                  Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(16),
+                      child: Center(
+                        child: Text(
+                          "Merchandize",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Color(0xFFFFF1E8),
+                            fontSize: 24,
+                            fontFamily: 'Game_Tape',
+                            fontWeight: FontWeight.w400,
+                            letterSpacing: 0.15,
+                          ),
+                        ),
+                      )),
+                ],
+              ),
 
               Expanded(
                 child: isLoading
@@ -127,13 +131,16 @@ class _MerchScreenState extends State<MerchScreen> {
                             child: Column(
                               children: merchMerch.map((merch) {
                                 return MerchandiseItem(
-                                  image: merch.image ?? 'assets/images/default_image.png',
+                                  image: merch.image ??
+                                      'assets/images/default_image.png',
                                   title: merch.type ?? 'Unnamed',
                                   subtitle: merch.name ?? 'Unnamed',
-                                  description: merch.description ?? 'No description',
+                                  description:
+                                      merch.description ?? 'No description',
                                   price: merch.price ?? '0.00',
-                                  limitedStockMessage:
-                                      merch.available == true ? 'LIMITED STOCK AVAILABLE' : 'OUT OF STOCK',
+                                  limitedStockMessage: merch.available == true
+                                      ? 'LIMITED STOCK AVAILABLE'
+                                      : 'OUT OF STOCK',
                                 );
                               }).toList(),
                             ),
@@ -186,14 +193,21 @@ class MerchandiseItem extends StatelessWidget {
         },
         child: Stack(
           children: [
-            Image.asset(
-              alignment: Alignment.topCenter,
-              "assets/images/product_details.png",
-              width: 500,
-              fit: BoxFit.cover,
+            Column(
+              children: [
+                Image.asset(
+                  alignment: Alignment.topCenter,
+                  "assets/images/product_details.png",
+                  width: MediaQuery.of(context).size.width,
+                  fit: BoxFit.cover,
+                ),
+                SizedBox(
+                  height: 15,
+                )
+              ],
             ),
             Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding: const EdgeInsets.all(15.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -204,10 +218,12 @@ class MerchandiseItem extends StatelessWidget {
                       width: MediaQuery.of(context).size.width * 0.2,
                     ),
                   ),
-
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
+                      SizedBox(
+                        height: 20,
+                      ),
                       Text(
                         title,
                         style: const TextStyle(
@@ -240,7 +256,8 @@ class MerchandiseItem extends StatelessWidget {
                 ],
               ),
             ),
-            Padding(
+
+            /* Padding(
               padding: const EdgeInsets.only(top: 145, left: 3),
               child: Stack(
                 children: [
@@ -277,7 +294,7 @@ class MerchandiseItem extends StatelessWidget {
                   ),
                 ],
               ),
-            ),
+            ) */
             // Positioned(
             //   right: 0,
             //   left: 0,
@@ -310,13 +327,12 @@ class MerchandiseItem extends StatelessWidget {
             //     ],
             //   ),
             // ),
-
             Positioned(
               right: 0,
               left: 0,
               bottom: 0,
               child: Container(
-              padding: EdgeInsets.all(10.0),
+                padding: EdgeInsets.all(10.0),
                 decoration: BoxDecoration(
                     image: DecorationImage(
                   image: AssetImage(

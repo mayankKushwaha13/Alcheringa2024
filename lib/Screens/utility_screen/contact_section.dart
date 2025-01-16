@@ -13,9 +13,9 @@ class _ContactSectionState extends State<ContactSection> {
 
   // Sample data for each category
   final Map<String, List<String>> contactData = {
-    'Medicine': ['1234567890', '0987654321', '1122334455'],
-    'Transport': ['5566778899', '6677889900', '7788990011'],
-    'Admin': ['2233445566', '3344556677', '4455667788'],
+    'MEDICINE': ['1234567890', '0987654321', '1122334455'],
+    'TRANSPORT': ['5566778899', '6677889900', '7788990011'],
+    'ADMIN': ['2233445566', '3344556677', '4455667788'],
   };
 
   @override
@@ -40,30 +40,39 @@ class _ContactSectionState extends State<ContactSection> {
             mainAxisAlignment: MainAxisAlignment.center, // Center buttons horizontally
             children: [
               CategoryButton(
-                imagePath: 'assets/images/medicine.png',
-                isSelected: selectedCategory == 'Medicine',
+                backgroundImagePath: selectedCategory == 'MEDICINE'
+                    ? 'assets/images/box_clicked.png'
+                    : 'assets/images/box_not_clicked.png',
+                iconImagePath: 'assets/images/medicine_icon.png',
+                isSelected: selectedCategory == 'MEDICINE',
                 onTap: () => setState(() {
-                  selectedCategory = selectedCategory == 'Medicine' ? '' : 'Medicine';
+                  selectedCategory = selectedCategory == 'MEDICINE' ? '' : 'MEDICINE';
                 }),
-                label: 'Medicine',
+                label: 'MEDICINE',
                 showLabel: selectedCategory.isEmpty,
               ),
               const SizedBox(width: 30),
               CategoryButton(
-                imagePath: 'assets/images/transport.png',
+                backgroundImagePath: selectedCategory == 'TRANSPORT'
+                    ? 'assets/images/box_clicked.png'
+                    : 'assets/images/box_not_clicked.png',
+                iconImagePath: 'assets/images/transport_icon.png',
                 isSelected: selectedCategory == 'Transport',
                 onTap: () => setState(() {
-                  selectedCategory = selectedCategory == 'Transport' ? '' : 'Transport';
+                  selectedCategory = selectedCategory == 'TRANSPORT' ? '' : 'TRANSPORT';
                 }),
-                label: 'Transport',
+                label: 'TRANSPORT',
                 showLabel: selectedCategory.isEmpty,
               ),
               const SizedBox(width: 30),
               CategoryButton(
-                imagePath: 'assets/images/admin.png',
-                isSelected: selectedCategory == 'Admin',
+                backgroundImagePath: selectedCategory == 'ADMIN'
+                    ? 'assets/images/box_clicked.png'
+                    : 'assets/images/box_not_clicked.png',
+                iconImagePath: 'assets/images/admin_icon.png',
+                isSelected: selectedCategory == 'ADMIN',
                 onTap: () => setState(() {
-                  selectedCategory = selectedCategory == 'Admin' ? '' : 'Admin';
+                  selectedCategory = selectedCategory == 'ADMIN' ? '' : 'ADMIN';
                 }),
                 label: 'Admin',
                 showLabel: selectedCategory.isEmpty,
@@ -127,14 +136,16 @@ class _ContactSectionState extends State<ContactSection> {
 
 // Category Button Widget
 class CategoryButton extends StatelessWidget {
-  final String imagePath;
+  final String backgroundImagePath;
+  final String iconImagePath;
   final bool isSelected;
   final VoidCallback onTap;
   final String label;
   final bool showLabel;
 
   const CategoryButton({
-    required this.imagePath,
+    required this.backgroundImagePath,
+    required this.iconImagePath,
     required this.isSelected,
     required this.onTap,
     required this.label,
@@ -148,19 +159,20 @@ class CategoryButton extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
-            width: 70,
-            height: 70,
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: isSelected ? Colors.amber : Colors.transparent,
-                width: 3,
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              Image.asset(
+                backgroundImagePath,
+                width: 72,
+                height: 72,
               ),
-              image: DecorationImage(
-                image: AssetImage(imagePath),
-                fit: BoxFit.cover,
+              Image.asset(
+                iconImagePath,
+                width: 68,
+                height: 68,
               ),
-            ),
+            ],
           ),
           const SizedBox(height: 5),
           if (showLabel)
@@ -170,6 +182,7 @@ class CategoryButton extends StatelessWidget {
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
                 color: Colors.white,
+                fontFamily: 'Game_Tape',
               ),
             ),
         ],
@@ -177,7 +190,6 @@ class CategoryButton extends StatelessWidget {
     );
   }
 }
-
 
 class NumberBox extends StatelessWidget {
   final String number;

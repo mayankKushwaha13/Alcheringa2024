@@ -78,17 +78,20 @@ class _FaqSectionState extends State<FaqSection> {
                         },
                         child: Container(
                           width: 258,
-                          height: 80,
                           decoration: BoxDecoration(
                             image: DecorationImage(
-                              image: AssetImage('assets/images/faq_box.png'),
+                              image: AssetImage(
+                                isExpanded
+                                    ? 'assets/images/faq_box_clicked.png' // Image for expanded state
+                                    : 'assets/images/faq_box.png', // Image for collapsed state
+                              ),
                               fit: BoxFit.fill,
                             ),
                           ),
                           alignment: Alignment.centerLeft,
-                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          padding: EdgeInsets.symmetric(horizontal: 25, vertical: 15.0),
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                            padding: const EdgeInsets.symmetric(horizontal: 5.0),
                             child: Text(
                               faq.question,
                               style: TextStyle(

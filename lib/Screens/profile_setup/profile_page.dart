@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:alcheringa/Authentication/authenticationviewmodel.dart';
 import 'package:alcheringa/Common/globals.dart';
 import 'package:alcheringa/Model/view_model_main.dart';
-import 'package:alcheringa/Screens/profile_setup/select_intrest.dart';
 import 'package:alcheringa/Screens/profile_setup/widgets/intrest_button.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -86,6 +85,37 @@ class _ProfilePageState extends State<ProfilePage> {
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          backgroundColor: Color.fromRGBO(63, 19, 42, 1),
+          automaticallyImplyLeading: false,
+          title: Container(
+            padding: EdgeInsets.only(right: 10.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Image.asset(
+                    'assets/images/back_button.png',
+                    width: 50.0,
+                    height: 50.0,
+                  ),
+                ),
+                Text(
+                  "Profile",
+                  style: TextStyle(
+                    fontFamily: 'Game_Tape',
+                    fontSize: 24,
+                    fontWeight: FontWeight.w400,
+                    color: Color(0xFFFFF1E8),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
         body: Stack(
           fit: StackFit.expand,
           children: [

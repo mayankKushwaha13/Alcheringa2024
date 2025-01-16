@@ -23,6 +23,7 @@ class StallModel {
   String imgurl;
   List<StallMenuItem> menu;
   LatLng latLng;
+  List<String> category;
 
   StallModel({
     required this.name,
@@ -30,6 +31,7 @@ class StallModel {
     required this.imgurl,
     required this.menu,
     required this.latLng,
+    required this.category
   });
 
   factory StallModel.fromMap(Map<String, dynamic> data) {
@@ -47,6 +49,10 @@ class StallModel {
         (data['LatLng']?['latitude'] ?? 26.190750).toDouble(),
         (data['LatLng']?['longitude'] ?? 91.696418).toDouble(),
       ),
+      category: (data['category'] as List<dynamic>?)
+          ?.map((item) => item as String)
+          .toList() ??
+          [],
     );
   }
 }

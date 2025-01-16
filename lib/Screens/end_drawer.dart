@@ -1,14 +1,16 @@
-import 'dart:developer';
-
 import 'package:alcheringa/Common/globals.dart';
 import 'package:alcheringa/Screens/orderScreen/order_screen.dart';
 import 'package:alcheringa/Screens/profile_setup/profile_page.dart';
 import 'package:alcheringa/Screens/sponsersScreen/sponser_screen.dart';
+import 'package:alcheringa/Screens/textscreens/privacy_policy_screen.dart';
+import 'package:alcheringa/Screens/textscreens/t_and_c.dart';
 import 'package:alcheringa/Screens/welcome_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../Model/view_model_main.dart';
+import 'textscreens/about_screen.dart';
 
 class EndDrawer extends StatefulWidget {
   const EndDrawer({super.key, required this.scaffoldState, required this.onTapped});
@@ -120,7 +122,7 @@ class _EndDrawerState extends State<EndDrawer> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(bottom: 30.0, top: 10.0),
+                padding: const EdgeInsets.only(bottom: 30.0, top: 30.0),
                 child: ListView(
                   padding: EdgeInsets.only(top: 40.0, left: 20.0, right: 39.0),
                   children: [
@@ -142,11 +144,10 @@ class _EndDrawerState extends State<EndDrawer> {
                                   }
                                   if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                                     return CachedNetworkImage(
-                                      imageUrl:snapshot.data!,
-                                      width: 120.0, // Adjust size
-                                      height: 120.0,
-                                      fit: BoxFit.cover
-                                    );
+                                        imageUrl: snapshot.data!,
+                                        width: 120.0, // Adjust size
+                                        height: 120.0,
+                                        fit: BoxFit.cover);
                                   }
                                   // log("HERE");
                                   return Image.asset(
@@ -211,6 +212,107 @@ class _EndDrawerState extends State<EndDrawer> {
                         );
                         auth.signOut();
                       },
+                    ),
+                    SizedBox(
+                      height: 15.0,
+                    ),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Padding(
+                        padding: const EdgeInsets.only(right:32.0),
+                        child: TextButton(
+                          style: TextButton.styleFrom(
+                            padding: EdgeInsets.zero,
+                            minimumSize: Size(0, 0),
+                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => Aboutscreen()),
+                            );
+                          },
+                          child: Text(
+                            'alchering.in',
+                            style: TextStyle(
+                              color: Color(0xFFFF77A8),
+                              fontSize: 12,
+                              fontFamily: 'Game_Tape',
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 30.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          TextButton(
+                            style: TextButton.styleFrom(
+                              padding: EdgeInsets.symmetric(horizontal: 4.0),
+                              minimumSize: Size(0, 0),
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => Aboutscreen()),
+                              );
+                            },
+                            child: Text(
+                              'ABOUT',
+                              style: TextStyle(
+                                color: Color(0xFF7E2553),
+                                fontSize: 12,
+                                fontFamily: 'Game_Tape',
+                              ),
+                            ),
+                          ),
+                          TextButton(
+                            style: TextButton.styleFrom(
+                              padding: EdgeInsets.symmetric(horizontal: 4.0),
+                              minimumSize: Size(0, 0),
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => TermsScreen()),
+                              );
+                            },
+                            child: Text(
+                              'T&C',
+                              style: TextStyle(
+                                color: Color(0xFF7E2553),
+                                fontSize: 12,
+                                fontFamily: 'Game_Tape',
+                              ),
+                            ),
+                          ),
+                          TextButton(
+                            style: TextButton.styleFrom(
+                              padding: EdgeInsets.only(left: 4.0),
+                              minimumSize: Size(0, 0),
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => PrivacyPolicyScreen()),
+                              );
+                            },
+                            child: Text(
+                              'PRIVACY POLICY',
+                              style: TextStyle(
+                                color: Color(0xFF7E2553),
+                                fontSize: 12,
+                                fontFamily: 'Game_Tape',
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                     )
                   ],
                 ),
