@@ -138,46 +138,6 @@ Future<void> updateProfilePicture(File file, String email, String name) async {
   }
 }
 
-/*
-Future<void> updateProfilePicture(File file, String email, String name) async {
-  try {
-    List<int> imageBytes = await file.readAsBytes();
-
-    img.Image? image = img.decodeImage(Uint8List.fromList(imageBytes));
-
-    if (image == null) {
-      throw Exception("Unable to decode image");
-    }
-
-    List<int> compressedBytes = img.encodeJpg(image, quality: 60); // Compress to JPG format
-
-    final ref = FirebaseStorage.instance.ref().child('Users/$email');
-
-    await ref.putData(Uint8List.fromList(compressedBytes), SettableMetadata(contentType: 'image/'))
-        .then((p0) {
-      print('Data transferred: ${p0.bytesTransferred / (1024 * 1024)} MB');
-    });
-
-    String url = await ref.getDownloadURL();
-
-    print("url = $url");
-
-    await FirebaseFirestore.instance.collection('USERS').doc(email).update({
-      'Name': name,
-      'PhotoURL': url,
-    });
-
-    final prefs = await SharedPreferences.getInstance();
-
-    await prefs.setString('name', name);
-    await prefs.setString('photoURL', url);
-
-    print('Profile picture updated successfully!');
-  } catch (e) {
-    print("Error updating profile picture: $e");
-  }
-}
- */
 void onUpdateProfile(BuildContext context, File image, String email, String name) {
   // Show progress indicator dialog
   showDialog(

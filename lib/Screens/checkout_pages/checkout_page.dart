@@ -1,3 +1,4 @@
+import 'package:alcheringa/Model/view_model_main.dart';
 import 'package:alcheringa/Screens/home_screen.dart';
 import 'package:alcheringa/Screens/main_screen.dart';
 import 'package:flutter/material.dart';
@@ -61,10 +62,44 @@ class _CheckoutPageState extends State<CheckoutPage> {
     );
   }
 
+ 
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Color(0xFF0f162a),
+          automaticallyImplyLeading: false,
+          title: Container(
+            padding: EdgeInsets.only(right: 10.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Image.asset(
+                    'assets/images/back_button.png',
+                    width: 50.0,
+                    height: 50.0,
+                  ),
+                ),
+                Text(
+                  "Check Out",
+                  style: TextStyle(
+                    fontFamily: 'Game_Tape',
+                    fontSize: 24,
+                    fontWeight: FontWeight.w400,
+                    color: Color(0xFFFFF1E8),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        
         body: Container(
           width: double.infinity,
           height: MediaQuery.of(context).size.height,
@@ -78,7 +113,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // Header Section
+                /* // Header Section
                 Container(
                   width: double.infinity,
                   height: 84,
@@ -103,8 +138,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     ),
                   ),
                 ),
-                SizedBox(height: 20.0),
-
+                 */
+SizedBox(height: 20.0),
                 // Progress Bar Section (Conditional)
                 if (_currentIndex != 3) // Only show this in Details and Review tabs
                   Stack(
@@ -123,10 +158,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
                       ),
                       // Tab Text
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           _buildTab("Details", 1),
-                          SizedBox(width: 99),
                           _buildTab("Review", 2),
                         ],
                       ),
@@ -230,7 +264,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
           pincodeController: pincodeController,
         );
       case 2:
-        return buildReviewTab(
+        return BuildReviewTab(
             name: nameController.text,
             phone: phoneController.text,
             addressLine1: addressLine1Controller.text,
@@ -238,7 +272,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
             city: cityController.text,
             state: stateController.text,
             pincode: pincodeController.text,
-            context: context);
+            /* context: context */);
       case 3:
         return buildConfirmationTab();
       default:
