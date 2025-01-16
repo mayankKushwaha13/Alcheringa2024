@@ -143,7 +143,7 @@ class PixelStoreCard extends StatelessWidget {
                         padding: const EdgeInsets.all(5.0),
                         child: SizedBox(
                           height: screenHeight*.009,
-                          width: screenWidth*.1,
+                          width: screenWidth*.13,
                           child: CachedNetworkImage(
                             imageUrl: image,
                            // placeholder: (context, url) => CircularProgressIndicator(),

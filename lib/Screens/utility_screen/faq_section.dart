@@ -78,7 +78,6 @@ class _FaqSectionState extends State<FaqSection> {
                         },
                         child: Container(
                           width: 258,
-                          height: 80,
                           decoration: BoxDecoration(
                             image: DecorationImage(
                               image: AssetImage(
@@ -90,9 +89,9 @@ class _FaqSectionState extends State<FaqSection> {
                             ),
                           ),
                           alignment: Alignment.centerLeft,
-                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          padding: EdgeInsets.symmetric(horizontal: 25, vertical: 15.0),
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                            padding: const EdgeInsets.symmetric(horizontal: 5.0),
                             child: Text(
                               faq.question,
                               style: TextStyle(

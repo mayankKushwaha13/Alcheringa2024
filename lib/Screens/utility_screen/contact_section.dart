@@ -13,9 +13,9 @@ class _ContactSectionState extends State<ContactSection> {
 
   // Sample data for each category
   final Map<String, List<String>> contactData = {
-    'Medicine': ['1234567890', '0987654321', '1122334455'],
-    'Transport': ['5566778899', '6677889900', '7788990011'],
-    'Admin': ['2233445566', '3344556677', '4455667788'],
+    'MEDICINE': ['1234567890', '0987654321', '1122334455'],
+    'TRANSPORT': ['5566778899', '6677889900', '7788990011'],
+    'ADMIN': ['2233445566', '3344556677', '4455667788'],
   };
 
   @override
@@ -40,39 +40,39 @@ class _ContactSectionState extends State<ContactSection> {
             mainAxisAlignment: MainAxisAlignment.center, // Center buttons horizontally
             children: [
               CategoryButton(
-                backgroundImagePath: selectedCategory == 'Medicine'
+                backgroundImagePath: selectedCategory == 'MEDICINE'
                     ? 'assets/images/box_clicked.png'
                     : 'assets/images/box_not_clicked.png',
                 iconImagePath: 'assets/images/medicine_icon.png',
-                isSelected: selectedCategory == 'Medicine',
+                isSelected: selectedCategory == 'MEDICINE',
                 onTap: () => setState(() {
-                  selectedCategory = selectedCategory == 'Medicine' ? '' : 'Medicine';
+                  selectedCategory = selectedCategory == 'MEDICINE' ? '' : 'MEDICINE';
                 }),
-                label: 'Medicine',
+                label: 'MEDICINE',
                 showLabel: selectedCategory.isEmpty,
               ),
               const SizedBox(width: 30),
               CategoryButton(
-                backgroundImagePath: selectedCategory == 'Transport'
+                backgroundImagePath: selectedCategory == 'TRANSPORT'
                     ? 'assets/images/box_clicked.png'
                     : 'assets/images/box_not_clicked.png',
                 iconImagePath: 'assets/images/transport_icon.png',
                 isSelected: selectedCategory == 'Transport',
                 onTap: () => setState(() {
-                  selectedCategory = selectedCategory == 'Transport' ? '' : 'Transport';
+                  selectedCategory = selectedCategory == 'TRANSPORT' ? '' : 'TRANSPORT';
                 }),
-                label: 'Transport',
+                label: 'TRANSPORT',
                 showLabel: selectedCategory.isEmpty,
               ),
               const SizedBox(width: 30),
               CategoryButton(
-                backgroundImagePath: selectedCategory == 'Admin'
+                backgroundImagePath: selectedCategory == 'ADMIN'
                     ? 'assets/images/box_clicked.png'
                     : 'assets/images/box_not_clicked.png',
                 iconImagePath: 'assets/images/admin_icon.png',
-                isSelected: selectedCategory == 'Admin',
+                isSelected: selectedCategory == 'ADMIN',
                 onTap: () => setState(() {
-                  selectedCategory = selectedCategory == 'Admin' ? '' : 'Admin';
+                  selectedCategory = selectedCategory == 'ADMIN' ? '' : 'ADMIN';
                 }),
                 label: 'Admin',
                 showLabel: selectedCategory.isEmpty,
@@ -182,6 +182,7 @@ class CategoryButton extends StatelessWidget {
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
                 color: Colors.white,
+                fontFamily: 'Game_Tape',
               ),
             ),
         ],

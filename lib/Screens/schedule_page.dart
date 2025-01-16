@@ -534,8 +534,6 @@ final List<String> keys = ["All","Lecture Halls","Grounds","Library Area", "Admi
                                                               image: AssetImage('assets/images/schedule_event_bg.png'),
                                                               fit: BoxFit.cover
                                                             ),
-                                                            borderRadius:
-                                                                BorderRadius.circular(8),
                                                           ),
                                                           child: Center(
                                                             child: SingleChildScrollView(

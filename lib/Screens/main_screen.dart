@@ -103,7 +103,7 @@ class _MainScreenState extends State<MainScreen> {
                         _selectedIndex == 0
                             ? 'assets/images/map_selected.png'
                             : 'assets/images/map_unselected.png',
-                        height: _selectedIndex == 0 ? 90.0 : 70.0,
+                        height: _selectedIndex == 0 ? 110.0 : 90.0,
                       ),
                     ),
                     label: '',
@@ -116,7 +116,7 @@ class _MainScreenState extends State<MainScreen> {
                         _selectedIndex == 1
                             ? 'assets/images/schedule_selected.png'
                             : 'assets/images/schedule_unselected.png',
-                        height: _selectedIndex == 1 ? 90.0 : 70.0,
+                        height: _selectedIndex == 1 ? 110.0 : 90.0,
                       ),
                     ),
                     label: '',
@@ -129,7 +129,7 @@ class _MainScreenState extends State<MainScreen> {
                         _selectedIndex == 2
                             ? 'assets/images/home_selected.png'
                             : 'assets/images/home_unselected.png',
-                        height: _selectedIndex == 2 ? 90.0 : 70.0,
+                        height: _selectedIndex == 2 ? 110.0 : 90.0,
                       ),
                     ),
                     label: '',
@@ -142,7 +142,7 @@ class _MainScreenState extends State<MainScreen> {
                         _selectedIndex == 3
                             ? 'assets/images/activity_selected.png'
                             : 'assets/images/activity_unselected.png',
-                        height: _selectedIndex == 3 ? 90.0 : 70.0,
+                        height: _selectedIndex == 3 ? 110.0 : 90.0,
                       ),
                     ),
                     label: '',
@@ -155,7 +155,7 @@ class _MainScreenState extends State<MainScreen> {
                         _selectedIndex == 4
                             ? 'assets/images/utility_selected.png'
                             : 'assets/images/utility_unselected.png',
-                        height: _selectedIndex == 4 ? 90.0 : 70.0,
+                        height: _selectedIndex == 4 ? 110.0 : 90.0,
                       ),
                     ),
                     label: '',

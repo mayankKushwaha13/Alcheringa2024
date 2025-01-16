@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:alcheringa/Common/globals.dart';
 import 'package:alcheringa/Screens/orderScreen/order_screen.dart';
 import 'package:alcheringa/Screens/profile_setup/profile_page.dart';
@@ -11,15 +9,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../Model/view_model_main.dart';
 import 'textscreens/about_screen.dart';
 
-import '../Model/view_model_main.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:url_launcher/url_launcher_string.dart';
-
 class EndDrawer extends StatefulWidget {
-  const EndDrawer(
-      {super.key, required this.scaffoldState, required this.onTapped});
+  const EndDrawer({super.key, required this.scaffoldState, required this.onTapped});
 
   final GlobalKey<ScaffoldState> scaffoldState;
   final Function onTapped;
@@ -35,8 +29,7 @@ class _EndDrawerState extends State<EndDrawer> {
   Future<String?> _loadImage() async {
     photoURL = await ViewModelMain().getValue('PhotoURL');
     try {
-      final response =
-          await NetworkImage(photoURL!).resolve(ImageConfiguration());
+      final response = await NetworkImage(photoURL!).resolve(ImageConfiguration());
       if (response == null) {
         throw Exception('Failed to load image');
       }
@@ -60,8 +53,7 @@ class _EndDrawerState extends State<EndDrawer> {
         'iconPath': 'assets/images/sidebar_profile_icon.png',
         'onTap': () {
           widget.scaffoldState.currentState!.closeEndDrawer();
-          Navigator.push(
-              context, MaterialPageRoute(builder: (_) => ProfilePage()));
+          Navigator.push(context, MaterialPageRoute(builder: (_) => ProfilePage()));
         },
       },
       {
@@ -130,7 +122,7 @@ class _EndDrawerState extends State<EndDrawer> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(bottom: 30.0, top: 10.0),
+                padding: const EdgeInsets.only(bottom: 30.0, top: 30.0),
                 child: ListView(
                   padding: EdgeInsets.only(top: 40.0, left: 20.0, right: 39.0),
                   children: [
@@ -147,12 +139,10 @@ class _EndDrawerState extends State<EndDrawer> {
                               FutureBuilder(
                                 future: _loadImage(),
                                 builder: (context, snapshot) {
-                                  if (snapshot.connectionState ==
-                                      ConnectionState.waiting) {
+                                  if (snapshot.connectionState == ConnectionState.waiting) {
                                     return CircularProgressIndicator();
                                   }
-                                  if (snapshot.hasData &&
-                                      snapshot.data!.isNotEmpty) {
+                                  if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                                     return CachedNetworkImage(
                                         imageUrl: snapshot.data!,
                                         width: 120.0, // Adjust size
@@ -174,17 +164,13 @@ class _EndDrawerState extends State<EndDrawer> {
                               Stack(
                                 alignment: Alignment.center,
                                 children: [
-                                  Image.asset(
-                                      'assets/images/sidebar_profile_name_bg.png'),
+                                  Image.asset('assets/images/sidebar_profile_name_bg.png'),
                                   FutureBuilder(
                                     future: _getName(),
                                     builder: (context, snapshot) {
                                       return Text(
                                         snapshot.data ?? "Unknown",
-                                        style: TextStyle(
-                                            fontSize: 16.0,
-                                            fontFamily: 'Game_Tape',
-                                            color: Colors.white),
+                                        style: TextStyle(fontSize: 16.0, fontFamily: 'Game_Tape', color: Colors.white),
                                       );
                                     },
                                   ),
@@ -221,45 +207,57 @@ class _EndDrawerState extends State<EndDrawer> {
                       onTap: () {
                         Navigator.pushAndRemoveUntil(
                           context,
-                          MaterialPageRoute(
-                              builder: (context) => welcomeScreen()),
+                          MaterialPageRoute(builder: (context) => welcomeScreen()),
                           (Route<dynamic> route) => false,
                         );
                         auth.signOut();
                       },
                     ),
-                    GestureDetector(
-                      onTap: () async {
-                        final Uri uri = Uri.parse('https://www.alcheringa.in/');
-                        if (await canLaunchUrl(uri)) {
-                          await launchUrl(uri);
-                        } else {
-                          throw 'Could not launch $uri';
-                        }
-                      },
-                      child: Text(
-                        'alcheringa.in',
-                        style: TextStyle(
-                          color: Colors.white,
-                          decoration: TextDecoration.underline,
-                          fontSize: 16,
+                    SizedBox(
+                      height: 15.0,
+                    ),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Padding(
+                        padding: const EdgeInsets.only(right:32.0),
+                        child: TextButton(
+                          style: TextButton.styleFrom(
+                            padding: EdgeInsets.zero,
+                            minimumSize: Size(0, 0),
+                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => Aboutscreen()),
+                            );
+                          },
+                          child: Text(
+                            'alchering.in',
+                            style: TextStyle(
+                              color: Color(0xFFFF77A8),
+                              fontSize: 12,
+                              fontFamily: 'Game_Tape',
+                            ),
+                          ),
                         ),
                       ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        TextButton(
+                    Padding(
+                      padding: const EdgeInsets.only(right: 30.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          TextButton(
                             style: TextButton.styleFrom(
-                              padding: EdgeInsets.all(6),
+                              padding: EdgeInsets.symmetric(horizontal: 4.0),
                               minimumSize: Size(0, 0),
                               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                             ),
                             onPressed: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(
-                                    builder: (context) => Aboutscreen()),
+                                MaterialPageRoute(builder: (context) => Aboutscreen()),
                               );
                             },
                             child: Text(
@@ -267,19 +265,20 @@ class _EndDrawerState extends State<EndDrawer> {
                               style: TextStyle(
                                 color: Color(0xFF7E2553),
                                 fontSize: 12,
+                                fontFamily: 'Game_Tape',
                               ),
-                            )),
-                        TextButton(
+                            ),
+                          ),
+                          TextButton(
                             style: TextButton.styleFrom(
-                              padding: EdgeInsets.all(6),
+                              padding: EdgeInsets.symmetric(horizontal: 4.0),
                               minimumSize: Size(0, 0),
                               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                             ),
                             onPressed: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(
-                                    builder: (context) => TermsScreen()),
+                                MaterialPageRoute(builder: (context) => TermsScreen()),
                               );
                             },
                             child: Text(
@@ -287,28 +286,33 @@ class _EndDrawerState extends State<EndDrawer> {
                               style: TextStyle(
                                 color: Color(0xFF7E2553),
                                 fontSize: 12,
+                                fontFamily: 'Game_Tape',
                               ),
-                            )),
-                        TextButton(
+                            ),
+                          ),
+                          TextButton(
                             style: TextButton.styleFrom(
-                              padding: EdgeInsets.all(6),
+                              padding: EdgeInsets.only(left: 4.0),
                               minimumSize: Size(0, 0),
                               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                             ),
                             onPressed: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        PrivacyPolicyScreen()),
+                                MaterialPageRoute(builder: (context) => PrivacyPolicyScreen()),
                               );
                             },
                             child: Text(
                               'PRIVACY POLICY',
                               style: TextStyle(
-                                  color: Color(0xFF7E2553), fontSize: 12),
-                            ))
-                      ],
+                                color: Color(0xFF7E2553),
+                                fontSize: 12,
+                                fontFamily: 'Game_Tape',
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                     )
                   ],
                 ),
@@ -326,11 +330,7 @@ class SideBarItems extends StatelessWidget {
   final String iconPath;
   final VoidCallback onTap;
 
-  const SideBarItems(
-      {super.key,
-      required this.name,
-      required this.iconPath,
-      required this.onTap});
+  const SideBarItems({super.key, required this.name, required this.iconPath, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -363,10 +363,7 @@ class SideBarItems extends StatelessWidget {
                   child: Text(
                     name,
                     style: TextStyle(
-                        fontSize: 18.0,
-                        fontFamily: 'Game_Tape',
-                        color: Colors.white,
-                        fontWeight: FontWeight.w400),
+                        fontSize: 18.0, fontFamily: 'Game_Tape', color: Colors.white, fontWeight: FontWeight.w400),
                   ),
                 )
               ],
