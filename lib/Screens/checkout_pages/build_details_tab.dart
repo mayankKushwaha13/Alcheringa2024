@@ -33,12 +33,12 @@ Widget buildDetailsTab({
               height: 2,
             ),
             CustomImageTextField(
-                hintText: 'Enter your name', controller: nameController,),
+                hintText: 'Enter your name', controller: nameController, maxChar: 15,),
             SizedBox(
               height: 10,
             ),
             CustomImageTextField(
-                hintText: 'Phone Number', controller: phoneController, isNumber: true,),
+                hintText: 'Phone Number', controller: phoneController, isNumber: true, maxChar: 10,),
             SizedBox(
               height: 97,
             ),
@@ -57,12 +57,12 @@ Widget buildDetailsTab({
               height: 2,
             ),
             CustomImageTextField(
-                hintText: 'Address Line 1', controller: addressLine1Controller,),
+                hintText: 'Address Line 1', controller: addressLine1Controller, maxChar: 30,),
             SizedBox(
               height: 10,
             ),
             CustomImageTextField(
-                hintText: 'Address Line 2', controller: addressLine2Controller,),
+                hintText: 'Address Line 2', controller: addressLine2Controller, maxChar: 30,),
             SizedBox(
               height: 10,
             ),
@@ -87,7 +87,9 @@ Widget buildDetailsTab({
                           padding: const EdgeInsets.symmetric(vertical: 15),
                           child: TextField(
                             controller: cityController,
+                            maxLength: 15,
                             decoration: InputDecoration(
+                              counterText: "",
                               hintText: 'City',
                               hintStyle: TextStyle(color: Colors.grey),
                               border: InputBorder.none, // Remove default border
@@ -129,7 +131,9 @@ Widget buildDetailsTab({
                           padding: const EdgeInsets.symmetric(vertical: 15),
                           child: TextField(
                             controller: stateController,
+                            maxLength: 15,
                             decoration: InputDecoration(
+                              counterText: "",
                               hintText: 'State',
                               hintStyle: TextStyle(color: Colors.grey),
                               border: InputBorder.none, // Remove default border
@@ -156,7 +160,7 @@ Widget buildDetailsTab({
               height: 10,
             ),
             CustomImageTextField(
-                hintText: 'Pincode', controller: pincodeController, isNumber: true,),
+                hintText: 'Pincode', controller: pincodeController, isNumber: true, maxChar: 6,),
             SizedBox(
               height: 19,
             ),

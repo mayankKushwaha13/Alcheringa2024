@@ -5,12 +5,13 @@ class CustomImageTextField extends StatelessWidget {
   final String hintText;
   final TextEditingController controller;
   final bool isNumber;
+  final int maxChar;
 
   const CustomImageTextField({
     Key? key,
     required this.hintText,
     required this.controller,
-    this.isNumber = false,
+    this.isNumber = false, required this.maxChar,
   }) : super(key: key);
 
   @override
@@ -32,8 +33,11 @@ class CustomImageTextField extends StatelessWidget {
             child: TextField(
               keyboardType: isNumber? TextInputType.number : null,
               inputFormatters: isNumber?[FilteringTextInputFormatter.digitsOnly]:null,
+              maxLength: maxChar,
+              
               controller: controller,
               decoration: InputDecoration(
+                counterText: "",
                 hintText: hintText,
                 hintStyle: TextStyle(color: Colors.grey),
                 border: InputBorder.none, // Remove default border
