@@ -70,7 +70,7 @@ class _CompetitionCardState extends State<CompetitionCard> {
                           ),
                           Flexible(
                             child: Text(
-                              widget.event.descriptionEvent,
+                              widget.event.descriptionShort,
                               style: TextStyle(
                                   color: Color(0xFFFF77A8), fontSize: 14, fontFamily: 'Game_Tape', letterSpacing: .15),
                               maxLines: 2,
@@ -92,7 +92,7 @@ class _CompetitionCardState extends State<CompetitionCard> {
                                 ),
                               ),
                               Text(
-                                "|",
+                                "  |",
                                 textAlign: TextAlign.right,
                                 style: TextStyle(
                                   color: Color(0xFFFFF1E8),

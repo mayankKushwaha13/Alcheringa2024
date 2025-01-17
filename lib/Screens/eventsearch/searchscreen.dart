@@ -256,7 +256,7 @@ Widget _buildCard({
               top: 380 * screenHeight * 0.63 / 480,
               right: 25,
               child: Text(
-                event.descriptionEvent,
+                event.descriptionShort,
                 maxLines: 3,
                 overflow: TextOverflow.clip,
                 style: TextStyle(fontFamily: "Game_Tape", fontSize: 12, color: Colors.orange),

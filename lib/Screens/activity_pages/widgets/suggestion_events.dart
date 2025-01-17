@@ -37,10 +37,6 @@ class _SuggestionCardState extends State<SuggestionCard> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  // widget.event.iconURL==null || widget.event.iconURL==""
-                  // ?Image.asset( "assets/images/basketball.png",scale: 1.2,)
-                  // :Image.network(widget.event.iconURL),
-                  // Image.asset( "assets/images/basketball.png",scale: 1.2,),
                   CachedNetworkImage(
                     imageUrl: widget.event.iconURL,
                     errorWidget: (context, url, error) => Image.asset(
@@ -69,7 +65,7 @@ class _SuggestionCardState extends State<SuggestionCard> {
                           ),
                           Flexible(
                             child: Text(
-                              widget.event.descriptionEvent,
+                              widget.event.descriptionShort,
                               style: TextStyle(
                                   color: Color(0xFFFF77A8),
                                   fontSize: 14,
@@ -95,7 +91,7 @@ class _SuggestionCardState extends State<SuggestionCard> {
                                 overflow: TextOverflow.ellipsis,
                               ),
                               Text(
-                                "| ",
+                                "  |",
                                 textAlign: TextAlign.right,
                                 style: TextStyle(
                                   color: Color(0xFFFFF1E8),
