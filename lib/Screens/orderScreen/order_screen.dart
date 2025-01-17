@@ -13,25 +13,28 @@ class orderScreen extends StatefulWidget {
 class _orderScreenState extends State<orderScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: _appBar(context) ,
-      body: Container(
-        padding: EdgeInsets.all(15),
-        width: double.infinity,
-        height: MediaQuery.of(context).size.height,
-        decoration: BoxDecoration(
-          image: DecorationImage(image: AssetImage("assets/images/background.png"),fit: BoxFit.cover)
+    return SafeArea(
+      child: Scaffold(
+        extendBodyBehindAppBar: true,
+        appBar: _appBar(context) ,
+        body: Container(
+          padding: EdgeInsets.all(15),
+          width: double.infinity,
+          height: MediaQuery.of(context).size.height,
+          decoration: BoxDecoration(
+            image: DecorationImage(image: AssetImage("assets/images/background.png"),fit: BoxFit.cover)
+          ),
+          child:OrderList()
         ),
-        child:OrderList()
-      ),
 
+      ),
     );
   }
 }
 
 AppBar _appBar(BuildContext context){
   return AppBar(
+    toolbarHeight: kToolbarHeight + 20,
     automaticallyImplyLeading: false,
     backgroundColor: Colors.black.withOpacity(.5),
     leading: Padding(

@@ -86,6 +86,7 @@ class _ProfilePageState extends State<ProfilePage> {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
+          toolbarHeight: kToolbarHeight + 20,
           backgroundColor: Color.fromRGBO(63, 19, 42, 1),
           automaticallyImplyLeading: false,
           title: Container(

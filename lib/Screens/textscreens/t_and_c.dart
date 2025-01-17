@@ -18,6 +18,7 @@ class _TermsScreenState extends State<TermsScreen> {
       child: Scaffold(
         extendBodyBehindAppBar: true,
         appBar: AppBar(
+          toolbarHeight: kToolbarHeight + 20,
           automaticallyImplyLeading: false,
           backgroundColor: Colors.black.withOpacity(0.5),
           leading: Padding(
@@ -58,7 +59,7 @@ class _TermsScreenState extends State<TermsScreen> {
             ),
             child: Column(children: [
               SizedBox(
-                height: kToolbarHeight,
+                height: kToolbarHeight + 20,
               ),
               Expanded(
                   child: SingleChildScrollView(

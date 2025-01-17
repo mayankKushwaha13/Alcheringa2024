@@ -95,6 +95,7 @@ class _SearchscreenState extends State<Searchscreen> {
       child: Scaffold(
         extendBodyBehindAppBar: true,
         appBar: AppBar(
+          toolbarHeight: kToolbarHeight + 20,
           automaticallyImplyLeading: false,
           backgroundColor: Colors.black.withOpacity(0.5),
           leading: Padding(
@@ -136,7 +137,7 @@ class _SearchscreenState extends State<Searchscreen> {
           child: Column(
             children: [
               SizedBox(
-                height: kToolbarHeight + 20,
+                height: kToolbarHeight + 40,
               ),
               Container(
                 width: mq.width * 0.85,

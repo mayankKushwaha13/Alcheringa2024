@@ -17,7 +17,7 @@ class _sponsorScreenState extends State<sponsorScreen> {
         extendBodyBehindAppBar: true,
         appBar: _appBar(context),
         body: Container(
-                padding: EdgeInsets.only(left: 15,right: 15 ,top: kToolbarHeight),
+                padding: EdgeInsets.only(left: 15,right: 15 ,top: kToolbarHeight + 20),
                 width: double.infinity,
                 height: MediaQuery.of(context).size.height,
                 decoration: BoxDecoration(
@@ -32,6 +32,7 @@ class _sponsorScreenState extends State<sponsorScreen> {
 
 AppBar _appBar(BuildContext context){
   return AppBar(
+    toolbarHeight: kToolbarHeight + 20,
     automaticallyImplyLeading: false,
     backgroundColor: Colors.black.withOpacity(.5),
     leading: Padding(

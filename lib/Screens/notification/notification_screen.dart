@@ -69,7 +69,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
       
                       return ListView(
                         padding:
-                            const EdgeInsets.only(top: kToolbarHeight, left: 18, right: 18),
+                            const EdgeInsets.only(top: kToolbarHeight + 20, left: 18, right: 18),
                         children: [
                           // Section for new notifications
                           if (newNotifications.isNotEmpty)
@@ -148,6 +148,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
   AppBar _buildAppBar(BuildContext context) {
     return AppBar(
+      toolbarHeight: kToolbarHeight + 20,
       automaticallyImplyLeading: false,
       backgroundColor: Colors.black.withOpacity(0.5),
       leading: Padding(

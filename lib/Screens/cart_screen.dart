@@ -17,10 +17,11 @@ class CartScreen extends StatelessWidget {
       child: Scaffold(
         extendBodyBehindAppBar: true,
         appBar: AppBar(
+          toolbarHeight: kToolbarHeight + 20,
           automaticallyImplyLeading: false,
           backgroundColor: Colors.black.withOpacity(0.5),
           leading: Padding(
-            padding: const EdgeInsets.only(left: 5.0, bottom: 10),
+            padding: const EdgeInsets.only(left: 5.0),
             child: GestureDetector(
               onTap: () {
                 Navigator.pop(context);
@@ -57,7 +58,7 @@ class CartScreen extends StatelessWidget {
           ),
           child: Column(
             children: [
-              SizedBox(height: kToolbarHeight + 20),
+              SizedBox(height: kToolbarHeight + 40),
       
               // Stack with total price and total items
               Stack(

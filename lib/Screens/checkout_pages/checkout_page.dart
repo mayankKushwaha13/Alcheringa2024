@@ -82,6 +82,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          toolbarHeight: kToolbarHeight + 20,
           backgroundColor: Color(0xFF0f162a),
           automaticallyImplyLeading: false,
           title: Container(
