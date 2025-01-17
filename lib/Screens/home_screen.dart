@@ -30,16 +30,15 @@ class HomeScreen extends StatefulWidget {
 
 bool isLoading = true;
 
-class _HomeScreenState extends State<HomeScreen>
-    with SingleTickerProviderStateMixin {
+class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
   late final ScrollController _scrollController1;
   late final ScrollController _scrollController2;
   late final ScrollController _scrollController3;
-  final CarouselSliderController _carouselController =
-      CarouselSliderController();
+  final CarouselSliderController _carouselController = CarouselSliderController();
   int _currentIndex = 0;
   List<EventDetail> PronitesList = [];
   late final List<EventDetail> displayedSuggestions;
+
   @override
   void initState() {
     super.initState();
@@ -58,7 +57,6 @@ class _HomeScreenState extends State<HomeScreen>
     getData();
   }
 
-
   @override
   void dispose() {
     _scrollController1.dispose();
@@ -68,66 +66,66 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   Future<void> getData() async {
-    if(viewModelMain.allEvents.isEmpty){
+    if (viewModelMain.allEvents.isEmpty) {
       await viewModelMain.getAllEvents();
       print('Fetched all events');
       setState(() {});
     }
-    if(viewModelMain.interestList.isEmpty){
+    if (viewModelMain.interestList.isEmpty) {
       await viewModelMain.getInterests(auth.currentUser!.email!);
       print('Fetched interest events');
       setState(() {});
     }
-    if(viewModelMain.merchMerch.isEmpty){
+    if (viewModelMain.merchMerch.isEmpty) {
       await viewModelMain.getMerchMerch();
       print('Fetched merch events');
       setState(() {});
     }
-    if(viewModelMain.featuredEventsWithLive.isEmpty){
+    if (viewModelMain.featuredEventsWithLive.isEmpty) {
       await viewModelMain.getFeaturedEvents();
       print('Fetched featured events');
       setState(() {});
     }
-    if(viewModelMain.utilityList.isEmpty){
+    if (viewModelMain.utilityList.isEmpty) {
       await viewModelMain.getUtilities();
       print('Fetched utilitties events');
       setState(() {});
     }
-    if(viewModelMain.informalList.isEmpty){
+    if (viewModelMain.informalList.isEmpty) {
       await viewModelMain.getInformals();
       print('Fetched informals events');
       setState(() {});
     }
-    if(viewModelMain.stallList.isEmpty){
+    if (viewModelMain.stallList.isEmpty) {
       await viewModelMain.getStalls();
       print('Fetched stalls events');
       setState(() {});
     }
-    if(viewModelMain.venuesList.isEmpty){
+    if (viewModelMain.venuesList.isEmpty) {
       await viewModelMain.getVenues();
       print('Fetched venues events');
       setState(() {});
     }
-    if(viewModelMain.allNotification.isEmpty){
+    if (viewModelMain.allNotification.isEmpty) {
       await viewModelMain.getAllNotifications();
       print('Fetched notifications events');
       setState(() {});
     }
-    if(viewModelMain.allsponsors.isEmpty){
+    if (viewModelMain.allsponsors.isEmpty) {
       await viewModelMain.getsponsors();
       print('Fetched sponsors events');
       setState(() {});
     }
-    if(viewModelMain.orderDetails.isEmpty){
+    if (viewModelMain.orderDetails.isEmpty) {
       await viewModelMain.getOrderDetails();
       print('Fetched orderdetails events');
       setState(() {});
     }
-    if(viewModelMain.passList.isEmpty){
+    if (viewModelMain.passList.isEmpty) {
       await viewModelMain.getPass();
       if (viewModelMain.passList.isEmpty) {
         final passList = await viewModelMain.getPassListFromSharedPreferences();
-        setState(() async {
+        setState(() {
           viewModelMain.passList = passList;
         });
         print('Cards fetched ${viewModelMain.passList} from shared preferences');
@@ -180,7 +178,6 @@ class _HomeScreenState extends State<HomeScreen>
 
       // Debug print
       print('Fetched ${PronitesList.length} events');
-
     } catch (e) {
       print("Error fetching events: $e");
       // You might want to show an error message to the user here
@@ -201,8 +198,7 @@ class _HomeScreenState extends State<HomeScreen>
           curve: Curves.linear,
         )
             .then((_) {
-          if (_scrollController1.offset >=
-              _scrollController1.position.maxScrollExtent) {
+          if (_scrollController1.offset >= _scrollController1.position.maxScrollExtent) {
             // Reset scroll when reaching the end
             _scrollController1.jumpTo(0);
           }
@@ -222,8 +218,7 @@ class _HomeScreenState extends State<HomeScreen>
           curve: Curves.linear,
         )
             .then((_) {
-          if (_scrollController2.offset >=
-              _scrollController2.position.maxScrollExtent) {
+          if (_scrollController2.offset >= _scrollController2.position.maxScrollExtent) {
             // Reset scroll when reaching the end
             _scrollController2.jumpTo(0);
           }
@@ -243,8 +238,7 @@ class _HomeScreenState extends State<HomeScreen>
           curve: Curves.linear,
         )
             .then((_) {
-          if (_scrollController3.offset >=
-              _scrollController3.position.maxScrollExtent) {
+          if (_scrollController3.offset >= _scrollController3.position.maxScrollExtent) {
             // Reset scroll when reaching the end
             _scrollController3.jumpTo(0);
           }
@@ -260,9 +254,8 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   void getPass() async {
-    final client = RetrofitService(
-        Dio(BaseOptions(contentType: "application/json")),
-        baseUrl: "https://card.alcheringa.in/api/");
+    final client =
+        RetrofitService(Dio(BaseOptions(contentType: "application/json")), baseUrl: "https://card.alcheringa.in/api/");
     try {
       final response = await client.getData(""); // pass email
       final json = jsonDecode(response);
@@ -506,141 +499,139 @@ class _HomeScreenState extends State<HomeScreen>
               children: [
                 // Hero section
                 SizedBox(
-                  height: 500.0,
-                  child: viewModelMain.featuredEventsWithLive.isEmpty
-                  ? Center(
-                    child: CircularProgressIndicator(),
-                  )
-                  : PageView.builder(
-                    controller: PageController(
-                        viewportFraction: 0.6, initialPage: 1000),
-                    // itemCount: displayedSuggestions.length,
-                    itemBuilder: (context, index) {
-                      final cardColorIndex = index % 2;
-                      index = index % 3;
-                      final event = viewModelMain.featuredEventsWithLive[index];
-                      final bool isRevealed = event.isArtistRevealed ?? false;
+                    height: 500.0,
+                    child: viewModelMain.featuredEventsWithLive.isEmpty
+                        ? Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : PageView.builder(
+                            controller: PageController(viewportFraction: 0.6, initialPage: 1000),
+                            // itemCount: displayedSuggestions.length,
+                            itemBuilder: (context, index) {
+                              final cardColorIndex = index % 2;
+                              index = index % 3;
+                              final event = viewModelMain.featuredEventsWithLive[index];
+                              final bool isRevealed = event.isArtistRevealed ?? false;
 
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            if (cardColorIndex % 2 == 1)
-                              Container(
-                                alignment: Alignment.centerLeft,
-                                width: 60.0,
-                                height: 35.0,
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    image: AssetImage(
-                                        'assets/images/hero_section_hearts_pink.png'),
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              )
-                            else
-                              SizedBox(
-                                height: 35,
-                              ),
-                            if (cardColorIndex % 2 == 0)
-                              Expanded(
-                                flex: 2,
-                                child: Container(
-                                  width: 250,
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image: AssetImage(
-                                          'assets/images/hero_section_unrevealed_text_holder.png'),
-                                      fit: BoxFit.fill,
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    if (cardColorIndex % 2 == 1)
+                                      Container(
+                                        alignment: Alignment.centerLeft,
+                                        width: 60.0,
+                                        height: 35.0,
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                            image: AssetImage('assets/images/hero_section_hearts_pink.png'),
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      )
+                                    else
+                                      SizedBox(
+                                        height: 40,
+                                      ),
+                                    if (cardColorIndex % 2 == 0)
+                                      Expanded(
+                                        flex: 2,
+                                        child: Container(
+                                          width: 250,
+                                          alignment: Alignment.center,
+                                          decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                              image:
+                                                  AssetImage('assets/images/hero_section_unrevealed_text_holder.png'),
+                                              fit: BoxFit.fill,
+                                            ),
+                                          ),
+                                          child: Text(
+                                            isRevealed ? event.artist : 'Coming soon',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontFamily: 'Brick_pixel',
+                                              fontSize: 20.0,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    const SizedBox(height: 8.0),
+                                    Expanded(
+                                      flex: 9,
+                                      child: Container(
+                                        width: 250,
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                            image: CachedNetworkImageProvider(event.imgurl),
+                                            alignment: Alignment.center,
+                                            // 'assets/images/card_$index.png'),
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            Navigator.push(context,
+                                                MaterialPageRoute(builder: (context) => EventDetailPage(event: event)));
+                                          },
+                                          child: Image.asset(
+                                            isRevealed
+                                                ? 'assets/images/event_cards_revealed${cardColorIndex}.png'
+                                                : 'assets/images/card_$index.png',
+                                            fit: BoxFit.fill,
+                                          ),
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                  child: Text(
-                                    isRevealed ? event.artist : 'Coming soon',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: 'Brick_pixel',
-                                      fontSize: 20.0,
-                                    ),
-                                  ),
+                                    if (cardColorIndex % 2 == 1)
+                                      SizedBox(
+                                        height: 7.0,
+                                      ),
+                                    if (cardColorIndex % 2 == 1)
+                                      Expanded(
+                                        flex: 2,
+                                        child: Container(
+                                          alignment: Alignment.center,
+                                          width: 250,
+                                          decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                              image:
+                                                  AssetImage('assets/images/hero_section_unrevealed_text_holder.png'),
+                                              fit: BoxFit.fill,
+                                            ),
+                                          ),
+                                          child: Text(
+                                            isRevealed ? event.artist : 'Coming soon',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontFamily: 'Brick_pixel',
+                                              fontSize: 20.0,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    if (cardColorIndex % 2 == 0)
+                                      Container(
+                                        alignment: Alignment.centerLeft,
+                                        width: 60.0,
+                                        height: 35.0,
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                            image: AssetImage('assets/images/hero_section_hearts_blue.png'),
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      )
+                                    else
+                                      SizedBox(
+                                        height: 35,
+                                      ),
+                                  ],
                                 ),
-                              ),
-                            const SizedBox(height: 8.0),
-                            Expanded(
-                              flex: 9,
-                              child: Container(
-                                width: 250,
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    image: CachedNetworkImageProvider(event.imgurl),
-                                    alignment: Alignment.center,
-                                    // 'assets/images/card_$index.png'),
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) => EventDetailPage(event: event)));
-                                  },
-                                  child: Image.asset(isRevealed
-                                      ? 'assets/images/event_cards_revealed${cardColorIndex}.png'
-                                      : 'assets/images/card_$index.png',
-                                    fit: BoxFit.fill,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            if(cardColorIndex % 2 == 1)
-                              SizedBox(
-                                height: 7.0,
-                              ),
-                            if (cardColorIndex % 2 == 1)
-                              Expanded(
-                                flex: 2,
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  width: 250,
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image: AssetImage(
-                                          'assets/images/hero_section_unrevealed_text_holder.png'),
-                                      fit: BoxFit.fill,
-                                    ),
-                                  ),
-                                  child: Text(
-                                    isRevealed ? event.artist : 'Coming soon',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: 'Brick_pixel',
-                                      fontSize: 20.0,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            if (cardColorIndex % 2 == 0)
-                              Container(
-                                alignment: Alignment.centerLeft,
-                                width: 60.0,
-                                height: 35.0,
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    image: AssetImage(
-                                        'assets/images/hero_section_hearts_blue.png'),
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              )
-                            else
-                              SizedBox(
-                                height: 35,
-                              ),
-                          ],
-                        ),
-                      );
-                    },
-                  )
-                ),
+                              );
+                            },
+                          )),
 
                 SizedBox(
                   height: 30.0,
@@ -657,17 +648,13 @@ class _HomeScreenState extends State<HomeScreen>
                       return Row(
                         children: [
                           ImageIcon(
-                            AssetImage(
-                                'assets/images/hero_section_hearts_blue.png'),
+                            AssetImage('assets/images/hero_section_hearts_blue.png'),
                             size: 90.0,
                           ),
                           SizedBox(width: 10),
                           Text(
                             "Crazy merch alert !!!",
-                            style: TextStyle(
-                                color: Color(0xFF182446),
-                                fontSize: 18,
-                                fontFamily: 'Game_Tape'),
+                            style: TextStyle(color: Color(0xFF182446), fontSize: 18, fontFamily: 'Game_Tape'),
                           ),
                           SizedBox(width: 50),
                         ],
@@ -710,9 +697,9 @@ class _HomeScreenState extends State<HomeScreen>
                                         (item) => Builder(
                                           builder: (context) {
                                             return GestureDetector(
-                                              onTap: (){
-                                                Navigator.of(context).push(MaterialPageRoute(
-                                                    builder: (context) => MerchScreen()));
+                                              onTap: () {
+                                                Navigator.of(context)
+                                                    .push(MaterialPageRoute(builder: (context) => MerchScreen()));
                                               },
                                               child: Stack(
                                                 alignment: Alignment.bottomCenter,
@@ -720,19 +707,14 @@ class _HomeScreenState extends State<HomeScreen>
                                                   item.image == null
                                                       ? Image.asset(
                                                           'assets/images/default_image.png',
-                                                          height:
-                                                              screenHeight * 0.24,
+                                                          height: screenHeight * 0.24,
                                                         )
                                                       : Transform(
-                                                          transform:
-                                                              Matrix4.rotationZ(
-                                                                  0.1745),
-                                                          alignment:
-                                                              Alignment.center,
+                                                          transform: Matrix4.rotationZ(0.1745),
+                                                          alignment: Alignment.center,
                                                           child: CachedNetworkImage(
                                                             imageUrl: item.image ?? " ",
-                                                            height: screenHeight *
-                                                                0.24,
+                                                            height: screenHeight * 0.24,
                                                           ),
                                                         ),
                                                 ],
@@ -748,18 +730,12 @@ class _HomeScreenState extends State<HomeScreen>
                               MerchModel item = viewModelMain.merchMerch[_currentIndex];
                               return Text(
                                 item.name ?? " ",
-                                style: TextStyle(
-                                    fontFamily: "Brick_Pixel",
-                                    fontSize: 36,
-                                    color: Colors.white),
+                                style: TextStyle(fontFamily: "Brick_Pixel", fontSize: 36, color: Colors.white),
                               );
                             } else {
                               return Text(
                                 "Loading ...",
-                                style: TextStyle(
-                                    fontFamily: "Brick_Pixel",
-                                    fontSize: 36,
-                                    color: Colors.white),
+                                style: TextStyle(fontFamily: "Brick_Pixel", fontSize: 36, color: Colors.white),
                               );
                             }
                           }),
@@ -773,8 +749,7 @@ class _HomeScreenState extends State<HomeScreen>
                           onTap: () {
                             _currentIndex--;
                             _carouselController.animateToPage(_currentIndex % 3,
-                                curve: Curves.fastEaseInToSlowEaseOut,
-                                duration: Duration(milliseconds: 800));
+                                curve: Curves.fastEaseInToSlowEaseOut, duration: Duration(milliseconds: 800));
                           },
                           child: Image.asset(
                             'assets/images/prev_button.png',
@@ -789,8 +764,7 @@ class _HomeScreenState extends State<HomeScreen>
                           onTap: () {
                             _currentIndex++;
                             _carouselController.animateToPage(_currentIndex % 3,
-                                curve: Curves.fastEaseInToSlowEaseOut,
-                                duration: Duration(milliseconds: 800));
+                                curve: Curves.fastEaseInToSlowEaseOut, duration: Duration(milliseconds: 800));
                           },
                           child: Image.asset(
                             'assets/images/next_merch_button.png',
@@ -810,21 +784,16 @@ class _HomeScreenState extends State<HomeScreen>
                     ),
                     TextButton(
                         onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => MerchScreen()));
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => MerchScreen()));
                         },
                         child: Text(
                           "click to learn more!",
-                          style: TextStyle(
-                              fontFamily: "Game_Tape",
-                              fontSize: 24,
-                              color: Colors.white,
-                              shadows: [
-                                BoxShadow(
-                                  offset: Offset(1.5, 1.5),
-                                  color: Colors.blue,
-                                )
-                              ]),
+                          style: TextStyle(fontFamily: "Game_Tape", fontSize: 24, color: Colors.white, shadows: [
+                            BoxShadow(
+                              offset: Offset(1.5, 1.5),
+                              color: Colors.blue,
+                            )
+                          ]),
                         ))
                   ],
                 ),
@@ -844,17 +813,13 @@ class _HomeScreenState extends State<HomeScreen>
                       return Row(
                         children: [
                           ImageIcon(
-                            AssetImage(
-                                'assets/images/hero_section_hearts_blue.png'),
+                            AssetImage('assets/images/hero_section_hearts_blue.png'),
                             size: 90.0,
                           ),
                           SizedBox(width: 10),
                           Text(
                             "get your alcher card",
-                            style: TextStyle(
-                                color: Color(0xFF182446),
-                                fontSize: 18,
-                                fontFamily: 'Game_Tape'),
+                            style: TextStyle(color: Color(0xFF182446), fontSize: 18, fontFamily: 'Game_Tape'),
                           ),
                           SizedBox(width: 50),
                         ],
@@ -867,21 +832,77 @@ class _HomeScreenState extends State<HomeScreen>
                 ),
                 // Alcher Card
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Container(
-                    height: 400,
-                    width: 400,
-                    color: Colors.white,
+                  padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                  child: AspectRatio(
+                    aspectRatio: 0.7541589649,
                     child: viewModelMain.passList.isEmpty
                         ? Center(
                             child: CircularProgressIndicator(),
                           )
                         : PageView.builder(
+                            controller: PageController(viewportFraction: 0.8),
                             itemCount: viewModelMain.passList.length,
                             itemBuilder: (BuildContext context, int index) {
-                              return QrImageView(
-                                data: viewModelMain.passList[index].id,
-                                embeddedImage: AssetImage('assets/file.png'),
+                              // return QrImageView(
+                              //   data: viewModelMain.passList[index].id,
+                              //   embeddedImage: AssetImage('assets/file.png'),
+                              // );
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    // color: Colors.white,
+                                    image:
+                                        DecorationImage(image: AssetImage('assets/images/card_bg.png'), fit: BoxFit.fill,),
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 40.0, right: 40.0, top: 40.0, bottom: 20.0),
+                                        child: Align(
+                                          alignment: Alignment.topRight,
+                                          child: Image.asset('assets/images/alcher_lady_logo.png'),
+                                        ),
+                                      ),
+                                      Container(
+                                        height: 102.0,
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                            image: AssetImage('assets/images/card_ribbon.png')
+                                          )
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 10.0,
+                                      ),
+                                      Text(
+                                        viewModelMain.passList[index].name,
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20.0,
+                                          fontFamily: 'Game_Tape'
+                                        ),
+                                      ),
+
+                                      Align(
+                                        alignment: Alignment.bottomCenter,
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(left: 90.0, right: 90.0, top: 20.0),
+                                          child: Container(
+                                            color: Colors.white,
+                                            child: QrImageView(
+                                              data: viewModelMain.passList[index].id,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 20.0,
+                                      )
+                                    ],
+                                  ),
+                                ),
                               );
                             },
                           ),
@@ -902,17 +923,13 @@ class _HomeScreenState extends State<HomeScreen>
                       return Row(
                         children: [
                           ImageIcon(
-                            AssetImage(
-                                'assets/images/hero_section_hearts_blue.png'),
+                            AssetImage('assets/images/hero_section_hearts_blue.png'),
                             size: 90.0,
                           ),
                           SizedBox(width: 10),
                           Text(
                             "cool stuff for you !!!",
-                            style: TextStyle(
-                                color: Color(0xFF182446),
-                                fontSize: 18,
-                                fontFamily: 'Game_Tape'),
+                            style: TextStyle(color: Color(0xFF182446), fontSize: 18, fontFamily: 'Game_Tape'),
                           ),
                           SizedBox(width: 50),
                         ],
@@ -920,7 +937,9 @@ class _HomeScreenState extends State<HomeScreen>
                     },
                   ),
                 ),
-                SizedBox(height: 20,),
+                SizedBox(
+                  height: 20,
+                ),
                 // Below is event suggestion
                 SizedBox(
                   height: 350,
@@ -930,10 +949,7 @@ class _HomeScreenState extends State<HomeScreen>
                     itemBuilder: (context, pageIndex) {
                       final int startIndex = pageIndex * 2;
                       final List<EventDetail> currentPageSuggestions =
-                          displayedSuggestions
-                              .skip(startIndex)
-                              .take(2)
-                              .toList();
+                          displayedSuggestions.skip(startIndex).take(2).toList();
 
                       return Column(
                         children: currentPageSuggestions
@@ -1030,6 +1046,7 @@ class _HomeScreenState extends State<HomeScreen>
       ),
     );
   }
+
   Widget _buildHeading({
     required String text,
     required String backgroundImage,
@@ -1071,7 +1088,8 @@ class _HomeScreenState extends State<HomeScreen>
                 Positioned.fill(
                     child: ClipRRect(
                   borderRadius: BorderRadius.circular(16),
-                  child: CachedNetworkImage(imageUrl:event.imgurl,
+                  child: CachedNetworkImage(
+                    imageUrl: event.imgurl,
                     fit: BoxFit.cover,
                   ),
                 )),

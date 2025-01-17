@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:typed_data';
 
 // import 'dart:ui' as ui;
@@ -95,11 +96,11 @@ class _MapPageState extends State<MapPage> {
             _customInfoWindowController.addInfoWindow!(
               GestureDetector(
                   onTap: () async {
-                    final googleMapsUrl = Uri.parse(
+                    Uri mapsUrl = Uri.parse(
                         'https://www.google.com/maps/dir/?api=1&destination=${venue.latLng.latitude},${venue.latLng.longitude}');
 
-                    if (await canLaunchUrl(googleMapsUrl)) {
-                      await launchUrl(googleMapsUrl);
+                    if (await canLaunchUrl(mapsUrl)) {
+                      await launchUrl(mapsUrl);
                     } else {
                       throw 'Could not open Google Maps';
                     }

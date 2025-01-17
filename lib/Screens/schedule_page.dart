@@ -175,11 +175,9 @@ final List<String> keys = ["All","Lecture Halls","Grounds","Library Area", "Admi
     });
 
     try {
-      // Create an instance of ViewModelMain 
-      ViewModelMain viewModel = ViewModelMain();
 
       // Fetch events
-      allEvents = await viewModel.getAllEvents();
+      allEvents = viewModelMain.allEvents;
 
       // Debug print
       print('Fetched ${allEvents.length} events');
