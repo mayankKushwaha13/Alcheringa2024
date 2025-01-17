@@ -84,7 +84,7 @@ class _InformalCardState extends State<InformalCard> {
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400,
                                 letterSpacing: 0.15,
-                                fontFamily: 'Brick_Pixel'),
+                                fontFamily: 'Game_Tape'),
                           ),
                         ],
                       ),

@@ -76,8 +76,7 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
         child: SingleChildScrollView(
           // Added SingleChildScrollView
           child: Column(
-            crossAxisAlignment:
-                CrossAxisAlignment.start, // Ensures text alignment
+            crossAxisAlignment: CrossAxisAlignment.start, // Ensures text alignment
             children: [
               Padding(
                 padding: const EdgeInsets.all(10),
@@ -161,12 +160,12 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
                 ),
               ),
               SizedBox(height: 20),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width,
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       GestureDetector(
                         onTap: selectLeft,
@@ -176,39 +175,39 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
                           fit: BoxFit.cover,
                         ),
                       ),
-                      Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: sizes.asMap().entries.map((entry) {
-                              final index = entry.key;
-                              final size = entry.value;
-                              final isSelected = index == selectedIndex;
-                              return Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 18),
-                                child: Text(
-                                  size,
-                                  style: TextStyle(
-                                    fontSize: isSelected ? 30 : 22,
-                                    fontWeight: isSelected
-                                        ? FontWeight.bold
-                                        : FontWeight.normal,
-                                    color: isSelected
-                                        ? Color.fromRGBO(255, 241, 232, 1)
-                                        : Color.fromRGBO(131, 118, 156, 1),
+                      Expanded(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: sizes.asMap().entries.map((entry) {
+                                final index = entry.key;
+                                final size = entry.value;
+                                final isSelected = index == selectedIndex;
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 18),
+                                  child: Text(
+                                    size,
+                                    style: TextStyle(
+                                      fontSize: isSelected ? 30 : 22,
+                                      fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                                      color: isSelected
+                                          ? Color.fromRGBO(255, 241, 232, 1)
+                                          : Color.fromRGBO(131, 118, 156, 1),
+                                    ),
                                   ),
-                                ),
-                              );
-                            }).toList(),
-                          ),
-                          Image.asset(
-                            'assets/images/scroll.png',
-                            width: 300,
-                            height: 3,
-                            fit: BoxFit.cover,
-                          ),
-                        ],
+                                );
+                              }).toList(),
+                            ),
+                            Image.asset(
+                              'assets/images/scroll.png',
+                              width: MediaQuery.of(context).size.width,
+                              height: 3,
+                              fit: BoxFit.cover,
+                            ),
+                          ],
+                        ),
                       ),
                       GestureDetector(
                         onTap: selectRight,
@@ -236,8 +235,7 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
                       children: [
                         Text(
                           "Length (+/- 0.5 in):",
-                          style: TextStyle(
-                              color: Color.fromRGBO(131, 118, 156, 1)),
+                          style: TextStyle(color: Color.fromRGBO(131, 118, 156, 1)),
                         ),
                       ],
                     ),
@@ -253,12 +251,8 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
                           style: TextStyle(
                             fontFamily: 'Game_Tape',
                             fontSize: isSelected ? 20 : 16,
-                            fontWeight: isSelected
-                                ? FontWeight.bold
-                                : FontWeight.normal,
-                            color: isSelected
-                                ? Color.fromRGBO(255, 241, 232, 1)
-                                : Color.fromRGBO(131, 118, 156, 1),
+                            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                            color: isSelected ? Color.fromRGBO(255, 241, 232, 1) : Color.fromRGBO(131, 118, 156, 1),
                           ),
                         );
                       }).toList(),
@@ -271,8 +265,7 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
                       children: [
                         Text(
                           "Chest (+/- 0.5 in):",
-                          style: TextStyle(
-                              color: Color.fromRGBO(131, 118, 156, 1)),
+                          style: TextStyle(color: Color.fromRGBO(131, 118, 156, 1)),
                         ),
                       ],
                     ),
@@ -288,12 +281,8 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
                           style: TextStyle(
                             fontFamily: 'Game_Tape',
                             fontSize: isSelected ? 20 : 16,
-                            fontWeight: isSelected
-                                ? FontWeight.bold
-                                : FontWeight.normal,
-                            color: isSelected
-                                ? Color.fromRGBO(255, 241, 232, 1)
-                                : Color.fromRGBO(131, 118, 156, 1),
+                            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                            color: isSelected ? Color.fromRGBO(255, 241, 232, 1) : Color.fromRGBO(131, 118, 156, 1),
                           ),
                         );
                       }).toList(),
@@ -328,18 +317,14 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
                             name: widget.merchTitle,
                             price: widget.price,
                             size: selectedSize,
-                            count: "1", // Default count
+                            count: "1",
+                            // Default count
                             imageUrl: widget.image,
                             type: "Merchandise", // Type (optional)
                           );
 
-                          await Provider.of<CartProvider>(context,
-                                  listen: false)
-                              .addItem(cartItem, context);
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => CartScreen()));
+                          await Provider.of<CartProvider>(context, listen: false).addItem(cartItem, context);
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => CartScreen()));
                         },
                         child: Stack(
                           children: [
@@ -360,9 +345,7 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
                                       fontWeight: FontWeight.w400,
                                       color: Color.fromRGBO(255, 241, 232, 1),
                                       shadows: [
-                                        Shadow(
-                                            offset: Offset(2.5, 2),
-                                            color: Colors.black),
+                                        Shadow(offset: Offset(2.5, 2), color: Colors.black),
                                       ]),
                                 ),
                               ),
@@ -383,20 +366,18 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
                             name: widget.merchTitle,
                             price: widget.price,
                             size: selectedSize,
-                            count: "1", // Default count
+                            count: "1",
+                            // Default count
                             imageUrl: widget.image,
                             type: "Merchandise", // Type (optional)
                           );
 
-                          await Provider.of<CartProvider>(context,
-                                  listen: false)
-                              .addItem(cartItem, context);
+                          await Provider.of<CartProvider>(context, listen: false).addItem(cartItem, context);
 
                           // Show confirmation
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text(
-                                  "Added ${widget.merchTitle} to the cart!"),
+                              content: Text("Added ${widget.merchTitle} to the cart!"),
                               backgroundColor: Colors.green,
                             ),
                           );
@@ -421,9 +402,7 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
                                       fontWeight: FontWeight.w400,
                                       color: Color.fromRGBO(255, 241, 232, 1),
                                       shadows: [
-                                        Shadow(
-                                            offset: Offset(2.5, 2),
-                                            color: Colors.black),
+                                        Shadow(offset: Offset(2.5, 2), color: Colors.black),
                                       ]),
                                 ),
                               ),
@@ -471,8 +450,7 @@ AppBar _appBar(BuildContext context) {
           padding: EdgeInsets.only(bottom: 5, right: 20),
           child: Text(
             "Merchandize",
-            style: TextStyle(
-                color: AppColors.Pink, fontFamily: 'Game_Tape', fontSize: 24),
+            style: TextStyle(color: AppColors.Pink, fontFamily: 'Game_Tape', fontSize: 24),
           ))
     ],
   );

@@ -33,34 +33,21 @@ class _TopAppBarState extends State<TopAppBar> {
                   Navigator.push(
                       context, MaterialPageRoute(builder: (_) => CartScreen()));
                 },
-                icon: Image.asset('assets/images/appbar_cart_icon.png'),
+                icon: Image.asset('assets/images/appbar_cart_icon.png', scale: 1.8,),
               ),
-              badges.Badge(
-                badgeContent: Text(
-                  '2',
-                  style: TextStyle(
-                    color: Color(0xFFCA3562),
-                    fontFamily: 'Alcherpixel',
-                  ),
-                ),
-                position: badges.BadgePosition.bottomEnd(bottom: 0, end: 10),
-                badgeStyle: badges.BadgeStyle(
-                    badgeColor: Colors.transparent,
-                    borderRadius: BorderRadius.circular(5)),
-                child: IconButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (_) => NotificationScreen()));
-                  },
-                  icon:
-                      Image.asset('assets/images/appbar_notification_icon.png'),
-                ),
+              IconButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => NotificationScreen()));
+                },
+                icon:
+                    Image.asset('assets/images/appbar_notification_icon.png', scale: 1.8,),
               ),
             ],
           ),
-          Image.asset('assets/images/appbar_alcheringa.png'),
+          Flexible(child: Image.asset('assets/images/appbar_alcheringa.png')),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [

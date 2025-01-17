@@ -162,6 +162,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     // Shuffle and pick a limited number of suggestions
     suggestions.shuffle(Random());
     displayedSuggestions = suggestions.take(20).toList();
+    setState(() {});
   }
 
   Future<void> getPronitesData() async {
@@ -888,7 +889,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                       Align(
                                         alignment: Alignment.bottomCenter,
                                         child: Padding(
-                                          padding: const EdgeInsets.only(left: 90.0, right: 90.0, top: 20.0),
+                                          padding: const EdgeInsets.only(left: 70.0, right: 70.0, top: 20.0),
                                           child: Container(
                                             color: Colors.white,
                                             child: QrImageView(

@@ -205,6 +205,7 @@ class _MapPageState extends State<MapPage> {
 
     final venues = eventProvider.venues;
     final events = eventProvider.allEvents;
+    print('Hello ${viewModelMain.venuesList.toString()}');
     return Scaffold(
       key: _scaffoldKey,
       resizeToAvoidBottomInset: false,

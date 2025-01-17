@@ -72,7 +72,7 @@ class _ActivityEventsScreenState extends State<ActivityEventsScreen> {
   }
 
   Future<void> getInformals() async {
-    informals = await ViewModelMain().getInformals();
+    informals = viewModelMain.informalList;
     setState(() {});
   }
 
@@ -136,6 +136,7 @@ class _ActivityEventsScreenState extends State<ActivityEventsScreen> {
                           text: "Informals",
                           backgroundImage: "assets/images/heading.png",
                         ),
+                        const SizedBox(height: 20),
                         SizedBox(
                           height: 175,
                           child: PageView.builder(
@@ -147,7 +148,6 @@ class _ActivityEventsScreenState extends State<ActivityEventsScreen> {
                             },
                           ),
                         ),
-                        SizedBox(height: 50),
                         SizedBox(height: bottomNavBarHeight),
                       ],
                     ),

@@ -22,27 +22,26 @@ class _ProfilePageState extends State<ProfilePage> {
   final TextEditingController nicknameController = TextEditingController();
   late Future<String> _imageUrl;
   String? imageUri;
-  List<String> selectedIntrests=[];
+  List<String> selectedIntrests = [];
 
   @override
   void initState() {
     super.initState();
     _imageUrl = ViewModelMain().getValue('PhotoURL');
-   
+
     //nicknameController.text = auth.currentUser?.displayName ?? "Nickname";
     getDatas();
   }
 
   Future<void> getDatas() async {
-    nicknameController.text= await ViewModelMain().getValue('userName');
+    nicknameController.text = await ViewModelMain().getValue('userName');
     if (auth.currentUser != null && auth.currentUser!.email != null) {
       interests = await ViewModelMain().getInterests(auth.currentUser!.email!);
       imageUri = await ViewModelMain().getValue('PhotoURL');
-      
     } else {
       interests = []; // Return an empty list for safety
     }
-    
+
     setState(() {});
   }
 
@@ -50,8 +49,7 @@ class _ProfilePageState extends State<ProfilePage> {
     if (auth.currentUser != null && auth.currentUser!.email != null) {
       addIntrestToDb(selectedIntrests, auth.currentUser!.email!);
       if (_image != null) {
-        onUpdateProfile(context, File(_image!), auth.currentUser!.email!,
-            nicknameController.text.trim());
+        onUpdateProfile(context, File(_image!), auth.currentUser!.email!, nicknameController.text.trim());
       }
     }
     interests = selectedIntrests;
@@ -69,7 +67,6 @@ class _ProfilePageState extends State<ProfilePage> {
       }
     });
   }
-
 
   Future<void> _pickImage() async {
     final ImagePicker picker = ImagePicker();
@@ -117,33 +114,42 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           ),
         ),
-        body: Stack(
-          fit: StackFit.expand,
-          children: [
-            Image.asset(
-              'assets/images/profile_setup_bg.png',
-              fit: BoxFit.cover,
-              alignment: Alignment.topCenter,
-            ),
-            Positioned(
-              top: 5,
-              right: 20,
-              child: GestureDetector(
-                onTap:(){
-                  if(!isEdit) {
-                    setState(() => isEdit = true);
-                  } else {
-                    onSave();
-                  }
-                  } , child: Icon(isEdit?Icons.save:Icons.edit,color: Color(0xFFfff1e8), size: 35))
-              
-            ),
-            Padding(
-              padding: EdgeInsets.only(
-                  top: MediaQuery.of(context).size.height * 0.15),
-              child: SingleChildScrollView(
+        body: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/images/profile_setup_bg.png'),
+              fit: BoxFit.fill
+            )
+          ),
+          child: Column(
+            children: [
+              Align(
+                alignment: Alignment.topRight,
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 10.0, top: 5.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      print('Hello running');
+                      if (!isEdit) {
+                        setState(() => isEdit = true);
+                      } else {
+                        onSave();
+                      }
+                    },
+                    child: Icon(
+                      isEdit ? Icons.save : Icons.edit,
+                      color: Color(0xFFfff1e8),
+                      size: 35,
+                    ),
+                  ),
+                ),
+              ),
+              SingleChildScrollView(
                 child: Column(
                   children: [
+                    SizedBox(
+                      height: 140.0,
+                    ),
                     GestureDetector(
                       onTap: () => isEdit ? _pickImage() : null,
                       child: Stack(
@@ -157,16 +163,16 @@ class _ProfilePageState extends State<ProfilePage> {
                                 }
 
                                 if (snapshot.hasError || snapshot.data == null || snapshot.data!.isEmpty) {
-                                   print(_imageUrl);
+                                  print(_imageUrl);
                                   return Positioned.fill(
-                              child: Padding(
-                                padding:const EdgeInsets.fromLTRB(15, 10, 15, 30.0),
-                                child: Image.asset(
-                                  "assets/images/default_profile_pic.png",
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            );
+                                    child: Padding(
+                                      padding: const EdgeInsets.fromLTRB(15, 10, 15, 30.0),
+                                      child: Image.asset(
+                                        "assets/images/default_profile_pic.png",
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  );
                                 }
 
                                 final String? uri = snapshot.data;
@@ -181,13 +187,13 @@ class _ProfilePageState extends State<ProfilePage> {
                                     Positioned.fill(
                                       child: Padding(
                                         padding: const EdgeInsets.fromLTRB(15, 10, 15, 30.0),
-                                        child: CachedNetworkImage(imageUrl:uri,
+                                        child: CachedNetworkImage(
+                                          imageUrl: uri,
                                           fit: BoxFit.cover,
                                         ),
                                       ),
                                     ),
-                                    if (isEdit && _image == null)
-                                      _buildEditOverlay(),
+                                    if (isEdit && _image == null) _buildEditOverlay(),
                                   ],
                                 );
                               },
@@ -196,7 +202,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           if (_image != null)
                             Positioned.fill(
                               child: Padding(
-                                padding:const EdgeInsets.fromLTRB(15, 10, 15, 30.0),
+                                padding: const EdgeInsets.fromLTRB(15, 10, 15, 30.0),
                                 child: Image.file(
                                   File(_image!),
                                   fit: BoxFit.cover,
@@ -207,9 +213,6 @@ class _ProfilePageState extends State<ProfilePage> {
                         ],
                       ),
                     ),
-
-
-
 
                     //Name
                     const SizedBox(height: 24),
@@ -234,50 +237,81 @@ class _ProfilePageState extends State<ProfilePage> {
                       ],
                     ),
                     const SizedBox(height: 30),
-                    isEdit?                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25),
-                  child: GridView.count(
-                      crossAxisCount: 2,
-                      shrinkWrap: true,
-                      childAspectRatio: 129/39,
-                      physics: const NeverScrollableScrollPhysics(),
-                      crossAxisSpacing: 25.3,
-                      mainAxisSpacing: 15,
-                      children: <Widget>[
-                        IntrestButton(onSelected: updateSelectedInterests,intrest: "Sports",),
-                        IntrestButton(onSelected: updateSelectedInterests,intrest: "Music",),
-                        IntrestButton(onSelected: updateSelectedInterests,intrest: "DJ",),
-                        IntrestButton(onSelected: updateSelectedInterests,intrest: "Events",),
-                        IntrestButton(onSelected: updateSelectedInterests,intrest: "Quiz",),
-                        IntrestButton(onSelected: updateSelectedInterests,intrest: "Art",),
-                        IntrestButton(onSelected: updateSelectedInterests,intrest: "Dance",),
-                        IntrestButton(onSelected: updateSelectedInterests,intrest: "Fashion",),
-                        IntrestButton(onSelected: updateSelectedInterests,intrest: "Literary",),
-                        IntrestButton(onSelected: updateSelectedInterests,intrest: "Theatre",),
-                      ]),
-                ):
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 25),
-                      child: GridView.count(
-                        crossAxisCount: 2,
-                        shrinkWrap: true,
-                        childAspectRatio: 129 / 39,
-                        physics: const NeverScrollableScrollPhysics(),
-                        crossAxisSpacing: 25.3,
-                        mainAxisSpacing: 15,
-                        children: interests
-                            .map((e) => IntrestButton(
-                                  onSelected: null,
-                                  intrest: e,
-                                ))
-                            .toList(),
-                      ),
-                    ),
-                    ],
+                    isEdit
+                        ? Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 25),
+                            child: GridView.count(
+                                crossAxisCount: 2,
+                                shrinkWrap: true,
+                                childAspectRatio: 129 / 39,
+                                physics: const NeverScrollableScrollPhysics(),
+                                crossAxisSpacing: 25.3,
+                                mainAxisSpacing: 15,
+                                children: <Widget>[
+                                  IntrestButton(
+                                    onSelected: updateSelectedInterests,
+                                    intrest: "Sports",
+                                  ),
+                                  IntrestButton(
+                                    onSelected: updateSelectedInterests,
+                                    intrest: "Music",
+                                  ),
+                                  IntrestButton(
+                                    onSelected: updateSelectedInterests,
+                                    intrest: "DJ",
+                                  ),
+                                  IntrestButton(
+                                    onSelected: updateSelectedInterests,
+                                    intrest: "Events",
+                                  ),
+                                  IntrestButton(
+                                    onSelected: updateSelectedInterests,
+                                    intrest: "Quiz",
+                                  ),
+                                  IntrestButton(
+                                    onSelected: updateSelectedInterests,
+                                    intrest: "Art",
+                                  ),
+                                  IntrestButton(
+                                    onSelected: updateSelectedInterests,
+                                    intrest: "Dance",
+                                  ),
+                                  IntrestButton(
+                                    onSelected: updateSelectedInterests,
+                                    intrest: "Fashion",
+                                  ),
+                                  IntrestButton(
+                                    onSelected: updateSelectedInterests,
+                                    intrest: "Literary",
+                                  ),
+                                  IntrestButton(
+                                    onSelected: updateSelectedInterests,
+                                    intrest: "Theatre",
+                                  ),
+                                ]),
+                          )
+                        : Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 25),
+                            child: GridView.count(
+                              crossAxisCount: 2,
+                              shrinkWrap: true,
+                              childAspectRatio: 129 / 39,
+                              physics: const NeverScrollableScrollPhysics(),
+                              crossAxisSpacing: 25.3,
+                              mainAxisSpacing: 15,
+                              children: interests
+                                  .map((e) => IntrestButton(
+                                        onSelected: null,
+                                        intrest: e,
+                                      ))
+                                  .toList(),
+                            ),
+                          ),
+                  ],
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
