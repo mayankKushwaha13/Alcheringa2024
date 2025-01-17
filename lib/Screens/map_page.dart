@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:typed_data';
 
 // import 'dart:ui' as ui;
 import 'package:alcheringa/Common/globals.dart';
@@ -7,13 +8,13 @@ import 'package:alcheringa/Model/own_time.dart';
 import 'package:alcheringa/Model/venue_model.dart';
 import 'package:alcheringa/Model/view_model_main.dart';
 import 'package:alcheringa/Screens/activity_pages/pixel_text_field.dart';
-import 'package:alcheringa/Screens/event_detail_page.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:custom_info_window/custom_info_window.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'dart:typed_data';
+
 import '../provider/event_provider.dart';
 
 class MapPage extends StatefulWidget {
@@ -39,10 +40,12 @@ class _MapPageState extends State<MapPage> {
   List<VenueModel> _venueList = [];
   List<EventDetail> eventList = [];
   late BitmapDescriptor customMarker;
+  final CustomInfoWindowController _customInfoWindowController = CustomInfoWindowController();
 
   void _onMapCreated(GoogleMapController controller) {
     _controller.complete(controller);
     controller.setMapStyle(mapstyle);
+    _customInfoWindowController.googleMapController = controller;
   }
 
   //
@@ -74,19 +77,56 @@ class _MapPageState extends State<MapPage> {
           markerId: MarkerId(venue.name),
           position: venue.latLng,
           icon: customMarker,
-          infoWindow: InfoWindow(
-              title: venue.name,
-              snippet: venue.description,
-              onTap: () async {
-                final googleMapsUrl = Uri.parse(
-                    'https://www.google.com/maps/dir/?api=1&destination=${venue.latLng.latitude},${venue.latLng.longitude}');
+          // infoWindow: InfoWindow(
+          //   title: venue.name,
+          //   snippet: venue.description,
+          //   onTap: () async {
+          //     final googleMapsUrl = Uri.parse(
+          //         'https://www.google.com/maps/dir/?api=1&destination=${venue.latLng.latitude},${venue.latLng.longitude}');
+          //
+          //     if (await canLaunchUrl(googleMapsUrl)) {
+          //       await launchUrl(googleMapsUrl);
+          //     } else {
+          //       throw 'Could not open Google Maps';
+          //     }
+          //   },
+          // ),
+          onTap: () {
+            _customInfoWindowController.addInfoWindow!(
+              GestureDetector(
+                  onTap: () async {
+                    final googleMapsUrl = Uri.parse(
+                        'https://www.google.com/maps/dir/?api=1&destination=${venue.latLng.latitude},${venue.latLng.longitude}');
 
-                if (await canLaunchUrl(googleMapsUrl)) {
-                  await launchUrl(googleMapsUrl);
-                } else {
-                  throw 'Could not open Google Maps';
-                }
-              }));
+                    if (await canLaunchUrl(googleMapsUrl)) {
+                      await launchUrl(googleMapsUrl);
+                    } else {
+                      throw 'Could not open Google Maps';
+                    }
+                  },
+                child: Container(
+                  decoration: BoxDecoration(color: Colors.white),
+                  child: Column(
+                    children: [
+                      Text(
+                        venue.name,
+                        style: TextStyle(
+                          fontSize: 16.0
+                        ),
+                      ),
+                      Text(
+                        'click to navigate',
+                        style: TextStyle(
+                          fontSize: 12.0
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              venue.latLng,
+            );
+          });
     }).toSet();
   }
 
@@ -178,6 +218,18 @@ class _MapPageState extends State<MapPage> {
             myLocationButtonEnabled: false,
             markers: _markers,
             minMaxZoomPreference: MinMaxZoomPreference(16, 20),
+            onTap: (location) {
+              _customInfoWindowController.hideInfoWindow;
+            },
+            onCameraMove: (position) {
+              _customInfoWindowController.onCameraMove!();
+              _customInfoWindowController.hideInfoWindow;
+            },
+          ),
+          CustomInfoWindow(
+            controller: _customInfoWindowController,
+            width: 150,
+            offset: 70.0,
           ),
           viewModelMain.venuesList.isEmpty
               ? Center(
@@ -330,7 +382,12 @@ class _MapPageState extends State<MapPage> {
                                                 SizedBox(
                                                   width: 10.0,
                                                 ),
-                                                Image.asset('assets/images/map_location_icon.png')
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    print('Hello clicked');
+                                                  },
+                                                  child: Image.asset('assets/images/map_location_icon.png'),
+                                                )
                                               ],
                                             ),
                                           ),

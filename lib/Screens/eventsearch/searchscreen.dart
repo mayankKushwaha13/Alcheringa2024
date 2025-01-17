@@ -3,10 +3,9 @@ import 'dart:math';
 import 'package:alcheringa/Model/stall_model.dart';
 import 'package:alcheringa/Screens/activity_pages/widgets/competition_card.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:marquee/marquee.dart';
-import 'package:provider/provider.dart';
+
 import '../../Model/eventdetail.dart';
 import '../../Model/view_model_main.dart';
 import '../../utils/styles/colors.dart';
@@ -63,10 +62,8 @@ class _SearchscreenState extends State<Searchscreen> {
     }
 
     _filteredEvents = [
-      ...takeRandom(
-          events.where((event) => event.category == "Event").toList(), 3),
-      ...takeRandom(
-          events.where((event) => event.category != "Event").toList(), 3),
+      ...takeRandom(events.where((event) => event.category == "Event").toList(), 3),
+      ...takeRandom(events.where((event) => event.category != "Event").toList(), 3),
     ];
   }
 
@@ -80,14 +77,8 @@ class _SearchscreenState extends State<Searchscreen> {
       toSuggest = true;
     } else {
       toSuggest = false;
-      filteredStalls = _stalls
-          .where(
-              (stall) => stall.name.toLowerCase().contains(query.toLowerCase()))
-          .toList();
-      filteredEvents = _allEvents
-          .where((event) =>
-              event.artist.toLowerCase().contains(query.toLowerCase()))
-          .toList();
+      filteredStalls = _stalls.where((stall) => stall.name.toLowerCase().contains(query.toLowerCase())).toList();
+      filteredEvents = _allEvents.where((event) => event.artist.toLowerCase().contains(query.toLowerCase())).toList();
     }
 
     setState(() {
@@ -102,130 +93,125 @@ class _SearchscreenState extends State<Searchscreen> {
 
     return SafeArea(
       child: Scaffold(
-          body: Container(
-              width: double.infinity,
-              height: mq.height,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('assets/images/background.png'),
-                  fit: BoxFit.cover,
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          backgroundColor: Colors.black.withOpacity(0.5),
+          leading: Padding(
+            padding: const EdgeInsets.only(left: 5.0, bottom: 10),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Image.asset(
+                'assets/images/back_button.png',
+                width: 54.0,
+                height: 54.0,
+              ),
+            ),
+          ),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 5, right: 20),
+              child: Text(
+                "SEARCH",
+                style: TextStyle(
+                  color: AppColors.Pink,
+                  fontFamily: "Game_Tape",
+                  fontSize: 24,
                 ),
               ),
-              child: Column(children: [
-                // Header Section
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 16.0, vertical: 16.0),
-                  decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.5),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: Image.asset(
-                          'assets/images/back_button.png',
-                          width: 54.0,
-                          height: 54.0,
-                        ),
-                      ),
-                      const Text(
-                        'Search',
-                        style: TextStyle(
-                          fontFamily: 'Game_Tape',
-                          fontSize: 24,
-                          fontWeight: FontWeight.w400,
-                          color: Color.fromRGBO(255, 119, 168, 1),
-                        ),
-                      ),
-                    ],
-                  ),
+            ),
+          ],
+        ),
+        body: Container(
+          width: double.infinity,
+          height: mq.height,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/images/background.png'),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: Column(
+            children: [
+              SizedBox(
+                height: kToolbarHeight + 20,
+              ),
+              Container(
+                width: mq.width * 0.85,
+                height: mq.height * 0.07,
+                decoration: BoxDecoration(
+                  image: DecorationImage(image: AssetImage('assets/images/searchbackground.png'), fit: BoxFit.fill),
                 ),
-                SizedBox(
-                  height: mq.height * 0.02,
-                ),
-                Container(
-                  width: mq.width * 0.85,
-                  height: mq.height * 0.07,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage('assets/images/searchbackground.png'),
-                        fit: BoxFit.fill),
+                child: TextField(
+                  controller: _textFieldController,
+                  onChanged: _filter, //todo
+                  style: TextStyle(
+                    fontFamily: 'Game_Tape',
+                    fontSize: 20,
+                    color: Colors.white,
                   ),
-                  child: TextField(
-                    controller: _textFieldController,
-                    onChanged: _filter, //todo
+                  decoration: InputDecoration(
+                      hintText: 'Search events and more',
+                      hintStyle: const TextStyle(
+                        fontFamily: 'Game_Tape',
+                        fontSize: 20,
+                        color: Colors.grey,
+                      ),
+                      border: InputBorder.none,
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14)),
+                ),
+              ),
+              SizedBox(height: 5),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 25.0),
+                  child: Text(
+                    toSuggest ? 'Suggestions' : "",
                     style: TextStyle(
                       fontFamily: 'Game_Tape',
                       fontSize: 20,
                       color: Colors.white,
                     ),
-                    decoration: InputDecoration(
-                        hintText: 'Search events and more',
-                        hintStyle: const TextStyle(
-                          fontFamily: 'Game_Tape',
-                          fontSize: 20,
-                          color: Colors.grey,
-                        ),
-                        border: InputBorder.none,
-                        contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 14)),
                   ),
                 ),
-                SizedBox(height: 5),
-                Align(
-                  alignment: Alignment.centerLeft,
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Expanded(
+                child: SingleChildScrollView(
                   child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 25.0),
-                    child: Text(
-                      toSuggest ? 'Suggestions' : "",
-                      style: TextStyle(
-                        fontFamily: 'Game_Tape',
-                        fontSize: 20,
-                        color: Colors.white,
-                      ),
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: _filteredEvents.where((event) => event.category == "Event").toList().map((event) {
+                              return _buildCard(context: context, event: event);
+                            }).toList(),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Column(
+                            children: _filteredEvents.where((event) => event.category != "Event").toList().map((event) {
+                          return CompetitionCard(event: event);
+                        }).toList())
+                      ],
                     ),
                   ),
                 ),
-                SizedBox(height: 10,),
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Row(
-                              children: _filteredEvents
-                                  .where((event) => event.category == "Event")
-                                  .toList()
-                                  .map((event) {
-                                return _buildCard(
-                                    context: context, event: event);
-                              }).toList(),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Column(
-                              children: _filteredEvents
-                                  .where((event) => event.category != "Event")
-                                  .toList()
-                                  .map((event) {
-                            return CompetitionCard(event: event);
-                          }).toList())
-                        ],
-                      ),
-                    ),
-                  ),
-                )
-              ]))),
+              )
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
@@ -249,10 +235,8 @@ Widget _buildCard({
             Container(
               height: screenHeight * 0.63,
               width: 186 * screenHeight * 0.63 / 480,
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage('assets/images/card.png'),
-                      fit: BoxFit.cover)),
+              decoration:
+                  BoxDecoration(image: DecorationImage(image: AssetImage('assets/images/card.png'), fit: BoxFit.cover)),
             ),
             // Heading
             Positioned.fill(
@@ -262,8 +246,7 @@ Widget _buildCard({
                 event.artist,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                    fontFamily: "Game_Tape", fontSize: 20, color: Colors.white),
+                style: TextStyle(fontFamily: "Game_Tape", fontSize: 20, color: Colors.white),
               ),
             ),
             // Description
@@ -275,10 +258,7 @@ Widget _buildCard({
                 event.descriptionEvent,
                 maxLines: 3,
                 overflow: TextOverflow.clip,
-                style: TextStyle(
-                    fontFamily: "Game_Tape",
-                    fontSize: 12,
-                    color: Colors.orange),
+                style: TextStyle(fontFamily: "Game_Tape", fontSize: 12, color: Colors.orange),
               ),
             ),
             // Venue
@@ -290,8 +270,7 @@ Widget _buildCard({
                 "${event.starttime.date} ${event.starttime.date >= 5 ? "Jan" : "Feb"}, ${event.starttime.hours}: ${event.starttime.min} |",
                 maxLines: 3,
                 overflow: TextOverflow.clip,
-                style: TextStyle(
-                    fontFamily: "Game_Tape", fontSize: 12, color: Colors.white),
+                style: TextStyle(fontFamily: "Game_Tape", fontSize: 12, color: Colors.white),
               ),
             ),
             Positioned.fill(
@@ -305,16 +284,20 @@ Widget _buildCard({
                   fontSize: 12,
                   fontFamily: "Game_Tape",
                 ),
-                scrollAxis: Axis.horizontal, // Scroll horizontally
+                scrollAxis: Axis.horizontal,
+                // Scroll horizontally
                 crossAxisAlignment: CrossAxisAlignment.center,
-                blankSpace: 40.0, // Space between repetitions
-                velocity: 20.0, // Speed of the scrolling text
-                pauseAfterRound: Duration(seconds: 1), // Pause between loops
-                startPadding: 10.0, // Padding before the text starts
-                accelerationDuration:
-                    Duration(seconds: 1), // Acceleration effect
-                decelerationDuration:
-                    Duration(seconds: 1), // Deceleration effect
+                blankSpace: 40.0,
+                // Space between repetitions
+                velocity: 20.0,
+                // Speed of the scrolling text
+                pauseAfterRound: Duration(seconds: 1),
+                // Pause between loops
+                startPadding: 10.0,
+                // Padding before the text starts
+                accelerationDuration: Duration(seconds: 1),
+                // Acceleration effect
+                decelerationDuration: Duration(seconds: 1), // Deceleration effect
               ),
             ),
           ],

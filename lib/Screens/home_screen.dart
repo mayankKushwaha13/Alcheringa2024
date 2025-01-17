@@ -126,8 +126,9 @@ class _HomeScreenState extends State<HomeScreen>
     if(viewModelMain.passList.isEmpty){
       await viewModelMain.getPass();
       if (viewModelMain.passList.isEmpty) {
+        final passList = await viewModelMain.getPassListFromSharedPreferences();
         setState(() async {
-          viewModelMain.passList = await viewModelMain.getPassListFromSharedPreferences();
+          viewModelMain.passList = passList;
         });
         print('Cards fetched ${viewModelMain.passList} from shared preferences');
       }

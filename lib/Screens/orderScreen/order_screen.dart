@@ -34,21 +34,18 @@ AppBar _appBar(BuildContext context){
   return AppBar(
     automaticallyImplyLeading: false,
     backgroundColor: Colors.black.withOpacity(.5),
-    title: GestureDetector(
-      onTap: (){
-      },
-      child:Padding(
-        padding: const EdgeInsets.only(left: 5.0,bottom: 10),
-        child: GestureDetector(
-          onTap: () {
-            Navigator.pop(context);
-          },
-          child: Image.asset(
-            'assets/images/back_button.png',
-            width: 54.0,
-            height: 54.0,
-          ),
-        ),),
+    leading: Padding(
+      padding: const EdgeInsets.only(left: 5.0,bottom: 10),
+      child: GestureDetector(
+        onTap: () {
+          Navigator.pop(context);
+        },
+        child: Image.asset(
+          'assets/images/back_button.png',
+          width: 54.0,
+          height: 54.0,
+        ),
+      ),
     ),
     actions: [
       Padding(

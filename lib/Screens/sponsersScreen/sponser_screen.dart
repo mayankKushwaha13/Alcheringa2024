@@ -12,18 +12,20 @@ class sponsorScreen extends StatefulWidget {
 class _sponsorScreenState extends State<sponsorScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: _appBar(context),
-      body: Container(
-              padding: EdgeInsets.only(left: 15,right: 15 ,top: 100),
-              width: double.infinity,
-              height: MediaQuery.of(context).size.height,
-              decoration: BoxDecoration(
-                  image: DecorationImage(image: AssetImage("assets/images/background.png"),fit: BoxFit.cover)
-              ),
-              child:sponsors_list()
-    )
+    return SafeArea(
+      child: Scaffold(
+        extendBodyBehindAppBar: true,
+        appBar: _appBar(context),
+        body: Container(
+                padding: EdgeInsets.only(left: 15,right: 15 ,top: kToolbarHeight),
+                width: double.infinity,
+                height: MediaQuery.of(context).size.height,
+                decoration: BoxDecoration(
+                    image: DecorationImage(image: AssetImage("assets/images/background.png"),fit: BoxFit.cover)
+                ),
+                child:sponsors_list()
+      )
+      ),
     );
   }
 }
@@ -32,21 +34,18 @@ AppBar _appBar(BuildContext context){
   return AppBar(
     automaticallyImplyLeading: false,
     backgroundColor: Colors.black.withOpacity(.5),
-    title: GestureDetector(
-      onTap: (){
-      },
-      child:Padding(
-        padding: const EdgeInsets.only(left: 5.0,bottom: 10),
-        child: GestureDetector(
-          onTap: () {
-            Navigator.pop(context);
-          },
-          child: Image.asset(
-            'assets/images/back_button.png',
-            width: 54.0,
-            height: 54.0,
-          ),
-        ),),
+    leading: Padding(
+      padding: const EdgeInsets.only(left: 5.0,bottom: 10),
+      child: GestureDetector(
+        onTap: () {
+          Navigator.pop(context);
+        },
+        child: Image.asset(
+          'assets/images/back_button.png',
+          width: 54.0,
+          height: 54.0,
+        ),
+      ),
     ),
     actions: [
       Padding(

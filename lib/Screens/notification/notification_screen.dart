@@ -21,128 +21,125 @@ class _NotificationScreenState extends State<NotificationScreen> {
   Widget build(BuildContext context) {
     // List<NotificationModel> notifications = Provider.of<ViewModelMain>(context).allNotification;
 
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: _buildAppBar(context),
-      body: Container(
-        width: double.infinity,
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/images/background.png'),
-            fit: BoxFit.cover,
+    return SafeArea(
+      child: Scaffold(
+        extendBodyBehindAppBar: true,
+        appBar: _buildAppBar(context),
+        body: Container(
+          width: double.infinity,
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/images/background.png'),
+              fit: BoxFit.cover,
+            ),
           ),
-        ),
-        child: NotificationListener<ScrollNotification>(
-          onNotification: (scrollNotification) {
-            final maxScroll = scrollNotification.metrics.maxScrollExtent;
-            final currentScroll = scrollNotification.metrics.pixels;
-
-            // Update `_isAtBottom` based on whether the user is at the bottom or not
-            if (currentScroll >= maxScroll) {
-              if (!_isAtBottom) {
-                setState(() {
-                  _isAtBottom = true;
-                });
+          child: NotificationListener<ScrollNotification>(
+            onNotification: (scrollNotification) {
+              final maxScroll = scrollNotification.metrics.maxScrollExtent;
+              final currentScroll = scrollNotification.metrics.pixels;
+      
+              // Update `_isAtBottom` based on whether the user is at the bottom or not
+              if (currentScroll >= maxScroll) {
+                if (!_isAtBottom) {
+                  setState(() {
+                    _isAtBottom = true;
+                  });
+                }
+              } else if (currentScroll < maxScroll) {
+                if (_isAtBottom) {
+                  setState(() {
+                    _isAtBottom = false;
+                  });
+                }
               }
-            } else if (currentScroll < maxScroll) {
-              if (_isAtBottom) {
-                setState(() {
-                  _isAtBottom = false;
-                });
-              }
-            }
-            return true;
-          },
-          child: Column(
-            children: [
-              Expanded(
-                  child: FutureBuilder(
-                future: viewModelMain.getAllNotifications(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                  if (snapshot.hasData) {
-                    List<NotificationModel> allNotifications = snapshot.data!;
-                    List<NotificationModel> newNotifications =
-                        allNotifications.take(3).toList();
-                    List<NotificationModel> earlierNotifications =
-                        allNotifications.skip(3).toList();
-
-                    return ListView(
-                      padding:
-                          const EdgeInsets.only(top: 110, left: 18, right: 18),
-                      children: [
-                        // Section for new notifications
-                        if (newNotifications.isNotEmpty)
-                          const Padding(
-                            padding: EdgeInsets.all(0),
-                            child: Text(
-                              "New",
-                              style: TextStyle(
-                                color: AppColors.Blue,
-                                fontFamily: "Game_Tape",
-                                fontSize: 25,
+              return true;
+            },
+            child: Column(
+              children: [
+                Expanded(
+                    child: FutureBuilder(
+                  future: viewModelMain.getAllNotifications(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      List<NotificationModel> allNotifications = snapshot.data!;
+                      List<NotificationModel> newNotifications =
+                          allNotifications.take(3).toList();
+                      List<NotificationModel> earlierNotifications =
+                          allNotifications.skip(3).toList();
+      
+                      return ListView(
+                        padding:
+                            const EdgeInsets.only(top: kToolbarHeight, left: 18, right: 18),
+                        children: [
+                          // Section for new notifications
+                          if (newNotifications.isNotEmpty)
+                            const Padding(
+                              padding: EdgeInsets.all(0),
+                              child: Text(
+                                "New",
+                                style: TextStyle(
+                                  color: AppColors.Blue,
+                                  fontFamily: "Game_Tape",
+                                  fontSize: 25,
+                                ),
                               ),
                             ),
+                          ListView.builder(
+                            padding: const EdgeInsets.only(top: 5),
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: newNotifications.length,
+                            itemBuilder: (context, index) {
+                              NotificationModel notification =
+                                  newNotifications[index];
+                              return Column(
+                                children: [
+                                  NotificationTile(notification: notification),
+                                  //to be removed later
+                                  // NotificationTile(notification: notification),
+                                  // NotificationTile(notification: notification),
+                                ],
+                              );
+                            },
                           ),
-                        ListView.builder(
-                          padding: const EdgeInsets.only(top: 5),
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: newNotifications.length,
-                          itemBuilder: (context, index) {
-                            NotificationModel notification =
-                                newNotifications[index];
-                            return Column(
-                              children: [
-                                NotificationTile(notification: notification),
-                                //to be removed later
-                                // NotificationTile(notification: notification),
-                                // NotificationTile(notification: notification),
-                              ],
-                            );
-                          },
-                        ),
-
-                        // Section for earlier notifications
-                        if (earlierNotifications.isNotEmpty)
-                          const Padding(
-                            padding: EdgeInsets.only(top: 15),
-                            child: Text(
-                              "Earlier",
-                              style: TextStyle(
-                                color: AppColors.Blue,
-                                fontFamily: "Game_Tape",
-                                fontSize: 25,
+      
+                          // Section for earlier notifications
+                          if (earlierNotifications.isNotEmpty)
+                            const Padding(
+                              padding: EdgeInsets.only(top: 15),
+                              child: Text(
+                                "Earlier",
+                                style: TextStyle(
+                                  color: AppColors.Blue,
+                                  fontFamily: "Game_Tape",
+                                  fontSize: 25,
+                                ),
                               ),
                             ),
+                          ListView.builder(
+                            padding: const EdgeInsets.only(top: 5),
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: earlierNotifications.length,
+                            itemBuilder: (context, index) {
+                              NotificationModel notification =
+                                  earlierNotifications[index];
+                              return NotificationTile(notification: notification);
+                            },
                           ),
-                        ListView.builder(
-                          padding: const EdgeInsets.only(top: 5),
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: earlierNotifications.length,
-                          itemBuilder: (context, index) {
-                            NotificationModel notification =
-                                earlierNotifications[index];
-                            return NotificationTile(notification: notification);
-                          },
-                        ),
-                        SizedBox(height: 50,)
-                      ],
-                    );
-                  } else {
-                    return const Center(
-                      child: Text("No notifications found."),
-                    );
-                  }
-                },
-              )),
-               _buildMoreSection(context),
-            ],
+                          SizedBox(height: 50,)
+                        ],
+                      );
+                    } else {
+                      return const Center(
+                        child: Text("No notifications found."),
+                      );
+                    }
+                  },
+                )),
+                 _buildMoreSection(context),
+              ],
+            ),
           ),
         ),
       ),
@@ -153,7 +150,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
     return AppBar(
       automaticallyImplyLeading: false,
       backgroundColor: Colors.black.withOpacity(0.5),
-      title: Padding(
+      leading: Padding(
         padding: const EdgeInsets.only(left: 5.0, bottom: 10),
         child: GestureDetector(
           onTap: () {
@@ -174,7 +171,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
             style: TextStyle(
               color: AppColors.Pink,
               fontFamily: "Game_Tape",
-              fontSize: 35,
+              fontSize: 24,
             ),
           ),
         ),

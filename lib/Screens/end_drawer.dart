@@ -219,18 +219,21 @@ class _EndDrawerState extends State<EndDrawer> {
                     Align(
                       alignment: Alignment.centerRight,
                       child: Padding(
-                        padding: const EdgeInsets.only(right:32.0),
+                        padding: const EdgeInsets.only(right: 32.0),
                         child: TextButton(
                           style: TextButton.styleFrom(
                             padding: EdgeInsets.zero,
                             minimumSize: Size(0, 0),
                             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                           ),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => Aboutscreen()),
-                            );
+                          onPressed: () async {
+                            final website = Uri.parse('https://www.alcheringa.in');
+
+                            if (await canLaunchUrl(website)) {
+                              await launchUrl(website);
+                            } else {
+                              throw 'Could not open the website';
+                            }
                           },
                           child: Text(
                             'alchering.in',

@@ -1,8 +1,11 @@
-import 'package:alcheringa/Model/view_model_main.dart';
-import 'package:alcheringa/Screens/home_screen.dart';
+import 'dart:math';
+
+import 'package:alcheringa/Common/globals.dart';
 import 'package:alcheringa/Screens/main_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../../provider/cart_provider.dart';
 import 'build_confirmation_tab.dart';
 import 'build_details_tab.dart';
 import 'build_review_tab.dart';
@@ -25,6 +28,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
   final TextEditingController cityController = TextEditingController();
   final TextEditingController stateController = TextEditingController();
   final TextEditingController pincodeController = TextEditingController();
+  String DATA = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
   // Function to validate fields
   bool areFieldsValid() {
@@ -52,6 +56,15 @@ class _CheckoutPageState extends State<CheckoutPage> {
     return true;
   }
 
+  String randomString(int len) {
+    final Random random = Random();
+    final StringBuffer sb = StringBuffer();
+    for (int i = 0; i < len; i++) {
+      sb.write(DATA[random.nextInt(DATA.length)]);
+    }
+    return sb.toString();
+  }
+
   // Show a snackbar if validation fails
   void showValidationError(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -62,10 +75,10 @@ class _CheckoutPageState extends State<CheckoutPage> {
     );
   }
 
- 
-
   @override
   Widget build(BuildContext context) {
+    final cartProvider =
+    Provider.of<CartProvider>(context);
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -99,7 +112,6 @@ class _CheckoutPageState extends State<CheckoutPage> {
             ),
           ),
         ),
-        
         body: Container(
           width: double.infinity,
           height: MediaQuery.of(context).size.height,
@@ -109,7 +121,11 @@ class _CheckoutPageState extends State<CheckoutPage> {
               fit: BoxFit.cover,
             ),
           ),
-          child: SingleChildScrollView(
+          child: isLoading
+          ? Center(
+            child: CircularProgressIndicator(),
+          )
+          : SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -139,7 +155,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   ),
                 ),
                  */
-SizedBox(height: 20.0),
+                SizedBox(height: 20.0),
                 // Progress Bar Section (Conditional)
                 if (_currentIndex != 3) // Only show this in Details and Review tabs
                   Stack(
@@ -150,8 +166,7 @@ SizedBox(height: 20.0),
                         height: 54,
                         decoration: BoxDecoration(
                           image: DecorationImage(
-                            image: AssetImage(
-                                'assets/images/progress_details.png'),
+                            image: AssetImage('assets/images/progress_details.png'),
                             fit: BoxFit.fill,
                           ),
                         ),
@@ -187,6 +202,7 @@ SizedBox(height: 20.0),
                         setState(() {
                           _currentIndex++;
                         });
+                        viewModelMain.addOrderToFirebase(cartProvider.cartItems, randomString(20), nameController.text, phoneController.text, '${addressLine1Controller.text}, ${addressLine2Controller.text}', stateController.text, cityController.text, pincodeController.text, context);
                       }
                     },
                     child: Stack(
@@ -201,8 +217,7 @@ SizedBox(height: 20.0),
                               image: DecorationImage(
                                 image: _currentIndex != 3
                                     ? AssetImage('assets/images/next_button.png')
-                                    : AssetImage(
-                                    'assets/images/continue_shopping.png'),
+                                    : AssetImage('assets/images/continue_shopping.png'),
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -210,7 +225,9 @@ SizedBox(height: 20.0),
                         ),
                         GestureDetector(
                           onTap: () {
-                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainScreen()));
+                            if(_currentIndex == 3) {
+                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainScreen()));
+                            }
                           },
                           child: Text(
                             _currentIndex < 3 ? 'Next' : 'Continue\nShopping',
@@ -229,7 +246,7 @@ SizedBox(height: 20.0),
                 ),
               ],
             ),
-          ),
+          )
         ),
       ),
     );
@@ -241,9 +258,7 @@ SizedBox(height: 20.0),
       title,
       style: TextStyle(
         fontFamily: 'Game_Tape',
-        color: _currentIndex == index
-            ? Colors.white
-            : Color.fromRGBO(131, 118, 156, 1),
+        color: _currentIndex == index ? Colors.white : Color.fromRGBO(131, 118, 156, 1),
         fontSize: 16.0,
         fontWeight: FontWeight.w400,
       ),
@@ -265,14 +280,14 @@ SizedBox(height: 20.0),
         );
       case 2:
         return BuildReviewTab(
-            name: nameController.text,
-            phone: phoneController.text,
-            addressLine1: addressLine1Controller.text,
-            addressLine2: addressLine2Controller.text,
-            city: cityController.text,
-            state: stateController.text,
-            pincode: pincodeController.text,
-            /* context: context */);
+          name: nameController.text,
+          phone: phoneController.text,
+          addressLine1: addressLine1Controller.text,
+          addressLine2: addressLine2Controller.text,
+          city: cityController.text,
+          state: stateController.text,
+          pincode: pincodeController.text, /* context: context */
+        );
       case 3:
         return buildConfirmationTab();
       default:
