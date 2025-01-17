@@ -66,74 +66,90 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   }
 
   Future<void> getData() async {
-    if (viewModelMain.allEvents.isEmpty) {
-      await viewModelMain.getAllEvents();
-      print('Fetched all events');
-      setState(() {});
+    List<Future> futures1 = [];
+    List<Future> futures2 = [];
+    List<Future> futures3 = [];
+
+    if (viewModelMain.featuredEventsWithLive.isEmpty) {
+      futures1.add(viewModelMain.getFeaturedEvents().then((_) {
+        print('Fetched featured list');
+      }));
     }
-    if (viewModelMain.interestList.isEmpty) {
-      await viewModelMain.getInterests(auth.currentUser!.email!);
-      print('Fetched interest events');
-      setState(() {});
+    if (viewModelMain.allEvents.isEmpty) {
+      futures1.add(viewModelMain.getAllEvents().then((_) {
+        print('Fetched all list');
+      }));
     }
     if (viewModelMain.merchMerch.isEmpty) {
-      await viewModelMain.getMerchMerch();
-      print('Fetched merch events');
-      setState(() {});
-    }
-    if (viewModelMain.featuredEventsWithLive.isEmpty) {
-      await viewModelMain.getFeaturedEvents();
-      print('Fetched featured events');
-      setState(() {});
+      futures1.add(viewModelMain.getMerchMerch().then((_) {
+        print('Fetched merch list');
+      }));
     }
     if (viewModelMain.utilityList.isEmpty) {
-      await viewModelMain.getUtilities();
-      print('Fetched utilitties events');
-      setState(() {});
+      futures2.add(viewModelMain.getUtilities().then((_) {
+        print('Fetched utilities list');
+      }));
     }
     if (viewModelMain.informalList.isEmpty) {
-      await viewModelMain.getInformals();
-      print('Fetched informals events');
-      setState(() {});
+      futures2.add(viewModelMain.getInformals().then((_) {
+        print('Fetched informals list');
+      }));
     }
     if (viewModelMain.stallList.isEmpty) {
-      await viewModelMain.getStalls();
-      print('Fetched stalls events');
-      setState(() {});
+      futures2.add(viewModelMain.getStalls().then((_) {
+        print('Fetched stalls list');
+      }));
     }
     if (viewModelMain.venuesList.isEmpty) {
-      await viewModelMain.getVenues();
-      print('Fetched venues events');
-      setState(() {});
+      futures2.add(viewModelMain.getVenues().then((_) {
+        print('Fetched venues list');
+      }));
     }
     if (viewModelMain.allNotification.isEmpty) {
-      await viewModelMain.getAllNotifications();
-      print('Fetched notifications events');
-      setState(() {});
+      futures3.add(viewModelMain.getAllNotifications().then((_) {
+        print('Fetched notifications list');
+      }));
     }
     if (viewModelMain.allsponsors.isEmpty) {
-      await viewModelMain.getsponsors();
-      print('Fetched sponsors events');
-      setState(() {});
+      futures2.add(viewModelMain.getsponsors().then((_) {
+        print('Fetched sponsors list');
+      }));
+    }
+    if (viewModelMain.interestList.isEmpty) {
+      futures3.add(viewModelMain.getInterests(auth.currentUser!.email!).then((_) {
+        print('Fetched interest list');
+      }));
     }
     if (viewModelMain.orderDetails.isEmpty) {
-      await viewModelMain.getOrderDetails();
-      print('Fetched orderdetails events');
-      setState(() {});
+      futures3.add(viewModelMain.getOrderDetails().then((_) {
+        print('Fetched order details list');
+      }));
     }
     if (viewModelMain.passList.isEmpty) {
-      await viewModelMain.getPass();
-      if (viewModelMain.passList.isEmpty) {
-        final passList = await viewModelMain.getPassListFromSharedPreferences();
-        setState(() {
-          viewModelMain.passList = passList;
+      futures3.add(viewModelMain.getPassListFromSharedPreferences().then((passList) {
+        viewModelMain.passList = passList;
+        return viewModelMain.getPass().then((_) {
+          print('Fetched passes list');
         });
-        print('Cards fetched ${viewModelMain.passList} from shared preferences');
-      }
-      print('Fetched passes events');
+      }));
+    }
+
+    await Future.wait(futures1);
+    if(mounted) {
       setState(() {});
     }
-    print('Running all data');
+    await Future.wait(futures2);
+    if(mounted) {
+      setState(() {});
+    }
+    await Future.wait(futures3);
+
+    // Trigger setState once after all futures complete
+    if(mounted) {
+      setState(() {
+        print('Running all data');
+      });
+    }
   }
 
   Future<void> getPassList() async {
