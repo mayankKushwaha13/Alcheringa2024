@@ -20,7 +20,7 @@ class _FaqSectionState extends State<FaqSection> {
     FaqItem(
       question: 'What if I have a query about my registration?',
       answer:
-      'You can contact the Alcheringa team at support@alcheringa.in or call +91 0000000022.',
+      'You can contact the Alcheringa team by calling anyone from admin given above.',
     ),
     FaqItem(
       question: 'Where can I find the event map?',
@@ -114,16 +114,15 @@ class _FaqSectionState extends State<FaqSection> {
                           alignment: Alignment.centerRight, // Align to the right
                           child: Container(
                             width: 266,
-                            height: 82,
                             decoration: BoxDecoration(
                               image: DecorationImage(
                                 image: AssetImage('assets/images/faq_box2.png'),
                                 fit: BoxFit.fill,
                               ),
                             ),
-                            padding: EdgeInsets.all(16),
+                            padding: EdgeInsets.all(15),
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                              padding: const EdgeInsets.symmetric(horizontal: 10.0),
                               child: Text(
                                 faq.answer,
                                 style: TextStyle(

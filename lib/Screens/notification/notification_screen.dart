@@ -132,7 +132,14 @@ class _NotificationScreenState extends State<NotificationScreen> {
                       );
                     } else {
                       return const Center(
-                        child: Text("No notifications found."),
+                        child: Text(
+                          "No notifications found.",
+                          style: TextStyle(
+                            fontFamily: 'Game_Tape',
+                            fontSize: 16.0,
+                            color: Color(0xFFFFF1E8)
+                          ),
+                        ),
                       );
                     }
                   },
