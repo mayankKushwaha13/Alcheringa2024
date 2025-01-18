@@ -562,22 +562,34 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                     if (cardColorIndex % 2 == 0)
                                       Expanded(
                                         flex: 2,
-                                        child: Container(
-                                          width: 250,
-                                          alignment: Alignment.center,
-                                          decoration: BoxDecoration(
-                                            image: DecorationImage(
-                                              image:
-                                                  AssetImage('assets/images/hero_section_unrevealed_text_holder.png'),
-                                              fit: BoxFit.fill,
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            if (isRevealed) {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) => EventDetailPage(event: event),
+                                                ),
+                                              );
+                                            }
+                                          },
+                                          child: Container(
+                                            width: 250,
+                                            alignment: Alignment.center,
+                                            decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                image:
+                                                    AssetImage('assets/images/hero_section_unrevealed_text_holder.png'),
+                                                fit: BoxFit.fill,
+                                              ),
                                             ),
-                                          ),
-                                          child: Text(
-                                            isRevealed ? event.artist : 'Coming soon',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontFamily: 'Brick_pixel',
-                                              fontSize: 20.0,
+                                            child: Text(
+                                              isRevealed ? event.artist : 'Coming soon',
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontFamily: 'Brick_pixel',
+                                                fontSize: 20.0,
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -585,42 +597,44 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                     const SizedBox(height: 8.0),
                                     Expanded(
                                       flex: 9,
-                                      child: Stack(
-                                        children: [
-                                          Align(
-                                            alignment: Alignment.center,
-                                            child: Container(
-                                              width: isRevealed ?  250 : 230,
-                                              decoration: BoxDecoration(
-                                                image: DecorationImage(
-                                                  image: CachedNetworkImageProvider(event.imgurl),
-                                                  alignment: Alignment.center,
-                                                  // 'assets/images/card_$index.png'),
-                                                  fit: BoxFit.cover,
+                                      child: Container(
+                                        width: 250,
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            if (isRevealed) {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) => EventDetailPage(event: event),
                                                 ),
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: 250,
-                                            child: GestureDetector(
-                                              onTap: () {
-                                                if(isRevealed) {
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) => EventDetailPage(event: event)));
-                                                }
-                                              },
-                                              child: Image.asset(
+                                              );
+                                            }
+                                          },
+                                          child: Stack(
+                                            fit: StackFit.expand,
+                                            alignment: Alignment.center,
+                                            children: [
+                                              if (isRevealed)
+                                                Container(
+                                                  width: 245,
+                                                  decoration: BoxDecoration(
+                                                    image: DecorationImage(
+                                                      image: CachedNetworkImageProvider(event.imgurl),
+                                                      alignment: Alignment.center,
+                                                      fit: BoxFit.cover,
+                                                    ),
+                                                  ),
+                                                ),
+                                              Image.asset(
+                                                width: 245,
                                                 isRevealed
                                                     ? 'assets/images/event_cards_revealed${cardColorIndex}.png'
                                                     : 'assets/images/card_$index.png',
                                                 fit: BoxFit.fill,
                                               ),
-                                            ),
-                                          )
-                                        ],
+                                            ],
+                                          ),
+                                        ),
                                       ),
                                     ),
                                     if (cardColorIndex % 2 == 1)
@@ -630,22 +644,34 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                     if (cardColorIndex % 2 == 1)
                                       Expanded(
                                         flex: 2,
-                                        child: Container(
-                                          alignment: Alignment.center,
-                                          width: 250,
-                                          decoration: BoxDecoration(
-                                            image: DecorationImage(
-                                              image:
-                                                  AssetImage('assets/images/hero_section_unrevealed_text_holder.png'),
-                                              fit: BoxFit.fill,
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            if (isRevealed) {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) => EventDetailPage(event: event),
+                                                ),
+                                              );
+                                            }
+                                          },
+                                          child: Container(
+                                            alignment: Alignment.center,
+                                            width: 250,
+                                            decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                image:
+                                                    AssetImage('assets/images/hero_section_unrevealed_text_holder.png'),
+                                                fit: BoxFit.fill,
+                                              ),
                                             ),
-                                          ),
-                                          child: Text(
-                                            isRevealed ? event.artist : 'Coming soon',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontFamily: 'Brick_pixel',
-                                              fontSize: 20.0,
+                                            child: Text(
+                                              isRevealed ? event.artist : 'Coming soon',
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontFamily: 'Brick_pixel',
+                                                fontSize: 20.0,
+                                              ),
                                             ),
                                           ),
                                         ),
