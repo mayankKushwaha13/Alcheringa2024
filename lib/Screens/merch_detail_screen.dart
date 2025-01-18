@@ -1,9 +1,9 @@
 import 'package:alcheringa/Model/merchModel.dart';
 import 'package:alcheringa/Screens/cart_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../Database/DBHandler.dart';
 import '../Model/cart_model.dart';
@@ -13,7 +13,10 @@ import '../utils/styles/colors.dart';
 class MerchDetailScreen extends StatefulWidget {
   final MerchModel merch;
 
-  const MerchDetailScreen({super.key, required this.merch,});
+  const MerchDetailScreen({
+    super.key,
+    required this.merch,
+  });
 
   @override
   State<MerchDetailScreen> createState() => _MerchDetailScreenState();
@@ -27,6 +30,7 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
   int selectedIndex = 2;
   String selectedSize = "L";
   int currentIndex = 0;
+  PageController pageController = PageController();
 
   bool isSizeChartVisible = false;
 
@@ -73,26 +77,41 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
             children: [
               Padding(
                 padding: const EdgeInsets.all(10),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CarouselSlider(
-                      options: CarouselOptions(
-                        autoPlay: false,
-                        onPageChanged: (index, reason) {
-                          setState(() {
-                            currentIndex = index;
-                          });
-                        }
-                      ),
-                      items: widget.merch.images?.map((item) {
-                        return CachedNetworkImage(
-                          imageUrl: item,
-                        );
-                      }).toList(),
-                    )
-                  ],
+                child: AspectRatio(
+                  aspectRatio: 1,
+                  child: PageView.builder(
+                    controller: pageController,
+                    itemCount: 2,
+                    onPageChanged: (newIndex) {},
+                    itemBuilder: (BuildContext context, int index) {
+                      return CachedNetworkImage(
+                        imageUrl: widget.merch.images![index],
+                      );
+                    },
+                  ),
                 ),
+              ),
+              Align(
+                alignment: Alignment.center,
+                child: SmoothPageIndicator(
+                  controller: pageController,
+                  count: 2,
+                  effect: CustomizableEffect(
+                    dotDecoration: DotDecoration(
+                      color: Colors.grey,
+                      width: 3,
+                      height: 3
+                    ),
+                    activeDotDecoration: DotDecoration(
+                      color: Colors.white,
+                      width: 9,
+                      height: 9
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 20.0,
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 15),
