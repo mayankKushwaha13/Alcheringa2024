@@ -13,9 +13,9 @@ class _ContactSectionState extends State<ContactSection> {
 
   // Sample data for each category
   final Map<String, List<String>> contactData = {
-    'MEDICINE': ['1234567890', '0987654321', '1122334455'],
-    'TRANSPORT': ['5566778899', '6677889900', '7788990011'],
-    'ADMIN': ['2233445566', '3344556677', '4455667788'],
+    'MEDICINE': ['0361-2583813', '0361-2585555', '0361-2586666'],
+    'TRANSPORT': ['8486668456', '8638289730', '6001440472'],
+    'ADMIN': ['8812923115', '9707049872', '8319855908'],
   };
 
   @override

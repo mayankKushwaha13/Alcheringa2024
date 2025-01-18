@@ -1,5 +1,6 @@
 import 'package:alcheringa/Model/view_model_main.dart';
 import 'package:alcheringa/Screens/merch_detail_screen.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -131,16 +132,7 @@ class _MerchScreenState extends State<MerchScreen> {
                             child: Column(
                               children: merchMerch.map((merch) {
                                 return MerchandiseItem(
-                                  image: merch.image ??
-                                      'assets/images/default_image.png',
-                                  title: merch.type ?? 'Unnamed',
-                                  subtitle: merch.name ?? 'Unnamed',
-                                  description:
-                                      merch.description ?? 'No description',
-                                  price: merch.price ?? '0.00',
-                                  limitedStockMessage: merch.available == true
-                                      ? 'LIMITED STOCK AVAILABLE'
-                                      : 'OUT OF STOCK',
+                                  merch: merch,
                                 );
                               }).toList(),
                             ),
@@ -155,21 +147,11 @@ class _MerchScreenState extends State<MerchScreen> {
 }
 
 class MerchandiseItem extends StatelessWidget {
-  final String image;
-  final String title;
-  final String subtitle;
-  final String description;
-  final String price;
-  final String limitedStockMessage;
+  final MerchModel merch;
 
   const MerchandiseItem({
     super.key,
-    required this.image,
-    required this.description,
-    required this.title,
-    required this.subtitle,
-    required this.price,
-    required this.limitedStockMessage,
+    required this.merch
   });
 
   @override
@@ -182,11 +164,7 @@ class MerchandiseItem extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) => MerchDetailScreen(
-                merchTitle: title,
-                merchSubtitle: subtitle,
-                merchDescription: description,
-                price: price,
-                image: image,
+                merch: merch,
               ),
             ),
           );
@@ -213,8 +191,8 @@ class MerchandiseItem extends StatelessWidget {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(top: 20),
-                    child: Image.network(
-                      image,
+                    child: CachedNetworkImage(
+                      imageUrl: merch.image!,
                       width: MediaQuery.of(context).size.width * 0.2,
                     ),
                   ),
@@ -225,7 +203,7 @@ class MerchandiseItem extends StatelessWidget {
                         height: 20,
                       ),
                       Text(
-                        title,
+                        merch.type!,
                         style: const TextStyle(
                           fontFamily: 'Game_Tape',
                           fontSize: 23,
@@ -234,7 +212,7 @@ class MerchandiseItem extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        subtitle,
+                        merch.name!,
                         style: const TextStyle(
                           fontFamily: 'Game_Tape',
                           fontSize: 17,
@@ -243,7 +221,7 @@ class MerchandiseItem extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        'Rs $price.00/-',
+                        'Rs ${merch.price}.00/-',
                         style: const TextStyle(
                           fontFamily: 'Game_Tape',
                           fontSize: 18,

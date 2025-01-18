@@ -1,6 +1,9 @@
+import 'package:alcheringa/Model/merchModel.dart';
 import 'package:alcheringa/Screens/cart_screen.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../Database/DBHandler.dart';
 import '../Model/cart_model.dart';
@@ -8,20 +11,12 @@ import '../provider/cart_provider.dart';
 import '../utils/styles/colors.dart';
 
 class MerchDetailScreen extends StatefulWidget {
-  final String merchTitle;
-  final String merchSubtitle;
-  final String price;
-  final String merchDescription;
-  final String image;
+  final MerchModel merch;
 
   const MerchDetailScreen({
-    Key? key,
-    required this.merchTitle,
-    required this.merchSubtitle,
-    required this.price,
-    required this.merchDescription,
-    required this.image,
-  }) : super(key: key);
+    super.key,
+    required this.merch,
+  });
 
   @override
   State<MerchDetailScreen> createState() => _MerchDetailScreenState();
@@ -34,6 +29,8 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
   final DBHandler dbHandler = DBHandler();
   int selectedIndex = 2;
   String selectedSize = "L";
+  int currentIndex = 0;
+  PageController pageController = PageController();
 
   bool isSizeChartVisible = false;
 
@@ -80,20 +77,46 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
             children: [
               Padding(
                 padding: const EdgeInsets.all(10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.network(
-                      widget.image,
-                      width: 200,
-                    ),
-                  ],
+                child: AspectRatio(
+                  aspectRatio: 1,
+                  child: PageView.builder(
+                    controller: pageController,
+                    itemCount: 2,
+                    onPageChanged: (newIndex) {},
+                    itemBuilder: (BuildContext context, int index) {
+                      return CachedNetworkImage(
+                        imageUrl: widget.merch.images![index],
+                      );
+                    },
+                  ),
                 ),
+              ),
+              Align(
+                alignment: Alignment.center,
+                child: SmoothPageIndicator(
+                  controller: pageController,
+                  count: 2,
+                  effect: CustomizableEffect(
+                    dotDecoration: DotDecoration(
+                      color: Colors.grey,
+                      width: 3,
+                      height: 3
+                    ),
+                    activeDotDecoration: DotDecoration(
+                      color: Colors.white,
+                      width: 9,
+                      height: 9
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 20.0,
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 15),
                 child: Text(
-                  widget.merchTitle,
+                  widget.merch.type!,
                   style: TextStyle(
                     fontFamily: 'Brick_Pixel',
                     fontSize: 30,
@@ -105,7 +128,7 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
               Padding(
                 padding: const EdgeInsets.only(left: 15),
                 child: Text(
-                  widget.merchSubtitle,
+                  widget.merch.name!,
                   style: const TextStyle(
                     fontFamily: 'Game_Tape',
                     fontSize: 22,
@@ -118,7 +141,7 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: Text(
-                  'Rs. ${widget.price}',
+                  'Rs. ${widget.merch.price}',
                   style: const TextStyle(
                     fontFamily: 'Game_Tape',
                     fontSize: 40,
@@ -293,7 +316,7 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: Text(
-                  widget.merchDescription,
+                  widget.merch.description!,
                   style: const TextStyle(
                     fontFamily: 'Game_Tape',
                     fontSize: 18,
@@ -314,12 +337,12 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
                       child: GestureDetector(
                         onTap: () async {
                           final cartItem = CartModel(
-                            name: widget.merchTitle,
-                            price: widget.price,
+                            name: widget.merch.type!,
+                            price: widget.merch.price!,
                             size: selectedSize,
                             count: "1",
                             // Default count
-                            imageUrl: widget.image,
+                            imageUrl: widget.merch.image!,
                             type: "Merchandise", // Type (optional)
                           );
 
@@ -363,12 +386,12 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
                         onTap: () async {
                           // Add the selected merch to the cart
                           final cartItem = CartModel(
-                            name: widget.merchTitle,
-                            price: widget.price,
+                            name: widget.merch.type!,
+                            price: widget.merch.price!,
                             size: selectedSize,
                             count: "1",
                             // Default count
-                            imageUrl: widget.image,
+                            imageUrl: widget.merch.image!,
                             type: "Merchandise", // Type (optional)
                           );
 
@@ -377,7 +400,7 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
                           // Show confirmation
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text("Added ${widget.merchTitle} to the cart!"),
+                              content: Text("Added ${widget.merch.type} to the cart!"),
                               backgroundColor: Colors.green,
                             ),
                           );

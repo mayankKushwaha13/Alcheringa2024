@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:alcheringa/Common/globals.dart';
 import 'package:alcheringa/Model/stall_model.dart';
 import 'package:alcheringa/Screens/activity_pages/widgets/competition_card.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -7,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:marquee/marquee.dart';
 
 import '../../Model/eventdetail.dart';
-import '../../Model/view_model_main.dart';
 import '../../utils/styles/colors.dart';
 
 class Searchscreen extends StatefulWidget {
@@ -35,8 +35,8 @@ class _SearchscreenState extends State<Searchscreen> {
 
   Future<List<StallModel>> getData() async {
     try {
-      final stalls = await ViewModelMain().getStalls();
-      final List<EventDetail> events = await ViewModelMain().getAllEvents();
+      final stalls = viewModelMain.stallList;
+      final List<EventDetail> events = viewModelMain.allEvents;
       suggestionList(events);
       _filteredStalls = stalls;
       setState(() {
@@ -229,10 +229,16 @@ Widget _buildCard({
         Stack(
           children: [
             Positioned.fill(
-                child: CachedNetworkImage(
-              imageUrl: event.imgurl,
-              fit: BoxFit.cover,
-            )),
+              child: ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: event.isArtistRevealed
+                      ? CachedNetworkImage(
+                    imageUrl: event.imgurl,
+                    fit: BoxFit.cover,
+                    alignment: Alignment.center,
+                  )
+                      : Image.asset('assets/images/card_0.png', fit: BoxFit.cover, alignment: Alignment.center,)),
+            ),
             Container(
               height: screenHeight * 0.63,
               width: 186 * screenHeight * 0.63 / 480,
@@ -244,7 +250,7 @@ Widget _buildCard({
               left: 25 * screenHeight * 0.63 / 480,
               top: 336 * screenHeight * 0.63 / 480,
               child: Text(
-                event.artist,
+                event.isArtistRevealed ? event.artist : 'Coming Soon',
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(fontFamily: "Game_Tape", fontSize: 20, color: Colors.white),
@@ -256,7 +262,7 @@ Widget _buildCard({
               top: 380 * screenHeight * 0.63 / 480,
               right: 25,
               child: Text(
-                event.descriptionShort,
+                event.isArtistRevealed ? event.descriptionShort : 'Coming Soon',
                 maxLines: 3,
                 overflow: TextOverflow.clip,
                 style: TextStyle(fontFamily: "Game_Tape", fontSize: 12, color: Colors.orange),
@@ -268,7 +274,7 @@ Widget _buildCard({
               top: 441 * screenHeight * 0.63 / 480,
               right: 25,
               child: Text(
-                "${event.starttime.date} ${event.starttime.date >= 5 ? "Jan" : "Feb"}, ${event.starttime.hours}: ${event.starttime.min} |",
+                event.isArtistRevealed ? "${event.starttime.date} ${event.starttime.date >= 5 ? "Jan" : "Feb"}, ${event.starttime.hours}: ${event.starttime.min} |" : 'Coming Soon',
                 maxLines: 3,
                 overflow: TextOverflow.clip,
                 style: TextStyle(fontFamily: "Game_Tape", fontSize: 12, color: Colors.white),
@@ -279,7 +285,7 @@ Widget _buildCard({
               top: 418 * screenHeight * 0.63 / 480,
               right: 25,
               child: Marquee(
-                text: "${event.venue}",
+                text: event.isArtistRevealed ? "${event.venue}" : 'Coming Soon',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 12,

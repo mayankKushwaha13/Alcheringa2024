@@ -56,6 +56,12 @@ class _CheckoutPageState extends State<CheckoutPage> {
     return true;
   }
 
+  void _setLoading(bool _isLoading) {
+    setState(() {
+      isLoading = _isLoading;
+    });
+  }
+
   String randomString(int len) {
     final Random random = Random();
     final StringBuffer sb = StringBuffer();
@@ -203,7 +209,10 @@ class _CheckoutPageState extends State<CheckoutPage> {
                         setState(() {
                           _currentIndex++;
                         });
-                        viewModelMain.addOrderToFirebase(cartProvider.cartItems, randomString(20), nameController.text, phoneController.text, '${addressLine1Controller.text}, ${addressLine2Controller.text}', stateController.text, cityController.text, pincodeController.text, context);
+                        viewModelMain.addOrderToFirebase(cartProvider.cartItems, randomString(20), nameController.text, phoneController.text, '${addressLine1Controller.text}, ${addressLine2Controller.text}', stateController.text, cityController.text, pincodeController.text, context, _setLoading);
+                      } else if(_currentIndex == 3){
+                        CartProvider().clearCart();
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainScreen()));
                       }
                     },
                     child: Stack(
@@ -224,21 +233,14 @@ class _CheckoutPageState extends State<CheckoutPage> {
                             ),
                           ),
                         ),
-                        GestureDetector(
-                          onTap: () {
-                            if(_currentIndex == 3) {
-                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainScreen()));
-                            }
-                          },
-                          child: Text(
-                            _currentIndex < 3 ? 'Next' : 'Continue\nShopping',
-                            style: TextStyle(
-                              fontFamily: 'Brick_Pixel',
-                              color: Colors.white,
-                              fontSize: _currentIndex != 3 ? 20.0 : 24,
-                              fontWeight: FontWeight.w400,
-                              height: 0.9,
-                            ),
+                        Text(
+                          _currentIndex < 3 ? 'Next' : 'Continue\nShopping',
+                          style: TextStyle(
+                            fontFamily: 'Brick_Pixel',
+                            color: Colors.white,
+                            fontSize: _currentIndex != 3 ? 20.0 : 24,
+                            fontWeight: FontWeight.w400,
+                            height: 0.9,
                           ),
                         ),
                       ],

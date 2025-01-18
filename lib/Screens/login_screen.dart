@@ -228,31 +228,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                     width:
                                     MediaQuery.of(context).size.width * 0.05),
 
-                                // Apple Button
-                                _buildSocialButton(
-                                  backgroundPath: 'assets/images/google.png',
-                                  logoPath: 'assets/images/applelogo.png',
-                                  buttonSize:
-                                  MediaQuery.of(context).size.width * 0.18,
-                                  logoSize:
-                                  MediaQuery.of(context).size.width * 0.09,
-                                  onPressed: () async {
-                                    //await signInWithGoogle(context, onLoading: _setLoading, isLoggedIn: _setLoggedIn);
-                                    //if (isLoggedIn && context.mounted) {
-                                    // Navigator.pushReplacement(
-                                    //  context,
-                                    // MaterialPageRoute(
-                                    //   builder: (context) =>
-                                    //  const MainScreen()),
-                                    //);
-                                    // }
-                                  },
-                                ),
-                                // Spacing between buttons
-                                SizedBox(
-                                    width:
-                                    MediaQuery.of(context).size.width * 0.05),
-
                                 // Outlook Button
                                 _buildSocialButton(
                                     backgroundPath: 'assets/images/outlook.png',

@@ -14,7 +14,7 @@ class SchedulePage extends StatefulWidget {
 }
 
 class _SchedulePageState extends State<SchedulePage> {
-  String date = '8';
+  String date = '7';
   String month = 'FEB';
   int selectedDay = 0;
   String selectedVenueCategory = 'All';
@@ -247,16 +247,16 @@ final List<String> keys = ["All","Lecture Halls","Grounds","Library Area", "Admi
     setState(() {
       selectedDay = index;
       if (index == 0) {
-        date = '8';
+        date = '7';
         month = 'FEB';
       } else if (index == 1) {
-        date = '9';
+        date = '8';
         month = 'FEB';
       } else if (index == 2) {
-        date = '10';
+        date = '9';
         month = 'FEB';
       } else if (index == 3) {
-        date = '11';
+        date = '10';
         month = 'FEB';
       }
       filterEvents(); // Apply filtering immediately
@@ -528,6 +528,7 @@ final List<String> keys = ["All","Lecture Halls","Grounds","Library Area", "Admi
                                                           height: duration *hourHeight,
                                                           padding:const EdgeInsets.all(8),
                                                           decoration:BoxDecoration(
+                                                            border: Border.all(color: Color(0xFFFF77A8), width: 4.0),
                                                             image: DecorationImage(
                                                               image: AssetImage('assets/images/schedule_event_bg.png'),
                                                               fit: BoxFit.cover
@@ -578,7 +579,6 @@ final List<String> keys = ["All","Lecture Halls","Grounds","Library Area", "Admi
                           ),
                         ],
                       ),
-                      SizedBox(height:bottomNavBarHeight), // Adjusted for the bottom of the schedule
                     ],
                   ),
                 ),
