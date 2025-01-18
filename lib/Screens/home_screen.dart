@@ -182,7 +182,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             element.category.replaceAll("\\s", "").toUpperCase() == "Competitions".replaceAll("\\s", "").toUpperCase())
         .toList();
 
-    print('Hello ${list.toList()}');
 
     // Shuffle and pick a limited number of suggestions
     suggestions.shuffle(Random());

@@ -44,8 +44,8 @@ class _MainScreenState extends State<MainScreen> {
 
   Future<void> checkVersion() async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    await db.collection('Version').doc('flutter_version').get().then((snapshot) {
-      if (snapshot.get('version') != packageInfo.version) {
+    await db.collection('Version').doc('version').get().then((snapshot) {
+      if (int.parse(snapshot.get('version')) > int.parse(packageInfo.buildNumber)) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           showDialog(
             context: context,

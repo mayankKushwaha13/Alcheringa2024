@@ -151,7 +151,6 @@ class _ProfilePageState extends State<ProfilePage> {
                       padding: const EdgeInsets.only(right: 10.0, top: 5.0),
                       child: GestureDetector(
                         onTap: () {
-                          print('Hello running');
                           if (!isEdit) {
                             setState(() => isEdit = true);
                           } else {
