@@ -108,7 +108,6 @@ class _StallsPageState extends State<StallsPage> {
                       child: PixelStoreCard(stall: item),
                     ),
                   ),
-                  SizedBox(height: bottomNavBarHeight - 10),
                 ],
               ),
             ),

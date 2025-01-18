@@ -126,11 +126,6 @@ class _CompetitionsWidgetState extends State<CompetitionsWidget> {
                         },
                       ),
                     ),
-
-                    if(key.toLowerCase() == "music")
-                      SizedBox(
-                        height: bottomNavBarHeight,
-                      )
                   ],
                 );
               },

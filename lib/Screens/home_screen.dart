@@ -1074,9 +1074,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         return Container();
                       }
                     }),
-                SizedBox(
-                  height: bottomNavBarHeight,
-                ),
               ],
             ),
           ),

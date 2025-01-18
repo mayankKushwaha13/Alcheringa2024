@@ -397,9 +397,6 @@ class _MapPageState extends State<MapPage> {
                                   }),
                                 ),
                               ),
-                              SizedBox(
-                                height: bottomNavBarHeight,
-                              ),
                             ],
                           ),
                         ),

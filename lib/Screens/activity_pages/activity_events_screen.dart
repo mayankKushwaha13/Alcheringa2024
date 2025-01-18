@@ -145,7 +145,6 @@ class _ActivityEventsScreenState extends State<ActivityEventsScreen> {
                             },
                           ),
                         ),
-                        SizedBox(height: bottomNavBarHeight),
                       ],
                     ),
                   ),

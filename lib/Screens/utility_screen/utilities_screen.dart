@@ -44,7 +44,6 @@ class _UtilitiesPage extends State<UtilitiesPage> {
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   child: TeamSection(),
                 ),
-                SizedBox(height: bottomNavBarHeight),
               ],
             ),
           ),

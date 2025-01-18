@@ -4,7 +4,7 @@ class TeamMember {
   final String name;
   final String role;
   final String imagePath;
-  final VoidCallback onInstagramTap;
+  final VoidCallback onPhoneTap;
   final VoidCallback onLinkedInTap;
   final VoidCallback onMailTap;
 
@@ -12,7 +12,7 @@ class TeamMember {
     required this.name,
     required this.role,
     required this.imagePath,
-    required this.onInstagramTap,
+    required this.onPhoneTap,
     required this.onLinkedInTap,
     required this.onMailTap,
   });
@@ -100,9 +100,9 @@ class TeamMemberCard extends StatelessWidget {
                       child: Row(
                         children: [
                           IconButton(
-                            icon: Image.asset('assets/images/instagram_icon.png'),
+                            icon: Image.asset('assets/images/phone_icon.png', scale: 1.3,),
                             iconSize: 24,
-                            onPressed: teamMember.onInstagramTap,
+                            onPressed: teamMember.onPhoneTap,
                           ),
                           IconButton(
                             icon: Image.asset('assets/images/linkedin_icon.png'),

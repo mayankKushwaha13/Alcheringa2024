@@ -7,17 +7,17 @@ class TeamSection extends StatelessWidget {
     TeamMember(
       name: 'Jivesh Firke',
       role: 'Head',
-      imagePath: 'assets/images/the_team_image.png',
-      onInstagramTap: () => print('https://www.instagram.com/jiveshfirke/'),
-      onLinkedInTap: () => print('https://www.linkedin.com/in/jiveshfirke'),
-      onMailTap: () => print('mailto:jiveshfirke4749gmail.com'),
+      imagePath: 'assets/images/jivesh.png',
+      onPhoneTap: () => launchUrl(Uri.parse('tel://8308077000')),
+      onLinkedInTap: () => launchUrl(Uri.parse('https://www.linkedin.com/in/jiveshfirke')),
+      onMailTap: () => launchUrl(Uri.parse('mailto:jiveshfirke4749gmail.com')),
     ),
     TeamMember(
       name: 'Akshay Kumar',
       role: 'Developer',
       imagePath: 'assets/images/akshay.jpg',
-      onInstagramTap: () =>
-          launchUrl(Uri.parse('https://www.instagram.com/akshay_kumar104_/#')),
+      onPhoneTap: () =>
+          launchUrl(Uri.parse('tel://9133116018')),
       onLinkedInTap: () => launchUrl(Uri.parse(
           'https://www.linkedin.com/in/akshay-kumar-palakurthy-a66baa281?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app')),
       onMailTap: () =>
@@ -27,8 +27,8 @@ class TeamSection extends StatelessWidget {
       name: 'Aman',
       role: 'Developer',
       imagePath: 'assets/images/aman.jpg',
-      onInstagramTap: () =>
-          launchUrl(Uri.parse('https://www.instagram.com/itz_ak_')),
+      onPhoneTap: () =>
+          launchUrl(Uri.parse('tel://9205327169')),
       onLinkedInTap: () => launchUrl(Uri.parse(
           'https://www.linkedin.com/in/aman-kumar-15a0bb286?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app')),
       onMailTap: () => launchUrl(Uri.parse('mailto:amankumarajad0@gmail.com')),
@@ -37,8 +37,8 @@ class TeamSection extends StatelessWidget {
       name: 'Arpit Malik',
       role: 'Developer',
       imagePath: 'assets/images/arpit.jpg',
-      onInstagramTap: () => launchUrl(Uri.parse(
-          'https://www.instagram.com/_arpit_m_/?igsh=MXdyendxYWdzdHZneA%3D%3D')),
+      onPhoneTap: () => launchUrl(Uri.parse(
+          'tel://7404992361')),
       onLinkedInTap: () => launchUrl(Uri.parse('')),
       onMailTap: () => launchUrl(Uri.parse('mailto:arpitvenu2004@gmail.com')),
     ),
@@ -46,8 +46,8 @@ class TeamSection extends StatelessWidget {
       name: 'Ashish Rana',
       role: 'Developer',
       imagePath: 'assets/images/ashish1.jpg',
-      onInstagramTap: () =>
-          launchUrl(Uri.parse('https://www.instagram.com/ashishranau/')),
+      onPhoneTap: () =>
+          launchUrl(Uri.parse('tel://9121521199')),
       onLinkedInTap: () => launchUrl(Uri.parse(
           'https://www.linkedin.com/in/ashish-rana-usilla-a06a99346/')),
       onMailTap: () => launchUrl(Uri.parse('mailto:ashishranau@gmail.com')),
@@ -56,8 +56,8 @@ class TeamSection extends StatelessWidget {
       name: 'Ayan',
       role: 'Developer',
       imagePath: 'assets/images/ayan.jpg',
-      onInstagramTap: () =>
-          launchUrl(Uri.parse('https://www.instagram.com/ayan_/')),
+      onPhoneTap: () =>
+          launchUrl(Uri.parse('tel://+917004850831')),
       onLinkedInTap: () => launchUrl(Uri.parse(
           'https://www.linkedin.com/in/md-ayan-hassan-44a8371a9?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app')),
       onMailTap: () => launchUrl(Uri.parse('mailto:mdayanhassan718@gmail.com')),
@@ -66,8 +66,8 @@ class TeamSection extends StatelessWidget {
       name: 'Ganesh',
       role: 'Developer',
       imagePath: 'assets/images/ganesh.jpg',
-      onInstagramTap: () =>
-          launchUrl(Uri.parse('https://www.instagram.com/ganesh_sinnur/')),
+      onPhoneTap: () =>
+          launchUrl(Uri.parse('tel://9535160707')),
       onLinkedInTap: () =>
           launchUrl(Uri.parse('https://in.linkedin.com/in/ganesh-sinnur')),
       onMailTap: () => launchUrl(Uri.parse('mailto:ganeshsinnur07@gmail.com')),
@@ -76,8 +76,8 @@ class TeamSection extends StatelessWidget {
       name: 'Gaurav Anand',
       role: 'Developer',
       imagePath: 'assets/images/gaurav.jpg',
-      onInstagramTap: () => launchUrl(Uri.parse(
-          'https://www.instagram.com/gaurav_ana.nd?igsh=cmxrb3lleTRyN3Q4')),
+      onPhoneTap: () => launchUrl(Uri.parse(
+          'tel://8865011121')),
       onLinkedInTap: () => launchUrl(Uri.parse(
           'https://www.linkedin.com/in/gaurav-anand-26b380296?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app')),
       onMailTap: () => launchUrl(Uri.parse('mailto:g.anand@iitg.ac.in')),
@@ -86,7 +86,7 @@ class TeamSection extends StatelessWidget {
       name: 'Mayank',
       role: 'Developer',
       imagePath: 'assets/images/mayank.jpg',
-      onInstagramTap: () => launchUrl(Uri.parse('')),
+      onPhoneTap: () => launchUrl(Uri.parse('tel://7380534884')),
       onLinkedInTap: () => launchUrl(
           Uri.parse('https://www.linkedin.com/in/mayank-kushwaha-768315280')),
       onMailTap: () => launchUrl(Uri.parse('mailto:m.kushwaha@iitg.ac.in')),
@@ -95,8 +95,8 @@ class TeamSection extends StatelessWidget {
       name: 'Shubham',
       role: 'Developer',
       imagePath: 'assets/images/shubham.jpg',
-      onInstagramTap: () =>
-          launchUrl(Uri.parse('https://www.instagram.com/shubham._.1105/')),
+      onPhoneTap: () =>
+          launchUrl(Uri.parse('tel://6352301450')),
       onLinkedInTap: () => launchUrl(
           Uri.parse('https://www.linkedin.com/in/shubham-neema-301755280')),
       onMailTap: () => launchUrl(Uri.parse('mailto:shubham.neema@iitg.ac.in')),
@@ -105,8 +105,8 @@ class TeamSection extends StatelessWidget {
       name: 'Sparsh Pawar',
       role: 'Developer',
       imagePath: 'assets/images/sparsh.jpg',
-      onInstagramTap: () => launchUrl(Uri.parse(
-          'https://www.instagram.com/sparshpawar22?igsh=MXI5cTc0OGNtNjV6eA==')),
+      onPhoneTap: () => launchUrl(Uri.parse(
+          'tel://7000454843')),
       onLinkedInTap: () => launchUrl(Uri.parse(
           'https://www.linkedin.com/in/sparsh-pawar-332aa828a?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app')),
       onMailTap: () => launchUrl(Uri.parse('mailto:sparshpawar2209@gmail.com')),
@@ -115,8 +115,8 @@ class TeamSection extends StatelessWidget {
       name: 'Yatika',
       role: 'Developer',
       imagePath: 'assets/images/yatika.jpg',
-      onInstagramTap: () =>
-          launchUrl(Uri.parse('https://www.instagram.com/yatika_j/')),
+      onPhoneTap: () =>
+          launchUrl(Uri.parse('tel://9337854044')),
       onLinkedInTap: () => launchUrl(
           Uri.parse('https://www.linkedin.com/in/yatika-jena-166122282/')),
       onMailTap: () => launchUrl(Uri.parse('mailto:jenayatika@gmail.com')),
@@ -124,28 +124,28 @@ class TeamSection extends StatelessWidget {
   ];
   final List<TeamMember> designTeamMembers = [
     TeamMember(
-      name: 'Sinchan',
-      role: 'Developer',
-      imagePath: 'assets/images/the_team_image.png',
-      onInstagramTap: () => print('Sinchan Instagram tapped!'),
-      onLinkedInTap: () => print('Sinchan LinkedIn tapped!'),
-      onMailTap: () => print('Sinchan Mail tapped!'),
+      name: 'Sankeerth',
+      role: 'Head',
+      imagePath: 'assets/images/sankeerth.png',
+      onPhoneTap: () => launchUrl(Uri.parse('tel://8885059696')),
+      onLinkedInTap: () => launchUrl(Uri.parse('https://www.linkedin.com/in/sai-sankeerth-veggalam')),
+      onMailTap: () => launchUrl(Uri.parse('mailto:s.veggalam@iitg.ac.in')),
     ),
     TeamMember(
-      name: 'Sinchan',
-      role: 'Developer',
-      imagePath: 'assets/images/the_team_image.png',
-      onInstagramTap: () => print('Sinchan Instagram tapped!'),
-      onLinkedInTap: () => print('Sinchan LinkedIn tapped!'),
-      onMailTap: () => print('Sinchan Mail tapped!'),
+      name: 'Arin',
+      role: 'Designer',
+      imagePath: 'assets/images/arin.jpeg',
+      onPhoneTap: () => launchUrl(Uri.parse('tel://7003662536')),
+      onLinkedInTap: () => launchUrl(Uri.parse('https://www.linkedin.com/in/arin-bandyopadhyay-9b99b22b0/')),
+      onMailTap: () => launchUrl(Uri.parse('mailto:b.arin@iitg.ac.in')),
     ),
     TeamMember(
-      name: 'Sinchan',
-      role: 'Developer',
-      imagePath: 'assets/images/the_team_image.png',
-      onInstagramTap: () => print('Sinchan Instagram tapped!'),
-      onLinkedInTap: () => print('Sinchan LinkedIn tapped!'),
-      onMailTap: () => print('Sinchan Mail tapped!'),
+      name: 'Shivam',
+      role: 'Designer',
+      imagePath: 'assets/images/shivam.jpeg',
+      onPhoneTap: () => launchUrl(Uri.parse('tel://9279439406')),
+      onLinkedInTap: () => launchUrl(Uri.parse('https://www.linkedin.com/in/shivam-umaru')),
+      onMailTap: () => launchUrl(Uri.parse('maito:shivam.bdes@iitg.ac.in')),
     ),
   ];
   void openUrl(String url) async {

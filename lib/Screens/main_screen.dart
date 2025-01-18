@@ -1,11 +1,8 @@
-import 'dart:ffi';
-
 import 'package:alcheringa/Common/globals.dart';
 import 'package:alcheringa/Screens/activity_pages/activity_page.dart';
 import 'package:alcheringa/Screens/end_drawer.dart';
 import 'package:alcheringa/Screens/top_app_bar.dart';
 import 'package:alcheringa/Screens/utility_screen/utilities_screen.dart';
-import 'package:alcheringa/common/resource.dart';
 import 'package:alcheringa/screens/home_screen.dart';
 import 'package:alcheringa/screens/map_page.dart';
 import 'package:alcheringa/screens/schedule_page.dart';
@@ -44,11 +41,11 @@ class _MainScreenState extends State<MainScreen> {
       _calculateBottomNavBarHeight();
     });
   }
-  
+
   Future<void> checkVersion() async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     await db.collection('Version').doc('flutter_version').get().then((snapshot) {
-      if(snapshot.get('version') != packageInfo.version){
+      if (snapshot.get('version') != packageInfo.version) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           showDialog(
             context: context,
@@ -59,11 +56,11 @@ class _MainScreenState extends State<MainScreen> {
                 content: const Text(
                   'A newer version of the app is available. Please update to the latest version for the best experience.',
                 ),
-
                 actions: [
                   TextButton(
                     onPressed: () {
-                      final uri = Uri.parse('https://play.google.com/store/apps/details?id=com.alcheringa.alcheringa2022&hl=en_IN');
+                      final uri = Uri.parse(
+                          'https://play.google.com/store/apps/details?id=com.alcheringa.alcheringa2022&hl=en_IN');
                       launchUrl(uri);
                     },
                     child: const Text('Update'),
@@ -78,8 +75,7 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   void _calculateBottomNavBarHeight() {
-    final RenderBox? renderBox =
-        _bottomNavBarKey.currentContext?.findRenderObject() as RenderBox?;
+    final RenderBox? renderBox = _bottomNavBarKey.currentContext?.findRenderObject() as RenderBox?;
     if (renderBox != null) {
       setState(() {
         bottomNavBarHeight = renderBox.size.height;
@@ -106,6 +102,75 @@ class _MainScreenState extends State<MainScreen> {
         onTapped: _onTapped,
       ),
       appBar: TopAppBar(scaffoldState: _scaffoldKey),
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage(
+              'assets/images/bottom_bar_bg.png',
+            ),
+            fit: BoxFit.fill
+          ),
+        ),
+        child: BottomNavigationBar(
+          key: _bottomNavBarKey,
+          items: [
+            BottomNavigationBarItem(
+              icon: Padding(
+                padding: EdgeInsets.only(top: _selectedIndex == 0 ? 0 : 20),
+                child: Image.asset(
+                  _selectedIndex == 0 ? 'assets/images/map_selected.png' : 'assets/images/map_unselected.png',
+                  height: _selectedIndex == 0 ? 110.0 : 90.0,
+                ),
+              ),
+              label: '',
+            ),
+            BottomNavigationBarItem(
+              icon: Padding(
+                padding: EdgeInsets.only(top: _selectedIndex == 1 ? 0 : 20),
+                child: Image.asset(
+                  _selectedIndex == 1 ? 'assets/images/schedule_selected.png' : 'assets/images/schedule_unselected.png',
+                  height: _selectedIndex == 1 ? 110.0 : 90.0,
+                ),
+              ),
+              label: '',
+            ),
+            BottomNavigationBarItem(
+              icon: Padding(
+                padding: EdgeInsets.only(top: _selectedIndex == 2 ? 0 : 20),
+                child: Image.asset(
+                  _selectedIndex == 2 ? 'assets/images/home_selected.png' : 'assets/images/home_unselected.png',
+                  height: _selectedIndex == 2 ? 110.0 : 90.0,
+                ),
+              ),
+              label: '',
+            ),
+            BottomNavigationBarItem(
+              icon: Padding(
+                padding: EdgeInsets.only(top: _selectedIndex == 3 ? 0 : 20),
+                child: Image.asset(
+                  _selectedIndex == 3 ? 'assets/images/activity_selected.png' : 'assets/images/activity_unselected.png',
+                  height: _selectedIndex == 3 ? 110.0 : 90.0,
+                ),
+              ),
+              label: '',
+            ),
+            BottomNavigationBarItem(
+              icon: Padding(
+                padding: EdgeInsets.only(top: _selectedIndex == 4 ? 0 : 20),
+                child: Image.asset(
+                  _selectedIndex == 4 ? 'assets/images/utility_selected.png' : 'assets/images/utility_unselected.png',
+                  height: _selectedIndex == 4 ? 110.0 : 90.0,
+                ),
+              ),
+              label: '',
+            ),
+          ],
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: Colors.transparent,
+          currentIndex: _selectedIndex,
+          onTap: _onTapped,
+        ),
+      ),
       body: Stack(
         children: [
           AnimatedSwitcher(
@@ -115,90 +180,90 @@ class _MainScreenState extends State<MainScreen> {
             },
             child: _pages[_selectedIndex],
           ),
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white.withAlpha(10), // Semi-transparent white
-              ),
-              child: BottomNavigationBar(
-                key: _bottomNavBarKey,
-                items: [
-                  BottomNavigationBarItem(
-                    icon: Padding(
-                      padding:
-                          EdgeInsets.only(top: _selectedIndex == 0 ? 0 : 20),
-                      child: Image.asset(
-                        _selectedIndex == 0
-                            ? 'assets/images/map_selected.png'
-                            : 'assets/images/map_unselected.png',
-                        height: _selectedIndex == 0 ? 110.0 : 90.0,
-                      ),
-                    ),
-                    label: '',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Padding(
-                      padding:
-                          EdgeInsets.only(top: _selectedIndex == 1 ? 0 : 20),
-                      child: Image.asset(
-                        _selectedIndex == 1
-                            ? 'assets/images/schedule_selected.png'
-                            : 'assets/images/schedule_unselected.png',
-                        height: _selectedIndex == 1 ? 110.0 : 90.0,
-                      ),
-                    ),
-                    label: '',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Padding(
-                      padding:
-                          EdgeInsets.only(top: _selectedIndex == 2 ? 0 : 20),
-                      child: Image.asset(
-                        _selectedIndex == 2
-                            ? 'assets/images/home_selected.png'
-                            : 'assets/images/home_unselected.png',
-                        height: _selectedIndex == 2 ? 110.0 : 90.0,
-                      ),
-                    ),
-                    label: '',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Padding(
-                      padding:
-                          EdgeInsets.only(top: _selectedIndex == 3 ? 0 : 20),
-                      child: Image.asset(
-                        _selectedIndex == 3
-                            ? 'assets/images/activity_selected.png'
-                            : 'assets/images/activity_unselected.png',
-                        height: _selectedIndex == 3 ? 110.0 : 90.0,
-                      ),
-                    ),
-                    label: '',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Padding(
-                      padding:
-                          EdgeInsets.only(top: _selectedIndex == 4 ? 0 : 20),
-                      child: Image.asset(
-                        _selectedIndex == 4
-                            ? 'assets/images/utility_selected.png'
-                            : 'assets/images/utility_unselected.png',
-                        height: _selectedIndex == 4 ? 110.0 : 90.0,
-                      ),
-                    ),
-                    label: '',
-                  ),
-                ],
-                type: BottomNavigationBarType.fixed,
-                backgroundColor: Colors.transparent,
-                currentIndex: _selectedIndex,
-                onTap: _onTapped,
-              ),
-            ),
-          ),
+          // Positioned(
+          //   bottom: 0,
+          //   left: 0,
+          //   right: 0,
+          //   child: Container(
+          //     decoration: BoxDecoration(
+          //       color: Colors.white.withAlpha(10), // Semi-transparent white
+          //     ),
+          //     child: BottomNavigationBar(
+          //       key: _bottomNavBarKey,
+          //       items: [
+          //         BottomNavigationBarItem(
+          //           icon: Padding(
+          //             padding:
+          //                 EdgeInsets.only(top: _selectedIndex == 0 ? 0 : 20),
+          //             child: Image.asset(
+          //               _selectedIndex == 0
+          //                   ? 'assets/images/map_selected.png'
+          //                   : 'assets/images/map_unselected.png',
+          //               height: _selectedIndex == 0 ? 110.0 : 90.0,
+          //             ),
+          //           ),
+          //           label: '',
+          //         ),
+          //         BottomNavigationBarItem(
+          //           icon: Padding(
+          //             padding:
+          //                 EdgeInsets.only(top: _selectedIndex == 1 ? 0 : 20),
+          //             child: Image.asset(
+          //               _selectedIndex == 1
+          //                   ? 'assets/images/schedule_selected.png'
+          //                   : 'assets/images/schedule_unselected.png',
+          //               height: _selectedIndex == 1 ? 110.0 : 90.0,
+          //             ),
+          //           ),
+          //           label: '',
+          //         ),
+          //         BottomNavigationBarItem(
+          //           icon: Padding(
+          //             padding:
+          //                 EdgeInsets.only(top: _selectedIndex == 2 ? 0 : 20),
+          //             child: Image.asset(
+          //               _selectedIndex == 2
+          //                   ? 'assets/images/home_selected.png'
+          //                   : 'assets/images/home_unselected.png',
+          //               height: _selectedIndex == 2 ? 110.0 : 90.0,
+          //             ),
+          //           ),
+          //           label: '',
+          //         ),
+          //         BottomNavigationBarItem(
+          //           icon: Padding(
+          //             padding:
+          //                 EdgeInsets.only(top: _selectedIndex == 3 ? 0 : 20),
+          //             child: Image.asset(
+          //               _selectedIndex == 3
+          //                   ? 'assets/images/activity_selected.png'
+          //                   : 'assets/images/activity_unselected.png',
+          //               height: _selectedIndex == 3 ? 110.0 : 90.0,
+          //             ),
+          //           ),
+          //           label: '',
+          //         ),
+          //         BottomNavigationBarItem(
+          //           icon: Padding(
+          //             padding:
+          //                 EdgeInsets.only(top: _selectedIndex == 4 ? 0 : 20),
+          //             child: Image.asset(
+          //               _selectedIndex == 4
+          //                   ? 'assets/images/utility_selected.png'
+          //                   : 'assets/images/utility_unselected.png',
+          //               height: _selectedIndex == 4 ? 110.0 : 90.0,
+          //             ),
+          //           ),
+          //           label: '',
+          //         ),
+          //       ],
+          //       type: BottomNavigationBarType.fixed,
+          //       // backgroundColor: Colors.transparent,
+          //       currentIndex: _selectedIndex,
+          //       onTap: _onTapped,
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );
