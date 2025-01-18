@@ -54,11 +54,6 @@ class _MainScreenState extends State<MainScreen> {
       setState(() {
         _selectedIndex = index;
       });
-      _pageController.animateToPage(
-        index,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeInOut,
-      );
     }
   }
 
@@ -74,15 +69,12 @@ class _MainScreenState extends State<MainScreen> {
       appBar: TopAppBar(scaffoldState: _scaffoldKey),
       body: Stack(
         children: [
-          PageView(
-            controller: _pageController,
-            onPageChanged: (index) {
-              setState(() {
-                _selectedIndex = index;
-              });
+          AnimatedSwitcher(
+            duration: const Duration(milliseconds: 300),
+            transitionBuilder: (Widget child, Animation<double> animation) {
+              return FadeTransition(opacity: animation, child: child);
             },
-            physics: const NeverScrollableScrollPhysics(),
-            children: _pages,
+            child: _pages[_selectedIndex],
           ),
           Positioned(
             bottom: 0,

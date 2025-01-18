@@ -1,6 +1,10 @@
 import 'package:alcheringa/Common/globals.dart';
 import 'package:alcheringa/Database/liked_events.dart';
 import 'package:alcheringa/Model/eventdetail.dart';
+import 'package:alcheringa/Model/informal_model.dart';
+import 'package:alcheringa/Model/view_model_main.dart';
+import 'package:alcheringa/Screens/activity_pages/widgets/competition_card.dart';
+import 'package:alcheringa/Screens/activity_pages/widgets/informal_card.dart';
 import 'package:alcheringa/Screens/event_detail_page.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +23,7 @@ List<EventDetail> proniteslist = [];
 List<EventDetail> proshowslist = [];
 List<EventDetail> creatorscamplist = [];
 List<EventDetail> alllist = [];
+List<InformalModel> informals = [];
 
 class _ActivityEventsScreenState extends State<ActivityEventsScreen> {
   // void getEvents() async {
@@ -60,9 +65,15 @@ class _ActivityEventsScreenState extends State<ActivityEventsScreen> {
   void initState() {
     super.initState();
     // Fetch events using the provider when the screen initializes
+    getInformals();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<EventProvider>(context, listen: false).fetchEvents();
     });
+  }
+
+  Future<void> getInformals() async {
+    informals = viewModelMain.informalList;
+    setState(() {});
   }
 
   @override
@@ -118,6 +129,24 @@ class _ActivityEventsScreenState extends State<ActivityEventsScreen> {
                         _buildEventList(
                           screenHeight: screenHeight,
                           events: eventProvider.creatorsCamp,
+                        ),
+                        const SizedBox(height: 20),
+
+                        _buildHeading(
+                          text: "Informals",
+                          backgroundImage: "assets/images/heading.png",
+                        ),
+                        const SizedBox(height: 20),
+                        SizedBox(
+                          height: 175,
+                          child: PageView.builder(
+                            controller: PageController(viewportFraction: 0.9),
+                            itemCount: informals.length,
+                            itemBuilder: (BuildContext context, int index) {
+
+                              return InformalCard(informal: informals[index]);
+                            },
+                          ),
                         ),
                         SizedBox(height: bottomNavBarHeight),
                       ],

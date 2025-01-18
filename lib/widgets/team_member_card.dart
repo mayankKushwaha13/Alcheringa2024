@@ -26,8 +26,6 @@ class TeamMemberCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 150,
-      width: 350,
       margin: const EdgeInsets.symmetric(vertical: 10),
       decoration: BoxDecoration(
         image: DecorationImage(
@@ -93,27 +91,33 @@ class TeamMemberCard extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 10),
-                Row(
-                  children: [
-                    SizedBox(
-                      width: 15,
+                Padding(
+                  padding: const EdgeInsets.only(right: 10.0),
+                  child: Align(
+                    alignment: Alignment.bottomRight,
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          IconButton(
+                            icon: Image.asset('assets/images/instagram_icon.png'),
+                            iconSize: 24,
+                            onPressed: teamMember.onInstagramTap,
+                          ),
+                          IconButton(
+                            icon: Image.asset('assets/images/linkedin_icon.png'),
+                            iconSize: 24,
+                            onPressed: teamMember.onLinkedInTap,
+                          ),
+                          IconButton(
+                            icon: Image.asset('assets/images/mail_icon.png'),
+                            iconSize: 24,
+                            onPressed: teamMember.onMailTap,
+                          ),
+                        ],
+                      ),
                     ),
-                    IconButton(
-                      icon: Image.asset('assets/images/instagram_icon.png'),
-                      iconSize: 24,
-                      onPressed: teamMember.onInstagramTap,
-                    ),
-                    IconButton(
-                      icon: Image.asset('assets/images/linkedin_icon.png'),
-                      iconSize: 24,
-                      onPressed: teamMember.onLinkedInTap,
-                    ),
-                    IconButton(
-                      icon: Image.asset('assets/images/mail_icon.png'),
-                      iconSize: 24,
-                      onPressed: teamMember.onMailTap,
-                    ),
-                  ],
+                  ),
                 ),
               ],
             ),

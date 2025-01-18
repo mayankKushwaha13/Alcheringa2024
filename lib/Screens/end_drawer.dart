@@ -106,123 +106,152 @@ class _EndDrawerState extends State<EndDrawer> {
     ];
 
     return SafeArea(
-      child: Padding(
-        padding: EdgeInsets.only(bottom: bottomNavBarHeight),
-        child: Drawer(
-          backgroundColor: Colors.transparent,
-          child: Stack(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.zero,
-                  image: DecorationImage(
-                    image: AssetImage('assets/images/sidebar_bg.png'),
-                    fit: BoxFit.fill,
-                  ),
+      child: Drawer(
+        backgroundColor: Colors.transparent,
+        child: Stack(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.zero,
+                image: DecorationImage(
+                  image: AssetImage('assets/images/sidebar_bg.png'),
+                  fit: BoxFit.fill,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 30.0, top: 30.0),
-                child: ListView(
-                  padding: EdgeInsets.only(top: 40.0, left: 20.0, right: 39.0),
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          Image.asset(
-                            'assets/images/sidebar_profile_bg.png',
+            ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 30.0, top: 30.0),
+              child: ListView(
+                padding: EdgeInsets.only(top: 40.0, left: 20.0, right: 39.0),
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Image.asset(
+                          'assets/images/sidebar_profile_bg.png',
+                        ),
+                        Column(
+                          children: [
+                            FutureBuilder(
+                              future: _loadImage(),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState == ConnectionState.waiting) {
+                                  return CircularProgressIndicator();
+                                }
+                                if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                                  return CachedNetworkImage(
+                                      imageUrl: snapshot.data!,
+                                      width: 120.0, // Adjust size
+                                      height: 120.0,
+                                      fit: BoxFit.cover);
+                                }
+                                // log("HERE");
+                                return Image.asset(
+                                  'assets/images/cat.jpg',
+                                  width: 120.0, // Adjust size
+                                  height: 120.0,
+                                  fit: BoxFit.cover,
+                                );
+                              },
+                            ),
+                            SizedBox(
+                              height: 30.0,
+                            ),
+                            Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                Image.asset('assets/images/sidebar_profile_name_bg.png'),
+                                FutureBuilder(
+                                  future: _getName(),
+                                  builder: (context, snapshot) {
+                                    return Text(
+                                      snapshot.data ?? "Unknown",
+                                      style: TextStyle(fontSize: 16.0, fontFamily: 'Game_Tape', color: Colors.white),
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  ...sideBarItemsList1.map(
+                    (item) => SideBarItems(
+                      name: item['name'],
+                      iconPath: item['iconPath'],
+                      onTap: item['onTap'],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 25.0,
+                  ),
+                  ...sideBarItemsList2.map(
+                    (item) => SideBarItems(
+                      name: item['name'],
+                      iconPath: item['iconPath'],
+                      onTap: item['onTap'],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 25.0,
+                  ),
+                  SideBarItems(
+                    name: 'SIGN OUT',
+                    iconPath: 'assets/images/sidebar_signout_icon.png',
+                    onTap: () {
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (context) => welcomeScreen()),
+                        (Route<dynamic> route) => false,
+                      );
+                      auth.signOut();
+                    },
+                  ),
+                  SizedBox(
+                    height: 15.0,
+                  ),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 32.0),
+                      child: TextButton(
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.zero,
+                          minimumSize: Size(0, 0),
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        ),
+                        onPressed: () async {
+                          final website = Uri.parse('https://www.alcheringa.in');
+
+                          if (await canLaunchUrl(website)) {
+                            await launchUrl(website);
+                          } else {
+                            throw 'Could not open the website';
+                          }
+                        },
+                        child: Text(
+                          'alchering.in',
+                          style: TextStyle(
+                            color: Color(0xFFFF77A8),
+                            fontSize: 12,
+                            fontFamily: 'Game_Tape',
                           ),
-                          Column(
-                            children: [
-                              FutureBuilder(
-                                future: _loadImage(),
-                                builder: (context, snapshot) {
-                                  if (snapshot.connectionState == ConnectionState.waiting) {
-                                    return CircularProgressIndicator();
-                                  }
-                                  if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                                    return CachedNetworkImage(
-                                        imageUrl: snapshot.data!,
-                                        width: 120.0, // Adjust size
-                                        height: 120.0,
-                                        fit: BoxFit.cover);
-                                  }
-                                  // log("HERE");
-                                  return Image.asset(
-                                    'assets/images/cat.jpg',
-                                    width: 120.0, // Adjust size
-                                    height: 120.0,
-                                    fit: BoxFit.cover,
-                                  );
-                                },
-                              ),
-                              SizedBox(
-                                height: 30.0,
-                              ),
-                              Stack(
-                                alignment: Alignment.center,
-                                children: [
-                                  Image.asset('assets/images/sidebar_profile_name_bg.png'),
-                                  FutureBuilder(
-                                    future: _getName(),
-                                    builder: (context, snapshot) {
-                                      return Text(
-                                        snapshot.data ?? "Unknown",
-                                        style: TextStyle(fontSize: 16.0, fontFamily: 'Game_Tape', color: Colors.white),
-                                      );
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
+                        ),
                       ),
                     ),
-                    ...sideBarItemsList1.map(
-                      (item) => SideBarItems(
-                        name: item['name'],
-                        iconPath: item['iconPath'],
-                        onTap: item['onTap'],
-                      ),
-                    ),
-                    SizedBox(
-                      height: 25.0,
-                    ),
-                    ...sideBarItemsList2.map(
-                      (item) => SideBarItems(
-                        name: item['name'],
-                        iconPath: item['iconPath'],
-                        onTap: item['onTap'],
-                      ),
-                    ),
-                    SizedBox(
-                      height: 25.0,
-                    ),
-                    SideBarItems(
-                      name: 'SIGN OUT',
-                      iconPath: 'assets/images/sidebar_signout_icon.png',
-                      onTap: () {
-                        Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(builder: (context) => welcomeScreen()),
-                          (Route<dynamic> route) => false,
-                        );
-                        auth.signOut();
-                      },
-                    ),
-                    SizedBox(
-                      height: 15.0,
-                    ),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: Padding(
-                        padding: const EdgeInsets.only(right:32.0),
-                        child: TextButton(
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 30.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        TextButton(
                           style: TextButton.styleFrom(
-                            padding: EdgeInsets.zero,
+                            padding: EdgeInsets.symmetric(horizontal: 4.0),
                             minimumSize: Size(0, 0),
                             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                           ),
@@ -233,92 +262,63 @@ class _EndDrawerState extends State<EndDrawer> {
                             );
                           },
                           child: Text(
-                            'alchering.in',
+                            'ABOUT',
                             style: TextStyle(
-                              color: Color(0xFFFF77A8),
+                              color: Color(0xFF7E2553),
                               fontSize: 12,
                               fontFamily: 'Game_Tape',
                             ),
                           ),
                         ),
-                      ),
+                        TextButton(
+                          style: TextButton.styleFrom(
+                            padding: EdgeInsets.symmetric(horizontal: 4.0),
+                            minimumSize: Size(0, 0),
+                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => TermsScreen()),
+                            );
+                          },
+                          child: Text(
+                            'T&C',
+                            style: TextStyle(
+                              color: Color(0xFF7E2553),
+                              fontSize: 12,
+                              fontFamily: 'Game_Tape',
+                            ),
+                          ),
+                        ),
+                        TextButton(
+                          style: TextButton.styleFrom(
+                            padding: EdgeInsets.only(left: 4.0),
+                            minimumSize: Size(0, 0),
+                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => PrivacyPolicyScreen()),
+                            );
+                          },
+                          child: Text(
+                            'PRIVACY POLICY',
+                            style: TextStyle(
+                              color: Color(0xFF7E2553),
+                              fontSize: 12,
+                              fontFamily: 'Game_Tape',
+                            ),
+                          ),
+                        )
+                      ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 30.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          TextButton(
-                            style: TextButton.styleFrom(
-                              padding: EdgeInsets.symmetric(horizontal: 4.0),
-                              minimumSize: Size(0, 0),
-                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                            ),
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => Aboutscreen()),
-                              );
-                            },
-                            child: Text(
-                              'ABOUT',
-                              style: TextStyle(
-                                color: Color(0xFF7E2553),
-                                fontSize: 12,
-                                fontFamily: 'Game_Tape',
-                              ),
-                            ),
-                          ),
-                          TextButton(
-                            style: TextButton.styleFrom(
-                              padding: EdgeInsets.symmetric(horizontal: 4.0),
-                              minimumSize: Size(0, 0),
-                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                            ),
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => TermsScreen()),
-                              );
-                            },
-                            child: Text(
-                              'T&C',
-                              style: TextStyle(
-                                color: Color(0xFF7E2553),
-                                fontSize: 12,
-                                fontFamily: 'Game_Tape',
-                              ),
-                            ),
-                          ),
-                          TextButton(
-                            style: TextButton.styleFrom(
-                              padding: EdgeInsets.only(left: 4.0),
-                              minimumSize: Size(0, 0),
-                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                            ),
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => PrivacyPolicyScreen()),
-                              );
-                            },
-                            child: Text(
-                              'PRIVACY POLICY',
-                              style: TextStyle(
-                                color: Color(0xFF7E2553),
-                                fontSize: 12,
-                                fontFamily: 'Game_Tape',
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    )
-                  ],
-                ),
+                  )
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

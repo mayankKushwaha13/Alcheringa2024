@@ -20,7 +20,7 @@ class CustomImageTextField extends StatelessWidget {
       alignment: Alignment.center,
       children: [
         Container(
-          width: 330.0, // Set desired width
+          // width: 330.0, // Set desired width
           height: 54, // Set desired height
           decoration: BoxDecoration(
             image: DecorationImage(

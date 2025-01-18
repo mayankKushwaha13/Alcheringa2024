@@ -1,3 +1,4 @@
+import 'package:alcheringa/Common/globals.dart';
 import 'package:alcheringa/Model/eventdetail.dart';
 import 'package:alcheringa/Model/view_model_main.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +25,7 @@ class EventProvider with ChangeNotifier {
     _isLoading = true;
     notifyListeners();
     try {
-      _allEvents = await ViewModelMain().getAllEvents();
+      _allEvents = viewModelMain.allEvents;
       _pronites = _allEvents
           .where((event) => event.type.toLowerCase() == "pronites")
           .toList();
@@ -34,7 +35,7 @@ class EventProvider with ChangeNotifier {
       _creatorsCamp = _allEvents
           .where((event) => event.type.toLowerCase() == "creators' camp")
           .toList();
-      _venues = await ViewModelMain().getVenues();
+      _venues = viewModelMain.venuesList;
     } finally {
       _isLoading = false;
       notifyListeners();

@@ -1,3 +1,4 @@
+import 'package:alcheringa/Common/globals.dart';
 import 'package:flutter/material.dart';
 
 import '../Model/stall_model.dart';
@@ -17,7 +18,7 @@ class StallProvider with ChangeNotifier {
     notifyListeners();
 
     try {
-      final fetchedStalls = await ViewModelMain().getStalls();
+      final fetchedStalls = viewModelMain.stallList;
       _stalls = fetchedStalls;
       _filteredStalls = List.from(_stalls);
     } catch (e) {
