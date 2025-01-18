@@ -26,6 +26,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   DBHandler dbHandler = DBHandler();
   await dbHandler.database;
+  await viewModelMain.Gsheetinit();
   final cartProvider = CartProvider();
   await cartProvider.loadCartFromDatabase();
   await Firebase.initializeApp(
