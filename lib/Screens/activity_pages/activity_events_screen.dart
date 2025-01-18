@@ -2,8 +2,6 @@ import 'package:alcheringa/Common/globals.dart';
 import 'package:alcheringa/Database/liked_events.dart';
 import 'package:alcheringa/Model/eventdetail.dart';
 import 'package:alcheringa/Model/informal_model.dart';
-import 'package:alcheringa/Model/view_model_main.dart';
-import 'package:alcheringa/Screens/activity_pages/widgets/competition_card.dart';
 import 'package:alcheringa/Screens/activity_pages/widgets/informal_card.dart';
 import 'package:alcheringa/Screens/event_detail_page.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -143,7 +141,6 @@ class _ActivityEventsScreenState extends State<ActivityEventsScreen> {
                             controller: PageController(viewportFraction: 0.9),
                             itemCount: informals.length,
                             itemBuilder: (BuildContext context, int index) {
-
                               return InformalCard(informal: informals[index]);
                             },
                           ),
@@ -213,8 +210,7 @@ class _ActivityEventsScreenState extends State<ActivityEventsScreen> {
               itemCount: events.length,
               itemBuilder: (context, index) {
                 final event = events[index];
-                final isLiked = likedEvents
-                    .any((likedEvent) => likedEvent.artist == event.artist);
+                final isLiked = likedEvents.any((likedEvent) => likedEvent.artist == event.artist);
                 return _buildCard(event: event, isLiked: isLiked);
               },
             );
@@ -224,32 +220,32 @@ class _ActivityEventsScreenState extends State<ActivityEventsScreen> {
     );
   }
 
-  Widget _buildCard(
-      {required EventDetail event,
-      required bool isLiked,
-      double headingSize = 20}) {
+  Widget _buildCard({required EventDetail event, required bool isLiked, double headingSize = 20}) {
     final screenHeight = MediaQuery.of(context).size.height;
     final widgetHeight = screenHeight * 0.6;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
       child: GestureDetector(
         onTap: () {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => EventDetailPage(event: event)));
+          if(event.isArtistRevealed) {
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => EventDetailPage(event: event)));
+          }
         },
         child: Column(
           children: [
             Stack(
               children: [
                 Positioned.fill(
-                    child: ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
-                  child: CachedNetworkImage(
-                    imageUrl: event.imgurl,
-                    fit: BoxFit.cover,
-                    alignment: Alignment.center,
-                  ),
-                )),
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: event.isArtistRevealed
+                          ? CachedNetworkImage(
+                              imageUrl: event.imgurl,
+                              fit: BoxFit.cover,
+                              alignment: Alignment.center,
+                            )
+                          : Image.asset('assets/images/card_0.png', fit: BoxFit.cover, alignment: Alignment.center,)),
+                ),
                 Container(
                   height: widgetHeight,
                   width: 186 * widgetHeight / 480,
@@ -276,9 +272,7 @@ class _ActivityEventsScreenState extends State<ActivityEventsScreen> {
                     child: Image(
                       height: 65 * widgetHeight / 480,
                       image: AssetImage(
-                        isLiked
-                            ? 'assets/images/bell1.png'
-                            : 'assets/images/bell.png',
+                        isLiked ? 'assets/images/bell1.png' : 'assets/images/bell.png',
                       ),
                     ),
                   ),
@@ -287,7 +281,7 @@ class _ActivityEventsScreenState extends State<ActivityEventsScreen> {
                   left: 25 * widgetHeight / 480,
                   top: 336 * widgetHeight / 480,
                   child: Text(
-                    event.artist,
+                    event.isArtistRevealed ? event.artist : 'Coming Soon',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
@@ -303,7 +297,7 @@ class _ActivityEventsScreenState extends State<ActivityEventsScreen> {
                   top: 380 * widgetHeight / 485,
                   right: 25,
                   child: Text(
-                    event.descriptionEvent,
+                    event.isArtistRevealed ? event.descriptionEvent : 'Coming Soon',
                     maxLines: 3,
                     overflow: TextOverflow.clip,
                     style: TextStyle(
@@ -319,7 +313,7 @@ class _ActivityEventsScreenState extends State<ActivityEventsScreen> {
                   top: 441 * widgetHeight / 480,
                   right: 25,
                   child: Text(
-                    getTimeAndVenue(event),
+                    event.isArtistRevealed ? getTimeAndVenue(event) : 'Coming Soon',
                     maxLines: 1,
                     overflow: TextOverflow.clip,
                     style: const TextStyle(
@@ -344,9 +338,7 @@ class _ActivityEventsScreenState extends State<ActivityEventsScreen> {
 
     String month = date >= 31 ? 'Jan' : 'Feb';
     String timeSuffix = event.starttime.hours >= 12 ? 'PM' : 'AM';
-    String displayHour = event.starttime.hours > 12
-        ? "${event.starttime.hours - 12}"
-        : "${event.starttime.hours}";
+    String displayHour = event.starttime.hours > 12 ? "${event.starttime.hours - 12}" : "${event.starttime.hours}";
 
     return '$date $month, $displayHour $timeSuffix | ${event.venue}';
   }

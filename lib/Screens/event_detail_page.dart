@@ -1,3 +1,5 @@
+import 'package:alcheringa/Common/globals.dart';
+import 'package:alcheringa/Common/resource.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -32,8 +34,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
   Future<void> _fetchVenues() async {
     try {
       // Access ViewModelMain via Provider
-      final viewModelMain = Provider.of<ViewModelMain>(context, listen: false);
-      List<VenueModel> fetchedVenues = await viewModelMain.getVenues();
+      List<VenueModel> fetchedVenues = viewModelMain.venuesList;
 
       setState(() {
         venues = fetchedVenues;
@@ -56,9 +57,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
   @override
   Widget build(BuildContext context) {
     // Fetch events of the same type for suggestions
-    final allEvents =
-        Provider.of<ViewModelMain>(context, listen: false).allEvents;
-    final List<EventDetail> suggestions = allEvents
+    final List<EventDetail> suggestions = viewModelMain.allEvents
         .where((e) => e.type == widget.event.type && e != widget.event)
         .toList();
 
@@ -66,6 +65,10 @@ class _EventDetailPageState extends State<EventDetailPage> {
     suggestions.shuffle(Random());
     final List<EventDetail> displayedSuggestions =
         suggestions.take(10).toList();
+
+    String month = widget.event.starttime.date >= 31 ? 'Jan' : 'Feb';
+
+    String eventTime = '${widget.event.starttime.date} $month, ${widget.event.starttime.hours}:${widget.event.starttime.min}';
 
     return SafeArea(
       child: Scaffold(
@@ -143,7 +146,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                           ),
                         ),
                         Text(
-                          '${widget.event.starttime.date}, ${widget.event.starttime.hours}:${widget.event.starttime.min}',
+                          eventTime,
                           textAlign: TextAlign.right,
                           style: TextStyle(
                             fontFamily: 'Game_Tape',
@@ -176,7 +179,13 @@ class _EventDetailPageState extends State<EventDetailPage> {
                         GestureDetector(
                           onTap: () {
                             if (widget.event.reglink.isNotEmpty) {
-                              // Navigate to registration link
+                              final uri = Uri.parse(widget.event.reglink);
+                              try{
+                                launchUrl(uri);
+                              } catch (e){
+                                print('Cannot open the browser');
+                                showMessage('Unable to open browser', context);
+                              }
                             }
                           },
                           child: Stack(

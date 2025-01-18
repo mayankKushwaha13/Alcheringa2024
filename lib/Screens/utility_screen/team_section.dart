@@ -8,9 +8,9 @@ class TeamSection extends StatelessWidget {
       name: 'Jivesh Firke',
       role: 'Head',
       imagePath: 'assets/images/the_team_image.png',
-      onInstagramTap: () => print('Doremon Instagram tapped!'),
-      onLinkedInTap: () => print('Doremon LinkedIn tapped!'),
-      onMailTap: () => print('Doremon Mail tapped!'),
+      onInstagramTap: () => print('https://www.instagram.com/jiveshfirke/'),
+      onLinkedInTap: () => print('https://www.linkedin.com/in/jiveshfirke'),
+      onMailTap: () => print('mailto:jiveshfirke4749gmail.com'),
     ),
     TeamMember(
       name: 'Akshay Kumar',

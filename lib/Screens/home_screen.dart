@@ -37,7 +37,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   final CarouselSliderController _carouselController = CarouselSliderController();
   int _currentIndex = 0;
   List<EventDetail> PronitesList = [];
-  late final List<EventDetail> displayedSuggestions;
+  List<EventDetail> displayedSuggestions = [];
+  bool isPassLoading = false;
 
   @override
   void initState() {
@@ -77,6 +78,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     }
     if (viewModelMain.allEvents.isEmpty) {
       futures1.add(viewModelMain.getAllEvents().then((_) {
+        initializeSuggestions();
         print('Fetched all list');
       }));
     }
@@ -125,27 +127,32 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         print('Fetched order details list');
       }));
     }
+    setState(() {
+      isPassLoading = true;
+    });
     if (viewModelMain.passList.isEmpty) {
-      futures3.add(viewModelMain.getPassListFromSharedPreferences().then((passList) {
+      futures2.add(viewModelMain.getPassListFromSharedPreferences().then((passList) {
         viewModelMain.passList = passList;
         return viewModelMain.getPass().then((_) {
           print('Fetched passes list');
         });
       }));
     }
+    setState(() {
+      isPassLoading = false;
+    });
 
     await Future.wait(futures1);
-    if(mounted) {
+    if (mounted) {
       setState(() {});
     }
     await Future.wait(futures2);
-    if(mounted) {
+    if (mounted) {
       setState(() {});
     }
     await Future.wait(futures3);
 
-    // Trigger setState once after all futures complete
-    if(mounted) {
+    if (mounted) {
       setState(() {
         print('Running all data');
       });
@@ -169,11 +176,13 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   }
 
   void initializeSuggestions() {
-    final List<EventDetail> list = Provider.of<ViewModelMain>(context, listen: false).allEvents;
+    final List<EventDetail> list = viewModelMain.allEvents;
     final List<EventDetail> suggestions = list
         .where((element) =>
             element.category.replaceAll("\\s", "").toUpperCase() == "Competitions".replaceAll("\\s", "").toUpperCase())
         .toList();
+
+    print('Hello ${list.toList()}');
 
     // Shuffle and pick a limited number of suggestions
     suggestions.shuffle(Random());
@@ -526,7 +535,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                             // itemCount: displayedSuggestions.length,
                             itemBuilder: (context, index) {
                               final cardColorIndex = index % 2;
-                              index = index % 3;
+                              index = index % viewModelMain.featuredEventsWithLive.length;
                               final event = viewModelMain.featuredEventsWithLive[index];
                               final bool isRevealed = event.isArtistRevealed ?? false;
 
@@ -577,28 +586,42 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                     const SizedBox(height: 8.0),
                                     Expanded(
                                       flex: 9,
-                                      child: Container(
-                                        width: 250,
-                                        decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                            image: CachedNetworkImageProvider(event.imgurl),
+                                      child: Stack(
+                                        children: [
+                                          Align(
                                             alignment: Alignment.center,
-                                            // 'assets/images/card_$index.png'),
-                                            fit: BoxFit.cover,
+                                            child: Container(
+                                              width: isRevealed ?  250 : 230,
+                                              decoration: BoxDecoration(
+                                                image: DecorationImage(
+                                                  image: CachedNetworkImageProvider(event.imgurl),
+                                                  alignment: Alignment.center,
+                                                  // 'assets/images/card_$index.png'),
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                            ),
                                           ),
-                                        ),
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            Navigator.push(context,
-                                                MaterialPageRoute(builder: (context) => EventDetailPage(event: event)));
-                                          },
-                                          child: Image.asset(
-                                            isRevealed
-                                                ? 'assets/images/event_cards_revealed${cardColorIndex}.png'
-                                                : 'assets/images/card_$index.png',
-                                            fit: BoxFit.fill,
-                                          ),
-                                        ),
+                                          SizedBox(
+                                            width: 250,
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                if(isRevealed) {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) => EventDetailPage(event: event)));
+                                                }
+                                              },
+                                              child: Image.asset(
+                                                isRevealed
+                                                    ? 'assets/images/event_cards_revealed${cardColorIndex}.png'
+                                                    : 'assets/images/card_$index.png',
+                                                fit: BoxFit.fill,
+                                              ),
+                                            ),
+                                          )
+                                        ],
                                       ),
                                     ),
                                     if (cardColorIndex % 2 == 1)
@@ -703,6 +726,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                   options: CarouselOptions(
                                     viewportFraction: 1.2,
                                     autoPlay: true,
+                                    enableInfiniteScroll: true,
                                     onPageChanged: (index, reason) {
                                       setState(() {
                                         _currentIndex = index;
@@ -765,7 +789,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         child: GestureDetector(
                           onTap: () {
                             _currentIndex--;
-                            _carouselController.animateToPage(_currentIndex % 3,
+                            _carouselController.previousPage(
                                 curve: Curves.fastEaseInToSlowEaseOut, duration: Duration(milliseconds: 800));
                           },
                           child: Image.asset(
@@ -780,7 +804,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         child: GestureDetector(
                           onTap: () {
                             _currentIndex++;
-                            _carouselController.animateToPage(_currentIndex % 3,
+                            _carouselController.nextPage(
                                 curve: Curves.fastEaseInToSlowEaseOut, duration: Duration(milliseconds: 800));
                           },
                           child: Image.asset(
@@ -852,77 +876,107 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   padding: const EdgeInsets.symmetric(horizontal: 5.0),
                   child: AspectRatio(
                     aspectRatio: 0.7541589649,
-                    child: viewModelMain.passList.isEmpty
+                    child: isPassLoading
                         ? Center(
-                            child: CircularProgressIndicator(),
-                          )
+                      child: CircularProgressIndicator(),
+                    )
                         : PageView.builder(
-                            controller: PageController(viewportFraction: 0.8),
-                            itemCount: viewModelMain.passList.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              // return QrImageView(
-                              //   data: viewModelMain.passList[index].id,
-                              //   embeddedImage: AssetImage('assets/file.png'),
-                              // );
-                              return Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    // color: Colors.white,
-                                    image:
-                                        DecorationImage(image: AssetImage('assets/images/card_bg.png'), fit: BoxFit.fill,),
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.only(left: 40.0, right: 40.0, top: 40.0, bottom: 20.0),
-                                        child: Align(
-                                          alignment: Alignment.topRight,
-                                          child: Image.asset('assets/images/alcher_lady_logo.png'),
-                                        ),
-                                      ),
-                                      Container(
-                                        height: 102.0,
-                                        decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                            image: AssetImage('assets/images/card_ribbon.png')
-                                          )
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 10.0,
-                                      ),
-                                      Text(
-                                        viewModelMain.passList[index].name,
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 20.0,
-                                          fontFamily: 'Game_Tape'
-                                        ),
-                                      ),
-
-                                      Align(
-                                        alignment: Alignment.bottomCenter,
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(left: 70.0, right: 70.0, top: 20.0),
-                                          child: Container(
-                                            color: Colors.white,
-                                            child: QrImageView(
-                                              data: viewModelMain.passList[index].id,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 20.0,
-                                      )
-                                    ],
-                                  ),
+                      controller: PageController(viewportFraction: 0.8),
+                      itemCount: viewModelMain.passList.isEmpty ? 1 : viewModelMain.passList.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        // Check if passList is empty
+                        if (viewModelMain.passList.isEmpty) {
+                          // Default page when passList is empty
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                image: const DecorationImage(
+                                  image: AssetImage('assets/images/card_bg.png'),
+                                  fit: BoxFit.fill,
                                 ),
-                              );
-                            },
-                          ),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  'No Passes Available',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18.0,
+                                    fontFamily: 'Game_Tape',
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ),
+                          );
+                        } else {
+                          // Regular page when passList has items
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                image: const DecorationImage(
+                                  image: AssetImage('assets/images/card_bg.png'),
+                                  fit: BoxFit.fill,
+                                ),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                      left: 40.0,
+                                      right: 40.0,
+                                      top: 40.0,
+                                      bottom: 20.0,
+                                    ),
+                                    child: Align(
+                                      alignment: Alignment.topRight,
+                                      child: Image.asset('assets/images/alcher_lady_logo.png'),
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 102.0,
+                                    decoration: const BoxDecoration(
+                                      image: DecorationImage(
+                                        image: AssetImage('assets/images/card_ribbon.png'),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 10.0),
+                                  Text(
+                                    viewModelMain.passList[index].name,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20.0,
+                                      fontFamily: 'Game_Tape',
+                                    ),
+                                  ),
+                                  Align(
+                                    alignment: Alignment.bottomCenter,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                        left: 70.0,
+                                        right: 70.0,
+                                        top: 20.0,
+                                      ),
+                                      child: Container(
+                                        color: Colors.white,
+                                        child: QrImageView(
+                                          data: viewModelMain.passList[index].id,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 20.0),
+                                ],
+                              ),
+                            ),
+                          );
+                        }
+                      },
+                    ),
+
                   ),
                 ),
                 SizedBox(
@@ -1002,12 +1056,12 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                 scrollDirection: Axis.horizontal,
                                 itemCount: likedEvents.length,
                                 itemBuilder: (context, index) {
-                                  EventDetail creatorCamp = likedEvents[index];
+                                  EventDetail event = likedEvents[index];
                                   return _buildCard(
-                                    event: creatorCamp,
+                                    event: event,
                                     headingSize: 18,
                                     isLiked:
-                                        likedEvents.indexWhere((element) => element.artist == creatorCamp.artist) != -1
+                                        likedEvents.indexWhere((element) => element.artist == event.artist) != -1
                                             ? true
                                             : false,
                                   );
@@ -1096,20 +1150,25 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
       child: GestureDetector(
         onTap: () {
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => EventDetailPage(event: event)));
+          if(event.isArtistRevealed) {
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => EventDetailPage(event: event)));
+          }
         },
         child: Column(
           children: [
             Stack(
               children: [
                 Positioned.fill(
-                    child: ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
-                  child: CachedNetworkImage(
-                    imageUrl: event.imgurl,
-                    fit: BoxFit.cover,
-                  ),
-                )),
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: event.isArtistRevealed
+                          ? CachedNetworkImage(
+                        imageUrl: event.imgurl,
+                        fit: BoxFit.cover,
+                        alignment: Alignment.center,
+                      )
+                          : Image.asset('assets/images/card_0.png', fit: BoxFit.cover, alignment: Alignment.center,)),
+                ),
                 Container(
                   height: widgetHeight,
                   width: 186 * widgetHeight / 480,
@@ -1140,7 +1199,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   left: 25 * widgetHeight / 480,
                   top: 336 * widgetHeight / 480,
                   child: Text(
-                    event.artist,
+                    event.isArtistRevealed ? event.artist : 'Coming Soon',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(fontFamily: "Brick_Pixel", fontSize: headingSize, color: Colors.white),
@@ -1152,7 +1211,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   top: 380 * widgetHeight / 480,
                   right: 25,
                   child: Text(
-                    event.descriptionEvent,
+                    event.isArtistRevealed ? event.descriptionEvent : 'Coming Soon',
                     maxLines: 3,
                     overflow: TextOverflow.clip,
                     style: TextStyle(fontFamily: "Game_Tape", fontSize: 12, color: Colors.orange),
@@ -1164,7 +1223,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   top: 441 * widgetHeight / 480,
                   right: 25,
                   child: Text(
-                    event.starttime.date > 5
+                    event.isArtistRevealed ? event.starttime.date > 5
                         ? event.starttime.date.toString() +
                             " Jan " +
                             event.starttime.hours.toString() +
@@ -1174,7 +1233,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                             " Feb " +
                             event.starttime.hours.toString() +
                             " PM | " +
-                            event.venue,
+                            event.venue : 'Coming Soon',
                     maxLines: 1,
                     overflow: TextOverflow.clip,
                     style: TextStyle(fontFamily: "Game_Tape", fontSize: 12, color: Colors.white),

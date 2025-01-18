@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:alcheringa/Common/globals.dart';
 import 'package:alcheringa/Model/stall_model.dart';
 import 'package:alcheringa/Screens/activity_pages/widgets/competition_card.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -7,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:marquee/marquee.dart';
 
 import '../../Model/eventdetail.dart';
-import '../../Model/view_model_main.dart';
 import '../../utils/styles/colors.dart';
 
 class Searchscreen extends StatefulWidget {
@@ -35,8 +35,8 @@ class _SearchscreenState extends State<Searchscreen> {
 
   Future<List<StallModel>> getData() async {
     try {
-      final stalls = await ViewModelMain().getStalls();
-      final List<EventDetail> events = await ViewModelMain().getAllEvents();
+      final stalls = viewModelMain.stallList;
+      final List<EventDetail> events = viewModelMain.allEvents;
       suggestionList(events);
       _filteredStalls = stalls;
       setState(() {
@@ -229,10 +229,11 @@ Widget _buildCard({
         Stack(
           children: [
             Positioned.fill(
-                child: CachedNetworkImage(
-              imageUrl: event.imgurl,
-              fit: BoxFit.cover,
-            )),
+              child: CachedNetworkImage(
+                imageUrl: event.imgurl,
+                fit: BoxFit.cover,
+              ),
+            ),
             Container(
               height: screenHeight * 0.63,
               width: 186 * screenHeight * 0.63 / 480,

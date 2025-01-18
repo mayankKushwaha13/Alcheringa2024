@@ -205,7 +205,6 @@ class _MapPageState extends State<MapPage> {
 
     final venues = eventProvider.venues;
     final events = eventProvider.allEvents;
-    print('Hello ${viewModelMain.venuesList.toString()}');
     return Scaffold(
       key: _scaffoldKey,
       resizeToAvoidBottomInset: false,
@@ -386,7 +385,6 @@ class _MapPageState extends State<MapPage> {
                                                 ),
                                                 GestureDetector(
                                                   onTap: () {
-                                                    print('Hello clicked');
                                                   },
                                                   child: Image.asset('assets/images/map_location_icon.png'),
                                                 )

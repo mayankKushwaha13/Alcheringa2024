@@ -1,12 +1,17 @@
+import 'dart:ffi';
+
 import 'package:alcheringa/Common/globals.dart';
 import 'package:alcheringa/Screens/activity_pages/activity_page.dart';
 import 'package:alcheringa/Screens/end_drawer.dart';
 import 'package:alcheringa/Screens/top_app_bar.dart';
 import 'package:alcheringa/Screens/utility_screen/utilities_screen.dart';
+import 'package:alcheringa/common/resource.dart';
 import 'package:alcheringa/screens/home_screen.dart';
 import 'package:alcheringa/screens/map_page.dart';
 import 'package:alcheringa/screens/schedule_page.dart';
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -18,6 +23,7 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   final GlobalKey _bottomNavBarKey = GlobalKey();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
+  final isNewVersion = false;
 
   int _selectedIndex = 2;
   late PageController _pageController = PageController();
@@ -32,9 +38,42 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     super.initState();
+    checkVersion();
     _pageController = PageController(initialPage: _selectedIndex);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _calculateBottomNavBarHeight();
+    });
+  }
+  
+  Future<void> checkVersion() async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    await db.collection('Version').doc('flutter_version').get().then((snapshot) {
+      if(snapshot.get('version') != packageInfo.version){
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('New Version Available'),
+                content: const Text(
+                  'A newer version of the app is available. Please update to the latest version for the best experience.',
+                ),
+
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      final uri = Uri.parse('https://play.google.com/store/apps/details?id=com.alcheringa.alcheringa2022&hl=en_IN');
+                      launchUrl(uri);
+                    },
+                    child: const Text('Update'),
+                  ),
+                ],
+              );
+            },
+          );
+        });
+      }
     });
   }
 

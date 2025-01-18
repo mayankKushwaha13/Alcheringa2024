@@ -1,4 +1,7 @@
+import 'package:alcheringa/Model/merchModel.dart';
 import 'package:alcheringa/Screens/cart_screen.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -8,20 +11,9 @@ import '../provider/cart_provider.dart';
 import '../utils/styles/colors.dart';
 
 class MerchDetailScreen extends StatefulWidget {
-  final String merchTitle;
-  final String merchSubtitle;
-  final String price;
-  final String merchDescription;
-  final String image;
+  final MerchModel merch;
 
-  const MerchDetailScreen({
-    Key? key,
-    required this.merchTitle,
-    required this.merchSubtitle,
-    required this.price,
-    required this.merchDescription,
-    required this.image,
-  }) : super(key: key);
+  const MerchDetailScreen({super.key, required this.merch,});
 
   @override
   State<MerchDetailScreen> createState() => _MerchDetailScreenState();
@@ -34,6 +26,7 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
   final DBHandler dbHandler = DBHandler();
   int selectedIndex = 2;
   String selectedSize = "L";
+  int currentIndex = 0;
 
   bool isSizeChartVisible = false;
 
@@ -80,20 +73,31 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
             children: [
               Padding(
                 padding: const EdgeInsets.all(10),
-                child: Row(
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Image.network(
-                      widget.image,
-                      width: 200,
-                    ),
+                    CarouselSlider(
+                      options: CarouselOptions(
+                        autoPlay: false,
+                        onPageChanged: (index, reason) {
+                          setState(() {
+                            currentIndex = index;
+                          });
+                        }
+                      ),
+                      items: widget.merch.images?.map((item) {
+                        return CachedNetworkImage(
+                          imageUrl: item,
+                        );
+                      }).toList(),
+                    )
                   ],
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 15),
                 child: Text(
-                  widget.merchTitle,
+                  widget.merch.type!,
                   style: TextStyle(
                     fontFamily: 'Brick_Pixel',
                     fontSize: 30,
@@ -105,7 +109,7 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
               Padding(
                 padding: const EdgeInsets.only(left: 15),
                 child: Text(
-                  widget.merchSubtitle,
+                  widget.merch.name!,
                   style: const TextStyle(
                     fontFamily: 'Game_Tape',
                     fontSize: 22,
@@ -118,7 +122,7 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: Text(
-                  'Rs. ${widget.price}',
+                  'Rs. ${widget.merch.price}',
                   style: const TextStyle(
                     fontFamily: 'Game_Tape',
                     fontSize: 40,
@@ -293,7 +297,7 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: Text(
-                  widget.merchDescription,
+                  widget.merch.description!,
                   style: const TextStyle(
                     fontFamily: 'Game_Tape',
                     fontSize: 18,
@@ -314,12 +318,12 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
                       child: GestureDetector(
                         onTap: () async {
                           final cartItem = CartModel(
-                            name: widget.merchTitle,
-                            price: widget.price,
+                            name: widget.merch.type!,
+                            price: widget.merch.price!,
                             size: selectedSize,
                             count: "1",
                             // Default count
-                            imageUrl: widget.image,
+                            imageUrl: widget.merch.image!,
                             type: "Merchandise", // Type (optional)
                           );
 
@@ -363,12 +367,12 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
                         onTap: () async {
                           // Add the selected merch to the cart
                           final cartItem = CartModel(
-                            name: widget.merchTitle,
-                            price: widget.price,
+                            name: widget.merch.type!,
+                            price: widget.merch.price!,
                             size: selectedSize,
                             count: "1",
                             // Default count
-                            imageUrl: widget.image,
+                            imageUrl: widget.merch.image!,
                             type: "Merchandise", // Type (optional)
                           );
 
@@ -377,7 +381,7 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
                           // Show confirmation
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text("Added ${widget.merchTitle} to the cart!"),
+                              content: Text("Added ${widget.merch.type} to the cart!"),
                               backgroundColor: Colors.green,
                             ),
                           );
