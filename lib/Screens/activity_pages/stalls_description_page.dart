@@ -88,12 +88,9 @@ class _StallsDescriptionPageState extends State<StallsDescriptionPage> {
                           width: 4.0, // Border width
                         ),
                       ),
-                      child: AspectRatio(
-                        aspectRatio: 1.0,
-                        child: CachedNetworkImage(
-                          imageUrl: stall.imgurl,
-                          fit: BoxFit.fill,
-                        ),
+                      child: CachedNetworkImage(
+                        imageUrl: stall.imgurl,
+                        fit: BoxFit.contain,
                       ),
                     ),
                   ),

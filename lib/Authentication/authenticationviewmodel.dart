@@ -241,9 +241,7 @@ Future<void> customLogin(String email, String password, BuildContext context,
 }
 
 Future<void> signInWithGoogle(BuildContext context,
-    {required Function(bool) onLoading,
-    required Function(bool) isLoggedIn}) async {
-  onLoading(true);
+    {required Function(bool) isLoggedIn}) async {
   try {
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
@@ -271,7 +269,6 @@ Future<void> signInWithGoogle(BuildContext context,
     log("Sign in with google failed $e");
     showMessage('Google Sign-In failed', context);
   }
-  onLoading(false);
 }
 
 Future<void> signInWithMicrosoft(BuildContext context,
