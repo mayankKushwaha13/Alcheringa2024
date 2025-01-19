@@ -923,7 +923,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                               ),
                               child: Center(
                                 child: Text(
-                                  'No Passes Available',
+                                  'No Cards Available',
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 18.0,

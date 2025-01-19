@@ -293,7 +293,7 @@ Future<void> signInWithMicrosoft(BuildContext context,
       showMessage('Microsoft Sign-In failed', context);
     }
   } on Exception catch (e) {
-    log("Sign in with micro failed $e");
+    log("Sign in with microsoft failed $e");
     showMessage('Microsoft Sign-In failed', context);
     print(e);
   }
