@@ -10,12 +10,16 @@ class EventProvider with ChangeNotifier {
   List<EventDetail> _pronites = [];
   List<EventDetail> _proshows = [];
   List<EventDetail> _creatorsCamp = [];
+  List<EventDetail> _nesslist = [];
+  List<EventDetail> _neuvlist = [];
   List<VenueModel> _venues = [];
   bool _isLoading = true;
 
   List<EventDetail> get allEvents => _allEvents;
   List<EventDetail> get pronites => _pronites;
   List<EventDetail> get proshows => _proshows;
+  List<EventDetail> get nesslist => _nesslist;
+  List<EventDetail> get neuvlist => _neuvlist;
   List<EventDetail> get creatorsCamp => _creatorsCamp;
 
   List<VenueModel> get venues => _venues;
@@ -34,6 +38,12 @@ class EventProvider with ChangeNotifier {
           .toList();
       _creatorsCamp = _allEvents
           .where((event) => event.type.toLowerCase() == "creators' camp")
+          .toList();
+      _nesslist = _allEvents
+          .where((event) => event.type.toLowerCase() == "ness")
+          .toList();
+      _neuvlist = _allEvents
+          .where((event) => event.type.toLowerCase() == "neuv")
           .toList();
       _venues = viewModelMain.venuesList;
     } finally {
