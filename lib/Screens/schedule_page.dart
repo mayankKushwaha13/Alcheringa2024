@@ -14,8 +14,8 @@ class SchedulePage extends StatefulWidget {
 }
 
 class _SchedulePageState extends State<SchedulePage> {
-  String date = '7';
-  String month = 'FEB';
+  String date = '30';
+  String month = 'JAN';
   int selectedDay = 0;
   String selectedVenueCategory = 'All';
   String selectedVenue = 'ALL';
@@ -24,6 +24,8 @@ class _SchedulePageState extends State<SchedulePage> {
   final ScrollController verticalController = ScrollController();
   final ScrollController horizontalController = ScrollController();
   final ViewModelMain viewModel = ViewModelMain();
+ final ScrollController _controller1 = ScrollController();
+ final ScrollController   _controller2 = ScrollController();
 
   String key = "ALL";
 
@@ -247,16 +249,16 @@ final List<String> keys = ["All","Lecture Halls","Grounds","Library Area", "Admi
     setState(() {
       selectedDay = index;
       if (index == 0) {
-        date = '7';
-        month = 'FEB';
+        date = '30';
+        month = 'JAN';
       } else if (index == 1) {
-        date = '8';
-        month = 'FEB';
+        date = '31';
+        month = 'JAN';
       } else if (index == 2) {
-        date = '9';
+        date = '1';
         month = 'FEB';
       } else if (index == 3) {
-        date = '10';
+        date = '2';
         month = 'FEB';
       }
       filterEvents(); // Apply filtering immediately
@@ -268,6 +270,21 @@ final List<String> keys = ["All","Lecture Halls","Grounds","Library Area", "Admi
     super.initState();
     selectedDay = initialDay;
     getEventsData();
+        
+
+    _controller1.addListener(() {
+      if (_controller2.hasClients &&
+          _controller1.offset != _controller2.offset) {
+        _controller2.jumpTo(_controller1.offset);
+      }
+    });
+
+    _controller2.addListener(() {
+      if (_controller1.hasClients &&
+          _controller2.offset != _controller1.offset) {
+        _controller1.jumpTo(_controller2.offset);
+      }
+    });
   }
 
   @override
@@ -404,6 +421,60 @@ final List<String> keys = ["All","Lecture Halls","Grounds","Library Area", "Admi
                 height: 2,
                 color: Colors.grey,
               ),
+              //first one
+              Row(
+                children: [
+                  Container(
+                                  height: 60,
+                                  width: 95,
+                                  decoration: BoxDecoration(
+                                      border: Border(
+                                    bottom: BorderSide(color: Colors.grey.withOpacity(1), ),
+                                    right: BorderSide(color: Colors.grey.withOpacity(1), ),
+                                  )),
+                                ),
+                  Expanded(
+                                child: isLoading
+                                    ? Center(child: CircularProgressIndicator())
+                                    : SingleChildScrollView(
+                                        scrollDirection: Axis.horizontal,
+                                        controller: _controller1,
+                                        child: Row(
+                                          children: (selectedVenueCategory ==
+                                                      'All'
+                                                  ? itemListMap["All"]!
+                                                  : itemListMap[selectedVenueCategory] ??[]).map((venue) {
+                                            final venueEvents = filteredEvents.where((event) => event.venue.toLowerCase() == venue.toLowerCase()).toList();
+                                            return SizedBox(
+                                              width: 200, //column width for every block ie the place
+                                              child: Column(
+                                                children: [
+                                                  Container(
+                                                    decoration:BoxDecoration(
+                                                              border: Border(
+                                                                bottom: BorderSide( color: Colors.grey.withOpacity(1),),
+                                                                right: BorderSide(color: Colors.grey.withOpacity(1),),
+                                                              ),
+                                                            ),
+                                                    height: 60,
+                                                    alignment: Alignment.center,
+                                                    child: Text(venue,
+                                                      style: const TextStyle(
+                                                        fontSize: 18,
+                                                        color: Colors.white,
+                                                        fontWeight:FontWeight.bold,
+                                                        fontFamily: 'Game_Tape',
+                                                      ),
+                                                    ),
+                                                  ),],
+                                              ),
+                                            );
+                                          }).toList(),
+                                        ),
+                                      ),
+                              ),
+                ],
+              ),
               Expanded(
                 child: SingleChildScrollView(
                   controller: verticalController,
@@ -417,14 +488,7 @@ final List<String> keys = ["All","Lecture Halls","Grounds","Library Area", "Admi
                             width: 95,
                             child: Column(
                               children: [
-                                Container(
-                                  height: 60,
-                                  decoration: BoxDecoration(
-                                      border: Border(
-                                    bottom: BorderSide(color: Colors.grey.withOpacity(1), ),
-                                    right: BorderSide(color: Colors.grey.withOpacity(1), ),
-                                  )),
-                                ), // Empty space for top alignment
+                                 // Empty space for top alignment
                                 ...List.generate(
                                   15, // Each hour block
                                   (index) => Container(
@@ -460,13 +524,17 @@ final List<String> keys = ["All","Lecture Halls","Grounds","Library Area", "Admi
                             ),
                           ),
 
+                          //
+                           
+                        
+
                           // Venue Time Slots and Events
                           Expanded(
                             child: isLoading
                                 ? Center(child: CircularProgressIndicator())
                                 : SingleChildScrollView(
                                     scrollDirection: Axis.horizontal,
-                                    controller: horizontalController,
+                                    controller: _controller2,
                                     child: Row(
                                       children: (selectedVenueCategory ==
                                                   'All'
@@ -477,7 +545,7 @@ final List<String> keys = ["All","Lecture Halls","Grounds","Library Area", "Admi
                                           width: 200, //column width for every block ie the place
                                           child: Column(
                                             children: [
-                                              Container(
+                                              /* Container(
                                                 decoration:BoxDecoration(
                                                           border: Border(
                                                             bottom: BorderSide( color: Colors.grey.withOpacity(1),),
@@ -494,7 +562,7 @@ final List<String> keys = ["All","Lecture Halls","Grounds","Library Area", "Admi
                                                     fontFamily: 'Game_Tape',
                                                   ),
                                                 ),
-                                              ),
+                                              ) ,*/
                                               Stack(
                                                 children: [
                                                   // Time Slots
