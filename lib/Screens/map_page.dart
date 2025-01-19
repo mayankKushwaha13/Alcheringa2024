@@ -95,16 +95,26 @@ class _MapPageState extends State<MapPage> {
           onTap: () {
             _customInfoWindowController.addInfoWindow!(
               GestureDetector(
-                  onTap: () async {
-                    Uri mapsUrl = Uri.parse(
-                        'https://www.google.com/maps/dir/?api=1&destination=${venue.latLng.latitude},${venue.latLng.longitude}');
+                onTap: () async {
+                  final Uri appleMapsUrl = Uri.parse(
+                      'https://maps.apple.com/?daddr=${venue.latLng.latitude},${venue.latLng.longitude}&dirflg=w');
+                  final Uri googleMapsUrl = Uri.parse(
+                      'https://www.google.com/maps/dir/?api=1&destination=${venue.latLng.latitude},${venue.latLng.longitude}');
 
-                    if (await canLaunchUrl(mapsUrl)) {
-                      await launchUrl(mapsUrl);
+                  if (Platform.isIOS) {
+                    if (await canLaunchUrl(appleMapsUrl)) {
+                      await launchUrl(appleMapsUrl);
+                    } else {
+                      throw 'Could not open Apple Maps';
+                    }
+                  } else if (Platform.isAndroid) {
+                    if (await canLaunchUrl(googleMapsUrl)) {
+                      await launchUrl(googleMapsUrl);
                     } else {
                       throw 'Could not open Google Maps';
                     }
-                  },
+                  }
+                },
                 child: Container(
                   decoration: BoxDecoration(color: Colors.white),
                   child: Column(
