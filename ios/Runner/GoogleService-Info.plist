@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>671924222085-qstesm3d3i1310ncs0rsevgjcl65knj3.apps.googleusercontent.com</string>
+	<string>671924222085-s276cq7ckcjv9666bbaind4smininng5.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.671924222085-qstesm3d3i1310ncs0rsevgjcl65knj3</string>
+	<string>com.googleusercontent.apps.671924222085-s276cq7ckcjv9666bbaind4smininng5</string>
 	<key>ANDROID_CLIENT_ID</key>
 	<string>671924222085-1jhjg9e6eo9rotu54fllrui8k55pscjd.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
@@ -15,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.alcheringa.alcheringa</string>
+	<string>com.alcheringa.alcheringa2022</string>
 	<key>PROJECT_ID</key>
 	<string>alcheringa2022</string>
 	<key>STORAGE_BUCKET</key>
@@ -31,7 +31,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:671924222085:ios:1e0b9dd7c95ec6e0c751ec</string>
+	<string>1:671924222085:ios:9893c83d868db376c751ec</string>
 	<key>DATABASE_URL</key>
 	<string>https://alcheringa2022-default-rtdb.firebaseio.com</string>
 </dict>

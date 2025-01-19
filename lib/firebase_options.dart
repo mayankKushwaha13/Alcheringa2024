@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyAO4X24aKxH5tChfT0KkKetieNtxuiLsKA',
-    appId: '1:671924222085:android:59480aa96c3c8f6dc751ec',
+    appId: '1:671924222085:android:548b92187c73f2ffc751ec',
     messagingSenderId: '671924222085',
     projectId: 'alcheringa2022',
     databaseURL: 'https://alcheringa2022-default-rtdb.firebaseio.com',
@@ -60,14 +60,14 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyAFoSDv_6Nukf8_Xut2aVxzwk3ZQmoAM_g',
-    appId: '1:671924222085:ios:1e0b9dd7c95ec6e0c751ec',
+    appId: '1:671924222085:ios:9893c83d868db376c751ec',
     messagingSenderId: '671924222085',
     projectId: 'alcheringa2022',
     databaseURL: 'https://alcheringa2022-default-rtdb.firebaseio.com',
     storageBucket: 'alcheringa2022.appspot.com',
     androidClientId: '671924222085-1jhjg9e6eo9rotu54fllrui8k55pscjd.apps.googleusercontent.com',
-    iosClientId: '671924222085-qstesm3d3i1310ncs0rsevgjcl65knj3.apps.googleusercontent.com',
-    iosBundleId: 'com.alcheringa.alcheringa',
+    iosClientId: '671924222085-s276cq7ckcjv9666bbaind4smininng5.apps.googleusercontent.com',
+    iosBundleId: 'com.alcheringa.alcheringa2022',
   );
 
 }
