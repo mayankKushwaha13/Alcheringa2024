@@ -220,11 +220,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                         await signInWithGoogle(context, isLoggedIn: _setLoggedIn);
                                         // _setLoading(false);
                                         if (isLoggedIn && context.mounted) {
-                                          Navigator.pushReplacement(
+                                          Navigator.pushAndRemoveUntil(
                                             context,
                                             MaterialPageRoute(
-                                                builder: (context) =>
-                                                const MainScreen()),
+                                                builder: (context) => const MainScreen()),
+                                                (Route<dynamic> route) => false,
                                           );
                                         }
                                       }
@@ -245,11 +245,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                       onPressed: () async {
                                         await signInWithMicrosoft(context, onLoading: _setLoading, isLoggedIn: _setLoggedIn);
                                         if (isLoggedIn && context.mounted) {
-                                          Navigator.pushReplacement(
+                                          Navigator.pushAndRemoveUntil(
                                             context,
                                             MaterialPageRoute(
-                                                builder: (context) =>
-                                                const MainScreen()),
+                                                builder: (context) => const MainScreen()),
+                                                (Route<dynamic> route) => false,
                                           );
                                         }
                                       }
