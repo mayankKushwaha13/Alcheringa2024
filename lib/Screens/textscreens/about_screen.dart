@@ -68,7 +68,7 @@ class _AboutscreenState extends State<Aboutscreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Alcheringa, also known as "Alcher", is the annual cultural festival of Indian Institute of Technology (IIT), Guwahati. The festival was started in 1996 by a group of students of IIT Guwahati. Spread over 3 days and 4 nights, Alcheringa is conducted towards the end of January every year. The 25th edition held from 30 January 2021 to 2 February 2021, witnessing 80 events.',
+                        'Alcheringa, also known as "Alcher", is the annual cultural festival of Indian Institute of Technology (IIT), Guwahati. The festival was started in 1996 by a group of students of IIT Guwahati. Spread over 3 days and 4 nights, Alcheringa is conducted towards the end of January every year. The 29th edition held from 30 January 2025 to 2 February 2025, witnessing 100+ events.',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 16,
@@ -78,7 +78,7 @@ class _AboutscreenState extends State<Aboutscreen> {
                         height: 15,
                       ),
                       Text(
-                        'The festival features one of the biggest rock band competitions of India, Rock-o-Phonix. The latest edition of Alcheringa was held with limited participation and events pertaining to the ongoing COVID-19 crisis.',
+                        'The festival features one of the biggest rock band competitions of India, Rock-o-Phonix, known for its electrifying performances and a platform that brings together the best musical talent from across the country.',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 16,
@@ -120,7 +120,7 @@ class _AboutscreenState extends State<Aboutscreen> {
                         height: 15,
                       ),
                       Text(
-                        'Pronites \n Some notable Indian artists who have earlier performed in Alcheringa are Mika Singh, Lucky Ali, Sonu Nigam, Shaan, Shankar-Ehsaan-Loy, K.K, Mohit Chauhan, Shilpa Rao, Javed Ali, Anoushka Shankar, Vir Das, Kalki Koechlin, Amaan and Ayaan Ali Khan, The Indian Jam Project, Grammy winners Ustaad Shujaat Khan and Pandit Vishwa Mohan Bhatt, Undying Inc, RDB, Remo Fernandes, Raghu Dixit, Euphoria, Indian Ocean, Vaayu, Motherjane and more. \n \n Alcheringa hosts over 80 competitions. Some of the competitions held at Alcheringa are Electric Heels, the group dance competition, Voice of Alcheringa, the solo singing competition, Halla Bol the street play competition, Rock-o-Phonix, the rock band competition, Mr. and Ms. Alcheringa, the personality contest, Crossfade, the scratching competition and Haute Couture, the team based fashion designing event. The Campus Princess is another beauty pageant of Alcheringa which started in its 20th edition, was conducted in association with the Miss India Organisation. The Auditions for Campus Princess were judged by Miss Asia Pacific World 2013 Ms. Srishti Rana. Mute, the Mime competition was judged by Mr Moinul Haque, the winner of the Sangeet Natak Academy Award. \n \n World Carnival \n \n World Carnival is an initiative by Alcheringa to promote cultures from across the world here in the North-Eastern part of the country. Alcheringa has had artists like Ciorras and Fastest feet in Rhythm from the United States, Ne Obliviscaris and poet Omar Musa from Australia, Fasta Duo and Murray Molloy from Ireland, beatboxer Rizumik from Portugal, rock bands Ouzo Bazooka, Tiny Fingers and Orphaned Land from Israel. Alcheringa has also had the jazz band Tropic Green from Singapore, the Portuguese horn player Mickael Faustino, the Algeria Dance Company from Malta, Hungarian flutist David Simon and pianist Janos Palojtay, the German Classical jazz performer Mito, alternate pop music band BETTY from the USA and English hypnotist Andrew Newton and extreme technical metal band Meta Stasis.',
+                        'Pronites \n Some notable Indian artists who have earlier performed in Alcheringa are Mika Singh, Lucky Ali, Sonu Nigam, Shaan, Shankar-Ehsaan-Loy, K.K, Mohit Chauhan, Shilpa Rao, Javed Ali, Anoushka Shankar, Vir Das, Kalki Koechlin, Amaan and Ayaan Ali Khan, The Indian Jam Project, Grammy winners Ustaad Shujaat Khan and Pandit Vishwa Mohan Bhatt, Undying Inc, RDB, Remo Fernandes, Raghu Dixit, Euphoria, Indian Ocean, Vaayu, Motherjane and more. \n \n Alcheringa hosts over 50 competitions. Some of the competitions held at Alcheringa are Electric Heels, the group dance competition, Voice of Alcheringa, the solo singing competition, Halla Bol, the street play competition, Rock-o-Phonix, the rock band competition, Mr. and Ms. Alcheringa, the personality contest, Crossfade, the scratching competition and Haute Couture, the team based fashion designing event. The Campus Princess is another beauty pageant of Alcheringa which started in its 20th edition, was conducted in association with the Miss India Organisation. The Auditions for Campus Princess were judged by Miss Asia Pacific World 2013 Ms. Srishti Rana. Mute, the Mime competition was judged by Mr Moinul Haque, the winner of the Sangeet Natak Academy Award.',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 16,
@@ -141,11 +141,14 @@ class _AboutscreenState extends State<Aboutscreen> {
                         height: 15,
                       ),
                       Text(
-                        'Udaan: Giving Flights to Hope\n Udaan is a social initiative by Alcheringa wherein the students of IIT Guwahati visit underprivileged children in various corners of India. Udaan reached 52 cities in 2016. In Alcheringa 2018, "Desh Ka Sandesh" was organised under the umbrella of Udaan. \n\n North East Unveiled \n\n The underlying idea of the campaign North-East Unveiled is to promote a shared identity of this part of the country with the rest other parts of the nation while promoting its tourism, food, general practices and removing any stereotypes about North East India. This was done by releasing a series of videos highlighting the above. The North East Social Entrepreneurship Summit and The North East Townhall Discussions were held during Alcheringa 2016. \n\nSponsors and past associates\n\n Alcheringa has in the past associated with freecharge, Swiggy, OnePlus, Hero MotoCorp, Wipro, State Bank of India, Indian Oil, Maruti Suzuki, Ola, Fast Track, Daikin, Viber, Coca-Cola, KitKat and Baskin Robbins. In the media sector Alcheringa has been associated with the RED FM, The Telegraph, The Assam Tribune, Business India, North East Today, Metalbase India etc.',
+                        'Udaan: Giving Flights to Hope\n Udaan is a social initiative by Alcheringa wherein the students of IIT Guwahati visit underprivileged children in various corners of India. Udaan reached 52 cities in 2016. In Alcheringa 2018, "Desh Ka Sandesh" was organised under the umbrella of Udaan. \n\n North East Unveiled \n\n The underlying idea of the campaign North-East Unveiled is to promote a shared identity of this part of the country with the rest other parts of the nation while promoting its tourism, food, general practices and removing any stereotypes about North East India. This was done by releasing a series of videos highlighting the above. The North East Social Entrepreneurship Summit and The North East Townhall Discussions were held during Alcheringa 2016. \n\nSponsors and past associates\n\n Alcheringa has in the past associated with Freecharge, Swiggy, OnePlus, Hero MotoCorp, Wipro, State Bank of India, Indian Oil, Maruti Suzuki, Ola, Fast Track, Daikin, Viber, Coca-Cola, KitKat and Baskin Robbins. In the media sector Alcheringa has been associated with the RED FM, The Telegraph, The Assam Tribune, Business India, North East Today, Metalbase India etc.',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 16,
                             fontFamily: 'Game_Tape'),
+                      ),
+                      SizedBox(
+                        height: 15.0,
                       )
                     ],
                   ),

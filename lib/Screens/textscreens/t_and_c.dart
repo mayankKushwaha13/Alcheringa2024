@@ -69,7 +69,7 @@ class _TermsScreenState extends State<TermsScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Welcome To Alcheringa!',
+                        '\nWelcome To Alcheringa!',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 24,
@@ -77,14 +77,14 @@ class _TermsScreenState extends State<TermsScreen> {
                             fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        '\nThese terms and conditions outline the rules and regulations for the use of Alcheringa\'s Website, located at Alcheringa  By accessing this website we assume you accept these terms and conditions. Do not continue to use Alcheringa if you do not agree to take all of the terms and conditions stated on this page.\n\n The following terminology applies to these Terms and Conditions, Privacy Statement and Disclaimer Notice and all Agreements: "Client", "You" and "Your" refers to you, the person log on this website and compliant to the Company\'s terms and conditions. "The Company", "Ourselves", "We", "Our" and "Us", refers to our Company. "Party", "Parties", or Us", refers to both the Client and ourselves. All terms refer to the offer, acceptance and consideration of payment necessary to undertake the process of our assistance to the Client in the most appropriate manner for the express purpose of meeting the Client\'s needs in respect of provision of the Company\'s stated services, in accordance with and subject to, prevailing law of Netherlands. Any use of the above terminology or other words in the singular, plural, capitalization and/ or he/she or they, are taken as interchangeable and therefore as referring to same \n',
+                        'These terms and conditions outline the rules and regulations for the use of Alcheringa\'s Website, located at Alcheringa  By accessing this website we assume you accept these terms and conditions. Do not continue to use Alcheringa if you do not agree to take all of the terms and conditions stated on this page.\n\n The following terminology applies to these Terms and Conditions, Privacy Statement and Disclaimer Notice and all Agreements: "Client", "You" and "Your" refers to you, the person log on this website and compliant to the Company\'s terms and conditions. "The Company", "Ourselves", "We", "Our" and "Us", refers to our Company. "Party", "Parties", or Us", refers to both the Client and ourselves. All terms refer to the offer, acceptance and consideration of payment necessary to undertake the process of our assistance to the Client in the most appropriate manner for the express purpose of meeting the Client\'s needs in respect of provision of the Company\'s stated services, in accordance with and subject to, prevailing law of Netherlands. Any use of the above terminology or other words in the singular, plural, capitalization and/ or he/she or they, are taken as interchangeable and therefore as referring to same \n',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 16,
                             fontFamily: 'Game_Tape'),
                       ),
                       Text(
-                        'Cookies\n',
+                        '\nCookies',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 24,
@@ -99,7 +99,7 @@ class _TermsScreenState extends State<TermsScreen> {
                             fontFamily: 'Game_Tape'),
                       ),
                       Text(
-                        'Licence\n',
+                        '\nLicence',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 24,
@@ -114,7 +114,7 @@ class _TermsScreenState extends State<TermsScreen> {
                             fontFamily: 'Game_Tape'),
                       ),
                       Text(
-                        'Hyperlinking to our Content\n',
+                        '\nHyperlinking to our Content',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 24,
@@ -129,7 +129,7 @@ class _TermsScreenState extends State<TermsScreen> {
                             fontFamily: 'Game_Tape'),
                       ),
                       Text(
-                        'iFrames\n',
+                        '\niFrames',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 24,
@@ -144,7 +144,7 @@ class _TermsScreenState extends State<TermsScreen> {
                             fontFamily: 'Game_Tape'),
                       ),
                       Text(
-                        'Content Liability\n',
+                        '\nContent Liability',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 24,
@@ -159,7 +159,7 @@ class _TermsScreenState extends State<TermsScreen> {
                             fontFamily: 'Game_Tape'),
                       ),
                       Text(
-                        'Your Privacy\n',
+                        '\nYour Privacy',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 24,
@@ -167,14 +167,14 @@ class _TermsScreenState extends State<TermsScreen> {
                             fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        'Please read Privacy Policy.\n',
+                        '\nPlease read Privacy Policy.',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 16,
                             fontFamily: 'Game_Tape'),
                       ),
                       Text(
-                        'Reservation of Rights\n',
+                        '\nReservation of Rights',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 24,
@@ -189,7 +189,7 @@ class _TermsScreenState extends State<TermsScreen> {
                             fontFamily: 'Game_Tape'),
                       ),
                       Text(
-                        'Removal of links from our app\n',
+                        '\nRemoval of links from our app',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 24,
@@ -204,7 +204,7 @@ class _TermsScreenState extends State<TermsScreen> {
                             fontFamily: 'Game_Tape'),
                       ),
                       Text(
-                        'Disclaimer\n',
+                        '\nDisclaimer',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 24,

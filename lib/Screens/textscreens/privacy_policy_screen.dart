@@ -76,7 +76,7 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
                             fontFamily: 'Game_Tape'),
                       ),
                       Text(
-                        'Information Collection and Use\n',
+                        '\nInformation Collection and Use',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 24,
@@ -91,7 +91,7 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
                             fontFamily: 'Game_Tape'),
                       ),
                       Text(
-                        'Log Data\n',
+                        '\nLog Data',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 24,
@@ -106,7 +106,7 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
                             fontFamily: 'Game_Tape'),
                       ),
                       Text(
-                        'Cookies\n',
+                        '\nCookies',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 24,
@@ -121,7 +121,7 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
                             fontFamily: 'Game_Tape'),
                       ),
                       Text(
-                        'Service Providers\n',
+                        '\nService Providers',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 24,
@@ -136,7 +136,7 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
                             fontFamily: 'Game_Tape'),
                       ),
                       Text(
-                        'Security\n',
+                        '\nSecurity',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 24,
@@ -151,7 +151,7 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
                             fontFamily: 'Game_Tape'),
                       ),
                       Text(
-                        'Link to Other Sites\n',
+                        '\nLink to Other Sites',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 24,
@@ -166,7 +166,7 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
                             fontFamily: 'Game_Tape'),
                       ),
                       Text(
-                        'Children\'s Privacy\n',
+                        '\nChildren\'s Privacy',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 24,
@@ -181,7 +181,7 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
                             fontFamily: 'Game_Tape'),
                       ),
                       Text(
-                        'Changes to This Privacy Policy\n',
+                        '\nChanges to This Privacy Policy',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 24,
@@ -196,7 +196,7 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
                             fontFamily: 'Game_Tape'),
                       ),
                       Text(
-                        'Contact Us\n',
+                        '\nContact Us',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 24,
