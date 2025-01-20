@@ -28,17 +28,17 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    _imageUrl = ViewModelMain().getValue('PhotoURL');
+    _imageUrl = viewModelMain.getValue('PhotoURL');
 
     //nicknameController.text = auth.currentUser?.displayName ?? "Nickname";
     getDatas();
   }
 
   Future<void> getDatas() async {
-    nicknameController.text = await ViewModelMain().getValue('userName');
+    nicknameController.text = await viewModelMain.getValue('userName');
     if (auth.currentUser != null && auth.currentUser!.email != null) {
-      interests = await ViewModelMain().getInterests(auth.currentUser!.email!);
-      imageUri = await ViewModelMain().getValue('PhotoURL');
+      interests = await viewModelMain.getInterests(auth.currentUser!.email!);
+      imageUri = await viewModelMain.getValue('PhotoURL');
     } else {
       interests = []; // Return an empty list for safety
     }
@@ -97,7 +97,6 @@ class _ProfilePageState extends State<ProfilePage> {
           });
         },
         child: Scaffold(
-          resizeToAvoidBottomInset: false,
           appBar: AppBar(
             toolbarHeight: kToolbarHeight + 20,
             backgroundColor: Color.fromRGBO(63, 19, 42, 1),

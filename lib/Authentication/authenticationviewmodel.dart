@@ -48,13 +48,14 @@ Future<void> customSignUp(String email, String password, BuildContext context,
   onLoading(false);
 }
 
-Future<void> registerUserInDatabaseCustom(String name, String email) async {
+Future<void> registerUserInDatabaseCustom(String name, String email, [String? PhotoURL]) async {
   try {
     db.collection('USERS').doc(email).snapshots().listen((snapshot) async {
       if (!snapshot.exists) {
         Map<String, dynamic> data = {
           "Name": name,
           "Email": email,
+          'PhotoURL' : PhotoURL ?? ''
         };
 
         try {
@@ -244,6 +245,7 @@ Future<void> signInWithGoogle(BuildContext context,
     {required Function(bool) isLoggedIn}) async {
   try {
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    final prefs = await SharedPreferences.getInstance();
 
     final GoogleSignInAuthentication? googleAuth =
         await googleUser?.authentication;
@@ -255,7 +257,21 @@ Future<void> signInWithGoogle(BuildContext context,
     final userCredentials = await auth.signInWithCredential(credential);
 
     if (userCredentials.user != null) {
-      await saveSignInUserData(userCredentials.user!);
+      final userData = await db
+          .collection('USERS')
+          .doc(userCredentials.user!.email)
+          .get()
+          .then((docSnapshot) async {
+        if (docSnapshot.exists) {
+          final data = docSnapshot.data() as Map<String, dynamic>;
+          await prefs.setString('userName', data['Name'] ?? '');
+          await prefs.setString('email', data['Email']);
+          await prefs.setString('PhotoURL', data['PhotoURL'] ?? '');
+        } else {
+          await registerUserInDatabaseCustom(userCredentials.user!.displayName ?? 'Unknown', userCredentials.user!.email!, userCredentials.user!.photoURL );
+          await saveSignInUserData(userCredentials.user!);
+        }
+      });
       print('Sign in with google succeed');
 
       showMessage('Google Sign-In success', context);
@@ -272,10 +288,10 @@ Future<void> signInWithGoogle(BuildContext context,
 }
 
 Future<void> signInWithMicrosoft(BuildContext context,
-    {required Function(bool) onLoading,
+    {
     required Function(bool) isLoggedIn}) async {
-  onLoading(true);
 
+  final prefs = await SharedPreferences.getInstance();
   try {
     final microsoftProvider = MicrosoftAuthProvider();
     microsoftProvider.setCustomParameters(
@@ -283,7 +299,21 @@ Future<void> signInWithMicrosoft(BuildContext context,
 
     final userCredentials = await auth.signInWithProvider(microsoftProvider);
     if (userCredentials.user != null) {
-      await saveSignInUserData(userCredentials.user!);
+      final userData = await db
+          .collection('USERS')
+          .doc(userCredentials.user!.email)
+          .get()
+          .then((docSnapshot) async {
+        if (docSnapshot.exists) {
+          final data = docSnapshot.data() as Map<String, dynamic>;
+          await prefs.setString('userName', data['Name'] ?? '');
+          await prefs.setString('email', data['Email']);
+          await prefs.setString('PhotoURL', data['PhotoURL'] ?? '');
+        } else {
+          await registerUserInDatabaseCustom(userCredentials.user!.displayName ?? 'Unknown', userCredentials.user!.email!, userCredentials.user!.photoURL);
+          await saveSignInUserData(userCredentials.user!);
+        }
+      });
       isLoggedIn(true);
       showMessage('Microsoft Sign-In Success ', context);
     } else {
@@ -294,7 +324,6 @@ Future<void> signInWithMicrosoft(BuildContext context,
     showMessage('Microsoft Sign-In failed', context);
     print(e);
   }
-  onLoading(false);
 }
 
 Future<void> saveSignInUserData(User user) async {

@@ -243,7 +243,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                       logoSize:
                                       MediaQuery.of(context).size.width * 0.09,
                                       onPressed: () async {
-                                        await signInWithMicrosoft(context, onLoading: _setLoading, isLoggedIn: _setLoggedIn);
+                                        _setLoading(true);
+                                        await signInWithMicrosoft(context, isLoggedIn: _setLoggedIn);
+                                        _setLoading(false);
                                         if (isLoggedIn && context.mounted) {
                                           Navigator.pushAndRemoveUntil(
                                             context,

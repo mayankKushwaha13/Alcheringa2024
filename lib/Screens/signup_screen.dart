@@ -254,8 +254,10 @@ class _SignupScreenState extends State<SignupScreen> {
                                           .width *
                                           0.09,
                                       onPressed: () async {
+                                        _setLoading(true);
                                         await signInWithMicrosoft(context,
-                                            onLoading: _setLoading, isLoggedIn: _setIsLoggedIn);
+                                            isLoggedIn: _setIsLoggedIn);
+                                        _setLoading(false);
                                         if (isLoggedIn && context.mounted) {
                                           Navigator.pushAndRemoveUntil(
                                             context,

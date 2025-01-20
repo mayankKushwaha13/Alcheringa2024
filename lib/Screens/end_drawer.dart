@@ -28,7 +28,7 @@ class _EndDrawerState extends State<EndDrawer> {
   String name = '';
 
   Future<String?> _loadImage() async {
-    photoURL = await ViewModelMain().getValue('PhotoURL');
+    photoURL = await viewModelMain.getValue('PhotoURL');
     try {
       final response = await NetworkImage(photoURL!).resolve(ImageConfiguration());
       if (response == null) {
@@ -41,7 +41,7 @@ class _EndDrawerState extends State<EndDrawer> {
   }
 
   Future<String> _getName() async {
-    name = await ViewModelMain().getValue('userName');
+    name = await viewModelMain.getValue('userName');
     return name;
   }
 
