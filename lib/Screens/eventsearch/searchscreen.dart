@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:alcheringa/Common/globals.dart';
 import 'package:alcheringa/Model/stall_model.dart';
 import 'package:alcheringa/Screens/activity_pages/widgets/competition_card.dart';
+import 'package:alcheringa/Screens/event_detail_page.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:marquee/marquee.dart';
@@ -226,88 +227,93 @@ Widget _buildCard({
     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
     child: Column(
       children: [
-        Stack(
-          children: [
-            Positioned.fill(
-              child: ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
-                  child: event.isArtistRevealed
-                      ? CachedNetworkImage(
-                    imageUrl: event.imgurl,
-                    fit: BoxFit.cover,
-                    alignment: Alignment.center,
-                  )
-                      : Image.asset('assets/images/card_0.png', fit: BoxFit.cover, alignment: Alignment.center,)),
-            ),
-            Container(
-              height: screenHeight * 0.63,
-              width: 186 * screenHeight * 0.63 / 480,
-              decoration:
-                  BoxDecoration(image: DecorationImage(image: AssetImage('assets/images/card.png'), fit: BoxFit.cover)),
-            ),
-            // Heading
-            Positioned.fill(
-              left: 25 * screenHeight * 0.63 / 480,
-              top: 336 * screenHeight * 0.63 / 480,
-              child: Text(
-                event.isArtistRevealed ? event.artist : 'Coming Soon',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(fontFamily: "Game_Tape", fontSize: 20, color: Colors.white),
+        GestureDetector(
+          onTap: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>EventDetailPage(event: event)));
+          },
+          child: Stack(
+            children: [
+              Positioned.fill(
+                child: ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: event.isArtistRevealed
+                        ? CachedNetworkImage(
+                      imageUrl: event.imgurl,
+                      fit: BoxFit.cover,
+                      alignment: Alignment.center,
+                    )
+                        : Image.asset('assets/images/card_0.png', fit: BoxFit.cover, alignment: Alignment.center,)),
               ),
-            ),
-            // Description
-            Positioned.fill(
-              left: 25,
-              top: 380 * screenHeight * 0.63 / 480,
-              right: 25,
-              child: Text(
-                event.isArtistRevealed ? event.descriptionShort : 'Coming Soon',
-                maxLines: 3,
-                overflow: TextOverflow.clip,
-                style: TextStyle(fontFamily: "Game_Tape", fontSize: 12, color: Colors.orange),
+              Container(
+                height: screenHeight * 0.63,
+                width: 186 * screenHeight * 0.63 / 480,
+                decoration:
+                    BoxDecoration(image: DecorationImage(image: AssetImage('assets/images/card.png'), fit: BoxFit.cover)),
               ),
-            ),
-            // Venue
-            Positioned.fill(
-              left: 25,
-              top: 441 * screenHeight * 0.63 / 480,
-              right: 25,
-              child: Text(
-                event.isArtistRevealed ? "${event.starttime.date} ${event.starttime.date >= 5 ? "Jan" : "Feb"}, ${event.starttime.hours}: ${event.starttime.min} |" : 'Coming Soon',
-                maxLines: 3,
-                overflow: TextOverflow.clip,
-                style: TextStyle(fontFamily: "Game_Tape", fontSize: 12, color: Colors.white),
-              ),
-            ),
-            Positioned.fill(
-              left: 110,
-              top: 418 * screenHeight * 0.63 / 480,
-              right: 25,
-              child: Marquee(
-                text: event.isArtistRevealed ? "${event.venue}" : 'Coming Soon',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 12,
-                  fontFamily: "Game_Tape",
+              // Heading
+              Positioned.fill(
+                left: 25 * screenHeight * 0.63 / 480,
+                top: 336 * screenHeight * 0.63 / 480,
+                child: Text(
+                  event.isArtistRevealed ? event.artist : 'Coming Soon',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(fontFamily: "Game_Tape", fontSize: 20, color: Colors.white),
                 ),
-                scrollAxis: Axis.horizontal,
-                // Scroll horizontally
-                crossAxisAlignment: CrossAxisAlignment.center,
-                blankSpace: 40.0,
-                // Space between repetitions
-                velocity: 20.0,
-                // Speed of the scrolling text
-                pauseAfterRound: Duration(seconds: 1),
-                // Pause between loops
-                startPadding: 10.0,
-                // Padding before the text starts
-                accelerationDuration: Duration(seconds: 1),
-                // Acceleration effect
-                decelerationDuration: Duration(seconds: 1), // Deceleration effect
               ),
-            ),
-          ],
+              // Description
+              Positioned.fill(
+                left: 25,
+                top: 380 * screenHeight * 0.63 / 480,
+                right: 25,
+                child: Text(
+                  event.isArtistRevealed ? event.descriptionShort : 'Coming Soon',
+                  maxLines: 3,
+                  overflow: TextOverflow.clip,
+                  style: TextStyle(fontFamily: "Game_Tape", fontSize: 12, color: Colors.orange),
+                ),
+              ),
+              // Venue
+              Positioned.fill(
+                left: 25,
+                top: 441 * screenHeight * 0.63 / 480,
+                right: 25,
+                child: Text(
+                  event.isArtistRevealed ? "${event.starttime.date} ${event.starttime.date >= 5 ? "Jan" : "Feb"}, ${event.starttime.hours}: ${event.starttime.min} |" : 'Coming Soon',
+                  maxLines: 3,
+                  overflow: TextOverflow.clip,
+                  style: TextStyle(fontFamily: "Game_Tape", fontSize: 12, color: Colors.white),
+                ),
+              ),
+              Positioned.fill(
+                left: 110,
+                top: 418 * screenHeight * 0.63 / 480,
+                right: 25,
+                child: Marquee(
+                  text: event.isArtistRevealed ? "${event.venue}" : 'Coming Soon',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 12,
+                    fontFamily: "Game_Tape",
+                  ),
+                  scrollAxis: Axis.horizontal,
+                  // Scroll horizontally
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  blankSpace: 40.0,
+                  // Space between repetitions
+                  velocity: 20.0,
+                  // Speed of the scrolling text
+                  pauseAfterRound: Duration(seconds: 1),
+                  // Pause between loops
+                  startPadding: 10.0,
+                  // Padding before the text starts
+                  accelerationDuration: Duration(seconds: 1),
+                  // Acceleration effect
+                  decelerationDuration: Duration(seconds: 1), // Deceleration effect
+                ),
+              ),
+            ],
+          ),
         ),
       ],
     ),
