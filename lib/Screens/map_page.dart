@@ -33,7 +33,7 @@ class _MapPageState extends State<MapPage> {
   bool _isPermissionGranted = false;
   Set<Marker> _markers = {};
   final String mapstyle = '''
-  [ { "featureType": "all", "elementType": "labels.text", "stylers": [ { "visibility": "on" } ] }, { "featureType": "all", "elementType": "labels.icon", "stylers": [ { "visibility": "off" } ] }, { "featureType": "administrative.land_parcel", "elementType": "geometry.fill", "stylers": [ { "color": "#ff0000" }, { "visibility": "off" } ] }, { "featureType": "landscape.man_made", "elementType": "geometry.fill", "stylers": [ { "color": "#a1a4ab" } ] }, { "featureType": "landscape.man_made", "elementType": "geometry.stroke", "stylers": [ { "color": "#b2b2b2" }, { "visibility": "on" } ] }, { "featureType": "landscape.natural.landcover", "elementType": "geometry.fill", "stylers": [ { "color": "#a6a6a6" }, { "visibility": "off" } ] }, { "featureType": "landscape.natural.terrain", "elementType": "geometry.fill", "stylers": [ { "color": "#84aec6" }, { "visibility": "on" }, { "saturation": "-16" }, { "lightness": "-3" } ] }, { "featureType": "poi.business", "elementType": "geometry.fill", "stylers": [ { "color": "#508472" } ] }, { "featureType": "poi.government", "elementType": "geometry.fill", "stylers": [ { "color": "#b692b6" } ] }, { "featureType": "poi.park", "elementType": "geometry.fill", "stylers": [ { "color": "#508472" } ] }, { "featureType": "poi.park", "elementType": "geometry.stroke", "stylers": [ { "color": "#f8d93c" }, { "visibility": "off" } ] }, { "featureType": "poi.school", "elementType": "geometry.fill", "stylers": [ { "color": "#5d5e65" } ] }, { "featureType": "poi.sports_complex", "elementType": "geometry.fill", "stylers": [ { "color": "#508472" } ] }, { "featureType": "poi.sports_complex", "elementType": "geometry.stroke", "stylers": [ { "color": "#e4e748" } ] }, { "featureType": "road", "elementType": "geometry.fill", "stylers": [ { "color": "#8f93a0" } ] }, { "featureType": "road", "elementType": "geometry.stroke", "stylers": [ { "color": "#757575" }, { "visibility": "on" } ] }, { "featureType": "water", "elementType": "geometry.fill", "stylers": [ { "color": "#75aef3" } ] } ]
+  [ { "featureType": "all", "elementType": "labels.text", "stylers": [ { "visibility": "on" } ] }, { "featureType": "all", "elementType": "labels.icon", "stylers": [ { "visibility": "off" } ] }, { "featureType": "administrative.land_parcel", "elementType": "geometry.fill", "stylers": [ { "color": "#ff0000" }, { "visibility": "off" } ] }, { "featureType": "landscape.man_made", "elementType": "geometry.fill", "stylers": [ { "color": "#48597B" } ] }, { "featureType": "landscape.man_made", "elementType": "geometry.stroke", "stylers": [ { "color": "#b2b2b2" }, { "visibility": "on" } ] }, { "featureType": "landscape.natural.landcover", "elementType": "geometry.fill", "stylers": [ { "color": "#a6a6a6" }, { "visibility": "off" } ] }, { "featureType": "landscape.natural.terrain", "elementType": "geometry.fill", "stylers": [ { "color": "#1C2536" }, { "visibility": "on" } ] }, { "featureType": "poi.business", "elementType": "geometry.fill", "stylers": [ { "color": "#508472" } ] }, { "featureType": "poi.government", "elementType": "geometry.fill", "stylers": [ { "color": "#b692b6" } ] }, { "featureType": "poi.park", "elementType": "geometry.fill", "stylers": [ { "color": "#508472" } ] }, { "featureType": "poi.park", "elementType": "geometry.stroke", "stylers": [ { "color": "#f8d93c" }, { "visibility": "off" } ] }, { "featureType": "poi.school", "elementType": "geometry.fill", "stylers": [ { "color": "#1C2536" } ] }, { "featureType": "poi.sports_complex", "elementType": "geometry.fill", "stylers": [ { "color": "#508472" } ] }, { "featureType": "poi.sports_complex", "elementType": "geometry.stroke", "stylers": [ { "color": "#e4e748" } ] }, { "featureType": "road", "elementType": "geometry.fill", "stylers": [ { "color": "#819BC8" } ] }, { "featureType": "road", "elementType": "geometry.stroke", "stylers": [ { "color": "#757575" }, { "visibility": "on" } ] }, { "featureType": "water", "elementType": "geometry.fill", "stylers": [ { "color": "#75aef3" } ] } ]
   ''';
   final TextEditingController _textFieldController = TextEditingController();
   String selectedVenue = '';
@@ -55,7 +55,7 @@ class _MapPageState extends State<MapPage> {
   // }
 
   void _checkAndRequestPermission() async {
-    _isPermissionGranted = await ViewModelMain().requestLocationPermission();
+    _isPermissionGranted = await viewModelMain.requestLocationPermission();
   }
 
   // void loadCustomMarker() async {
@@ -95,16 +95,26 @@ class _MapPageState extends State<MapPage> {
           onTap: () {
             _customInfoWindowController.addInfoWindow!(
               GestureDetector(
-                  onTap: () async {
-                    Uri mapsUrl = Uri.parse(
-                        'https://www.google.com/maps/dir/?api=1&destination=${venue.latLng.latitude},${venue.latLng.longitude}');
+                onTap: () async {
+                  final Uri appleMapsUrl = Uri.parse(
+                      'https://maps.apple.com/?daddr=${venue.latLng.latitude},${venue.latLng.longitude}&dirflg=w');
+                  final Uri googleMapsUrl = Uri.parse(
+                      'https://www.google.com/maps/dir/?api=1&destination=${venue.latLng.latitude},${venue.latLng.longitude}');
 
-                    if (await canLaunchUrl(mapsUrl)) {
-                      await launchUrl(mapsUrl);
+                  if (Platform.isIOS) {
+                    if (await canLaunchUrl(appleMapsUrl)) {
+                      await launchUrl(appleMapsUrl);
+                    } else {
+                      throw 'Could not open Apple Maps';
+                    }
+                  } else if (Platform.isAndroid) {
+                    if (await canLaunchUrl(googleMapsUrl)) {
+                      await launchUrl(googleMapsUrl);
                     } else {
                       throw 'Could not open Google Maps';
                     }
-                  },
+                  }
+                },
                 child: Container(
                   decoration: BoxDecoration(color: Colors.white),
                   child: Column(
@@ -151,7 +161,7 @@ class _MapPageState extends State<MapPage> {
 
     OwnTime now = OwnTime(date: currentDay, hours: currentHour, min: currentMin);
 
-    var filteredEvents = eventList.where((event) => event.venue == venue && event.starttime.isAfter(now)).toList();
+    var filteredEvents = eventList.where((event) => event.venue.toLowerCase() == venue.toLowerCase() && event.starttime.isAfter(now)).toList();
     if (filteredEvents.isEmpty) {
       return null;
     }

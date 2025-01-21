@@ -92,14 +92,14 @@ class _EventDetailPageState extends State<EventDetailPage> {
       
                     // Event Image
                     Center(
-                      child: Container(
-                        width: 325,
-                        height: 325,
-                        decoration: BoxDecoration(
-                          color: Colors.black.withOpacity(0.3),
-                          image: DecorationImage(
-                            image: CachedNetworkImageProvider(widget.event.imgurl),
-                            fit: BoxFit.fill, // Use BoxFit.cover to make it fit
+                      child: AspectRatio(
+                        aspectRatio: 1.6,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: CachedNetworkImageProvider(widget.event.imgurl),
+                              fit: BoxFit.fill, // Use BoxFit.cover to make it fit
+                            ),
                           ),
                         ),
                       ),

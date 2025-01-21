@@ -23,6 +23,22 @@
           }
         },
         {
+          "client_id": "671924222085-nu9osalbauet788q2e33nbvd8vidbtev.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.alcheringa.alcheringa",
+            "certificate_hash": "bbe02079db713f29b2d13f4530f8590f83bc1804"
+          }
+        },
+        {
+          "client_id": "671924222085-si4k855tiqv0610qfir17lkobgn809o1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.alcheringa.alcheringa",
+            "certificate_hash": "009970145fd4442d689b0f95730704baff4b2154"
+          }
+        },
+        {
           "client_id": "671924222085-svnaifj0bl1no74lnqf0tfv056igvajh.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -80,6 +96,14 @@
           "android_info": {
             "package_name": "com.alcheringa.alcheringa2022",
             "certificate_hash": "56d7662817e2c0f955f92267d7869080b6764738"
+          }
+        },
+        {
+          "client_id": "671924222085-hnq8ibat2tp6but53vtvmbmh22e4come.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.alcheringa.alcheringa2022",
+            "certificate_hash": "433c5d090a44201f4ec3f5d0a94d44b948f31b3a"
           }
         },
         {

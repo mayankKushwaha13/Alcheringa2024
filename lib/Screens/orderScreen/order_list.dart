@@ -1,3 +1,4 @@
+import 'package:alcheringa/Common/globals.dart';
 import 'package:alcheringa/Model/orders.dart';
 import 'package:alcheringa/Model/view_model_main.dart';
 import 'package:alcheringa/utils/styles/colors.dart';
@@ -10,7 +11,7 @@ class OrderList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<MyOrder>>(
-      future: ViewModelMain().getOrderDetails(),
+      future: viewModelMain.getOrderDetails(),
       builder: (context,snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());

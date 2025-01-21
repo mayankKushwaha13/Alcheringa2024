@@ -211,7 +211,6 @@ class _CheckoutPageState extends State<CheckoutPage> {
                         });
                         viewModelMain.addOrderToFirebase(cartProvider.cartItems, randomString(20), nameController.text, phoneController.text, '${addressLine1Controller.text}, ${addressLine2Controller.text}', stateController.text, cityController.text, pincodeController.text, context, _setLoading);
                       } else if(_currentIndex == 3){
-                        CartProvider().clearCart();
                         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainScreen()));
                       }
                     },

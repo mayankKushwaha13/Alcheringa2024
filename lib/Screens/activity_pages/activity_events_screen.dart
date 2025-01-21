@@ -97,54 +97,87 @@ class _ActivityEventsScreenState extends State<ActivityEventsScreen> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         // Pronites
-                        _buildHeading(
-                          text: "Pronites",
-                          backgroundImage: "assets/images/heading.png",
-                        ),
-                        const SizedBox(height: 20),
-                        _buildEventList(
-                          screenHeight: screenHeight,
-                          events: eventProvider.pronites,
-                        ),
-
-                        // Proshows
-                        _buildHeading(
-                          text: "Proshows",
-                          backgroundImage: "assets/images/heading.png",
-                        ),
-                        const SizedBox(height: 20),
-                        _buildEventList(
-                          screenHeight: screenHeight,
-                          events: eventProvider.proshows,
-                        ),
-
-                        // Creators' Camp
-                        _buildHeading(
-                          text: "Creators' Camp",
-                          backgroundImage: "assets/images/heading.png",
-                        ),
-                        const SizedBox(height: 20),
-                        _buildEventList(
-                          screenHeight: screenHeight,
-                          events: eventProvider.creatorsCamp,
-                        ),
-                        const SizedBox(height: 20),
-
-                        _buildHeading(
-                          text: "Informals",
-                          backgroundImage: "assets/images/heading.png",
-                        ),
-                        const SizedBox(height: 20),
-                        SizedBox(
-                          height: 175,
-                          child: PageView.builder(
-                            controller: PageController(viewportFraction: 0.9),
-                            itemCount: informals.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return InformalCard(informal: informals[index]);
-                            },
+                        if (eventProvider.pronites.isNotEmpty) ...[
+                          _buildHeading(
+                            text: "Pronites",
+                            backgroundImage: "assets/images/heading.png",
                           ),
-                        ),
+                          const SizedBox(height: 20),
+                          _buildEventList(
+                            screenHeight: screenHeight,
+                            events: eventProvider.pronites,
+                          ),
+                          const SizedBox(height: 20),
+                        ],
+                        // Proshows
+                        if (eventProvider.proshows.isNotEmpty) ...[
+                          _buildHeading(
+                            text: "Proshows",
+                            backgroundImage: "assets/images/heading.png",
+                          ),
+                          const SizedBox(height: 20),
+                          _buildEventList(
+                            screenHeight: screenHeight,
+                            events: eventProvider.proshows,
+                          ),
+                          const SizedBox(height: 20),
+                        ],
+                        // Creators' Camp
+                        if (eventProvider.creatorsCamp.isNotEmpty) ...[
+                          _buildHeading(
+                            text: "Creators' Camp",
+                            backgroundImage: "assets/images/heading.png",
+                          ),
+                          const SizedBox(height: 20),
+                          _buildEventList(
+                            screenHeight: screenHeight,
+                            events: eventProvider.creatorsCamp,
+                          ),
+                          const SizedBox(height: 20),
+                        ],
+                        //NEUV
+                        if (eventProvider.neuvlist.isNotEmpty) ...[
+                          _buildHeading(
+                            text: "NorthEast Unveiled",
+                            backgroundImage: "assets/images/heading.png",
+                          ),
+                          const SizedBox(height: 20),
+                          _buildEventList(
+                            screenHeight: screenHeight,
+                            events: eventProvider.nesslist,
+                          ),
+                          const SizedBox(height: 20),
+                        ],
+                        if (eventProvider.nesslist.isNotEmpty) ...[
+                          _buildHeading(
+                            text: "NESS",
+                            backgroundImage: "assets/images/heading.png",
+                          ),
+                          const SizedBox(height: 20),
+                          _buildEventList(
+                            screenHeight: screenHeight,
+                            events: eventProvider.nesslist,
+                          ),
+                          const SizedBox(height: 20),
+                        ],
+                        //Informals
+                        if (viewModelMain.informalList.isNotEmpty) ...[
+                          _buildHeading(
+                            text: "Informals",
+                            backgroundImage: "assets/images/heading.png",
+                          ),
+                          const SizedBox(height: 20),
+                          SizedBox(
+                            height: 175,
+                            child: PageView.builder(
+                              controller: PageController(viewportFraction: 0.9),
+                              itemCount: informals.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return InformalCard(informal: informals[index]);
+                              },
+                            ),
+                          ),
+                        ],
                       ],
                     ),
                   ),
@@ -226,7 +259,7 @@ class _ActivityEventsScreenState extends State<ActivityEventsScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
       child: GestureDetector(
         onTap: () {
-          if(event.isArtistRevealed) {
+          if (event.isArtistRevealed) {
             Navigator.of(context).push(MaterialPageRoute(builder: (context) => EventDetailPage(event: event)));
           }
         },
@@ -239,11 +272,15 @@ class _ActivityEventsScreenState extends State<ActivityEventsScreen> {
                       borderRadius: BorderRadius.circular(16),
                       child: event.isArtistRevealed
                           ? CachedNetworkImage(
-                              imageUrl: event.imgurl,
+                              imageUrl: event.iconURL,
                               fit: BoxFit.cover,
                               alignment: Alignment.center,
                             )
-                          : Image.asset('assets/images/card_0.png', fit: BoxFit.cover, alignment: Alignment.center,)),
+                          : Image.asset(
+                              'assets/images/card_0.png',
+                              fit: BoxFit.cover,
+                              alignment: Alignment.center,
+                            )),
                 ),
                 Container(
                   height: widgetHeight,

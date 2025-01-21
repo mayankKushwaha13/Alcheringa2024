@@ -908,19 +908,65 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                             child: CircularProgressIndicator(),
                           )
                         : PageView.builder(
-                            controller: PageController(viewportFraction: 0.8),
-                            itemCount: viewModelMain.passList.isEmpty ? 1 : viewModelMain.passList.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              // Check if passList is empty
-                              if (viewModelMain.passList.isEmpty) {
-                                // Default page when passList is empty
-                                return Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      image: const DecorationImage(
-                                        image: AssetImage('assets/images/card_bg.png'),
-                                        fit: BoxFit.fill,
+                      controller: PageController(viewportFraction: 0.8),
+                      itemCount: viewModelMain.passList.isEmpty ? 1 : viewModelMain.passList.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        // Check if passList is empty
+                        if (viewModelMain.passList.isEmpty) {
+                          // Default page when passList is empty
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                image: const DecorationImage(
+                                  image: AssetImage('assets/images/card_bg.png'),
+                                  fit: BoxFit.fill,
+                                ),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  'No Cards Available',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18.0,
+                                    fontFamily: 'Game_Tape',
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ),
+                          );
+                        } else {
+                          // Regular page when passList has items
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                image: const DecorationImage(
+                                  image: AssetImage('assets/images/card_bg.png'),
+                                  fit: BoxFit.fill,
+                                ),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                      left: 40.0,
+                                      right: 40.0,
+                                      top: 40.0,
+                                      bottom: 20.0,
+                                    ),
+                                    child: Align(
+                                      alignment: Alignment.topRight,
+                                      child: Image.asset('assets/images/alcher_lady_logo.png'),
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 102.0,
+                                    decoration: const BoxDecoration(
+                                      image: DecorationImage(
+                                        image: AssetImage('assets/images/card_ribbon.png'),
                                       ),
                                     ),
                                     child: Center(
@@ -1185,15 +1231,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       borderRadius: BorderRadius.circular(16),
                       child: event.isArtistRevealed
                           ? CachedNetworkImage(
-                              imageUrl: event.imgurl,
-                              fit: BoxFit.cover,
-                              alignment: Alignment.center,
-                            )
-                          : Image.asset(
-                              'assets/images/card_0.png',
-                              fit: BoxFit.cover,
-                              alignment: Alignment.center,
-                            )),
+                        imageUrl: event.iconURL,
+                        fit: BoxFit.cover,
+                        alignment: Alignment.center,
+                      )
+                          : Image.asset('assets/images/card_0.png', fit: BoxFit.cover, alignment: Alignment.center,)),
                 ),
                 Container(
                   height: widgetHeight,

@@ -1,3 +1,4 @@
+import 'package:alcheringa/Common/globals.dart';
 import 'package:alcheringa/Model/view_model_main.dart';
 import 'package:alcheringa/Screens/merch_detail_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -25,7 +26,7 @@ class _MerchScreenState extends State<MerchScreen> {
 
   Future<void> getMerchData() async {
     try {
-      merchMerch = await ViewModelMain().getMerchMerch();
+      merchMerch = viewModelMain.merchMerch;
     } catch (e) {
       print("Error fetching merchandise: $e");
     } finally {

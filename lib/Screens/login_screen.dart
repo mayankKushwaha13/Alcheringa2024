@@ -1,4 +1,5 @@
 import 'package:alcheringa/Common/globals.dart';
+import 'package:alcheringa/Common/resource.dart';
 import 'package:alcheringa/Screens/loading%20screen.dart';
 import 'package:alcheringa/Screens/main_screen.dart';
 import 'package:alcheringa/Screens/profile_setup/setup_profile.dart';
@@ -47,255 +48,262 @@ class _LoginScreenState extends State<LoginScreen> {
                 fit: BoxFit.cover,
               ),
             ),
-            Center(
-              child: SingleChildScrollView(
-                child: Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    Container(
-                      width: screenWidth * 0.9,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage('assets/images/loginborder1.png'),
-                          fit: BoxFit.fill,
+            if(_isLoading)
+              Center(
+                child: CircularProgressIndicator(),
+              )
+            else
+              Center(
+                child: SingleChildScrollView(
+                  child: Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      Container(
+                        width: screenWidth * 0.9,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage('assets/images/loginborder1.png'),
+                            fit: BoxFit.fill,
+                          ),
                         ),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.all(15),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            SizedBox(
-                              height: screenHeight * 0.044,
-                            ),
-                            SizedBox(
-                              height: screenHeight * 0.18,
-                              child: Image.asset(
-                                'assets/images/mainlogo.png',
-                                fit: BoxFit.contain, // Larger logo
+                        child: Padding(
+                          padding: EdgeInsets.all(15),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              SizedBox(
+                                height: screenHeight * 0.044,
                               ),
-                            ),
-                            SizedBox(height: screenHeight * 0.02),
-                            const Text(
-                              'Welcome back\nyour event journey\nstarts here',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontFamily: 'Game_Tape',
-                                fontSize: 27,
-                                height: 1.05,
-                                color: Color(0xFF2DABFF),
-                                shadows: [
-                                  Shadow(
-                                    color: Color(0xFF212F54),
-                                    offset: Offset(2.0, 1.0),
-                                    blurRadius: 0.0,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(height: screenHeight * 0.03),
-                            _buildTextField(
-                                hint: 'Email',
-                                backgroundImage:
-                                'assets/images/emailbackground.png',
-                                controller: _emailController
-                            ),
-                            SizedBox(height: screenHeight * 0.02),
-                            _buildPasswordField(), // Use custom password field
-                            SizedBox(height: screenHeight * 0.01),
-                            Align(
-                              alignment: Alignment.center,
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => ResetPasswordScreen(),
-                                    ),
-                                  );
-                                },
-                                child: Padding(
-                                  padding: EdgeInsets.only(
-                                    right: screenWidth * 0.02,
-                                  ),
-                                  child: const Text(
-                                    'Forgot Password',
-                                    style: TextStyle(
-                                      fontFamily: 'Game_Tape',
-                                      color: Color(0xFFFF77A8),
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
+                              SizedBox(
+                                height: screenHeight * 0.18,
+                                child: Image.asset(
+                                  'assets/images/mainlogo.png',
+                                  fit: BoxFit.contain, // Larger logo
                                 ),
                               ),
-                            ),
-                            SizedBox(height: screenHeight * 0.05),
-                            GestureDetector(
-                              onTap: _isLoading
-                                  ? null
-                                  : () async {
-                                // Navigate to the LoadingScreen
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => const LoadingScreen()),
-                                );
-
-                                await customLogin(
-                                  _emailController.text,
-                                  _passwordController.text,
-                                  context,
-                                  onLoading: _setLoading,
-                                  isLoggedIn: _setLoggedIn,
-                                );
-
-                                if (isLoggedIn && context.mounted && auth.currentUser!.emailVerified) {
-                                  if (auth.currentUser != null) {
-                                    if (auth.currentUser!.metadata.creationTime ==
-                                        auth.currentUser!.metadata.lastSignInTime) {
-                                      Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(builder: (_) => ProfileSetup()),
-                                      );
-                                    } else {
-                                      Navigator.pushAndRemoveUntil(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => const MainScreen()),
-                                            (Route<dynamic> route) => false,
-                                      );
-                                    }
-                                  }
-                                } else {
-                                  // Return to the login screen if authentication fails
-                                  Navigator.pop(context);
-                                }
-                              },
-                              child: Stack(
-                                alignment: Alignment.center,
-                                children: [
-                                  Image.asset(
-                                    'assets/images/signin.png', // Blue background image
-                                    width: screenWidth * 0.5,
-                                    height: screenHeight * 0.06,
-                                    fit: BoxFit.fill,
-                                  ),
-                                  const Text(
-                                    'Login',
-                                    style: TextStyle(
-                                      fontFamily: 'Brick_Pixel',
-                                      fontSize: 26,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w400,
-                                      shadows: [
-                                        Shadow(
-                                          color: Colors.black,
-                                          offset: Offset(2, 2),
-                                          blurRadius: 2,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(height: screenHeight * 0.025),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                // Google Button
-                                _buildSocialButton(
-                                    backgroundPath: 'assets/images/google.png',
-                                    logoPath: 'assets/images/googlelogo.png',
-                                    buttonSize: MediaQuery.of(context).size.width *
-                                        0.18, // Background size
-                                    logoSize: MediaQuery.of(context).size.width *
-                                        0.09, // Logo size
-                                    onPressed: () async {
-                                      await signInWithGoogle(context, onLoading: _setLoading, isLoggedIn: _setLoggedIn);
-                                      if (isLoggedIn && context.mounted) {
-                                        Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                              const MainScreen()),
-                                        );
-                                      }
-                                    }
-                                ),
-                                // Spacing between buttons
-                                SizedBox(
-                                    width:
-                                    MediaQuery.of(context).size.width * 0.05),
-
-                                // Outlook Button
-                                _buildSocialButton(
-                                    backgroundPath: 'assets/images/outlook.png',
-                                    logoPath: 'assets/images/outlooklogo.png',
-                                    buttonSize:
-                                    MediaQuery.of(context).size.width * 0.18,
-                                    logoSize:
-                                    MediaQuery.of(context).size.width * 0.09,
-                                    onPressed: () async {
-                                      await signInWithMicrosoft(context, onLoading: _setLoading, isLoggedIn: _setLoggedIn);
-                                      if (isLoggedIn && context.mounted) {
-                                        Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                              const MainScreen()),
-                                        );
-                                      }
-                                    }
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: screenHeight * 0.03),
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => PrivacyPolicyScreen()));
-                              },
-                              child: const Text(
-                                'Privacy policy',
+                              SizedBox(height: screenHeight * 0.02),
+                              const Text(
+                                'Welcome back\nyour event journey\nstarts here',
+                                textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontFamily: 'Game_Tape',
-                                  color: Color(0xFFFF77A8),
-                                  fontSize: 16,
+                                  fontSize: 27,
+                                  height: 1.05,
+                                  color: Color(0xFF2DABFF),
+                                  shadows: [
+                                    Shadow(
+                                      color: Color(0xFF212F54),
+                                      offset: Offset(2.0, 1.0),
+                                      blurRadius: 0.0,
+                                    ),
+                                  ],
                                 ),
                               ),
-                            ),
-                          ],
+                              SizedBox(height: screenHeight * 0.03),
+                              _buildTextField(
+                                  hint: 'Email',
+                                  backgroundImage:
+                                  'assets/images/emailbackground.png',
+                                  controller: _emailController
+                              ),
+                              SizedBox(height: screenHeight * 0.02),
+                              _buildPasswordField(), // Use custom password field
+                              SizedBox(height: screenHeight * 0.01),
+                              Align(
+                                alignment: Alignment.center,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ResetPasswordScreen(),
+                                      ),
+                                    );
+                                  },
+                                  child: Padding(
+                                    padding: EdgeInsets.only(
+                                      right: screenWidth * 0.02,
+                                    ),
+                                    child: const Text(
+                                      'Forgot Password',
+                                      style: TextStyle(
+                                        fontFamily: 'Game_Tape',
+                                        color: Color(0xFFFF77A8),
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: screenHeight * 0.05),
+                              GestureDetector(
+                                onTap: _isLoading
+                                    ? null
+                                    : () async {
+
+                                  if(_emailController.text.isNotEmpty && _passwordController.text.isNotEmpty) {
+                                    _setLoading(true);
+                                    await customLogin(
+                                      _emailController.text,
+                                      _passwordController.text,
+                                      context,
+                                      onLoading: _setLoading,
+                                      isLoggedIn: _setLoggedIn,
+                                    );
+                                    _setLoading(false);
+                                  } else {
+                                    showMessage('Email or password is empty', context);
+                                  }
+
+                                  if (isLoggedIn && context.mounted && auth.currentUser!.emailVerified) {
+                                    if (auth.currentUser != null) {
+                                      if (auth.currentUser!.metadata.creationTime ==
+                                          auth.currentUser!.metadata.lastSignInTime) {
+                                        Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(builder: (_) => ProfileSetup()),
+                                        );
+                                      } else {
+                                        Navigator.pushAndRemoveUntil(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => const MainScreen()),
+                                              (Route<dynamic> route) => false,
+                                        );
+                                      }
+                                    }
+                                  }
+                                },
+                                child: Stack(
+                                  alignment: Alignment.center,
+                                  children: [
+                                    Image.asset(
+                                      'assets/images/signin.png', // Blue background image
+                                      width: screenWidth * 0.5,
+                                      height: screenHeight * 0.06,
+                                      fit: BoxFit.fill,
+                                    ),
+                                    const Text(
+                                      'Login',
+                                      style: TextStyle(
+                                        fontFamily: 'Brick_Pixel',
+                                        fontSize: 26,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w400,
+                                        shadows: [
+                                          Shadow(
+                                            color: Colors.black,
+                                            offset: Offset(2, 2),
+                                            blurRadius: 2,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(height: screenHeight * 0.025),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  // Google Button
+                                  _buildSocialButton(
+                                      backgroundPath: 'assets/images/google.png',
+                                      logoPath: 'assets/images/googlelogo.png',
+                                      buttonSize: MediaQuery.of(context).size.width *
+                                          0.18, // Background size
+                                      logoSize: MediaQuery.of(context).size.width *
+                                          0.09, // Logo size
+                                      onPressed: () async {
+                                        // _setLoading(true);
+                                        await signInWithGoogle(context, isLoggedIn: _setLoggedIn);
+                                        // _setLoading(false);
+                                        if (isLoggedIn && context.mounted) {
+                                          Navigator.pushAndRemoveUntil(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => const MainScreen()),
+                                                (Route<dynamic> route) => false,
+                                          );
+                                        }
+                                      }
+                                  ),
+                                  // Spacing between buttons
+                                  SizedBox(
+                                      width:
+                                      MediaQuery.of(context).size.width * 0.05),
+
+                                  // Outlook Button
+                                  _buildSocialButton(
+                                      backgroundPath: 'assets/images/outlook.png',
+                                      logoPath: 'assets/images/outlooklogo.png',
+                                      buttonSize:
+                                      MediaQuery.of(context).size.width * 0.18,
+                                      logoSize:
+                                      MediaQuery.of(context).size.width * 0.09,
+                                      onPressed: () async {
+                                        _setLoading(true);
+                                        await signInWithMicrosoft(context, isLoggedIn: _setLoggedIn);
+                                        _setLoading(false);
+                                        if (isLoggedIn && context.mounted) {
+                                          Navigator.pushAndRemoveUntil(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => const MainScreen()),
+                                                (Route<dynamic> route) => false,
+                                          );
+                                        }
+                                      }
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: screenHeight * 0.03),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => PrivacyPolicyScreen()));
+                                },
+                                child: const Text(
+                                  'Privacy policy',
+                                  style: TextStyle(
+                                    fontFamily: 'Game_Tape',
+                                    color: Color(0xFFFF77A8),
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    Positioned(
-                      top: -screenHeight * 0.025,
-                      right: -screenWidth * 0.05,
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            Image.asset(
-                              'assets/images/backbackground.png',
-                              width: screenWidth * 0.2,
-                              fit: BoxFit.fill,
-                            ),
-                            Image.asset(
-                              'assets/images/backbutton.png',
-                              width: screenWidth * 0.16,
-                              fit: BoxFit.contain,
-                            ),
-                          ],
+                      Positioned(
+                        top: -screenHeight * 0.025,
+                        right: -screenWidth * 0.05,
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Image.asset(
+                                'assets/images/backbackground.png',
+                                width: screenWidth * 0.2,
+                                fit: BoxFit.fill,
+                              ),
+                              Image.asset(
+                                'assets/images/backbutton.png',
+                                width: screenWidth * 0.16,
+                                fit: BoxFit.contain,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
           ],
         ),
       ),

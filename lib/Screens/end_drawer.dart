@@ -7,6 +7,7 @@ import 'package:alcheringa/Screens/textscreens/t_and_c.dart';
 import 'package:alcheringa/Screens/welcome_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../Model/view_model_main.dart';
@@ -27,7 +28,7 @@ class _EndDrawerState extends State<EndDrawer> {
   String name = '';
 
   Future<String?> _loadImage() async {
-    photoURL = await ViewModelMain().getValue('PhotoURL');
+    photoURL = await viewModelMain.getValue('PhotoURL');
     try {
       final response = await NetworkImage(photoURL!).resolve(ImageConfiguration());
       if (response == null) {
@@ -40,7 +41,7 @@ class _EndDrawerState extends State<EndDrawer> {
   }
 
   Future<String> _getName() async {
-    name = await ViewModelMain().getValue('userName');
+    name = await viewModelMain.getValue('userName');
     return name;
   }
 
@@ -202,12 +203,14 @@ class _EndDrawerState extends State<EndDrawer> {
                   SideBarItems(
                     name: 'SIGN OUT',
                     iconPath: 'assets/images/sidebar_signout_icon.png',
-                    onTap: () {
+                    onTap: () async {
                       Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(builder: (context) => welcomeScreen()),
                         (Route<dynamic> route) => false,
                       );
+                      var prefs = await SharedPreferences.getInstance();
+                      prefs.clear();
                       auth.signOut();
                     },
                   ),

@@ -212,14 +212,22 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
                                 final isSelected = index == selectedIndex;
                                 return Padding(
                                   padding: const EdgeInsets.symmetric(horizontal: 18),
-                                  child: Text(
-                                    size,
-                                    style: TextStyle(
-                                      fontSize: isSelected ? 30 : 22,
-                                      fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                                      color: isSelected
-                                          ? Color.fromRGBO(255, 241, 232, 1)
-                                          : Color.fromRGBO(131, 118, 156, 1),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        selectedIndex = index;
+                                        selectedSize = size;
+                                      });
+                                    },
+                                    child: Text(
+                                      size,
+                                      style: TextStyle(
+                                        fontSize: isSelected ? 30 : 22,
+                                        fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                                        color: isSelected
+                                            ? Color.fromRGBO(255, 241, 232, 1)
+                                            : Color.fromRGBO(131, 118, 156, 1),
+                                      ),
                                     ),
                                   ),
                                 );

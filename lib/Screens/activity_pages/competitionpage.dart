@@ -24,7 +24,7 @@ class _CompetitionsWidgetState extends State<CompetitionsWidget> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    competitionsEvents = Provider.of<ViewModelMain>(context, listen: false)
+    competitionsEvents = viewModelMain
         .allEvents
         .where((event) => event.category == "Competitions")
         .toList();

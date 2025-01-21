@@ -222,14 +222,13 @@ class _SignupScreenState extends State<SignupScreen> {
                                           .width *
                                           0.09, // Logo size
                                       onPressed: () async {
-                                        await signInWithGoogle(context,
-                                            onLoading: _setLoading, isLoggedIn: _setIsLoggedIn);
+                                        await signInWithGoogle(context, isLoggedIn: _setIsLoggedIn);
                                         if (isLoggedIn && context.mounted) {
-                                          Navigator.pushReplacement(
+                                          Navigator.pushAndRemoveUntil(
                                             context,
                                             MaterialPageRoute(
-                                                builder: (context) =>
-                                                const MainScreen()),
+                                                builder: (context) => const MainScreen()),
+                                                (Route<dynamic> route) => false,
                                           );
                                         }
                                       }),
@@ -255,14 +254,16 @@ class _SignupScreenState extends State<SignupScreen> {
                                           .width *
                                           0.09,
                                       onPressed: () async {
+                                        _setLoading(true);
                                         await signInWithMicrosoft(context,
-                                            onLoading: _setLoading, isLoggedIn: _setIsLoggedIn);
+                                            isLoggedIn: _setIsLoggedIn);
+                                        _setLoading(false);
                                         if (isLoggedIn && context.mounted) {
-                                          Navigator.pushReplacement(
+                                          Navigator.pushAndRemoveUntil(
                                             context,
                                             MaterialPageRoute(
-                                                builder: (context) =>
-                                                const MainScreen()),
+                                                builder: (context) => const MainScreen()),
+                                                (Route<dynamic> route) => false,
                                           );
                                         }
                                       }),
@@ -286,7 +287,7 @@ class _SignupScreenState extends State<SignupScreen> {
                               GestureDetector(
                                 onTap: () {
                                   // Go to Login Page
-                                  Navigator.of(context).push(
+                                  Navigator.of(context).pushReplacement(
                                       MaterialPageRoute(
                                           builder: (context) =>
                                               LoginScreen()));
