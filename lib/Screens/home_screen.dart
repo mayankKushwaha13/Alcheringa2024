@@ -618,7 +618,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                                   width: 245,
                                                   decoration: BoxDecoration(
                                                     image: DecorationImage(
-                                                      image: CachedNetworkImageProvider(event.imgurl),
+                                                      image: CachedNetworkImageProvider(event.iconURL),
                                                       alignment: Alignment.center,
                                                       fit: BoxFit.cover,
                                                     ),

@@ -590,7 +590,10 @@ final List<String> keys = ["All","Lecture Halls","Grounds","Library Area", "Admi
                                                       right: 8,
                                                       child: GestureDetector(
                                                         onTap: () {
-                                                          Navigator.push(context, MaterialPageRoute(builder: (context) => EventDetailPage(event: event)));
+                                                          if(event.isArtistRevealed) {
+                                                            Navigator.push(context, MaterialPageRoute(
+                                                                builder: (context) => EventDetailPage(event: event)));
+                                                          }
                                                         },
                                                         child: Container(
                                                           height: duration *hourHeight,
@@ -609,7 +612,7 @@ final List<String> keys = ["All","Lecture Halls","Grounds","Library Area", "Admi
                                                                 mainAxisAlignment: MainAxisAlignment.center,
                                                                 children: [
                                                                   Text(
-                                                                    event.artist,
+                                                                    event.isArtistRevealed ? event.artist : 'Coming Soon',
                                                                     style: const TextStyle(
                                                                       fontSize: 25,
                                                                       color: Color(0xFFFFF1E8),

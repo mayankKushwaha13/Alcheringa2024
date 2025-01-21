@@ -161,7 +161,7 @@ class _MapPageState extends State<MapPage> {
 
     OwnTime now = OwnTime(date: currentDay, hours: currentHour, min: currentMin);
 
-    var filteredEvents = eventList.where((event) => event.venue.toLowerCase() == venue.toLowerCase() && event.starttime.isAfter(now)).toList();
+    var filteredEvents = eventList.where((event) => event.venue.toLowerCase() == venue.toLowerCase() && event.starttime.isAfter(now) && event.isArtistRevealed).toList();
     if (filteredEvents.isEmpty) {
       return null;
     }

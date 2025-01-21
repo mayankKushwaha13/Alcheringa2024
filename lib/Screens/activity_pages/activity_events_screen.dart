@@ -138,13 +138,13 @@ class _ActivityEventsScreenState extends State<ActivityEventsScreen> {
                         //NEUV
                         if (eventProvider.neuvlist.isNotEmpty) ...[
                           _buildHeading(
-                            text: "NorthEast Unveiled",
+                            text: "North East Unveiled",
                             backgroundImage: "assets/images/heading.png",
                           ),
                           const SizedBox(height: 20),
                           _buildEventList(
                             screenHeight: screenHeight,
-                            events: eventProvider.nesslist,
+                            events: eventProvider.neuvlist,
                           ),
                           const SizedBox(height: 20),
                         ],

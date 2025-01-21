@@ -240,7 +240,7 @@ Widget _buildCard({
                     borderRadius: BorderRadius.circular(16),
                     child: event.isArtistRevealed
                         ? CachedNetworkImage(
-                      imageUrl: event.imgurl,
+                      imageUrl: event.iconURL,
                       fit: BoxFit.cover,
                       alignment: Alignment.center,
                     )
