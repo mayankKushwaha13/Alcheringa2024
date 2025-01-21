@@ -905,8 +905,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     aspectRatio: 0.7541589649,
                     child: isPassLoading
                         ? Center(
-                            child: CircularProgressIndicator(),
-                          )
+                      child: CircularProgressIndicator(),
+                    )
                         : PageView.builder(
                       controller: PageController(viewportFraction: 0.8),
                       itemCount: viewModelMain.passList.isEmpty ? 1 : viewModelMain.passList.length,
@@ -969,86 +969,41 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                         image: AssetImage('assets/images/card_ribbon.png'),
                                       ),
                                     ),
-                                    child: Center(
-                                      child: Text(
-                                        'No Passes Available',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 18.0,
-                                          fontFamily: 'Game_Tape',
+                                  ),
+                                  const SizedBox(height: 10.0),
+                                  Text(
+                                    viewModelMain.passList[index].name,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20.0,
+                                      fontFamily: 'Game_Tape',
+                                    ),
+                                  ),
+                                  Align(
+                                    alignment: Alignment.bottomCenter,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                        left: 70.0,
+                                        right: 70.0,
+                                        top: 20.0,
+                                      ),
+                                      child: Container(
+                                        color: Colors.white,
+                                        child: QrImageView(
+                                          data: viewModelMain.passList[index].id,
                                         ),
-                                        textAlign: TextAlign.center,
                                       ),
                                     ),
                                   ),
-                                );
-                              } else {
-                                // Regular page when passList has items
-                                return Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      image: const DecorationImage(
-                                        image: AssetImage('assets/images/card_bg.png'),
-                                        fit: BoxFit.fill,
-                                      ),
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                            left: 40.0,
-                                            right: 40.0,
-                                            top: 40.0,
-                                            bottom: 20.0,
-                                          ),
-                                          child: Align(
-                                            alignment: Alignment.topRight,
-                                            child: Image.asset('assets/images/alcher_lady_logo.png'),
-                                          ),
-                                        ),
-                                        Container(
-                                          height: 102.0,
-                                          decoration: const BoxDecoration(
-                                            image: DecorationImage(
-                                              image: AssetImage('assets/images/card_ribbon.png'),
-                                            ),
-                                          ),
-                                        ),
-                                        const SizedBox(height: 10.0),
-                                        Text(
-                                          viewModelMain.passList[index].name,
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 20.0,
-                                            fontFamily: 'Game_Tape',
-                                          ),
-                                        ),
-                                        Align(
-                                          alignment: Alignment.bottomCenter,
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                              left: 70.0,
-                                              right: 70.0,
-                                              top: 20.0,
-                                            ),
-                                            child: Container(
-                                              color: Colors.white,
-                                              child: QrImageView(
-                                                data: viewModelMain.passList[index].id,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        const SizedBox(height: 20.0),
-                                      ],
-                                    ),
-                                  ),
-                                );
-                              }
-                            },
-                          ),
+                                  const SizedBox(height: 20.0),
+                                ],
+                              ),
+                            ),
+                          );
+                        }
+                      },
+                    ),
+
                   ),
                 ),
                 SizedBox(
