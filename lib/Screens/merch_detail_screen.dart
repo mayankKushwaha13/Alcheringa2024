@@ -56,6 +56,7 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: _appBar(context),
@@ -184,7 +185,7 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
               ),
               SizedBox(height: 20),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: EdgeInsets.all(screenWidth*0.15),
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width,
                   child: Row(
@@ -198,6 +199,7 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
                           fit: BoxFit.cover,
                         ),
                       ),
+                      SizedBox(width: 3,),
                       Expanded(
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
@@ -240,6 +242,7 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
                           ],
                         ),
                       ),
+                      SizedBox(width: 3,),
                       GestureDetector(
                         onTap: selectRight,
                         child: Transform.rotate(

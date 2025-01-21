@@ -182,7 +182,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             element.category.replaceAll("\\s", "").toUpperCase() == "Competitions".replaceAll("\\s", "").toUpperCase())
         .toList();
 
-
     // Shuffle and pick a limited number of suggestions
     suggestions.shuffle(Random());
     displayedSuggestions = suggestions.take(20).toList();
@@ -768,7 +767,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                                     .push(MaterialPageRoute(builder: (context) => MerchScreen()));
                                               },
                                               child: Stack(
-                                                alignment: Alignment.bottomCenter,
+                                                alignment: Alignment.topCenter,
                                                 children: [
                                                   item.image == null
                                                       ? Image.asset(
@@ -791,22 +790,25 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                       )
                                       .toList(),
                                 ),
-                          Builder(builder: (context) {
-                            if (viewModelMain.merchMerch.isNotEmpty) {
-                              MerchModel item = viewModelMain.merchMerch[_currentIndex];
-                              return Text(
-                                item.name ?? " ",
-                                style: TextStyle(fontFamily: "Brick_Pixel", fontSize: 36, color: Colors.white),
-                              );
-                            } else {
-                              return Text(
-                                "Loading ...",
-                                style: TextStyle(fontFamily: "Brick_Pixel", fontSize: 36, color: Colors.white),
-                              );
-                            }
-                          }),
                           Spacer()
                         ],
+                      ),
+                      Positioned(
+                        top: screenHeight * 0.26,
+                        child: Builder(builder: (context) {
+                          if (viewModelMain.merchMerch.isNotEmpty) {
+                            MerchModel item = viewModelMain.merchMerch[_currentIndex];
+                            return Text(
+                              item.name ?? " ",
+                              style: TextStyle(fontFamily: "Brick_Pixel", fontSize: 36, color: Colors.white),
+                            );
+                          } else {
+                            return Text(
+                              "Loading ...",
+                              style: TextStyle(fontFamily: "Brick_Pixel", fontSize: 36, color: Colors.white),
+                            );
+                          }
+                        }),
                       ),
                       Positioned(
                         top: screenHeight * 0.16,
@@ -903,8 +905,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     aspectRatio: 0.7541589649,
                     child: isPassLoading
                         ? Center(
-                      child: CircularProgressIndicator(),
-                    )
+                            child: CircularProgressIndicator(),
+                          )
                         : PageView.builder(
                       controller: PageController(viewportFraction: 0.8),
                       itemCount: viewModelMain.passList.isEmpty ? 1 : viewModelMain.passList.length,
@@ -967,41 +969,86 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                         image: AssetImage('assets/images/card_ribbon.png'),
                                       ),
                                     ),
-                                  ),
-                                  const SizedBox(height: 10.0),
-                                  Text(
-                                    viewModelMain.passList[index].name,
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 20.0,
-                                      fontFamily: 'Game_Tape',
-                                    ),
-                                  ),
-                                  Align(
-                                    alignment: Alignment.bottomCenter,
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                        left: 70.0,
-                                        right: 70.0,
-                                        top: 20.0,
-                                      ),
-                                      child: Container(
-                                        color: Colors.white,
-                                        child: QrImageView(
-                                          data: viewModelMain.passList[index].id,
+                                    child: Center(
+                                      child: Text(
+                                        'No Passes Available',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 18.0,
+                                          fontFamily: 'Game_Tape',
                                         ),
+                                        textAlign: TextAlign.center,
                                       ),
                                     ),
                                   ),
-                                  const SizedBox(height: 20.0),
-                                ],
-                              ),
-                            ),
-                          );
-                        }
-                      },
-                    ),
-
+                                );
+                              } else {
+                                // Regular page when passList has items
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      image: const DecorationImage(
+                                        image: AssetImage('assets/images/card_bg.png'),
+                                        fit: BoxFit.fill,
+                                      ),
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                            left: 40.0,
+                                            right: 40.0,
+                                            top: 40.0,
+                                            bottom: 20.0,
+                                          ),
+                                          child: Align(
+                                            alignment: Alignment.topRight,
+                                            child: Image.asset('assets/images/alcher_lady_logo.png'),
+                                          ),
+                                        ),
+                                        Container(
+                                          height: 102.0,
+                                          decoration: const BoxDecoration(
+                                            image: DecorationImage(
+                                              image: AssetImage('assets/images/card_ribbon.png'),
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(height: 10.0),
+                                        Text(
+                                          viewModelMain.passList[index].name,
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20.0,
+                                            fontFamily: 'Game_Tape',
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment: Alignment.bottomCenter,
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                              left: 70.0,
+                                              right: 70.0,
+                                              top: 20.0,
+                                            ),
+                                            child: Container(
+                                              color: Colors.white,
+                                              child: QrImageView(
+                                                data: viewModelMain.passList[index].id,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(height: 20.0),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              }
+                            },
+                          ),
                   ),
                 ),
                 SizedBox(
@@ -1085,10 +1132,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                   return _buildCard(
                                     event: event,
                                     headingSize: 18,
-                                    isLiked:
-                                        likedEvents.indexWhere((element) => element.artist == event.artist) != -1
-                                            ? true
-                                            : false,
+                                    isLiked: likedEvents.indexWhere((element) => element.artist == event.artist) != -1
+                                        ? true
+                                        : false,
                                   );
                                 },
                               ),
@@ -1172,7 +1218,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
       child: GestureDetector(
         onTap: () {
-          if(event.isArtistRevealed) {
+          if (event.isArtistRevealed) {
             Navigator.of(context).push(MaterialPageRoute(builder: (context) => EventDetailPage(event: event)));
           }
         },
@@ -1245,17 +1291,19 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   top: 441 * widgetHeight / 480,
                   right: 25,
                   child: Text(
-                    event.isArtistRevealed ? event.starttime.date > 5
-                        ? event.starttime.date.toString() +
-                            " Jan " +
-                            event.starttime.hours.toString() +
-                            " PM | " +
-                            event.venue
-                        : event.starttime.date.toString() +
-                            " Feb " +
-                            event.starttime.hours.toString() +
-                            " PM | " +
-                            event.venue : 'Coming Soon',
+                    event.isArtistRevealed
+                        ? event.starttime.date > 5
+                            ? event.starttime.date.toString() +
+                                " Jan " +
+                                event.starttime.hours.toString() +
+                                " PM | " +
+                                event.venue
+                            : event.starttime.date.toString() +
+                                " Feb " +
+                                event.starttime.hours.toString() +
+                                " PM | " +
+                                event.venue
+                        : 'Coming Soon',
                     maxLines: 1,
                     overflow: TextOverflow.clip,
                     style: TextStyle(fontFamily: "Game_Tape", fontSize: 12, color: Colors.white),

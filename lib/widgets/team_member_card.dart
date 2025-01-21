@@ -95,27 +95,30 @@ class TeamMemberCard extends StatelessWidget {
                   padding: const EdgeInsets.only(right: 10.0),
                   child: Align(
                     alignment: Alignment.bottomRight,
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: [
-                          IconButton(
+                    child: Row(
+                      children: [
+                        Flexible(
+                          child: IconButton(
                             icon: Image.asset('assets/images/phone_icon.png', scale: 1.3,),
                             iconSize: 24,
                             onPressed: teamMember.onPhoneTap,
                           ),
-                          IconButton(
+                        ),
+                        Flexible(
+                          child: IconButton(
                             icon: Image.asset('assets/images/linkedin_icon.png'),
                             iconSize: 24,
                             onPressed: teamMember.onLinkedInTap,
                           ),
-                          IconButton(
+                        ),
+                        Flexible(
+                          child: IconButton(
                             icon: Image.asset('assets/images/mail_icon.png'),
                             iconSize: 24,
                             onPressed: teamMember.onMailTap,
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 ),

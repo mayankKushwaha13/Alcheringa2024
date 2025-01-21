@@ -58,10 +58,8 @@ class _EventDetailPageState extends State<EventDetailPage> {
   Widget build(BuildContext context) {
     // Fetch events of the same type for suggestions
     final List<EventDetail> suggestions = viewModelMain.allEvents
-        .where((e) => e.type == widget.event.type && e != widget.event)
-        .toList();
-
-    // Shuffle and pick a limited number of suggestions
+        .where((e) => e.category == "Competitions" && e != widget.event)
+        .toList();// Shuffle and pick a limited number of suggestions
     suggestions.shuffle(Random());
     final List<EventDetail> displayedSuggestions =
         suggestions.take(10).toList();
@@ -135,24 +133,29 @@ class _EventDetailPageState extends State<EventDetailPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          widget.event.venue,
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            fontFamily: 'Game_Tape',
-                            color: Color.fromRGBO(255, 241, 232, 1),
-                            fontSize: 24,
-                            fontWeight: FontWeight.w400,
+                        Flexible(
+                          child: Text(
+                            widget.event.venue,
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              fontFamily: 'Game_Tape',
+                              color: Color.fromRGBO(255, 241, 232, 1),
+                              fontSize: 24,
+                              fontWeight: FontWeight.w400,
+                              //overflow: TextOverflow.ellipsis
+                            ),
                           ),
                         ),
-                        Text(
-                          eventTime,
-                          textAlign: TextAlign.right,
-                          style: TextStyle(
-                            fontFamily: 'Game_Tape',
-                            color: Color.fromRGBO(255, 241, 232, 1),
-                            fontWeight: FontWeight.w400,
-                            fontSize: 24,
+                        Flexible(
+                          child: Text(
+                            eventTime,
+                            textAlign: TextAlign.right,
+                            style: TextStyle(
+                              fontFamily: 'Game_Tape',
+                              color: Color.fromRGBO(255, 241, 232, 1),
+                              fontWeight: FontWeight.w400,
+                              fontSize: 24,
+                            ),
                           ),
                         ),
                       ],
