@@ -184,12 +184,14 @@ class _StallsDescriptionPageState extends State<StallsDescriptionPage> {
                           return Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
-                                item.name,
-                                style: TextStyle(
-                                  fontFamily: 'Game_Tape',
-                                  fontSize: 16,
-                                  color: Color(0xFFFFF1E8),
+                              Flexible(
+                                child: Text(
+                                  item.name,
+                                  style: TextStyle(
+                                    fontFamily: 'Game_Tape',
+                                    fontSize: 16,
+                                    color: Color(0xFFFFF1E8),
+                                  ),
                                 ),
                               ),
                               Text(
