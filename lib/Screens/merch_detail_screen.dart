@@ -184,78 +184,72 @@ class _MerchDetailScreenState extends State<MerchDetailScreen> {
                 ),
               ),
               SizedBox(height: 20),
-              Padding(
-                padding: EdgeInsets.all(screenWidth*0.15),
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GestureDetector(
-                        onTap: selectLeft,
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                      onTap: selectLeft,
+                      child: Image.asset(
+                        'assets/images/product_detail_sprite.png',
+                        width: 40,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    SizedBox(width: 3,),
+                    Expanded(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: sizes.asMap().entries.map((entry) {
+                              final index = entry.key;
+                              final size = entry.value;
+                              final isSelected = index == selectedIndex;
+                              return GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    selectedIndex = index;
+                                    selectedSize = size;
+                                  });
+                                },
+                                child: Text(
+                                  size,
+                                  style: TextStyle(
+                                    fontSize: isSelected ? 30 : 22,
+                                    fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                                    color: isSelected
+                                        ? Color.fromRGBO(255, 241, 232, 1)
+                                        : Color.fromRGBO(131, 118, 156, 1),
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                          Image.asset(
+                            'assets/images/scroll.png',
+                            width: MediaQuery.of(context).size.width,
+                            height: 3,
+                            fit: BoxFit.cover,
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(width: 3,),
+                    GestureDetector(
+                      onTap: selectRight,
+                      child: Transform.rotate(
+                        angle: 3.14159265359,
                         child: Image.asset(
                           'assets/images/product_detail_sprite.png',
                           width: 40,
                           fit: BoxFit.cover,
                         ),
                       ),
-                      SizedBox(width: 3,),
-                      Expanded(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: sizes.asMap().entries.map((entry) {
-                                final index = entry.key;
-                                final size = entry.value;
-                                final isSelected = index == selectedIndex;
-                                return Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 18),
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        selectedIndex = index;
-                                        selectedSize = size;
-                                      });
-                                    },
-                                    child: Text(
-                                      size,
-                                      style: TextStyle(
-                                        fontSize: isSelected ? 30 : 22,
-                                        fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                                        color: isSelected
-                                            ? Color.fromRGBO(255, 241, 232, 1)
-                                            : Color.fromRGBO(131, 118, 156, 1),
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              }).toList(),
-                            ),
-                            Image.asset(
-                              'assets/images/scroll.png',
-                              width: MediaQuery.of(context).size.width,
-                              height: 3,
-                              fit: BoxFit.cover,
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(width: 3,),
-                      GestureDetector(
-                        onTap: selectRight,
-                        child: Transform.rotate(
-                          angle: 3.14159265359,
-                          child: Image.asset(
-                            'assets/images/product_detail_sprite.png',
-                            width: 40,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
               SizedBox(
