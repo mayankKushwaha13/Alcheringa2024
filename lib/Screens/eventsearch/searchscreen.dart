@@ -229,7 +229,9 @@ Widget _buildCard({
       children: [
         GestureDetector(
           onTap: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context)=>EventDetailPage(event: event)));
+            if(event.isArtistRevealed) {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => EventDetailPage(event: event)));
+            }
           },
           child: Stack(
             children: [
