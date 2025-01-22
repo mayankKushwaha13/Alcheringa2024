@@ -333,7 +333,7 @@ class _ActivityEventsScreenState extends State<ActivityEventsScreen> {
                   top: 380 * widgetHeight / 485,
                   right: 25,
                   child: Text(
-                    event.isArtistRevealed ? event.descriptionEvent : 'Coming Soon',
+                    event.isArtistRevealed ? event.descriptionShort : 'Coming Soon',
                     maxLines: 3,
                     overflow: TextOverflow.clip,
                     style: TextStyle(
