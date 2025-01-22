@@ -186,7 +186,7 @@ class MerchandiseItem extends StatelessWidget {
               ],
             ),
             Padding(
-              padding: const EdgeInsets.all(15.0),
+              padding: EdgeInsets.only(top:  MediaQuery.of(context).size.height * 0.05),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -194,15 +194,15 @@ class MerchandiseItem extends StatelessWidget {
                     padding: const EdgeInsets.only(top: 20),
                     child: CachedNetworkImage(
                       imageUrl: merch.image!,
-                      width: MediaQuery.of(context).size.width * 0.2,
+                      width: MediaQuery.of(context).size.width * 0.25,
                     ),
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      SizedBox(
-                        height: 20,
-                      ),
+                      // SizedBox(
+                      //   height: 20,
+                      // ),
                       Text(
                         merch.type!,
                         style: const TextStyle(
