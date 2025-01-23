@@ -924,14 +924,48 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                 ),
                               ),
                               child: Center(
-                                child: Text(
-                                  'No Cards Available',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18.0,
-                                    fontFamily: 'Game_Tape',
-                                  ),
-                                  textAlign: TextAlign.center,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'No Cards Available',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 18.0,
+                                        fontFamily: 'Game_Tape',
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    Container(
+                                      width: 150,
+                                      height: 50,
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          image: AssetImage(
+                                              'assets/images/get_card_box.png'),
+                                          fit: BoxFit.fill,
+                                        ),
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        'Get Card',
+                                        style: TextStyle(
+                                            fontFamily: 'Brick_Pixel',
+                                            color: Color.fromRGBO(255, 241, 232, 1),
+                                            fontSize: 24,
+                                            fontWeight: FontWeight.w400,
+                                            shadows: [
+                                              Shadow(
+                                                  offset: Offset(2.5, 2),
+                                                  color: Colors.black,
+                                                  blurRadius: 2),
+                                            ]
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),

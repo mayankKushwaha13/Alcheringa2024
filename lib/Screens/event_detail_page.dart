@@ -95,10 +95,12 @@ class _EventDetailPageState extends State<EventDetailPage> {
                       child: AspectRatio(
                         aspectRatio: 1.6,
                         child: Container(
+                          alignment: Alignment.centerLeft,
                           decoration: BoxDecoration(
                             image: DecorationImage(
                               image: CachedNetworkImageProvider(widget.event.imgurl),
                               fit: BoxFit.fill, // Use BoxFit.cover to make it fit
+                              // alignment: Alignment.centerLeft
                             ),
                           ),
                         ),

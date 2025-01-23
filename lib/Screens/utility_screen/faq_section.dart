@@ -8,7 +8,7 @@ class FaqSection extends StatefulWidget {
 class _FaqSectionState extends State<FaqSection> {
   List<FaqItem> _faqItems = [
     FaqItem(
-      question: 'Where can I buy the executive pass?',
+      question: 'Where can I buy the Alcheringa Cards?',
       answer:
       'You can buy the executive pass from the Alcheringa website or at the venue.',
     ),

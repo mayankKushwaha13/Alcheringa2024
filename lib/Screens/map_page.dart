@@ -393,11 +393,7 @@ class _MapPageState extends State<MapPage> {
                                                 SizedBox(
                                                   width: 10.0,
                                                 ),
-                                                GestureDetector(
-                                                  onTap: () {
-                                                  },
-                                                  child: Image.asset('assets/images/map_location_icon.png'),
-                                                )
+                                                Image.asset('assets/images/map_location_icon.png')
                                               ],
                                             ),
                                           ),

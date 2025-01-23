@@ -56,13 +56,17 @@ class _sponsors_listState extends State<sponsors_list> {
                           ),
                         ),
                         Container(
-                          width: MediaQuery.of(context).size.width * 0.85,
-                          height: 130,
+                          // width: MediaQuery.of(context).size.width * 0.85,
+                          // height: 130,
                           decoration: BoxDecoration(
                             border: Border.all(
                               color: AppColors.Darkpink,
                               width: 3,
                             ),
+                          ),
+                          constraints: BoxConstraints(
+                            maxWidth: MediaQuery.of(context).size.width * 0.85, // optional maximum width
+                            maxHeight: 130, // optional maximum height
                           ),
                           child: CachedNetworkImage(
                             imageUrl: sponsor.imageurl,
@@ -120,13 +124,17 @@ class _sponsors_listState extends State<sponsors_list> {
                       ),
                       SizedBox(height: 8),
                       Container(
-                        width: MediaQuery.of(context).size.width * 0.4,
-                        height: 130,
+                        // width: MediaQuery.of(context).size.width * 0.4,
+                        // height: 130,
                         decoration: BoxDecoration(
                           border: Border.all(
                             color: AppColors.Darkpink,
                             width: 3,
                           ),
+                        ),
+                        constraints: BoxConstraints(
+                          maxWidth: MediaQuery.of(context).size.width * 0.4, // optional maximum width
+                          maxHeight: 130, // optional maximum height
                         ),
                         child: CachedNetworkImage(
                           imageUrl: sponsor.imageurl,

@@ -24,93 +24,100 @@ class _SchedulePageState extends State<SchedulePage> {
   final ScrollController verticalController = ScrollController();
   final ScrollController horizontalController = ScrollController();
   final ViewModelMain viewModel = ViewModelMain();
- final ScrollController _controller1 = ScrollController();
- final ScrollController   _controller2 = ScrollController();
+  final ScrollController _controller1 = ScrollController();
+  final ScrollController _controller2 = ScrollController();
+  List<String> displayedVenues = [];
 
   String key = "ALL";
 
-
   final Map<String, List<String>> itemListMap = {
-  "All": [
-    "Lecture Hall 1",
-    "Lecture Hall 2",
-    "Lecture Hall 3",
-    "Lecture Hall 4",
-    "Core 5",
-    "Core 1",
-    "Front of Graffiti Wall",
-    "Behind Graffiti Wall",
-    "Old Sac Wall",
-    "New SAC",
-    "Old Sac Stage",
-    "Conference Hall 1",
-    "Conference Hall 2",
-    "Conference Hall 3",
-    "Conference Hall 4",
-    "Mini Auditorium",
+    "All": [
+      "Lecture Hall 1",
+      "Lecture Hall 2",
+      "Lecture Hall 3",
+      "Lecture Hall 4",
+      "Core 5",
+      "Core 1",
+      "Front of Graffiti Wall",
+      "Behind Graffiti Wall",
+      "Old Sac Wall",
+      "New SAC",
+      "Old Sac Stage",
+      "Conference Hall 1",
+      "Conference Hall 2",
+      "Conference Hall 3",
+      "Conference Hall 4",
+      "Mini Auditorium",
+      "Auditorium",
+      "Audi Park",
+      "Senate Hall",
+      "Rocko Stage",
+      "Expo Stage",
+      "Library",
+      "Library Shed",
+      "Library Basement",
+      "Football Field",
+      "Basketball Courts",
+      "Volley Ball Court",
+      "Pronite Stage",
+      "Athletics Field",
+      "Entire Campus",
+    ],
+    "Lecture Halls": [
+      "Lecture Hall 1",
+      "Lecture Hall 2",
+      "Lecture Hall 3",
+      "Lecture Hall 4",
+      "Core 5",
+      "Core 1",
+    ],
+    "Grounds": [
+      "Football Field",
+      "Basketball Courts",
+      "Volley Ball Court",
+      "Pronite Stage",
+      "Athletics Field",
+    ],
+    "Library Area": [
+      "Library",
+      "Library Shed",
+      "Library Basement",
+    ],
+    "Admin Area": [
+      "Senate Hall",
+      "Rocko Stage",
+      "Expo Stage",
+    ],
+    "Auditorium": [
+      "Mini Auditorium",
+      "Auditorium",
+      "Audi Park",
+    ],
+    "Conference Hall": [
+      "Conference Hall 1",
+      "Conference Hall 2",
+      "Conference Hall 3",
+      "Conference Hall 4",
+    ],
+    "SAC Area": [
+      "Front of Graffiti Wall",
+      "Behind Graffiti Wall",
+      "Old Sac Wall",
+      "Old Sac Stage",
+      "New SAC",
+    ],
+  };
+
+  final List<String> keys = [
+    "All",
+    "Lecture Halls",
+    "Grounds",
+    "Library Area",
+    "Admin Area",
     "Auditorium",
-    "Audi Park",
-    "Senate Hall",
-    "Rocko Stage",
-    "Expo Stage",
-    "Library",
-    "Library Shed",
-    "Library Basement",
-    "Football Field",
-    "Basketball Courts",
-    "Volley Ball Court",
-    "Pronite Stage",
-    "Athletics Field",
-    "Entire Campus",
-  ],
-  "Lecture Halls": [
-    "Lecture Hall 1",
-    "Lecture Hall 2",
-    "Lecture Hall 3",
-    "Lecture Hall 4",
-    "Core 5",
-    "Core 1",
-  ],
-  "Grounds": [
-    "Football Field",
-    "Basketball Courts",
-    "Volley Ball Court",
-    "Pronite Stage",
-    "Athletics Field",
-  ],
-  "Library Area": [
-    "Library",
-    "Library Shed",
-    "Library Basement",
-  ],
-  "Admin Area": [
-    "Senate Hall",
-    "Rocko Stage",
-    "Expo Stage",
-  ],
-  "Auditorium": [
-    "Mini Auditorium",
-    "Auditorium",
-    "Audi Park",
-  ],
-  "Conference Hall": [
-    "Conference Hall 1",
-    "Conference Hall 2",
-    "Conference Hall 3",
-    "Conference Hall 4",
-  ],
-  "SAC Area": [
-    "Front of Graffiti Wall",
-    "Behind Graffiti Wall",
-    "Old Sac Wall",
-    "Old Sac Stage",
-    "New SAC",
-  ],
-};
-
-final List<String> keys = ["All","Lecture Halls","Grounds","Library Area", "Admin Area","Auditorium","Conference Hall","SAC Area"];
-
-
+    "Conference Hall",
+    "SAC Area"
+  ];
 
   List<EventDetail> allEvents = [];
   List<EventDetail> filteredEvents = [];
@@ -118,12 +125,10 @@ final List<String> keys = ["All","Lecture Halls","Grounds","Library Area", "Admi
   final double hourHeight = 60.0; // Height for 1 hour
 
   Widget buildEvent(EventDetail event) {
-    final eventHeight = calculateEventHeight(
-        TimeOfDay(hour: event.starttime.hours, minute: event.starttime.min),
-        TimeOfDay(
-            hour: event.getEndTime().hours, minute: event.getEndTime().min));
-    final topOffset = calculateEventHeight(TimeOfDay(hour: 8, minute: 0),
-        TimeOfDay(hour: event.starttime.hours, minute: event.starttime.min));
+    final eventHeight = calculateEventHeight(TimeOfDay(hour: event.starttime.hours, minute: event.starttime.min),
+        TimeOfDay(hour: event.getEndTime().hours, minute: event.getEndTime().min));
+    final topOffset = calculateEventHeight(
+        TimeOfDay(hour: 8, minute: 0), TimeOfDay(hour: event.starttime.hours, minute: event.starttime.min));
 
     return Positioned(
       top: topOffset,
@@ -177,7 +182,6 @@ final List<String> keys = ["All","Lecture Halls","Grounds","Library Area", "Admi
     });
 
     try {
-
       // Fetch events
       allEvents = viewModelMain.allEvents;
 
@@ -212,9 +216,12 @@ final List<String> keys = ["All","Lecture Halls","Grounds","Library Area", "Admi
         final isSameDay = event.starttime.date.toString() == date;
 
         // If 'All' is selected, show all venues, otherwise filter by selected venue
-        final isSameVenue = selectedVenue == 'ALL' ||
-            event.venue.trim().toLowerCase() ==
-                selectedVenue.trim().toLowerCase();
+        final isSameVenue =
+            selectedVenue == 'ALL' || event.venue.trim().toLowerCase() == selectedVenue.trim().toLowerCase();
+
+        displayedVenues = itemListMap[selectedVenueCategory]?.where((venue) {
+          return filteredEvents.any((event) => event.venue.trim().toLowerCase() == venue.trim().toLowerCase());
+        }).toList() ?? [];
 
         return isSameDay && isSameVenue;
       }).toList();
@@ -270,18 +277,15 @@ final List<String> keys = ["All","Lecture Halls","Grounds","Library Area", "Admi
     super.initState();
     selectedDay = initialDay;
     getEventsData();
-        
 
     _controller1.addListener(() {
-      if (_controller2.hasClients &&
-          _controller1.offset != _controller2.offset) {
+      if (_controller2.hasClients && _controller1.offset != _controller2.offset) {
         _controller2.jumpTo(_controller1.offset);
       }
     });
 
     _controller2.addListener(() {
-      if (_controller1.hasClients &&
-          _controller2.offset != _controller1.offset) {
+      if (_controller1.hasClients && _controller2.offset != _controller1.offset) {
         _controller1.jumpTo(_controller2.offset);
       }
     });
@@ -392,24 +396,21 @@ final List<String> keys = ["All","Lecture Halls","Grounds","Library Area", "Admi
                               onChanged: onVenueCategoryChanged,
                               dropdownColor: Color(0xFF1D2B53),
                               decoration: InputDecoration(
-                                contentPadding:
-                                    EdgeInsets.symmetric(horizontal: 30.0),
+                                contentPadding: EdgeInsets.symmetric(horizontal: 30.0),
                                 fillColor: Color(0xFF1D2B53),
                                 filled: true,
                                 enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors.pink, width: 2),
+                                  borderSide: BorderSide(color: Colors.pink, width: 2),
                                   borderRadius: BorderRadius.zero,
                                 ),
                                 focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors.pink, width: 2),
+                                  borderSide: BorderSide(color: Colors.pink, width: 2),
                                   borderRadius: BorderRadius.zero,
                                 ),
                               ),
                             ),
                             SizedBox(height: 10),
-                            ],
+                          ],
                         ),
                       ),
                     ),
@@ -425,54 +426,64 @@ final List<String> keys = ["All","Lecture Halls","Grounds","Library Area", "Admi
               Row(
                 children: [
                   Container(
-                                  height: 60,
-                                  width: 95,
-                                  decoration: BoxDecoration(
-                                      border: Border(
-                                    bottom: BorderSide(color: Colors.grey.withOpacity(1), ),
-                                    right: BorderSide(color: Colors.grey.withOpacity(1), ),
-                                  )),
-                                ),
+                    height: 60,
+                    width: 95,
+                    decoration: BoxDecoration(
+                        border: Border(
+                      bottom: BorderSide(
+                        color: Colors.grey.withOpacity(1),
+                      ),
+                      right: BorderSide(
+                        color: Colors.grey.withOpacity(1),
+                      ),
+                    )),
+                  ),
                   Expanded(
-                                child: isLoading
-                                    ? Center(child: CircularProgressIndicator())
-                                    : SingleChildScrollView(
-                                        scrollDirection: Axis.horizontal,
-                                        controller: _controller1,
-                                        child: Row(
-                                          children: (selectedVenueCategory ==
-                                                      'All'
-                                                  ? itemListMap["All"]!
-                                                  : itemListMap[selectedVenueCategory] ??[]).map((venue) {
-                                            final venueEvents = filteredEvents.where((event) => event.venue.toLowerCase() == venue.toLowerCase()).toList();
-                                            return SizedBox(
-                                              width: 200, //column width for every block ie the place
-                                              child: Column(
-                                                children: [
-                                                  Container(
-                                                    decoration:BoxDecoration(
-                                                              border: Border(
-                                                                bottom: BorderSide( color: Colors.grey.withOpacity(1),),
-                                                                right: BorderSide(color: Colors.grey.withOpacity(1),),
-                                                              ),
-                                                            ),
-                                                    height: 60,
-                                                    alignment: Alignment.center,
-                                                    child: Text(venue,
-                                                      style: const TextStyle(
-                                                        fontSize: 18,
-                                                        color: Colors.white,
-                                                        fontWeight:FontWeight.bold,
-                                                        fontFamily: 'Game_Tape',
-                                                      ),
-                                                    ),
-                                                  ),],
-                                              ),
-                                            );
-                                          }).toList(),
+                    child: isLoading
+                        ? Center(child: CircularProgressIndicator())
+                        : SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            controller: _controller1,
+                            child: Row(
+                              children: displayedVenues
+                                  .map((venue) {
+                                final venueEvents = filteredEvents
+                                    .where((event) => event.venue.toLowerCase() == venue.toLowerCase())
+                                    .toList();
+                                return SizedBox(
+                                  width: 200, //column width for every block ie the place
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          border: Border(
+                                            bottom: BorderSide(
+                                              color: Colors.grey.withOpacity(1),
+                                            ),
+                                            right: BorderSide(
+                                              color: Colors.grey.withOpacity(1),
+                                            ),
+                                          ),
+                                        ),
+                                        height: 60,
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          venue,
+                                          style: const TextStyle(
+                                            fontSize: 18,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: 'Game_Tape',
+                                          ),
                                         ),
                                       ),
-                              ),
+                                    ],
+                                  ),
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                  ),
                 ],
               ),
               Expanded(
@@ -488,7 +499,7 @@ final List<String> keys = ["All","Lecture Halls","Grounds","Library Area", "Admi
                             width: 95,
                             child: Column(
                               children: [
-                                 // Empty space for top alignment
+                                // Empty space for top alignment
                                 ...List.generate(
                                   15, // Each hour block
                                   (index) => Container(
@@ -506,8 +517,7 @@ final List<String> keys = ["All","Lecture Halls","Grounds","Library Area", "Admi
                                     child: Align(
                                       alignment: Alignment.centerLeft,
                                       child: Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 8.0),
+                                        padding: const EdgeInsets.only(left: 8.0),
                                         child: Text(
                                           formatTimeToAmPm(index + 8),
                                           style: const TextStyle(
@@ -525,8 +535,6 @@ final List<String> keys = ["All","Lecture Halls","Grounds","Library Area", "Admi
                           ),
 
                           //
-                           
-                        
 
                           // Venue Time Slots and Events
                           Expanded(
@@ -536,11 +544,13 @@ final List<String> keys = ["All","Lecture Halls","Grounds","Library Area", "Admi
                                     scrollDirection: Axis.horizontal,
                                     controller: _controller2,
                                     child: Row(
-                                      children: (selectedVenueCategory ==
-                                                  'All'
+                                      children: (selectedVenueCategory == 'All'
                                               ? itemListMap["All"]!
-                                              : itemListMap[selectedVenueCategory] ??[]).map((venue) {
-                                        final venueEvents = filteredEvents.where((event) => event.venue.toLowerCase() == venue.toLowerCase()).toList();
+                                              : itemListMap[selectedVenueCategory] ?? [])
+                                          .map((venue) {
+                                        final venueEvents = filteredEvents
+                                            .where((event) => event.venue.toLowerCase() == venue.toLowerCase())
+                                            .toList();
                                         return SizedBox(
                                           width: 200, //column width for every block ie the place
                                           child: Column(
@@ -567,56 +577,68 @@ final List<String> keys = ["All","Lecture Halls","Grounds","Library Area", "Admi
                                                 children: [
                                                   // Time Slots
                                                   Column(
-                                                    children: List.generate(15,(index) => Container(
+                                                    children: List.generate(
+                                                      15,
+                                                      (index) => Container(
                                                         height: hourHeight,
                                                         decoration: BoxDecoration(
-                                                        border: Border(
-                                                          bottom: BorderSide( color: Colors.grey.withOpacity(1),),
-                                                          right: BorderSide(color: Colors.grey.withOpacity(1),),
+                                                          border: Border(
+                                                            bottom: BorderSide(
+                                                              color: Colors.grey.withOpacity(1),
+                                                            ),
+                                                            right: BorderSide(
+                                                              color: Colors.grey.withOpacity(1),
+                                                            ),
+                                                          ),
                                                         ),
-                                                      ),
                                                       ),
                                                     ),
                                                   ),
                                                   // Events for the Venue
                                                   ...venueEvents.map((event) {
-                                                    final start =event.starttime;
-                                                    final end =event.getEndTime();
-                                                    final startOffset =(start.hours - 8) +(start.min / 60);
-                                                    final duration = (end.hours -start.hours) + (end.min - start.min) /60;
+                                                    final start = event.starttime;
+                                                    final end = event.getEndTime();
+                                                    final startOffset = (start.hours - 8) + (start.min / 60);
+                                                    final duration =
+                                                        (end.hours - start.hours) + (end.min - start.min) / 60;
                                                     return Positioned(
-                                                      top: startOffset *(hourHeight),
+                                                      top: startOffset * (hourHeight),
                                                       left: 8,
                                                       right: 8,
                                                       child: GestureDetector(
                                                         onTap: () {
-                                                          if(event.isArtistRevealed) {
-                                                            Navigator.push(context, MaterialPageRoute(
-                                                                builder: (context) => EventDetailPage(event: event)));
+                                                          if (event.isArtistRevealed) {
+                                                            Navigator.push(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                    builder: (context) =>
+                                                                        EventDetailPage(event: event)));
                                                           }
                                                         },
                                                         child: Container(
-                                                          height: duration *hourHeight,
-                                                          padding:const EdgeInsets.all(8),
-                                                          decoration:BoxDecoration(
+                                                          height: duration * hourHeight,
+                                                          padding: const EdgeInsets.all(8),
+                                                          decoration: BoxDecoration(
                                                             border: Border.all(color: Color(0xFFFF77A8), width: 4.0),
                                                             image: DecorationImage(
-                                                              image: AssetImage('assets/images/schedule_event_bg.png'),
-                                                              fit: BoxFit.cover
-                                                            ),
+                                                                image:
+                                                                    AssetImage('assets/images/schedule_event_bg.png'),
+                                                                fit: BoxFit.cover),
                                                           ),
                                                           child: Center(
                                                             child: SingleChildScrollView(
                                                               child: Column(
-                                                                crossAxisAlignment:CrossAxisAlignment.start,
+                                                                crossAxisAlignment: CrossAxisAlignment.start,
                                                                 mainAxisAlignment: MainAxisAlignment.center,
                                                                 children: [
                                                                   Text(
-                                                                    event.isArtistRevealed ? event.artist : 'Coming Soon',
+                                                                    event.isArtistRevealed
+                                                                        ? event.artist
+                                                                        : 'Coming Soon',
                                                                     style: const TextStyle(
                                                                       fontSize: 25,
                                                                       color: Color(0xFFFFF1E8),
-                                                                      fontWeight:FontWeight.bold,
+                                                                      fontWeight: FontWeight.bold,
                                                                       fontFamily: 'Game_Tape',
                                                                     ),
                                                                     overflow: TextOverflow.ellipsis,
@@ -626,7 +648,7 @@ final List<String> keys = ["All","Lecture Halls","Grounds","Library Area", "Admi
                                                                     style: const TextStyle(
                                                                       fontSize: 13,
                                                                       color: Color(0xFFFFF1E8),
-                                                                      fontWeight:FontWeight.bold,
+                                                                      fontWeight: FontWeight.bold,
                                                                       fontFamily: 'Game_Tape',
                                                                     ),
                                                                     overflow: TextOverflow.ellipsis,
