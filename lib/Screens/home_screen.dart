@@ -15,6 +15,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../Common/resource.dart';
 import '../Model/eventdetail.dart';
@@ -937,31 +938,45 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                       ),
                                       textAlign: TextAlign.center,
                                     ),
-                                    Container(
-                                      width: 150,
-                                      height: 50,
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image: AssetImage(
-                                              'assets/images/get_card_box.png'),
-                                          fit: BoxFit.fill,
+                                    SizedBox(
+                                      height: 10.0,
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                          final uri = Uri.parse('https://alcheringa.iitg.ac.in');
+                                          try{
+                                            launchUrl(uri);
+                                          } catch (e){
+                                            print('Cannot open the browser');
+                                            showMessage('Unable to open browser', context);
+                                          }
+                                      },
+                                      child: Container(
+                                        width: 150,
+                                        height: 50,
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                            image: AssetImage(
+                                                'assets/images/get_card_box.png'),
+                                            fit: BoxFit.fill,
+                                          ),
+                                          borderRadius: BorderRadius.circular(8),
                                         ),
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        'Get Card',
-                                        style: TextStyle(
-                                            fontFamily: 'Brick_Pixel',
-                                            color: Color.fromRGBO(255, 241, 232, 1),
-                                            fontSize: 24,
-                                            fontWeight: FontWeight.w400,
-                                            shadows: [
-                                              Shadow(
-                                                  offset: Offset(2.5, 2),
-                                                  color: Colors.black,
-                                                  blurRadius: 2),
-                                            ]
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          'Get Card',
+                                          style: TextStyle(
+                                              fontFamily: 'Brick_Pixel',
+                                              color: Color.fromRGBO(255, 241, 232, 1),
+                                              fontSize: 24,
+                                              fontWeight: FontWeight.w400,
+                                              shadows: [
+                                                Shadow(
+                                                    offset: Offset(2.5, 2),
+                                                    color: Colors.black,
+                                                    blurRadius: 2),
+                                              ]
+                                          ),
                                         ),
                                       ),
                                     ),

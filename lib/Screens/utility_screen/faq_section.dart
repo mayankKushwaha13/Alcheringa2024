@@ -10,7 +10,7 @@ class _FaqSectionState extends State<FaqSection> {
     FaqItem(
       question: 'Where can I buy the Alcheringa Cards?',
       answer:
-      'You can buy the executive pass from the Alcheringa website or at the venue.',
+      'You can buy the card from the Alcheringa website or at the venue.',
     ),
     FaqItem(
       question: 'Can I update my event schedule after registering?',

@@ -74,7 +74,7 @@ class _ContactSectionState extends State<ContactSection> {
                 onTap: () => setState(() {
                   selectedCategory = selectedCategory == 'ADMIN' ? '' : 'ADMIN';
                 }),
-                label: 'Admin',
+                label: 'ADMIN',
                 showLabel: selectedCategory.isEmpty,
               ),
             ],
