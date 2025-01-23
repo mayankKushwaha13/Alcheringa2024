@@ -9,6 +9,7 @@ class EventProvider with ChangeNotifier {
   List<EventDetail> _allEvents = [];
   List<EventDetail> _pronites = [];
   List<EventDetail> _proshows = [];
+  List<EventDetail> _criticalDamage = [];
   List<EventDetail> _creatorsCamp = [];
   List<EventDetail> _nesslist = [];
   List<EventDetail> _neuvlist = [];
@@ -20,6 +21,7 @@ class EventProvider with ChangeNotifier {
   List<EventDetail> get proshows => _proshows;
   List<EventDetail> get nesslist => _nesslist;
   List<EventDetail> get neuvlist => _neuvlist;
+  List<EventDetail> get criticalDamage => _criticalDamage;
   List<EventDetail> get creatorsCamp => _creatorsCamp;
 
   List<VenueModel> get venues => _venues;
@@ -38,6 +40,9 @@ class EventProvider with ChangeNotifier {
           .toList();
       _creatorsCamp = _allEvents
           .where((event) => event.type.toLowerCase() == "creators' camp")
+          .toList();
+      _criticalDamage = _allEvents
+          .where((event) => event.type.toLowerCase() == "critical damage")
           .toList();
       _nesslist = _allEvents
           .where((event) => event.type.toLowerCase() == "ness")

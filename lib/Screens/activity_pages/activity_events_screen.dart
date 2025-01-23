@@ -135,6 +135,19 @@ class _ActivityEventsScreenState extends State<ActivityEventsScreen> {
                           ),
                           const SizedBox(height: 20),
                         ],
+                        //Critical damage
+                        if (eventProvider.criticalDamage.isNotEmpty) ...[
+                          _buildHeading(
+                            text: "Critical Damage",
+                            backgroundImage: "assets/images/heading.png",
+                          ),
+                          const SizedBox(height: 20),
+                          _buildEventList(
+                            screenHeight: screenHeight,
+                            events: eventProvider.criticalDamage,
+                          ),
+                          const SizedBox(height: 20),
+                        ],
                         //NEUV
                         if (eventProvider.neuvlist.isNotEmpty) ...[
                           _buildHeading(
