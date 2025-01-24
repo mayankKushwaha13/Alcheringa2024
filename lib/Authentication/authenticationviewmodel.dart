@@ -71,6 +71,25 @@ Future<void> registerUserInDatabaseCustom(String name, String email, [String? Ph
   }
 }
 
+Future<void> updateUserName(String name, String email) async {
+  try {
+    final prefs = await SharedPreferences.getInstance();
+    final doc = db
+        .collection('USERS')
+        .doc(email);
+    final data = {
+      'Name' : name
+    };
+
+    await doc.set(data);
+    prefs.setString('userName', name ?? '');
+
+    print("name added successfully to firestore");
+  } catch (e) {
+    print("Error name updating fxn: $e");
+  }
+}
+
 Future<void> addIntrestToDb(List<String> intrestList, String email) async {
   try {
     final doc = db

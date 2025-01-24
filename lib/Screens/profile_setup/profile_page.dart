@@ -8,6 +8,7 @@ import 'package:alcheringa/Screens/profile_setup/widgets/intrest_button.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -55,6 +56,7 @@ class _ProfilePageState extends State<ProfilePage> {
         if (_image != null) {
           onUpdateProfile(context, File(_image!), auth.currentUser!.email!, nicknameController.text.trim());
         }
+        await updateUserName(nicknameController.text.trim(), auth.currentUser!.email!);
         await addIntrestToDb(selectedIntrests, auth.currentUser!.email!);
       }
       interests = selectedIntrests;

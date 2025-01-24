@@ -219,10 +219,6 @@ class _SchedulePageState extends State<SchedulePage> {
         final isSameVenue =
             selectedVenue == 'ALL' || event.venue.trim().toLowerCase() == selectedVenue.trim().toLowerCase();
 
-        displayedVenues = itemListMap[selectedVenueCategory]?.where((venue) {
-          return filteredEvents.any((event) => event.venue.trim().toLowerCase() == venue.trim().toLowerCase());
-        }).toList() ?? [];
-
         return isSameDay && isSameVenue;
       }).toList();
 
@@ -445,8 +441,10 @@ class _SchedulePageState extends State<SchedulePage> {
                             scrollDirection: Axis.horizontal,
                             controller: _controller1,
                             child: Row(
-                              children: displayedVenues
-                                  .map((venue) {
+                              children: (selectedVenueCategory ==
+                                  'All'
+                                  ? itemListMap["All"]!
+                                  : itemListMap[selectedVenueCategory] ??[]).map((venue) {
                                 final venueEvents = filteredEvents
                                     .where((event) => event.venue.toLowerCase() == venue.toLowerCase())
                                     .toList();
