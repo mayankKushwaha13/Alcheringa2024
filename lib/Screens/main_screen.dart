@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:alcheringa/Common/globals.dart';
 import 'package:alcheringa/Screens/activity_pages/activity_page.dart';
 import 'package:alcheringa/Screens/end_drawer.dart';
@@ -6,6 +8,7 @@ import 'package:alcheringa/Screens/utility_screen/utilities_screen.dart';
 import 'package:alcheringa/screens/home_screen.dart';
 import 'package:alcheringa/screens/map_page.dart';
 import 'package:alcheringa/screens/schedule_page.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -44,8 +47,16 @@ class _MainScreenState extends State<MainScreen> {
 
   Future<void> checkVersion() async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    await db.collection('Version').doc('version').get().then((snapshot) {
-      if (int.parse(snapshot.get('version')) > int.parse(packageInfo.buildNumber)) {
+    String platformKey = Platform.isAndroid ? 'android_version' : 'ios_version';
+
+    try {
+      DocumentSnapshot snapshot =
+      await db.collection('Version').doc('version').get();
+
+      int latestVersion = int.parse(snapshot.get(platformKey));
+      int currentVersion = int.parse(packageInfo.buildNumber);
+
+      if (latestVersion > currentVersion) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           showDialog(
             context: context,
@@ -56,7 +67,8 @@ class _MainScreenState extends State<MainScreen> {
                 content: const Text(
                   'A newer version of the app is available. Please update to the latest version for the best experience.',
                 ),
-                actions: [
+                actions: Platform.isAndroid
+                    ? [
                   TextButton(
                     onPressed: () {
                       final uri = Uri.parse(
@@ -65,13 +77,16 @@ class _MainScreenState extends State<MainScreen> {
                     },
                     child: const Text('Update'),
                   ),
-                ],
+                ]
+                    : null,
               );
             },
           );
         });
       }
-    });
+    } catch (e) {
+      debugPrint('Error checking version: $e');
+    }
   }
 
   void _calculateBottomNavBarHeight() {
