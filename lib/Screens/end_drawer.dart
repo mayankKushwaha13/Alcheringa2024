@@ -237,7 +237,7 @@ class _EndDrawerState extends State<EndDrawer> {
                           }
                         },
                         child: Text(
-                          'alchering.in',
+                          'alcheringa.in',
                           style: TextStyle(
                             color: Color(0xFFFF77A8),
                             fontSize: 12,

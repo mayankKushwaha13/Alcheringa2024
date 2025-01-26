@@ -156,8 +156,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                     showMessage('Email or password is empty', context);
                                   }
 
-                                  if (isLoggedIn && context.mounted && auth.currentUser!.emailVerified) {
-                                    if (auth.currentUser != null) {
+                                  if (auth.currentUser != null) {
+                                    if (isLoggedIn && context.mounted && auth.currentUser!.emailVerified) {
                                       if (auth.currentUser!.metadata.creationTime ==
                                           auth.currentUser!.metadata.lastSignInTime) {
                                         Navigator.pushReplacement(
