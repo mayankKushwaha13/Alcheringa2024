@@ -3,7 +3,6 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:alcheringa/common/resource.dart';
-import 'package:alcheringa/main.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -13,6 +12,7 @@ import 'package:image/image.dart' as img;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../common/globals.dart';
+import '../main.dart';
 
 Future<void> customSignUp(String email, String password, BuildContext context,
     {required Function(bool) onLoading}) async {
@@ -364,25 +364,118 @@ Future<void> signOut() async {
 }
 
 // Function to delete the user's account
-Future<void> deleteUserAccount(BuildContext context) async {
+// Future<void> deleteUserAccount(BuildContext context) async {
+//   try {
+//     User? user = FirebaseAuth.instance.currentUser;
+//     if (user != null) {
+//       await user.delete(); // Delete the user account
+//       ScaffoldMessenger.of(context).showSnackBar(
+//         SnackBar(content: Text("Account deleted successfully.")),
+//       );
+//       Navigator.push(
+//           context, MaterialPageRoute(builder: (context) => SplashScreen()));
+//     } else {
+//       ScaffoldMessenger.of(context).showSnackBar(
+//         SnackBar(content: Text("No user is signed in.")),
+//       );
+//     }
+//   } catch (e) {
+//     // Handle reauthentication requirement or other errors
+//     ScaffoldMessenger.of(context).showSnackBar(
+//       SnackBar(content: Text("Error deleting account: $e")),
+//     );
+//   }
+// }
+
+Future<void> reauthenticateAndDeleteAccount(BuildContext context) async {
   try {
-    User? user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      await user.delete(); // Delete the user account
+    final user = FirebaseAuth.instance.currentUser;
+    final db = FirebaseFirestore.instance;
+
+    if (user == null) return;
+
+    // Show a dialog or prompt for the user to re-enter their password
+    final password = await promptForPassword(context);
+
+    if (password == null || password.isEmpty) return;
+
+    // Reauthenticate the user
+    final credential = EmailAuthProvider.credential(
+      email: user.email!,
+      password: password,
+    );
+    await user.reauthenticateWithCredential(credential);
+    print("Reauthentication successful for ${user.email}");
+    // Delete the Firestore document
+    await db.collection('USERS').doc(user.email).delete();
+    print("User document deleted successfully.");
+
+    // Delete the Firebase account
+    await user.delete();
+
+    // Navigate to the splash screen
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => SplashScreen()));
+  } on FirebaseAuthException catch (e) {
+    if (e.code == 'wrong-password') {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Account deleted successfully.")),
+        SnackBar(
+          content: const Text('Wrong password. Please try again.'),
+          backgroundColor: Colors.red,
+        ),
       );
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => SplashScreen()));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("No user is signed in.")),
+        SnackBar(
+          content: Text('Error: ${e.message}'),
+          backgroundColor: Colors.red,
+        ),
       );
     }
   } catch (e) {
-    // Handle reauthentication requirement or other errors
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("Error deleting account: $e")),
+      SnackBar(
+        content: Text('Error: $e'),
+        backgroundColor: Colors.red,
+      ),
     );
   }
+}
+
+Future<String?> promptForPassword(BuildContext context) async {
+  String? password;
+  await showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      final controller = TextEditingController();
+      return AlertDialog(
+        title: const Text("Re-enter Password"),
+        content: TextField(
+          controller: controller,
+          obscureText: true,
+          decoration: const InputDecoration(labelText: "Password"),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text("Cancel"),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              password = controller.text;
+              Navigator.of(context).pop();
+            },
+            child: const Text("Confirm"),
+          ),
+        ],
+      );
+    },
+  );
+  return password;
+}
+
+Future<void> deleteAccount(BuildContext context) async {
+  reauthenticateAndDeleteAccount(context);
 }

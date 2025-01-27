@@ -312,10 +312,25 @@ class _ProfilePageState extends State<ProfilePage> {
                                           context);
                                   if (shouldDelete) {
                                     // Proceed to delete the account
-                                    await deleteUserAccount(context);
+                                    await deleteAccount(context);
                                   }
                                 },
-                                child: Text("Delete Account"),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors
+                                      .transparent, // Transparent background
+                                  shadowColor:
+                                      Colors.transparent, // Remove shadow
+                                  elevation: 0, // Remove elevation if desired
+                                ),
+                                child: Text(
+                                  "Delete Account",
+                                  style: const TextStyle(
+                                    fontFamily: 'Game_Tape',
+                                    color: Colors.white60,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               ),
                               isEdit
                                   ? Padding(
