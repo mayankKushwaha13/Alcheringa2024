@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:alcheringa/common/resource.dart';
+import 'package:alcheringa/main.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -48,14 +49,15 @@ Future<void> customSignUp(String email, String password, BuildContext context,
   onLoading(false);
 }
 
-Future<void> registerUserInDatabaseCustom(String name, String email, [String? PhotoURL]) async {
+Future<void> registerUserInDatabaseCustom(String name, String email,
+    [String? PhotoURL]) async {
   try {
     db.collection('USERS').doc(email).snapshots().listen((snapshot) async {
       if (!snapshot.exists) {
         Map<String, dynamic> data = {
           "Name": name,
           "Email": email,
-          'PhotoURL' : PhotoURL ?? ''
+          'PhotoURL': PhotoURL ?? ''
         };
 
         try {
@@ -74,12 +76,8 @@ Future<void> registerUserInDatabaseCustom(String name, String email, [String? Ph
 Future<void> updateUserName(String name, String email) async {
   try {
     final prefs = await SharedPreferences.getInstance();
-    final doc = db
-        .collection('USERS')
-        .doc(email);
-    final data = {
-      'Name' : name
-    };
+    final doc = db.collection('USERS').doc(email);
+    final data = {'Name': name};
 
     await doc.set(data);
     prefs.setString('userName', name ?? '');
@@ -158,7 +156,8 @@ Future<void> updateProfilePicture(File file, String email, String name) async {
   }
 }
 
-void onUpdateProfile(BuildContext context, File image, String email, String name) {
+void onUpdateProfile(
+    BuildContext context, File image, String email, String name) {
   // Show progress indicator dialog
   showDialog(
     context: context,
@@ -193,7 +192,6 @@ void onUpdateProfile(BuildContext context, File image, String email, String name
     );
   });
 }
-
 
 Future<void> sendVerificationEmail(BuildContext context) async {
   try {
@@ -287,7 +285,10 @@ Future<void> signInWithGoogle(BuildContext context,
           await prefs.setString('email', data['Email']);
           await prefs.setString('PhotoURL', data['PhotoURL'] ?? '');
         } else {
-          await registerUserInDatabaseCustom(userCredentials.user!.displayName ?? 'Unknown', userCredentials.user!.email!, userCredentials.user!.photoURL );
+          await registerUserInDatabaseCustom(
+              userCredentials.user!.displayName ?? 'Unknown',
+              userCredentials.user!.email!,
+              userCredentials.user!.photoURL);
           await saveSignInUserData(userCredentials.user!);
         }
       });
@@ -307,9 +308,7 @@ Future<void> signInWithGoogle(BuildContext context,
 }
 
 Future<void> signInWithMicrosoft(BuildContext context,
-    {
-    required Function(bool) isLoggedIn}) async {
-
+    {required Function(bool) isLoggedIn}) async {
   final prefs = await SharedPreferences.getInstance();
   try {
     final microsoftProvider = MicrosoftAuthProvider();
@@ -329,7 +328,10 @@ Future<void> signInWithMicrosoft(BuildContext context,
           await prefs.setString('email', data['Email']);
           await prefs.setString('PhotoURL', data['PhotoURL'] ?? '');
         } else {
-          await registerUserInDatabaseCustom(userCredentials.user!.displayName ?? 'Unknown', userCredentials.user!.email!, userCredentials.user!.photoURL);
+          await registerUserInDatabaseCustom(
+              userCredentials.user!.displayName ?? 'Unknown',
+              userCredentials.user!.email!,
+              userCredentials.user!.photoURL);
           await saveSignInUserData(userCredentials.user!);
         }
       });
@@ -358,5 +360,29 @@ Future<void> signOut() async {
     isLoggedIn = false;
   } on Exception catch (e) {
     print(e);
+  }
+}
+
+// Function to delete the user's account
+Future<void> deleteUserAccount(BuildContext context) async {
+  try {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      await user.delete(); // Delete the user account
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Account deleted successfully.")),
+      );
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => SplashScreen()));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("No user is signed in.")),
+      );
+    }
+  } catch (e) {
+    // Handle reauthentication requirement or other errors
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("Error deleting account: $e")),
+    );
   }
 }

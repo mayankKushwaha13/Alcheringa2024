@@ -3,12 +3,10 @@ import 'dart:io';
 import 'package:alcheringa/Authentication/authenticationviewmodel.dart';
 import 'package:alcheringa/Common/globals.dart';
 import 'package:alcheringa/Common/resource.dart';
-import 'package:alcheringa/Model/view_model_main.dart';
 import 'package:alcheringa/Screens/profile_setup/widgets/intrest_button.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -54,9 +52,11 @@ class _ProfilePageState extends State<ProfilePage> {
       print('Couln\'t update profile 1');
       if (auth.currentUser != null && auth.currentUser!.email != null) {
         if (_image != null) {
-          onUpdateProfile(context, File(_image!), auth.currentUser!.email!, nicknameController.text.trim());
+          onUpdateProfile(context, File(_image!), auth.currentUser!.email!,
+              nicknameController.text.trim());
         }
-        await updateUserName(nicknameController.text.trim(), auth.currentUser!.email!);
+        await updateUserName(
+            nicknameController.text.trim(), auth.currentUser!.email!);
         await addIntrestToDb(selectedIntrests, auth.currentUser!.email!);
       }
       interests = selectedIntrests;
@@ -66,6 +66,37 @@ class _ProfilePageState extends State<ProfilePage> {
     }
     setState(() => isEdit = false);
     isLoading = false;
+  }
+
+  // Function to show a confirmation dialog
+  Future<bool> _showDeleteConfirmationDialog(BuildContext context) async {
+    return await showDialog<bool>(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text("Confirm Deletion"),
+              content: Text(
+                  "Are you sure you want to delete your account? This action cannot be undone."),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context)
+                        .pop(false); // User chose not to delete
+                  },
+                  child: Text("Cancel"),
+                ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                  onPressed: () {
+                    Navigator.of(context).pop(true); // User confirmed deletion
+                  },
+                  child: Text("Delete"),
+                ),
+              ],
+            );
+          },
+        ) ??
+        false; // Default to false if the dialog is dismissed
   }
 
   void updateSelectedInterests(String interest, bool isSelected) {
@@ -132,208 +163,249 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           ),
           body: Container(
-            height: double.infinity,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/images/profile_setup_bg.png'),
-                fit: BoxFit.fill
-              )
-            ),
-            child: isLoading
-            ? Center(
-              child: CircularProgressIndicator(),
-            )
-            : SingleChildScrollView(
-              child: Column(
-                children: [
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 10.0, top: 5.0),
-                      child: GestureDetector(
-                        onTap: () {
-                          if (!isEdit) {
-                            setState(() => isEdit = true);
-                          } else {
-                            onSave();
-                          }
-                        },
-                        child: Icon(
-                          isEdit ? Icons.save : Icons.edit,
-                          color: Color(0xFFfff1e8),
-                          size: 35,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Column(
-                    children: [
-                      SizedBox(
-                        height: 140.0,
-                      ),
-                      GestureDetector(
-                        onTap: () => isEdit ? _pickImage() : null,
-                        child: Stack(
-                          children: [
-                            Positioned.fill(
-                              child: FutureBuilder<String?>(
-                                future: _imageUrl,
-                                builder: (BuildContext context, snapshot) {
-                                  if (snapshot.connectionState == ConnectionState.waiting) {
-                                    return Center(child: CircularProgressIndicator());
+              height: double.infinity,
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage('assets/images/profile_setup_bg.png'),
+                      fit: BoxFit.fill)),
+              child: isLoading
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          Align(
+                            alignment: Alignment.topRight,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.only(right: 10.0, top: 5.0),
+                              child: GestureDetector(
+                                onTap: () {
+                                  if (!isEdit) {
+                                    setState(() => isEdit = true);
+                                  } else {
+                                    onSave();
                                   }
+                                },
+                                child: Icon(
+                                  isEdit ? Icons.save : Icons.edit,
+                                  color: Color(0xFFfff1e8),
+                                  size: 35,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Column(
+                            children: [
+                              SizedBox(
+                                height: 140.0,
+                              ),
+                              GestureDetector(
+                                onTap: () => isEdit ? _pickImage() : null,
+                                child: Stack(
+                                  children: [
+                                    Positioned.fill(
+                                      child: FutureBuilder<String?>(
+                                        future: _imageUrl,
+                                        builder:
+                                            (BuildContext context, snapshot) {
+                                          if (snapshot.connectionState ==
+                                              ConnectionState.waiting) {
+                                            return Center(
+                                                child:
+                                                    CircularProgressIndicator());
+                                          }
 
-                                  if (snapshot.hasError || snapshot.data == null || snapshot.data!.isEmpty) {
-                                    print(_imageUrl);
-                                    return Positioned.fill(
-                                      child: Padding(
-                                        padding: const EdgeInsets.fromLTRB(15, 10, 15, 30.0),
-                                        child: Image.asset(
-                                          "assets/images/default_profile_pic.png",
-                                          fit: BoxFit.cover,
-                                        ),
+                                          if (snapshot.hasError ||
+                                              snapshot.data == null ||
+                                              snapshot.data!.isEmpty) {
+                                            print(_imageUrl);
+                                            return Positioned.fill(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.fromLTRB(
+                                                        15, 10, 15, 30.0),
+                                                child: Image.asset(
+                                                  "assets/images/default_profile_pic.png",
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                            );
+                                          }
+
+                                          final String? uri = snapshot.data;
+
+                                          if (uri == null || uri.isEmpty) {
+                                            print(
+                                                "uri is empty or null in profile page");
+                                            return _buildImageOverlay(
+                                                "Add your\nimage");
+                                          }
+
+                                          return Stack(
+                                            children: [
+                                              Positioned.fill(
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.fromLTRB(
+                                                          15, 10, 15, 30.0),
+                                                  child: CachedNetworkImage(
+                                                    imageUrl: uri,
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                ),
+                                              ),
+                                              if (isEdit && _image == null)
+                                                _buildEditOverlay(),
+                                            ],
+                                          );
+                                        },
                                       ),
-                                    );
-                                  }
-
-                                  final String? uri = snapshot.data;
-
-                                  if (uri == null || uri.isEmpty) {
-                                    print("uri is empty or null in profile page");
-                                    return _buildImageOverlay("Add your\nimage");
-                                  }
-
-                                  return Stack(
-                                    children: [
+                                    ),
+                                    if (_image != null)
                                       Positioned.fill(
                                         child: Padding(
-                                          padding: const EdgeInsets.fromLTRB(15, 10, 15, 30.0),
-                                          child: CachedNetworkImage(
-                                            imageUrl: uri,
+                                          padding: const EdgeInsets.fromLTRB(
+                                              15, 10, 15, 30.0),
+                                          child: Image.file(
+                                            File(_image!),
                                             fit: BoxFit.cover,
                                           ),
                                         ),
                                       ),
-                                      if (isEdit && _image == null) _buildEditOverlay(),
-                                    ],
-                                  );
-                                },
-                              ),
-                            ),
-                            if (_image != null)
-                              Positioned.fill(
-                                child: Padding(
-                                  padding: const EdgeInsets.fromLTRB(15, 10, 15, 30.0),
-                                  child: Image.file(
-                                    File(_image!),
-                                    fit: BoxFit.cover,
-                                  ),
+                                    Image.asset(
+                                        'assets/images/profile_setup_pfp.png'),
+                                  ],
                                 ),
                               ),
-                            Image.asset('assets/images/profile_setup_pfp.png'),
-                          ],
-                        ),
-                      ),
 
-                      //Name
-                      const SizedBox(height: 24),
-                      Stack(
-                        children: [
-                          Image.asset('assets/images/profile_setup_h2_bg.png'),
-                          Positioned.fill(
-                            child: Center(
-                              child: TextField(
-                                enabled: isEdit,
-                                controller: nicknameController,
-                                style: const TextStyle(
-                                  fontFamily: 'Game_Tape',
-                                  color: Colors.white60,
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                                textAlign: TextAlign.center,
+                              //Name
+                              const SizedBox(height: 24),
+                              Stack(
+                                children: [
+                                  Image.asset(
+                                      'assets/images/profile_setup_h2_bg.png'),
+                                  Positioned.fill(
+                                    child: Center(
+                                      child: TextField(
+                                        enabled: isEdit,
+                                        controller: nicknameController,
+                                        style: const TextStyle(
+                                          fontFamily: 'Game_Tape',
+                                          color: Colors.white60,
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
+                              const SizedBox(height: 30),
+                              ElevatedButton(
+                                onPressed: () async {
+                                  // Show confirmation dialog before deleting account
+                                  final shouldDelete =
+                                      await _showDeleteConfirmationDialog(
+                                          context);
+                                  if (shouldDelete) {
+                                    // Proceed to delete the account
+                                    await deleteUserAccount(context);
+                                  }
+                                },
+                                child: Text("Delete Account"),
+                              ),
+                              isEdit
+                                  ? Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 25),
+                                      child: GridView.count(
+                                          crossAxisCount: 2,
+                                          shrinkWrap: true,
+                                          childAspectRatio: 129 / 39,
+                                          physics:
+                                              const NeverScrollableScrollPhysics(),
+                                          crossAxisSpacing: 25.3,
+                                          mainAxisSpacing: 15,
+                                          children: <Widget>[
+                                            IntrestButton(
+                                              onSelected:
+                                                  updateSelectedInterests,
+                                              intrest: "Sports",
+                                            ),
+                                            IntrestButton(
+                                              onSelected:
+                                                  updateSelectedInterests,
+                                              intrest: "Music",
+                                            ),
+                                            IntrestButton(
+                                              onSelected:
+                                                  updateSelectedInterests,
+                                              intrest: "DJ",
+                                            ),
+                                            IntrestButton(
+                                              onSelected:
+                                                  updateSelectedInterests,
+                                              intrest: "Events",
+                                            ),
+                                            IntrestButton(
+                                              onSelected:
+                                                  updateSelectedInterests,
+                                              intrest: "Quiz",
+                                            ),
+                                            IntrestButton(
+                                              onSelected:
+                                                  updateSelectedInterests,
+                                              intrest: "Art",
+                                            ),
+                                            IntrestButton(
+                                              onSelected:
+                                                  updateSelectedInterests,
+                                              intrest: "Dance",
+                                            ),
+                                            IntrestButton(
+                                              onSelected:
+                                                  updateSelectedInterests,
+                                              intrest: "Fashion",
+                                            ),
+                                            IntrestButton(
+                                              onSelected:
+                                                  updateSelectedInterests,
+                                              intrest: "Literary",
+                                            ),
+                                            IntrestButton(
+                                              onSelected:
+                                                  updateSelectedInterests,
+                                              intrest: "Theatre",
+                                            ),
+                                          ]),
+                                    )
+                                  : Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 25),
+                                      child: GridView.count(
+                                        crossAxisCount: 2,
+                                        shrinkWrap: true,
+                                        childAspectRatio: 129 / 39,
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        crossAxisSpacing: 25.3,
+                                        mainAxisSpacing: 15,
+                                        children: interests
+                                            .map((e) => IntrestButton(
+                                                  onSelected: null,
+                                                  intrest: e,
+                                                ))
+                                            .toList(),
+                                      ),
+                                    ),
+                            ],
                           ),
                         ],
                       ),
-                      const SizedBox(height: 30),
-                      isEdit
-                          ? Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 25),
-                        child: GridView.count(
-                            crossAxisCount: 2,
-                            shrinkWrap: true,
-                            childAspectRatio: 129 / 39,
-                            physics: const NeverScrollableScrollPhysics(),
-                            crossAxisSpacing: 25.3,
-                            mainAxisSpacing: 15,
-                            children: <Widget>[
-                              IntrestButton(
-                                onSelected: updateSelectedInterests,
-                                intrest: "Sports",
-                              ),
-                              IntrestButton(
-                                onSelected: updateSelectedInterests,
-                                intrest: "Music",
-                              ),
-                              IntrestButton(
-                                onSelected: updateSelectedInterests,
-                                intrest: "DJ",
-                              ),
-                              IntrestButton(
-                                onSelected: updateSelectedInterests,
-                                intrest: "Events",
-                              ),
-                              IntrestButton(
-                                onSelected: updateSelectedInterests,
-                                intrest: "Quiz",
-                              ),
-                              IntrestButton(
-                                onSelected: updateSelectedInterests,
-                                intrest: "Art",
-                              ),
-                              IntrestButton(
-                                onSelected: updateSelectedInterests,
-                                intrest: "Dance",
-                              ),
-                              IntrestButton(
-                                onSelected: updateSelectedInterests,
-                                intrest: "Fashion",
-                              ),
-                              IntrestButton(
-                                onSelected: updateSelectedInterests,
-                                intrest: "Literary",
-                              ),
-                              IntrestButton(
-                                onSelected: updateSelectedInterests,
-                                intrest: "Theatre",
-                              ),
-                            ]),
-                      )
-                          : Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 25),
-                        child: GridView.count(
-                          crossAxisCount: 2,
-                          shrinkWrap: true,
-                          childAspectRatio: 129 / 39,
-                          physics: const NeverScrollableScrollPhysics(),
-                          crossAxisSpacing: 25.3,
-                          mainAxisSpacing: 15,
-                          children: interests
-                              .map((e) => IntrestButton(
-                            onSelected: null,
-                            intrest: e,
-                          ))
-                              .toList(),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            )
-          ),
+                    )),
         ),
       ),
     );
