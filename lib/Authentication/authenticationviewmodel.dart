@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image/image.dart' as img;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import '../common/globals.dart';
 import '../main.dart';
@@ -79,7 +80,7 @@ Future<void> updateUserName(String name, String email) async {
     final doc = db.collection('USERS').doc(email);
     final data = {'Name': name};
 
-    await doc.set(data);
+    await doc.update(data);
     prefs.setString('userName', name ?? '');
 
     print("name added successfully to firestore");
@@ -307,6 +308,56 @@ Future<void> signInWithGoogle(BuildContext context,
   }
 }
 
+Future<void> signInWithApple(BuildContext context, {required Function(bool) isLoggedIn}) async {
+  try {
+    final prefs = await SharedPreferences.getInstance();
+
+    // Request the Apple ID Credential
+    final appleCredential = await SignInWithApple.getAppleIDCredential(
+      scopes: [
+        AppleIDAuthorizationScopes.email,
+        AppleIDAuthorizationScopes.fullName,
+      ],
+    );
+    // Create OAuthCredential for Firebase Auth
+    final oauthCredential = OAuthProvider("apple.com").credential(
+      idToken: appleCredential.identityToken,
+      accessToken: appleCredential.authorizationCode,
+    );
+
+    // Sign in with Firebase Auth
+    final userCredentials = await auth.signInWithCredential(oauthCredential);
+
+    if (userCredentials.user != null) {
+      final user = userCredentials.user!;
+      final userData = await db.collection('USERS').doc(user.email).get();
+
+      if (userData.exists) {
+        final data = userData.data() as Map<String, dynamic>;
+        await prefs.setString('userName', data['Name'] ?? '');
+        await prefs.setString('email', data['Email']);
+        await prefs.setString('PhotoURL', data['PhotoURL'] ?? '');
+      } else {
+        // If user doesn't exist, register them in the database
+        final displayName =
+        '${appleCredential.givenName ?? ''} ${appleCredential.familyName ?? ''}'.trim();
+        await registerUserInDatabaseCustom(displayName, user.email!, user.photoURL);
+        await saveSignInUserData(user);
+      }
+
+      print('Sign in with Apple succeeded');
+      showMessage('Apple Sign-In success', context);
+      isLoggedIn(true);
+    } else {
+      print("Sign in with Apple failed: UserCredential is null");
+      showMessage('Apple Sign-In failed', context);
+    }
+  } on Exception catch (e) {
+    log("Sign in with Apple failed: $e");
+    showMessage('Apple Sign-In failed', context);
+  }
+}
+
 Future<void> signInWithMicrosoft(BuildContext context,
     {required Function(bool) isLoggedIn}) async {
   final prefs = await SharedPreferences.getInstance();
@@ -387,27 +438,80 @@ Future<void> signOut() async {
 //   }
 // }
 
-Future<void> reauthenticateAndDeleteAccount(BuildContext context) async {
+Future<void> reauthenticateAndDeleteAccount(BuildContext context, {required Function(bool) isLoggedIn}) async {
+  isLoggedIn(true);
   try {
     final user = FirebaseAuth.instance.currentUser;
     final db = FirebaseFirestore.instance;
 
     if (user == null) return;
 
-    // Show a dialog or prompt for the user to re-enter their password
-    final password = await promptForPassword(context);
+    final providerId = user.providerData.isNotEmpty
+        ? user.providerData.first.providerId
+        : null;
 
-    if (password == null || password.isEmpty) return;
+    if (providerId == null) {
+      print('No provider found for this user.');
+      return;
+    }
+    try {
+      AuthCredential? credential;
+      if(providerId == 'microsoft.com'){
+        final microsoftProvider = MicrosoftAuthProvider();
+        microsoftProvider.setCustomParameters(
+            {'tenant': '850aa78d-94e1-4bc6-9cf3-8c11b530701c'});
 
-    // Reauthenticate the user
-    final credential = EmailAuthProvider.credential(
-      email: user.email!,
-      password: password,
-    );
-    await user.reauthenticateWithCredential(credential);
+        final userCredentials = await user.reauthenticateWithProvider(microsoftProvider);
+      }
+
+      if (providerId == 'google.com') {
+        // Reauthenticate with Google
+        print('Reauthenticating with Google...');
+        final googleUser = await GoogleSignIn().signIn();
+        final googleAuth = await googleUser?.authentication;
+        if (googleAuth != null) {
+          credential = GoogleAuthProvider.credential(
+            accessToken: googleAuth.accessToken,
+            idToken: googleAuth.idToken,
+          );
+        }
+      } else if (providerId == 'apple.com') {
+        // Reauthenticate with Apple
+        print('Reauthenticating with Apple...');
+        final appleCredential = await SignInWithApple.getAppleIDCredential(
+          scopes: [
+            AppleIDAuthorizationScopes.email,
+            AppleIDAuthorizationScopes.fullName,
+          ],
+        );
+        credential = OAuthProvider("apple.com").credential(
+          idToken: appleCredential.identityToken,
+          accessToken: appleCredential.authorizationCode,
+        );
+      } else if (providerId == 'password') {
+        // Reauthenticate with Email/Password
+        print('Reauthenticating with Email/Password...');
+        final email = user.email;
+        final password = await promptForPassword(context);
+        credential = EmailAuthProvider.credential(
+          email: email!,
+          password: password ?? '',
+        );
+      }
+      if (credential != null) {
+        // Reauthenticate with the generated credential
+        await user.reauthenticateWithCredential(credential);
+        print('Reauthentication successful!');
+      } else {
+        print('Failed to generate credential for provider: $providerId');
+      }
+    } catch (e) {
+      print('Error during reauthentication: $e');
+    }
+
     print("Reauthentication successful for ${user.email}");
     // Delete the Firestore document
-    await db.collection('USERS').doc(user.email).delete();
+    await deleteUserAndData(user.email!);
     print("User document deleted successfully.");
 
     // Delete the Firebase account
@@ -439,6 +543,44 @@ Future<void> reauthenticateAndDeleteAccount(BuildContext context) async {
         backgroundColor: Colors.red,
       ),
     );
+  }
+  isLoggedIn(false);
+}
+
+Future<void> deleteUserAndData(String userEmail) async {
+  try {
+    // Reference to the user document
+    final userDoc = db.collection('USERS').doc(userEmail);
+
+    // Delete documents in the first collection (if it exists)
+    final collection1 = userDoc.collection('ORDERS');
+    final docs1 = await collection1.get();
+    if (docs1.docs.isNotEmpty) {
+      final batch1 = db.batch();
+      for (final doc in docs1.docs) {
+        batch1.delete(doc.reference);
+      }
+      await batch1.commit();
+    }
+
+    // Delete documents in the second collection (if it exists)
+    final collection2 = userDoc.collection('interests');
+    final docs2 = await collection2.get();
+    if (docs2.docs.isNotEmpty) {
+      final batch2 = db.batch();
+      for (final doc in docs2.docs) {
+        batch2.delete(doc.reference);
+      }
+      await batch2.commit();
+    }
+
+    // Finally delete the user document itself
+    await userDoc.delete();
+    final storageRef = FirebaseStorage.instance.ref().child('Users/$userEmail.jpg');
+    await storageRef.delete();
+  } catch (e) {
+    print('Error deleting user data: $e');
+    throw e;
   }
 }
 
@@ -476,6 +618,6 @@ Future<String?> promptForPassword(BuildContext context) async {
   return password;
 }
 
-Future<void> deleteAccount(BuildContext context) async {
-  reauthenticateAndDeleteAccount(context);
+Future<void> deleteAccount(BuildContext context, {required Function(bool) isLoggedIn}) async {
+  reauthenticateAndDeleteAccount(context, isLoggedIn: isLoggedIn);
 }

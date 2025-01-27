@@ -238,6 +238,37 @@ class _SignupScreenState extends State<SignupScreen> {
                                           .size
                                           .width *
                                           0.05),
+                                  // Apple Button
+                                  _buildSocialButton(
+                                      backgroundPath:
+                                      'assets/images/google.png',
+                                      logoPath:
+                                      'assets/images/applelogo.png',
+                                      buttonSize: MediaQuery.of(context)
+                                          .size
+                                          .width *
+                                          0.18, // Background size
+                                      logoSize: MediaQuery.of(context)
+                                          .size
+                                          .width *
+                                          0.09, // Logo size
+                                      onPressed: () async {
+                                        await signInWithApple(context, isLoggedIn: _setIsLoggedIn);
+                                        if (isLoggedIn && context.mounted) {
+                                          Navigator.pushAndRemoveUntil(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => const MainScreen()),
+                                                (Route<dynamic> route) => false,
+                                          );
+                                        }
+                                      }),
+                                  // Spacing between buttons
+                                  SizedBox(
+                                      width: MediaQuery.of(context)
+                                          .size
+                                          .width *
+                                          0.05),
 
                                   // Outlook Button
                                   _buildSocialButton(

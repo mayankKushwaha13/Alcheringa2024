@@ -68,6 +68,12 @@ class _ProfilePageState extends State<ProfilePage> {
     isLoading = false;
   }
 
+  void setOnLoading(bool _isLoading){
+    setState(() {
+      isLoading = _isLoading;
+    });
+  }
+
   // Function to show a confirmation dialog
   Future<bool> _showDeleteConfirmationDialog(BuildContext context) async {
     return await showDialog<bool>(
@@ -312,7 +318,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                           context);
                                   if (shouldDelete) {
                                     // Proceed to delete the account
-                                    await deleteAccount(context);
+                                    await deleteAccount(context, isLoggedIn: setOnLoading);
                                   }
                                 },
                                 style: ElevatedButton.styleFrom(
