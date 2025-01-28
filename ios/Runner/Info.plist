@@ -45,11 +45,11 @@
 	<key>NSCameraUsageDescription</key>
 	<string>App requires access to the camera for clicking images</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Access to your current location is required to show it on the map</string>
+	<string>Your location is used to show your position on the map.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>access to your current location is required to show it on the map</string>
+	<string>Your location is used to show your position on the map.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>access to your current location is required to show it on the map</string>
+	<string>Your location is used to show your position on the map.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>App requires access to the photo library for picking images</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>

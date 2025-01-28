@@ -11,8 +11,13 @@ class NotificationServices {
   FlutterLocalNotificationsPlugin();
 
   Future<String> getDeviceToken() async {
-    String? token = await messaging.getToken();
-    return token!;
+    if(Platform.isAndroid) {
+      String? token = await messaging.getToken();
+      return token!;
+    }else{
+      String? token = await messaging.getAPNSToken() ?? '';
+      return token;
+    }
   }
 
   void isRefreshToken() async {

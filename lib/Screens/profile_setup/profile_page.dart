@@ -35,8 +35,9 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<void> getDatas() async {
     nicknameController.text = await viewModelMain.getValue('userName');
-    if (auth.currentUser != null && auth.currentUser!.email != null) {
-      interests = await viewModelMain.getInterests(auth.currentUser!.email!);
+    final email = await viewModelMain.getValue('email');
+    if (auth.currentUser != null && email != null) {
+      interests = await viewModelMain.getInterests(email);
       imageUri = await viewModelMain.getValue('PhotoURL');
     } else {
       interests = []; // Return an empty list for safety
@@ -48,16 +49,15 @@ class _ProfilePageState extends State<ProfilePage> {
   Future<void> onSave() async {
     isLoading = true;
     setState(() {});
+    final email = await viewModelMain.getValue('email');
     try {
       print('Couln\'t update profile 1');
-      if (auth.currentUser != null && auth.currentUser!.email != null) {
+      if (auth.currentUser != null && email != null) {
         if (_image != null) {
-          onUpdateProfile(context, File(_image!), auth.currentUser!.email!,
-              nicknameController.text.trim());
+          onUpdateProfile(context, File(_image!), email, nicknameController.text.trim());
         }
-        await updateUserName(
-            nicknameController.text.trim(), auth.currentUser!.email!);
-        await addIntrestToDb(selectedIntrests, auth.currentUser!.email!);
+        await updateUserName(nicknameController.text.trim(), email);
+        await addIntrestToDb(selectedIntrests, email);
       }
       interests = selectedIntrests;
     } catch (e) {
@@ -68,7 +68,7 @@ class _ProfilePageState extends State<ProfilePage> {
     isLoading = false;
   }
 
-  void setOnLoading(bool _isLoading){
+  void setOnLoading(bool _isLoading) {
     setState(() {
       isLoading = _isLoading;
     });
@@ -81,13 +81,11 @@ class _ProfilePageState extends State<ProfilePage> {
           builder: (BuildContext context) {
             return AlertDialog(
               title: Text("Confirm Deletion"),
-              content: Text(
-                  "Are you sure you want to delete your account? This action cannot be undone."),
+              content: Text("Are you sure you want to delete your account? This action cannot be undone."),
               actions: [
                 TextButton(
                   onPressed: () {
-                    Navigator.of(context)
-                        .pop(false); // User chose not to delete
+                    Navigator.of(context).pop(false); // User chose not to delete
                   },
                   child: Text("Cancel"),
                 ),
@@ -96,7 +94,12 @@ class _ProfilePageState extends State<ProfilePage> {
                   onPressed: () {
                     Navigator.of(context).pop(true); // User confirmed deletion
                   },
-                  child: Text("Delete"),
+                  child: Text(
+                    "Delete",
+                    style: TextStyle(
+                      color: Colors.white
+                    ),
+                  ),
                 ),
               ],
             );
@@ -171,9 +174,7 @@ class _ProfilePageState extends State<ProfilePage> {
           body: Container(
               height: double.infinity,
               decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage('assets/images/profile_setup_bg.png'),
-                      fit: BoxFit.fill)),
+                  image: DecorationImage(image: AssetImage('assets/images/profile_setup_bg.png'), fit: BoxFit.fill)),
               child: isLoading
                   ? Center(
                       child: CircularProgressIndicator(),
@@ -184,8 +185,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           Align(
                             alignment: Alignment.topRight,
                             child: Padding(
-                              padding:
-                                  const EdgeInsets.only(right: 10.0, top: 5.0),
+                              padding: const EdgeInsets.only(right: 10.0, top: 5.0),
                               child: GestureDetector(
                                 onTap: () {
                                   if (!isEdit) {
@@ -214,24 +214,16 @@ class _ProfilePageState extends State<ProfilePage> {
                                     Positioned.fill(
                                       child: FutureBuilder<String?>(
                                         future: _imageUrl,
-                                        builder:
-                                            (BuildContext context, snapshot) {
-                                          if (snapshot.connectionState ==
-                                              ConnectionState.waiting) {
-                                            return Center(
-                                                child:
-                                                    CircularProgressIndicator());
+                                        builder: (BuildContext context, snapshot) {
+                                          if (snapshot.connectionState == ConnectionState.waiting) {
+                                            return Center(child: CircularProgressIndicator());
                                           }
 
-                                          if (snapshot.hasError ||
-                                              snapshot.data == null ||
-                                              snapshot.data!.isEmpty) {
+                                          if (snapshot.hasError || snapshot.data == null || snapshot.data!.isEmpty) {
                                             print(_imageUrl);
                                             return Positioned.fill(
                                               child: Padding(
-                                                padding:
-                                                    const EdgeInsets.fromLTRB(
-                                                        15, 10, 15, 30.0),
+                                                padding: const EdgeInsets.fromLTRB(15, 10, 15, 30.0),
                                                 child: Image.asset(
                                                   "assets/images/default_profile_pic.png",
                                                   fit: BoxFit.cover,
@@ -243,27 +235,22 @@ class _ProfilePageState extends State<ProfilePage> {
                                           final String? uri = snapshot.data;
 
                                           if (uri == null || uri.isEmpty) {
-                                            print(
-                                                "uri is empty or null in profile page");
-                                            return _buildImageOverlay(
-                                                "Add your\nimage");
+                                            print("uri is empty or null in profile page");
+                                            return _buildImageOverlay("Add your\nimage");
                                           }
 
                                           return Stack(
                                             children: [
                                               Positioned.fill(
                                                 child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.fromLTRB(
-                                                          15, 10, 15, 30.0),
+                                                  padding: const EdgeInsets.fromLTRB(15, 10, 15, 30.0),
                                                   child: CachedNetworkImage(
                                                     imageUrl: uri,
                                                     fit: BoxFit.cover,
                                                   ),
                                                 ),
                                               ),
-                                              if (isEdit && _image == null)
-                                                _buildEditOverlay(),
+                                              if (isEdit && _image == null) _buildEditOverlay(),
                                             ],
                                           );
                                         },
@@ -272,16 +259,14 @@ class _ProfilePageState extends State<ProfilePage> {
                                     if (_image != null)
                                       Positioned.fill(
                                         child: Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              15, 10, 15, 30.0),
+                                          padding: const EdgeInsets.fromLTRB(15, 10, 15, 30.0),
                                           child: Image.file(
                                             File(_image!),
                                             fit: BoxFit.cover,
                                           ),
                                         ),
                                       ),
-                                    Image.asset(
-                                        'assets/images/profile_setup_pfp.png'),
+                                    Image.asset('assets/images/profile_setup_pfp.png'),
                                   ],
                                 ),
                               ),
@@ -290,8 +275,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               const SizedBox(height: 24),
                               Stack(
                                 children: [
-                                  Image.asset(
-                                      'assets/images/profile_setup_h2_bg.png'),
+                                  Image.asset('assets/images/profile_setup_h2_bg.png'),
                                   Positioned.fill(
                                     child: Center(
                                       child: TextField(
@@ -310,22 +294,91 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ],
                               ),
                               const SizedBox(height: 30),
+                              isEdit
+                                  ? Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 25),
+                                      child: GridView.count(
+                                          crossAxisCount: 2,
+                                          shrinkWrap: true,
+                                          childAspectRatio: 129 / 39,
+                                          physics: const NeverScrollableScrollPhysics(),
+                                          crossAxisSpacing: 25.3,
+                                          mainAxisSpacing: 15,
+                                          children: <Widget>[
+                                            IntrestButton(
+                                              onSelected: updateSelectedInterests,
+                                              intrest: "Sports",
+                                            ),
+                                            IntrestButton(
+                                              onSelected: updateSelectedInterests,
+                                              intrest: "Music",
+                                            ),
+                                            IntrestButton(
+                                              onSelected: updateSelectedInterests,
+                                              intrest: "DJ",
+                                            ),
+                                            IntrestButton(
+                                              onSelected: updateSelectedInterests,
+                                              intrest: "Events",
+                                            ),
+                                            IntrestButton(
+                                              onSelected: updateSelectedInterests,
+                                              intrest: "Quiz",
+                                            ),
+                                            IntrestButton(
+                                              onSelected: updateSelectedInterests,
+                                              intrest: "Art",
+                                            ),
+                                            IntrestButton(
+                                              onSelected: updateSelectedInterests,
+                                              intrest: "Dance",
+                                            ),
+                                            IntrestButton(
+                                              onSelected: updateSelectedInterests,
+                                              intrest: "Fashion",
+                                            ),
+                                            IntrestButton(
+                                              onSelected: updateSelectedInterests,
+                                              intrest: "Literary",
+                                            ),
+                                            IntrestButton(
+                                              onSelected: updateSelectedInterests,
+                                              intrest: "Theatre",
+                                            ),
+                                          ]),
+                                    )
+                                  : Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 25),
+                                      child: GridView.count(
+                                        crossAxisCount: 2,
+                                        shrinkWrap: true,
+                                        childAspectRatio: 129 / 39,
+                                        physics: const NeverScrollableScrollPhysics(),
+                                        crossAxisSpacing: 25.3,
+                                        mainAxisSpacing: 15,
+                                        children: interests
+                                            .map((e) => IntrestButton(
+                                                  onSelected: null,
+                                                  intrest: e,
+                                                ))
+                                            .toList(),
+                                      ),
+                                    ),
+                              SizedBox(
+                                height: 20.0,
+                              ),
                               ElevatedButton(
                                 onPressed: () async {
                                   // Show confirmation dialog before deleting account
-                                  final shouldDelete =
-                                      await _showDeleteConfirmationDialog(
-                                          context);
+                                  final shouldDelete = await _showDeleteConfirmationDialog(context);
                                   if (shouldDelete) {
                                     // Proceed to delete the account
                                     await deleteAccount(context, isLoggedIn: setOnLoading);
                                   }
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors
-                                      .transparent, // Transparent background
-                                  shadowColor:
-                                      Colors.transparent, // Remove shadow
+                                  backgroundColor: Colors.transparent, // Transparent background
+                                  shadowColor: Colors.transparent, // Remove shadow
                                   elevation: 0, // Remove elevation if desired
                                 ),
                                 child: Text(
@@ -338,90 +391,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ),
                                 ),
                               ),
-                              isEdit
-                                  ? Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 25),
-                                      child: GridView.count(
-                                          crossAxisCount: 2,
-                                          shrinkWrap: true,
-                                          childAspectRatio: 129 / 39,
-                                          physics:
-                                              const NeverScrollableScrollPhysics(),
-                                          crossAxisSpacing: 25.3,
-                                          mainAxisSpacing: 15,
-                                          children: <Widget>[
-                                            IntrestButton(
-                                              onSelected:
-                                                  updateSelectedInterests,
-                                              intrest: "Sports",
-                                            ),
-                                            IntrestButton(
-                                              onSelected:
-                                                  updateSelectedInterests,
-                                              intrest: "Music",
-                                            ),
-                                            IntrestButton(
-                                              onSelected:
-                                                  updateSelectedInterests,
-                                              intrest: "DJ",
-                                            ),
-                                            IntrestButton(
-                                              onSelected:
-                                                  updateSelectedInterests,
-                                              intrest: "Events",
-                                            ),
-                                            IntrestButton(
-                                              onSelected:
-                                                  updateSelectedInterests,
-                                              intrest: "Quiz",
-                                            ),
-                                            IntrestButton(
-                                              onSelected:
-                                                  updateSelectedInterests,
-                                              intrest: "Art",
-                                            ),
-                                            IntrestButton(
-                                              onSelected:
-                                                  updateSelectedInterests,
-                                              intrest: "Dance",
-                                            ),
-                                            IntrestButton(
-                                              onSelected:
-                                                  updateSelectedInterests,
-                                              intrest: "Fashion",
-                                            ),
-                                            IntrestButton(
-                                              onSelected:
-                                                  updateSelectedInterests,
-                                              intrest: "Literary",
-                                            ),
-                                            IntrestButton(
-                                              onSelected:
-                                                  updateSelectedInterests,
-                                              intrest: "Theatre",
-                                            ),
-                                          ]),
-                                    )
-                                  : Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 25),
-                                      child: GridView.count(
-                                        crossAxisCount: 2,
-                                        shrinkWrap: true,
-                                        childAspectRatio: 129 / 39,
-                                        physics:
-                                            const NeverScrollableScrollPhysics(),
-                                        crossAxisSpacing: 25.3,
-                                        mainAxisSpacing: 15,
-                                        children: interests
-                                            .map((e) => IntrestButton(
-                                                  onSelected: null,
-                                                  intrest: e,
-                                                ))
-                                            .toList(),
-                                      ),
-                                    ),
                             ],
                           ),
                         ],

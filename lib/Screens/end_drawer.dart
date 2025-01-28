@@ -209,8 +209,6 @@ class _EndDrawerState extends State<EndDrawer> {
                         MaterialPageRoute(builder: (context) => welcomeScreen()),
                         (Route<dynamic> route) => false,
                       );
-                      var prefs = await SharedPreferences.getInstance();
-                      prefs.clear();
                       auth.signOut();
                     },
                   ),

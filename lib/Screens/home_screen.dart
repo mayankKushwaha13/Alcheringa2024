@@ -15,6 +15,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../Common/resource.dart';
@@ -119,7 +120,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       }));
     }
     if (viewModelMain.interestList.isEmpty) {
-      futures3.add(viewModelMain.getInterests(auth.currentUser!.email!).then((_) {
+      final prefs = await SharedPreferences.getInstance();
+      final email = prefs.getString('email') ?? '';
+      futures3.add(viewModelMain.getInterests(email).then((_) {
         print('Fetched interest list');
       }));
     }
@@ -906,153 +909,148 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     aspectRatio: 0.7541589649,
                     child: isPassLoading
                         ? Center(
-                      child: CircularProgressIndicator(),
-                    )
+                            child: CircularProgressIndicator(),
+                          )
                         : PageView.builder(
-                      controller: PageController(viewportFraction: 0.8),
-                      itemCount: viewModelMain.passList.isEmpty ? 1 : viewModelMain.passList.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        // Check if passList is empty
-                        if (viewModelMain.passList.isEmpty) {
-                          // Default page when passList is empty
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                image: const DecorationImage(
-                                  image: AssetImage('assets/images/card_bg.png'),
-                                  fit: BoxFit.fill,
-                                ),
-                              ),
-                              child: Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      'No Cards Available',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18.0,
-                                        fontFamily: 'Game_Tape',
+                            controller: PageController(viewportFraction: 0.8),
+                            itemCount: viewModelMain.passList.isEmpty ? 1 : viewModelMain.passList.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              // Check if passList is empty
+                              if (viewModelMain.passList.isEmpty) {
+                                // Default page when passList is empty
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      image: const DecorationImage(
+                                        image: AssetImage('assets/images/card_bg.png'),
+                                        fit: BoxFit.fill,
                                       ),
-                                      textAlign: TextAlign.center,
                                     ),
-                                    SizedBox(
-                                      height: 10.0,
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                          final uri = Uri.parse('https://alcheringa.iitg.ac.in');
-                                          try{
-                                            launchUrl(uri);
-                                          } catch (e){
-                                            print('Cannot open the browser');
-                                            showMessage('Unable to open browser', context);
-                                          }
-                                      },
-                                      child: Container(
-                                        width: 150,
-                                        height: 50,
-                                        decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                            image: AssetImage(
-                                                'assets/images/get_card_box.png'),
-                                            fit: BoxFit.fill,
+                                    child: Center(
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            'No Cards Available',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 18.0,
+                                              fontFamily: 'Game_Tape',
+                                            ),
+                                            textAlign: TextAlign.center,
                                           ),
-                                          borderRadius: BorderRadius.circular(8),
-                                        ),
-                                        alignment: Alignment.center,
-                                        child: Text(
-                                          'Get Card',
-                                          style: TextStyle(
-                                              fontFamily: 'Brick_Pixel',
-                                              color: Color.fromRGBO(255, 241, 232, 1),
-                                              fontSize: 24,
-                                              fontWeight: FontWeight.w400,
-                                              shadows: [
-                                                Shadow(
-                                                    offset: Offset(2.5, 2),
-                                                    color: Colors.black,
-                                                    blurRadius: 2),
-                                              ]
+                                          SizedBox(
+                                            height: 10.0,
+                                          ),
+                                          GestureDetector(
+                                            onTap: () {
+                                              final uri = Uri.parse('https://alcheringa.iitg.ac.in');
+                                              try {
+                                                launchUrl(uri);
+                                              } catch (e) {
+                                                print('Cannot open the browser');
+                                                showMessage('Unable to open browser', context);
+                                              }
+                                            },
+                                            child: Container(
+                                              width: 150,
+                                              height: 50,
+                                              decoration: BoxDecoration(
+                                                image: DecorationImage(
+                                                  image: AssetImage('assets/images/get_card_box.png'),
+                                                  fit: BoxFit.fill,
+                                                ),
+                                                borderRadius: BorderRadius.circular(8),
+                                              ),
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                'Get Card',
+                                                style: TextStyle(
+                                                    fontFamily: 'Brick_Pixel',
+                                                    color: Color.fromRGBO(255, 241, 232, 1),
+                                                    fontSize: 24,
+                                                    fontWeight: FontWeight.w400,
+                                                    shadows: [
+                                                      Shadow(
+                                                          offset: Offset(2.5, 2), color: Colors.black, blurRadius: 2),
+                                                    ]),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              } else {
+                                // Regular page when passList has items
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      image: const DecorationImage(
+                                        image: AssetImage('assets/images/card_bg.png'),
+                                        fit: BoxFit.fill,
+                                      ),
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                            left: 40.0,
+                                            right: 40.0,
+                                            top: 40.0,
+                                            bottom: 20.0,
+                                          ),
+                                          child: Align(
+                                            alignment: Alignment.topRight,
+                                            child: Image.asset('assets/images/alcher_lady_logo.png'),
                                           ),
                                         ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          );
-                        } else {
-                          // Regular page when passList has items
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                image: const DecorationImage(
-                                  image: AssetImage('assets/images/card_bg.png'),
-                                  fit: BoxFit.fill,
-                                ),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                      left: 40.0,
-                                      right: 40.0,
-                                      top: 40.0,
-                                      bottom: 20.0,
-                                    ),
-                                    child: Align(
-                                      alignment: Alignment.topRight,
-                                      child: Image.asset('assets/images/alcher_lady_logo.png'),
-                                    ),
-                                  ),
-                                  Container(
-                                    height: 102.0,
-                                    decoration: const BoxDecoration(
-                                      image: DecorationImage(
-                                        image: AssetImage('assets/images/card_ribbon.png'),
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(height: 10.0),
-                                  Text(
-                                    viewModelMain.passList[index].name,
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 20.0,
-                                      fontFamily: 'Game_Tape',
-                                    ),
-                                  ),
-                                  Align(
-                                    alignment: Alignment.bottomCenter,
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                        left: 70.0,
-                                        right: 70.0,
-                                        top: 20.0,
-                                      ),
-                                      child: Container(
-                                        color: Colors.white,
-                                        child: QrImageView(
-                                          data: viewModelMain.passList[index].id,
+                                        Container(
+                                          height: 102.0,
+                                          decoration: const BoxDecoration(
+                                            image: DecorationImage(
+                                              image: AssetImage('assets/images/card_ribbon.png'),
+                                            ),
+                                          ),
                                         ),
-                                      ),
+                                        const SizedBox(height: 10.0),
+                                        Text(
+                                          viewModelMain.passList[index].name,
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20.0,
+                                            fontFamily: 'Game_Tape',
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment: Alignment.bottomCenter,
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                              left: 70.0,
+                                              right: 70.0,
+                                              top: 20.0,
+                                            ),
+                                            child: Container(
+                                              color: Colors.white,
+                                              child: QrImageView(
+                                                data: viewModelMain.passList[index].id,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(height: 20.0),
+                                      ],
                                     ),
                                   ),
-                                  const SizedBox(height: 20.0),
-                                ],
-                              ),
-                            ),
-                          );
-                        }
-                      },
-                    ),
-
+                                );
+                              }
+                            },
+                          ),
                   ),
                 ),
                 SizedBox(
@@ -1235,11 +1233,15 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       borderRadius: BorderRadius.circular(16),
                       child: event.isArtistRevealed
                           ? CachedNetworkImage(
-                        imageUrl: event.iconURL,
-                        fit: BoxFit.cover,
-                        alignment: Alignment.center,
-                      )
-                          : Image.asset('assets/images/card_0.png', fit: BoxFit.cover, alignment: Alignment.center,)),
+                              imageUrl: event.iconURL,
+                              fit: BoxFit.cover,
+                              alignment: Alignment.center,
+                            )
+                          : Image.asset(
+                              'assets/images/card_0.png',
+                              fit: BoxFit.cover,
+                              alignment: Alignment.center,
+                            )),
                 ),
                 Container(
                   height: widgetHeight,

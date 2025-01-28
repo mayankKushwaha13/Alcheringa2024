@@ -330,19 +330,17 @@ Future<void> signInWithApple(BuildContext context, {required Function(bool) isLo
 
     if (userCredentials.user != null) {
       final user = userCredentials.user!;
-      final userData = await db.collection('USERS').doc(user.email).get();
-
+      if(userCredentials.additionalUserInfo!.isNewUser){
+        await registerUserInDatabaseCustom(user.displayName ?? 'Unknown', user.email!, user.photoURL);
+        await saveSignInUserData(user);
+      }
+      final email = prefs.getString('email');
+      final userData = await db.collection('USERS').doc(email).get();
       if (userData.exists) {
         final data = userData.data() as Map<String, dynamic>;
         await prefs.setString('userName', data['Name'] ?? '');
         await prefs.setString('email', data['Email']);
         await prefs.setString('PhotoURL', data['PhotoURL'] ?? '');
-      } else {
-        // If user doesn't exist, register them in the database
-        final displayName =
-        '${appleCredential.givenName ?? ''} ${appleCredential.familyName ?? ''}'.trim();
-        await registerUserInDatabaseCustom(displayName, user.email!, user.photoURL);
-        await saveSignInUserData(user);
       }
 
       print('Sign in with Apple succeeded');
@@ -508,10 +506,12 @@ Future<void> reauthenticateAndDeleteAccount(BuildContext context, {required Func
     } catch (e) {
       print('Error during reauthentication: $e');
     }
+    final prefs = await SharedPreferences.getInstance();
+    final email = prefs.getString('email');
 
-    print("Reauthentication successful for ${user.email}");
+    print("Reauthentication successful for ${email}");
     // Delete the Firestore document
-    await deleteUserAndData(user.email!);
+    await deleteUserAndData(email!);
     print("User document deleted successfully.");
 
     // Delete the Firebase account
@@ -577,7 +577,20 @@ Future<void> deleteUserAndData(String userEmail) async {
     // Finally delete the user document itself
     await userDoc.delete();
     final storageRef = FirebaseStorage.instance.ref().child('Users/$userEmail.jpg');
-    await storageRef.delete();
+
+    try {
+      // Attempt to delete the file
+      await storageRef.delete();
+      print('File deleted successfully.');
+    } catch (e) {
+      if (e is FirebaseException && e.code == 'object-not-found') {
+        // File does not exist
+        print('File does not exist, nothing to delete.');
+      } else {
+        // Handle other potential errors
+        print('Error occurred: $e');
+      }
+    }
   } catch (e) {
     print('Error deleting user data: $e');
     throw e;

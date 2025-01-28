@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:alcheringa/Common/globals.dart';
 import 'package:alcheringa/Common/resource.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -79,7 +81,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                 fit: BoxFit.fill,
               ),
             ),
-      
+
             // Scrollable Content
             SingleChildScrollView(
               child: Padding(
@@ -89,7 +91,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(height: 20),
-      
+
                     // Event Image
                     Center(
                       child: AspectRatio(
@@ -107,7 +109,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                       ),
                     ),
                     SizedBox(height: 20),
-      
+
                     // Artist Name
                     Text(
                       widget.event.artist,
@@ -118,7 +120,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                         fontWeight: FontWeight.w400,
                       ),
                     ),
-      
+
                     // Event Type
                     Text(
                       widget.event.type,
@@ -130,7 +132,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                       ),
                     ),
                     SizedBox(height: 10),
-      
+
                     // Venue and Time
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -163,7 +165,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                       ],
                     ),
                     SizedBox(height: 20),
-      
+
                     // Event Description
                     Text(
                       widget.event.descriptionEvent,
@@ -175,7 +177,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                       ),
                     ),
                     SizedBox(height: 30),
-      
+
                     // Action Buttons
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -226,18 +228,27 @@ class _EventDetailPageState extends State<EventDetailPage> {
                             ],
                           ),
                         ),
-      
+
                         // Direction Button
                         GestureDetector(
                           onTap: () async {
                             if (selectedVenue != null) {
                               final googleMapsUrl = Uri.parse(
                                   'https://www.google.com/maps/dir/?api=1&destination=${selectedVenue!.latLng.latitude},${selectedVenue!.latLng.longitude}');
-      
-                              if (await canLaunchUrl(googleMapsUrl)) {
-                                await launchUrl(googleMapsUrl);
-                              } else {
-                                throw 'Could not open Google Maps';
+                              final appleMapsUrl = Uri.parse('https://maps.apple.com/?daddr=${selectedVenue!.latLng.latitude},${selectedVenue!.latLng.longitude}&dirflg=w');
+
+                              if (Platform.isIOS) {
+                                if (await canLaunchUrl(appleMapsUrl)) {
+                                  await launchUrl(appleMapsUrl);
+                                } else {
+                                  throw 'Could not open Apple Maps';
+                                }
+                              } else if (Platform.isAndroid) {
+                                if (await canLaunchUrl(googleMapsUrl)) {
+                                  await launchUrl(googleMapsUrl);
+                                } else {
+                                  throw 'Could not open Google Maps';
+                                }
                               }
                             } else {
                               print('Selected venue is null.');
@@ -279,7 +290,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                       ],
                     ),
                     SizedBox(height: 30),
-      
+
                     // Horizontal Divider
                     Align(
                       alignment: Alignment.center,
@@ -290,7 +301,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                       ),
                     ),
                     SizedBox(height: 20),
-      
+
                     // Suggestions Section
                     Text(
                       'Suggestions',
@@ -302,7 +313,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                       ),
                     ),
                     SizedBox(height: 10),
-      
+
                     // Suggestions Cards
                     SizedBox(
                       height: 350,
@@ -316,7 +327,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                                   .skip(startIndex)
                                   .take(2)
                                   .toList();
-      
+
                           return Column(
                             children: currentPageSuggestions
                                 .map(
@@ -329,13 +340,13 @@ class _EventDetailPageState extends State<EventDetailPage> {
                         },
                       ),
                     ),
-      
+
                     SizedBox(height: 10),
                   ],
                 ),
               ),
             ),
-      
+
             // Custom App Bar
             Positioned(
               top: 0,

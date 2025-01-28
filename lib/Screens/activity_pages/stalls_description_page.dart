@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:alcheringa/Model/stall_model.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -140,13 +142,23 @@ class _StallsDescriptionPageState extends State<StallsDescriptionPage> {
                             Positioned(
                               child: GestureDetector(
                                 onTap: () async {
-                                  final googleMapsUrl = Uri.parse(
-                                      'https://www.google.com/maps/dir/?api=1&destination=26.190917,91.696659');
+                                  final Uri appleMapsUrl = Uri.parse(
+                                      'https://maps.apple.com/?daddr=26.190917,26.190917&dirflg=w');
+                                  final Uri googleMapsUrl = Uri.parse(
+                                      'https://www.google.com/maps/dir/?api=1&destination=26.190917,26.190917');
 
-                                  if (await canLaunchUrl(googleMapsUrl)) {
-                                    await launchUrl(googleMapsUrl);
-                                  } else {
-                                    throw 'Could not open Google Maps';
+                                  if (Platform.isIOS) {
+                                    if (await canLaunchUrl(appleMapsUrl)) {
+                                      await launchUrl(appleMapsUrl);
+                                    } else {
+                                      throw 'Could not open Apple Maps';
+                                    }
+                                  } else if (Platform.isAndroid) {
+                                    if (await canLaunchUrl(googleMapsUrl)) {
+                                      await launchUrl(googleMapsUrl);
+                                    } else {
+                                      throw 'Could not open Google Maps';
+                                    }
                                   }
                                 },
                                 child: Container(

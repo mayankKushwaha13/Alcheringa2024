@@ -55,7 +55,11 @@ class _MapPageState extends State<MapPage> {
   // }
 
   void _checkAndRequestPermission() async {
-    _isPermissionGranted = await viewModelMain.requestLocationPermission();
+    final permission = await viewModelMain.requestLocationPermission();
+    setState(() {
+      _isPermissionGranted = permission;
+    });
+
   }
 
   // void loadCustomMarker() async {

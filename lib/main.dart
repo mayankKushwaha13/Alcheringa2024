@@ -79,11 +79,6 @@ class _SplashScreenState extends State<SplashScreen> {
   late bool isUserLoggedIn;
   NotificationServices notificationSerivces = NotificationServices();
 
-  Future<void> _requestPermission() async {
-    // await ViewModelMain().requestNotificationPermission();
-    await ViewModelMain().requestLocationPermission();
-  }
-
   @override
   void initState() {
     super.initState();
@@ -92,7 +87,6 @@ class _SplashScreenState extends State<SplashScreen> {
     notificationSerivces.requestNotificationPermisions();
     notificationSerivces.forgroundMessage();
     notificationSerivces.firebaseInit(context);
-    _requestPermission();
     notificationSerivces.isRefreshToken();
     notificationSerivces.getDeviceToken().then((value) {
       print('$value');
@@ -113,7 +107,7 @@ class _SplashScreenState extends State<SplashScreen> {
       () {
         // checking signup screen, change it to main screen after done
         final nextScreen =
-            isUserLoggedIn && isVerified ? const MainScreen() : welcomeScreen();
+            isLoggedIn && isVerified ? const MainScreen() : welcomeScreen();
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => nextScreen),
