@@ -207,7 +207,7 @@ class _StallsDescriptionPageState extends State<StallsDescriptionPage> {
                                 ),
                               ),
                               Text(
-                                item.price.toString(),
+                                item.price == 0.0 ? "-" : item.price.toString(),
                                 style: TextStyle(
                                   fontFamily: 'Game_Tape',
                                   fontSize: 16,

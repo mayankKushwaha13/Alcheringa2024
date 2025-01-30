@@ -17,6 +17,8 @@ class _CompetitionCardState extends State<CompetitionCard> {
   @override
   Widget build(BuildContext context) {
     final mq = MediaQuery.of(context).size;
+    String month = widget.event.starttime.date >= 31 ? 'Jan' : 'Feb';
+    String eventTime = '${widget.event.starttime.date} $month';
 
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
@@ -81,7 +83,7 @@ class _CompetitionCardState extends State<CompetitionCard> {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               Text(
-                                "${widget.event.starttime.date} Jan, ${widget.event.starttime.hours > 12 ? widget.event.starttime.hours - 12 : widget.event.starttime.hours} ${widget.event.starttime.hours > 12 ? "PM" : "AM"}",
+                                "${eventTime}, ${widget.event.starttime.hours > 12 ? widget.event.starttime.hours - 12 : widget.event.starttime.hours} ${widget.event.starttime.hours > 12 ? "PM" : "AM"}",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   color: Color(0xFFFFF1E8),

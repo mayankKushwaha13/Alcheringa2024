@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:alcheringa/Common/globals.dart';
 import 'package:alcheringa/Common/resource.dart';
 import 'package:alcheringa/Screens/loading%20screen.dart';
@@ -235,7 +237,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                       MediaQuery.of(context).size.width * 0.05),
 
                                   // Apple Button
-                                  _buildSocialButton(
+
+                                  if (Platform.isIOS)
+                                    _buildSocialButton(
                                       backgroundPath: 'assets/images/google.png',
                                       logoPath: 'assets/images/applelogo.png',
                                       buttonSize: MediaQuery.of(context).size.width *

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:alcheringa/Screens/main_screen.dart';
 import 'package:alcheringa/Screens/textscreens/privacy_policy_screen.dart';
 import 'package:alcheringa/screens/login_screen.dart';
@@ -239,30 +241,23 @@ class _SignupScreenState extends State<SignupScreen> {
                                           .width *
                                           0.05),
                                   // Apple Button
-                                  _buildSocialButton(
-                                      backgroundPath:
-                                      'assets/images/google.png',
-                                      logoPath:
-                                      'assets/images/applelogo.png',
-                                      buttonSize: MediaQuery.of(context)
-                                          .size
-                                          .width *
-                                          0.18, // Background size
-                                      logoSize: MediaQuery.of(context)
-                                          .size
-                                          .width *
-                                          0.09, // Logo size
+                                  if (Platform.isIOS)
+                                    _buildSocialButton(
+                                      backgroundPath: 'assets/images/google.png',
+                                      logoPath: 'assets/images/applelogo.png',
+                                      buttonSize: screenWidth * 0.18,
+                                      logoSize: screenWidth * 0.09,
                                       onPressed: () async {
                                         await signInWithApple(context, isLoggedIn: _setIsLoggedIn);
                                         if (isLoggedIn && context.mounted) {
                                           Navigator.pushAndRemoveUntil(
                                             context,
-                                            MaterialPageRoute(
-                                                builder: (context) => const MainScreen()),
+                                            MaterialPageRoute(builder: (context) => const MainScreen()),
                                                 (Route<dynamic> route) => false,
                                           );
                                         }
-                                      }),
+                                      },
+                                    ),
                                   // Spacing between buttons
                                   SizedBox(
                                       width: MediaQuery.of(context)
