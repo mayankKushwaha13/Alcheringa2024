@@ -367,30 +367,31 @@ class _ProfilePageState extends State<ProfilePage> {
                               SizedBox(
                                 height: 20.0,
                               ),
-                              ElevatedButton(
-                                onPressed: () async {
-                                  // Show confirmation dialog before deleting account
-                                  final shouldDelete = await _showDeleteConfirmationDialog(context);
-                                  if (shouldDelete) {
-                                    // Proceed to delete the account
-                                    await deleteAccount(context, isLoggedIn: setOnLoading);
-                                  }
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.transparent, // Transparent background
-                                  shadowColor: Colors.transparent, // Remove shadow
-                                  elevation: 0, // Remove elevation if desired
-                                ),
-                                child: Text(
-                                  "Delete Account",
-                                  style: const TextStyle(
-                                    fontFamily: 'Game_Tape',
-                                    color: Colors.white60,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
+                              if(Platform.isIOS)
+                                ElevatedButton(
+                                  onPressed: () async {
+                                    // Show confirmation dialog before deleting account
+                                    final shouldDelete = await _showDeleteConfirmationDialog(context);
+                                    if (shouldDelete) {
+                                      // Proceed to delete the account
+                                      await deleteAccount(context, isLoggedIn: setOnLoading);
+                                    }
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.transparent, // Transparent background
+                                    shadowColor: Colors.transparent, // Remove shadow
+                                    elevation: 0, // Remove elevation if desired
+                                  ),
+                                  child: Text(
+                                    "Delete Account",
+                                    style: const TextStyle(
+                                      fontFamily: 'Game_Tape',
+                                      color: Colors.white60,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
-                              ),
                             ],
                           ),
                         ],
