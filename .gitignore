@@ -4,3 +4,7 @@
 .idea/
 .dart_tool/
 .DS_Store
+*/firebase_options.dart
+ios/Runner/AppDelegate.swift
+android/app/google-services.json
+lib/Model/view_model_main.dart
