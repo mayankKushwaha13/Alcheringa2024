@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/alcheringa_logo.png" alt="Alcheringa Logo" width="180"/>
+  <img src="readme-assets/alcher.png" alt="Alcheringa Logo" width="180"/>
 </p>
 
 <h1 align="center">Alcheringa 2024 Official App</h1>
@@ -58,11 +58,13 @@
 ## 🖼️ Screenshots
 
 <!-- Add your app screenshots here -->
-<p align="center">
-  <img src="screenshots/home.png" width="200"/>
-  <img src="screenshots/events.png" width="200"/>
-  <img src="screenshots/map.png" width="200"/>
-  <img src="screenshots/store.png" width="200"/>
+<p>
+  <img src="readme-assets/screenshot1.png" width="200"/>
+  <img src="readme-assets/screenshot2.png" width="200"/>
+  <img src="readme-assets/screenshot3.png" width="200"/>
+  <img src="readme-assets/screenshot4.png" width="200"/>
+  <img src="readme-assets/screenshot5.png" width="200"/>
+  <img src="readme-assets/screenshot6.png" width="200"/>
 </p>
 
 ---
